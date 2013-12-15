@@ -25,6 +25,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 
 import static sanandreasp.core.manpack.helpers.CommonUsedStuff.CUS;
+import sanandreasp.core.manpack.helpers.ItemBlockNamedMeta;
 import sanandreasp.core.manpack.managers.SAPConfigManager;
 import sanandreasp.core.manpack.managers.SAPLanguageManager;
 import sanandreasp.core.manpack.managers.SAPUpdateManager;
@@ -230,9 +231,9 @@ public class ESPModRegistry {
 		
 		this.registerBlocks(this.avisEgg, this.biomeChanger, this.duplicator, this.weatherAltar,
 				this.blockNiobDoor, this.enderLog, this.sapEndTree, this.enderPlanks, this.corruptES);
-		GameRegistry.registerBlock(this.enderLeaves, ItemEndLeaves.class, "esp.blockEndLeaves");
-		GameRegistry.registerBlock(this.endOre, ItemBlockWithMetadata.class, "esp.blockEndOre");
-		GameRegistry.registerBlock(this.endBlock, ItemBlockWithMetadata.class, "esp.blockEndStorg");
+		GameRegistry.registerBlock(this.enderLeaves, ItemEndLeaves.class, "enderstuffp:blockEndLeaves");
+		GameRegistry.registerBlock(this.endOre, ItemBlockNamedMeta.class, "enderstuffp:blockEndOre");
+		GameRegistry.registerBlock(this.endBlock, ItemBlockNamedMeta.class, "enderstuffp:blockEndStorg");
 		
 		this.enderLeaves.setBurnProperties(this.enderLeaves.blockID, 30, 60);
 		this.enderLog.setBurnProperties(this.enderLog.blockID, 5, 5);
@@ -473,12 +474,12 @@ public class ESPModRegistry {
 	
 	/** registers the Items **/
 	private void registerItems(Item... items) {
-		for( int i = 0; i < items.length; i++) GameRegistry.registerItem(items[i], "esp.item_"+i );
+		for( int i = 0; i < items.length; i++) GameRegistry.registerItem(items[i], "enderstuffp:item_"+i );
 	}
 	
 	/** registers the Blocks **/
 	private void registerBlocks(Block... blocks) {
-		for( int i = 0; i < blocks.length; i++) GameRegistry.registerBlock(blocks[i], "esp.block_"+i );
+		for( int i = 0; i < blocks.length; i++) GameRegistry.registerBlock(blocks[i], "enderstuffp:block_"+i );
 	}
 	
 	public static boolean hasPlayerFullNiob(EntityPlayer player) {

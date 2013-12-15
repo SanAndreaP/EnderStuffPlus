@@ -19,9 +19,9 @@ import net.minecraft.world.World;
 public class BlockEndOre extends BlockOre implements IGlowBlockOverlay
 {
 	@SideOnly(Side.CLIENT)
-	protected Icon glowTex[];
-	@SideOnly(Side.CLIENT)
 	protected Icon baseTex[];
+	@SideOnly(Side.CLIENT)
+	protected Icon glowTex[];
 	
     public BlockEndOre(int par1) {
         super(par1);
@@ -45,7 +45,7 @@ public class BlockEndOre extends BlockOre implements IGlowBlockOverlay
     
     @Override
     public Icon getIcon(int side, int meta) {
-    	return this.baseTex[Math.min(this.glowTex.length, meta)];
+    	return this.baseTex[Math.min(this.baseTex.length, meta)];
     }
     
     @Override

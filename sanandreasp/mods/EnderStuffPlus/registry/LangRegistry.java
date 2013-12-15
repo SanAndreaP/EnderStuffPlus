@@ -8,8 +8,6 @@ public final class LangRegistry {
 	
 	public static void loadLangs(SAPLanguageManager langman) {
 		langman.addLangProp(ESPModRegistry.avisEgg, "Avis Egg");
-		langman.addLangProp(ESPModRegistry.endOre, "Niobium Ore");
-		langman.addLangProp(ESPModRegistry.endBlock, "Block of Niobium");
 		langman.addLangProp(ESPModRegistry.biomeChanger, "Biome Changer");
 		langman.addLangProp(ESPModRegistry.duplicator, "Duplicator");
 		langman.addLangProp(ESPModRegistry.weatherAltar, "Weather Altar");
@@ -17,6 +15,11 @@ public final class LangRegistry {
 		langman.addLangProp(ESPModRegistry.enderLog, "Endertree Log");
 		langman.addLangProp(ESPModRegistry.enderPlanks, "Endertree Planks");
 		langman.addLangProp(ESPModRegistry.sapEndTree, "Endertree Sapling");
+		
+		langman.addLangProp(new ItemStack(ESPModRegistry.endOre, 0, 0), "Niobium Ore");
+		langman.addLangProp(new ItemStack(ESPModRegistry.endOre, 0, 1), "Tantalum Ore");
+		langman.addLangProp(new ItemStack(ESPModRegistry.endBlock, 0, 0), "Block of Niobium");
+		langman.addLangProp(new ItemStack(ESPModRegistry.endBlock, 0, 1), "Block of Tantalum");
 		
 		langman.addLangProp(ESPModRegistry.enderFlesh, "Ender Flesh");
 		langman.addLangProp(ESPModRegistry.avisFeather, "Avis Feather");
