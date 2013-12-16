@@ -25,6 +25,10 @@ public class BlockEndStorage extends BlockOreStorage implements IGlowBlockOverla
 	protected Icon baseTex[];
 	@SideOnly(Side.CLIENT)
 	protected Icon glowTex[];
+	@SideOnly(Side.CLIENT)
+	protected Icon baseTexTop[];
+	@SideOnly(Side.CLIENT)
+	protected Icon glowTexTop[];
 
 	public BlockEndStorage(int par1) {
 		super(par1);
@@ -41,10 +45,16 @@ public class BlockEndStorage extends BlockOreStorage implements IGlowBlockOverla
     public void registerIcons(IconRegister par1IconRegister) {
     	this.baseTex = new Icon[2];
     	this.glowTex = new Icon[2];
+    	this.baseTexTop = new Icon[2];
+    	this.glowTexTop = new Icon[2];
     	this.blockIcon = this.baseTex[0] = par1IconRegister.registerIcon("enderstuffp:niobBlock");
     	this.baseTex[1] = par1IconRegister.registerIcon("enderstuffp:tantalBlock");
     	this.glowTex[0] = par1IconRegister.registerIcon("enderstuffp:niobBlock_glow");
     	this.glowTex[1] = par1IconRegister.registerIcon("enderstuffp:tantalBlock_glow");
+    	this.baseTexTop[0] = par1IconRegister.registerIcon("enderstuffp:niobBlockTop");
+    	this.baseTexTop[1] = par1IconRegister.registerIcon("enderstuffp:tantalBlockTop");
+    	this.glowTexTop[0] = par1IconRegister.registerIcon("enderstuffp:niobBlockTop_glow");
+    	this.glowTexTop[1] = par1IconRegister.registerIcon("enderstuffp:tantalBlockTop_glow");
     }
 	
 	@Override
@@ -103,7 +113,7 @@ public class BlockEndStorage extends BlockOreStorage implements IGlowBlockOverla
     
     @Override
     public Icon getIcon(int side, int meta) {
-    	return this.baseTex[Math.min(this.baseTex.length, meta)];
+    	return side < 2 ? this.baseTexTop[Math.min(this.baseTexTop.length, meta)] : this.baseTex[Math.min(this.baseTex.length, meta)];
     }
     
     @Override
@@ -120,7 +130,7 @@ public class BlockEndStorage extends BlockOreStorage implements IGlowBlockOverla
     @Override
     @SideOnly(Side.CLIENT)
     public Icon getOverlayInvTexture(int side, int meta) {
-        return this.glowTex[Math.min(this.glowTex.length, meta)];
+        return side < 2 ? this.glowTexTop[Math.min(this.glowTexTop.length, meta)] : this.glowTex[Math.min(this.glowTex.length, meta)];
     }
     
     @Override
