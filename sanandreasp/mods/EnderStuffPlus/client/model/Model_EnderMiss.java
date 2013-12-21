@@ -83,6 +83,7 @@ public class Model_EnderMiss extends ModelBiped {
 		} else {
 			this.bipedHead.render(par7);
 		}
+		
 		if( this.isCaped ) {
 			GL11.glPushMatrix();
 			GL11.glTranslatef(this.bipedRightArm.rotationPointX * par7, this.bipedRightArm.rotationPointY * par7, this.bipedRightArm.rotationPointZ * par7);
@@ -100,6 +101,7 @@ public class Model_EnderMiss extends ModelBiped {
 		} else {
 			this.bipedRightArm.render(par7);
 		}
+		
 		if( this.isCaped ) {
 			GL11.glPushMatrix();
 			GL11.glTranslatef(this.bipedLeftArm.rotationPointX * par7, this.bipedLeftArm.rotationPointY * par7, this.bipedLeftArm.rotationPointZ * par7);
@@ -117,6 +119,7 @@ public class Model_EnderMiss extends ModelBiped {
 		} else {
 			this.bipedLeftArm.render(par7);
 		}
+		
 		if( this.isCaped ) {
 			GL11.glPushMatrix();
 			GL11.glTranslatef(this.bipedRightLeg.rotationPointX * par7, this.bipedRightLeg.rotationPointY * par7, this.bipedRightLeg.rotationPointZ * par7);
@@ -134,6 +137,7 @@ public class Model_EnderMiss extends ModelBiped {
 		} else {
 			this.bipedRightLeg.render(par7);
 		}
+		
 		if( this.isCaped ) {
 			GL11.glPushMatrix();
 			GL11.glTranslatef(this.bipedLeftLeg.rotationPointX * par7, this.bipedLeftLeg.rotationPointY * par7, this.bipedLeftLeg.rotationPointZ * par7);
@@ -151,7 +155,7 @@ public class Model_EnderMiss extends ModelBiped {
 		} else {
 			this.bipedLeftLeg.render(par7);
 		}
-//        this.bipedLeftLeg.render(par7);
+		
         this.bipedHeadwear.render(par7);
         
         if( this.isCaped && !this.isSitting ) {
