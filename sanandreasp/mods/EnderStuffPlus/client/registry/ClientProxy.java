@@ -7,7 +7,7 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Random;
 
-import sanandreasp.core.manpack.helpers.RenderBlockGlowOverlay;
+import sanandreasp.core.manpack.helpers.client.RenderBlockGlowOverlay;
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderNemesis;
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderIgnis;
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderNivis;

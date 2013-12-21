@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import sanandreasp.core.manpack.helpers.ItemRenderHelper;
+import sanandreasp.core.manpack.helpers.client.ItemRenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.ItemRenderer;

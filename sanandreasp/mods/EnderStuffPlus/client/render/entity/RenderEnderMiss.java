@@ -26,6 +26,8 @@ public class RenderEnderMiss extends RenderLiving implements Textures {
 	private Model_EnderMiss endermanModel;
 	private Model_EnderMiss coatModel;
 	private Random rnd = new Random();
+	
+	private float renderedBrightness = 0F;
 
 	public RenderEnderMiss() {
 		super(new Model_EnderMiss(false), 0.5F);
@@ -51,8 +53,6 @@ public class RenderEnderMiss extends RenderLiving implements Textures {
 			par2 += this.rnd.nextGaussian() * var10;
 			par6 += this.rnd.nextGaussian() * var10;
 		}
-
-		super.doRenderLiving(par1EntityEnderman, par2, par4, par6, par8, par9);
 	}
 
 	/**
@@ -135,6 +135,8 @@ public class RenderEnderMiss extends RenderLiving implements Textures {
 			GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(20.0F, 0.0F, 0.0F, 1.0F);
 
+			float lastBrightX = OpenGlHelper.lastBrightnessX, lastBrightY = OpenGlHelper.lastBrightnessY;
+			
 			int var5 = par1EntityLiving.getBrightnessForRender(par2);
 			int var6 = var5 % 65536;
 			int var7 = var5 / 65536;
@@ -144,6 +146,8 @@ public class RenderEnderMiss extends RenderLiving implements Textures {
 			if( var3.getItem().isFull3D() ) {
 				this.renderManager.itemRenderer.renderItem(par1EntityLiving, var3, 1);
 			}
+			
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightX, lastBrightY);
 
 			GL11.glPopMatrix();
 		}
@@ -160,6 +164,8 @@ public class RenderEnderMiss extends RenderLiving implements Textures {
 			GL11.glRotatef(-110.0F, 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(20.0F, 0.0F, 0.0F, 1.0F);
 
+			float lastBrightX = OpenGlHelper.lastBrightnessX, lastBrightY = OpenGlHelper.lastBrightnessY;
+			
 			int var5 = par1EntityLiving.getBrightnessForRender(par2);
 			int var6 = var5 % 65536;
 			int var7 = var5 / 65536;
@@ -169,6 +175,8 @@ public class RenderEnderMiss extends RenderLiving implements Textures {
 			if( var3.getItem().isFull3D() ) {
 				this.renderManager.itemRenderer.renderItem(par1EntityLiving, new ItemStack(ESPModRegistry.avisFeather), 1);
 			}
+			
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightX, lastBrightY);
 
 			GL11.glPopMatrix();
 		}
@@ -185,7 +193,6 @@ public class RenderEnderMiss extends RenderLiving implements Textures {
 		EntityEnderMiss miss = ((EntityEnderMiss)par1EntityLiving);
 		
 		this.renderEnderman(miss, par2, par4, par6, par8, par9);
-		
 		
 		for( int cnt = 0; cnt < 2; cnt++ ) {
 			if( !miss.isImmuneToWater() ) return;
@@ -233,7 +240,16 @@ public class RenderEnderMiss extends RenderLiving implements Textures {
 		
 		        if( !par1EntityLiving.isInvisible() )
 		        {
-		            this.coatModel.render(par1EntityLiving, f8, f7, f5, f3 - f2, f4, f6);
+					float lastBrightX = OpenGlHelper.lastBrightnessX, lastBrightY = OpenGlHelper.lastBrightnessY;
+					
+					int var5 = par1EntityLiving.getBrightnessForRender(par8);
+					int var6 = var5 % 65536;
+					int var7 = var5 / 65536;
+					OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, var6 / 1.0F, var7 / 1.0F);
+
+					this.coatModel.render(par1EntityLiving, f8, f7, f5, f3 - f2, f4, f6);
+
+					OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightX, lastBrightY);
 		        }
 		        else
 		        {
@@ -256,6 +272,8 @@ public class RenderEnderMiss extends RenderLiving implements Textures {
 		    GL11.glEnable(GL11.GL_CULL_FACE);
 		    GL11.glPopMatrix();
 		}
+
+		super.doRenderLiving(miss, par2, par4, par6, par8, par9);
 	}
 
     private float interpolateRotation(float par1, float par2, float par3)

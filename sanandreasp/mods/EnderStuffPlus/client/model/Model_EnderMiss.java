@@ -117,8 +117,41 @@ public class Model_EnderMiss extends ModelBiped {
 		} else {
 			this.bipedLeftArm.render(par7);
 		}
-        this.bipedRightLeg.render(par7);
-        this.bipedLeftLeg.render(par7);
+		if( this.isCaped ) {
+			GL11.glPushMatrix();
+			GL11.glTranslatef(this.bipedRightLeg.rotationPointX * par7, this.bipedRightLeg.rotationPointY * par7, this.bipedRightLeg.rotationPointZ * par7);
+			GL11.glRotatef(this.bipedRightLeg.rotateAngleZ * (180F / (float)Math.PI), 0.0F, 0.0F, 1.0F);
+			GL11.glRotatef(this.bipedRightLeg.rotateAngleY * (180F / (float)Math.PI), 0.0F, 1.0F, 0.0F);
+			GL11.glRotatef(this.bipedRightLeg.rotateAngleX * (180F / (float)Math.PI), 1.0F, 0.0F, 0.0F);
+			this.bipedRightLeg.rotateAngleZ = 
+        		  this.bipedRightLeg.rotateAngleY = 
+        		  this.bipedRightLeg.rotateAngleX = 0.0F;
+			GL11.glTranslatef(0.015F, !this.isSitting ? 0F : -0.015F, 0.0F);
+			GL11.glTranslatef(-this.bipedRightLeg.rotationPointX * par7, -this.bipedRightLeg.rotationPointY * par7, -this.bipedRightLeg.rotationPointZ * par7);
+    		GL11.glScalef(1.1F, 1.01F, 1.1F);
+			this.bipedRightLeg.render(par7);
+			GL11.glPopMatrix();
+		} else {
+			this.bipedRightLeg.render(par7);
+		}
+		if( this.isCaped ) {
+			GL11.glPushMatrix();
+			GL11.glTranslatef(this.bipedLeftLeg.rotationPointX * par7, this.bipedLeftLeg.rotationPointY * par7, this.bipedLeftLeg.rotationPointZ * par7);
+			GL11.glRotatef(this.bipedLeftLeg.rotateAngleZ * (180F / (float)Math.PI), 0.0F, 0.0F, 1.0F);
+			GL11.glRotatef(this.bipedLeftLeg.rotateAngleY * (180F / (float)Math.PI), 0.0F, 1.0F, 0.0F);
+			GL11.glRotatef(this.bipedLeftLeg.rotateAngleX * (180F / (float)Math.PI), 1.0F, 0.0F, 0.0F);
+			this.bipedLeftLeg.rotateAngleZ = 
+        		  this.bipedLeftLeg.rotateAngleY = 
+        		  this.bipedLeftLeg.rotateAngleX = 0.0F;
+			GL11.glTranslatef(-0.015F, !this.isSitting ? 0F : -0.015F, 0.0F);
+			GL11.glTranslatef(-this.bipedLeftLeg.rotationPointX * par7, -this.bipedLeftLeg.rotationPointY * par7, -this.bipedLeftLeg.rotationPointZ * par7);
+    		GL11.glScalef(1.1F, 1.01F, 1.1F);
+			this.bipedLeftLeg.render(par7);
+			GL11.glPopMatrix();
+		} else {
+			this.bipedLeftLeg.render(par7);
+		}
+//        this.bipedLeftLeg.render(par7);
         this.bipedHeadwear.render(par7);
         
         if( this.isCaped && !this.isSitting ) {
@@ -126,6 +159,12 @@ public class Model_EnderMiss extends ModelBiped {
         	GL11.glTranslatef(0F, 0.0F, 0F);
     		GL11.glScalef(1.05F, 1.01F, 1.05F);
             this.bipedBodyCoat.render(par7);
+            GL11.glPopMatrix();
+        } else if( this.isCaped ) {
+        	GL11.glPushMatrix();
+        	GL11.glTranslatef(0F, -0.009F, 0F);
+    		GL11.glScalef(1.05F, 1.01F, 1.05F);
+            this.bipedBody.render(par7);
             GL11.glPopMatrix();
         } else {
             this.bipedBody.render(par7);

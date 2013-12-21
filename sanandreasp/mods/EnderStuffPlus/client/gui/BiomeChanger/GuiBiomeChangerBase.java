@@ -2,8 +2,9 @@ package sanandreasp.mods.EnderStuffPlus.client.gui.BiomeChanger;
 
 import javax.swing.text.TabableView;
 
-import sanandreasp.mods.EnderStuffPlus.client.gui.GuiItemTab;
+import sanandreasp.core.manpack.helpers.client.GuiItemTab;
 import sanandreasp.mods.EnderStuffPlus.client.registry.IconRegistry;
+import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.packet.PacketRecvBCGUIAction;
 import sanandreasp.mods.EnderStuffPlus.packet.PacketRecvChangeBCGUI;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
@@ -33,13 +34,13 @@ public abstract class GuiBiomeChangerBase extends GuiContainer {
 	public void initGui() {
 		super.initGui();
 		
-		buttonList.add(this.tabActivate = new GuiItemTab(this.buttonList.size(), this.guiLeft + this.xSize - 3, this.guiTop + this.ySize - 35, IconRegistry.activeOn, "Activate", true, false));
-		buttonList.add(this.tabFuel = new GuiItemTab(this.buttonList.size(), this.guiLeft + this.xSize - 3, this.guiTop + 10, Item.blazePowder.getIconFromDamage(0), "Fuel", true, false));
-		buttonList.add(this.tabBiomes = new GuiItemTab(this.buttonList.size(), this.guiLeft + this.xSize - 3, this.guiTop + 36, Block.sapling.getIcon(0, 0), "Biome", true, false));
-		buttonList.add(this.tabCofig = new GuiItemTab(this.buttonList.size(), this.guiLeft + this.xSize - 3, this.guiTop + 62, IconRegistry.spanner, "Settings", true, false));
+		buttonList.add(this.tabActivate = new GuiItemTab(this.buttonList.size(), this.guiLeft + this.xSize - 3, this.guiTop + this.ySize - 35, "Activate", IconRegistry.activeOn, true, false, Textures.GUI_BUTTONS));
+		buttonList.add(this.tabFuel = new GuiItemTab(this.buttonList.size(), this.guiLeft + this.xSize - 3, this.guiTop + 10, "Fuel", Item.blazePowder.getIconFromDamage(0), true, false, Textures.GUI_BUTTONS));
+		buttonList.add(this.tabBiomes = new GuiItemTab(this.buttonList.size(), this.guiLeft + this.xSize - 3, this.guiTop + 36, "Biome", Block.sapling.getIcon(0, 0), true, false, Textures.GUI_BUTTONS));
+		buttonList.add(this.tabCofig = new GuiItemTab(this.buttonList.size(), this.guiLeft + this.xSize - 3, this.guiTop + 62, "Settings", IconRegistry.spanner, true, false, Textures.GUI_BUTTONS));
 	
 		this.tabActivate.textureBaseX = 52;
-		this.tabBiomes.baseTexture = TextureMap.locationItemsTexture;
+		this.tabBiomes.baseTexture = TextureMap.locationBlocksTexture;
 	}
 	
 	@Override

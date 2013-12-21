@@ -2,6 +2,7 @@ package sanandreasp.mods.EnderStuffPlus.client.gui;
 
 import org.lwjgl.opengl.GL11;
 
+import sanandreasp.core.manpack.helpers.client.GuiItemTab;
 import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.inventory.Container_BiomeChanger;
 import sanandreasp.mods.EnderStuffPlus.inventory.Container_Duplicator;
@@ -37,7 +38,7 @@ public class GuiDuplicator extends GuiContainer implements Textures {
 	public void initGui() {
 		super.initGui();
 		
-		this.insertXP = new GuiItemTab( 0, this.guiLeft + this.xSize - 3, this.guiTop + 49, Item.blazeRod.getIconFromDamage(0), translate("enderstuffplus.duplicator.insertXP"), true, true);
+		this.insertXP = new GuiItemTab( 0, this.guiLeft + this.xSize - 3, this.guiTop + 49, translate("enderstuffplus.duplicator.insertXP"), Item.blazeRod.getIconFromDamage(0), true, true, GUI_BUTTONS);
 		this.buttonList.add(this.insertXP);
 	}
 

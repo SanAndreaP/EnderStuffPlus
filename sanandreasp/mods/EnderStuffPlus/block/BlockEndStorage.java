@@ -3,12 +3,10 @@ package sanandreasp.mods.EnderStuffPlus.block;
 import java.util.List;
 import java.util.Random;
 
-import sanandreasp.core.manpack.helpers.IGlowBlockOverlay;
-import sanandreasp.core.manpack.helpers.RenderBlockGlowOverlay;
-
+import sanandreasp.core.manpack.helpers.client.IGlowBlockOverlay;
+import sanandreasp.core.manpack.helpers.client.RenderBlockGlowOverlay;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockOreStorage;
 import net.minecraft.client.renderer.texture.IconRegister;
