@@ -35,7 +35,6 @@ public class GuiHandler implements IGuiHandler {
 		if( ID == 0 ) {
 			EntityLiving entityClt = null;
 			if( world instanceof WorldClient) entityClt = (EntityLiving)world.getEntityByID(x );
-			System.out.println(entityClt);
 			if( entityClt instanceof IEnderPet )
 				return new GuiEnderPet((IEnderPet)entityClt, player);
 		} else if( ID == 1 ) {

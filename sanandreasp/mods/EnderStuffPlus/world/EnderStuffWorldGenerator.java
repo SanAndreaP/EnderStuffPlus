@@ -50,7 +50,7 @@ public class EnderStuffWorldGenerator implements IWorldGenerator {
 		for( int i = 0; i < 16 && ConfigRegistry.genNiob; i++ ) {
 			x = chunkX * 16 + random.nextInt(16);
 			z = chunkZ * 16 + random.nextInt(16);
-			y = random.nextInt(64);
+			y = random.nextInt(128);
 			if( this.generateOre(world, random, x, y, z) );
 		}
 	}

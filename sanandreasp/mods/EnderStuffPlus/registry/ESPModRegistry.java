@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.SpawnListEntry;
 
@@ -374,7 +375,7 @@ public class ESPModRegistry {
 		LangRegistry.loadLangs(manHelper.getLangMan());
 		
 	// Craftings & Smeltings
-		GameRegistry.addSmelting(this.endOre.blockID, new ItemStack(this.endIngot, 1), 5);
+		FurnaceRecipes.smelting().addSmelting(this.endOre.blockID, 0, new ItemStack(this.endIngot, 1, 0), 0.85F);
 	
 		CraftingRegistry.initCraftings();
 		

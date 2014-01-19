@@ -4,12 +4,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.*;
+import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.Random;
 
@@ -198,8 +201,11 @@ public class RenderEnderMiss extends RenderLiving implements Textures {
 		if( !miss.isImmuneToWater() ) {
 			super.doRenderLiving(miss, par2, par4, par6, par8, par9);
 		} else {
+			float lastBrightX = OpenGlHelper.lastBrightnessX, lastBrightY = OpenGlHelper.lastBrightnessY;
 			
-			for( int cnt = 0; cnt < 2; cnt++ ) {
+			super.doRenderLiving(miss, par2, par4, par6, par8, par9);
+			
+			for( int cnt = 0; cnt < 3; cnt++ ) {
 				GL11.glPushMatrix();
 			    GL11.glDisable(GL11.GL_CULL_FACE);
 			    this.coatModel.onGround = this.mainModel.onGround;
@@ -244,8 +250,6 @@ public class RenderEnderMiss extends RenderLiving implements Textures {
 			
 			        if( !par1EntityLiving.isInvisible() )
 			        {
-						float lastBrightX = OpenGlHelper.lastBrightnessX, lastBrightY = OpenGlHelper.lastBrightnessY;
-						
 						int var5 = par1EntityLiving.getBrightnessForRender(par8);
 						int var6 = var5 % 65536;
 						int var7 = var5 / 65536;
@@ -270,13 +274,8 @@ public class RenderEnderMiss extends RenderLiving implements Textures {
 			        exception.printStackTrace();
 			    }
 			
-//			    OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-//			    GL11.glEnable(GL11.GL_TEXTURE_2D);
-//			    OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
-//			    GL11.glEnable(GL11.GL_CULL_FACE);
 			    GL11.glPopMatrix();
 			}
-			super.doRenderLiving(miss, par2, par4, par6, par8, par9);
 		}
 	}
 
