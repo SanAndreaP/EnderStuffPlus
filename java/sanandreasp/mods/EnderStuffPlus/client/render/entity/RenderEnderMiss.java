@@ -13,21 +13,21 @@ import java.util.Random;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import sanandreasp.mods.EnderStuffPlus.client.model.Model_EnderMiss;
+import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderMiss;
 import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderMiss;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 
 public class RenderEnderMiss extends RenderLiving implements Textures {
 	/** The model of the enderman */
-	private Model_EnderMiss endermanModel;
-	private Model_EnderMiss coatModel;
+	private ModelEnderMiss endermanModel;
+	private ModelEnderMiss coatModel;
 	private Random rnd = new Random();
 	
 	public RenderEnderMiss() {
-		super(new Model_EnderMiss(false), 0.5F);
-		this.endermanModel = (Model_EnderMiss) super.mainModel;
-		this.coatModel = new Model_EnderMiss(true);
+		super(new ModelEnderMiss(false), 0.5F);
+		this.endermanModel = (ModelEnderMiss) super.mainModel;
+		this.coatModel = new ModelEnderMiss(true);
 		this.setRenderPassModel(this.endermanModel);
 	}
 

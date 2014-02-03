@@ -2,7 +2,6 @@ package sanandreasp.mods.EnderStuffPlus.client.registry;
 
 import java.util.List;
 import java.util.Random;
-
 import sanandreasp.core.manpack.mod.packet.PacketRegistry;
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderNemesis;
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderIgnis;
@@ -49,6 +48,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityAuraFX;
 import net.minecraft.client.particle.EntityFX;
@@ -58,8 +58,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ClientProxy extends CommonProxy {
-	
+@SideOnly(Side.CLIENT)
+public class ClientProxy extends CommonProxy
+{
 	@Override
 	public void registerClientStuff() {
 		RenderingRegistry.registerEntityRenderingHandler(EntityEnderNivis.class, new RenderEnderNivis(new ModelEnderNivis(), 0.7F));

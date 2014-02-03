@@ -6,14 +6,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import org.lwjgl.opengl.GL11;
 
-import sanandreasp.mods.EnderStuffPlus.client.model.Model_EnderRay;
+import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderRay;
 import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderRay;
 
 public class RenderEnderRay extends RenderLiving implements Textures {
 
 	public RenderEnderRay() {
-		super(new Model_EnderRay(), 1F);
+		super(new ModelEnderRay(), 1F);
 		this.setRenderPassModel(super.mainModel);
 	}
 
