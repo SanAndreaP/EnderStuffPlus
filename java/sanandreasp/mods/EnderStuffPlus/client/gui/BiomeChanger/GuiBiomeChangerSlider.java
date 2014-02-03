@@ -2,68 +2,52 @@ package sanandreasp.mods.EnderStuffPlus.client.gui.BiomeChanger;
 
 import org.lwjgl.opengl.GL11;
 
-import sanandreasp.core.manpack.mod.packet.PacketRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityBiomeChanger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.MathHelper;
 
-public class GuiBiomeChangerSlider extends GuiButton {
-
-	/** The value of this slider control. */
+@SideOnly(Side.CLIENT)
+public class GuiBiomeChangerSlider extends GuiButton
+{
     public float sliderValue = 1.0F;
     public float maxValue = 1.0F;
-
-    /** Is this slider control being dragged. */
     public boolean dragging = false;
-
     private TileEntityBiomeChanger bcte = null;
-    
     private String title = "";
 
-    public GuiBiomeChangerSlider(int par1, int par2, int par3, TileEntityBiomeChanger par4BiomeChanger, String par5Str, float par6CurrValue, float par7MaxValue)
-    {
-        super(par1, par2, par3, 150, 20, par5Str + ": " + MathHelper.floor_float(par6CurrValue));
-        this.title = par5Str;
-        this.bcte = par4BiomeChanger;
-        this.maxValue = Math.max(Math.min(par7MaxValue, 128.00F), 1);
-        this.sliderValue = par6CurrValue / par7MaxValue;
+    public GuiBiomeChangerSlider(int id, int x, int y, TileEntityBiomeChanger tileBC, String label, float currValue, float maxValue) {
+        super(id, x, y, 150, 20, label + ": " + MathHelper.floor_float(currValue));
+        this.title = label;
+        this.bcte = tileBC;
+        this.maxValue = Math.max(Math.min(maxValue, 128.00F), 1);
+        this.sliderValue = currValue / maxValue;
     }
 
-    /**
-     * Returns 0 if the button is disabled, 1 if the mouse is NOT hovering over this button and 2 if it IS hovering over
-     * this button.
-     */
-    protected int getHoverState(boolean par1)
-    {
+    @Override
+    protected int getHoverState(boolean par1) {
         return 0;
     }
 
-    /**
-     * Fired when the mouse button is dragged. Equivalent of MouseListener.mouseDragged(MouseEvent e).
-     */
-    protected void mouseDragged(Minecraft par1Minecraft, int par2, int par3)
-    {
-        if( this.drawButton )
-        {
-            if( this.dragging && this.enabled )
-            {
-                this.sliderValue = (float)(par2 - (this.xPosition + 4)) / (float)(this.width - 8);
+    @Override
+    protected void mouseDragged(Minecraft mc, int mouseX, int mouseY) {
+        if( this.drawButton ) {
+            if( this.dragging && this.enabled ) {
+                this.sliderValue = (float)(mouseX - (this.xPosition + 4)) / (float)(this.width - 8);
 
-                if( this.sliderValue < 1.0F / maxValue )
-                {
+                if( this.sliderValue < 1.0F / maxValue ) {
                     this.sliderValue = 1.0F / maxValue;
                 }
 
-                if( this.sliderValue > 1.0F )
-                {
+                if( this.sliderValue > 1.0F ) {
                     this.sliderValue = 1.0F;
                 }
 
                 this.displayString = this.title + ": " + MathHelper.floor_float(this.sliderValue * this.maxValue);
-//				Proxy_Client.sendBCTEData(0, bcte.xCoord, bcte.yCoord, bcte.zCoord, new byte[] {(byte)2, (byte)(MathHelper.floor_float(this.sliderValue * this.maxValue))});
-                PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "bcGuiAction", this.bcte, (byte) 2, MathHelper.floor_float(this.sliderValue * this.maxValue));
+                ESPModRegistry.sendPacketSrv("bcGuiAction", this.bcte, (byte) 2, MathHelper.floor_float(this.sliderValue * this.maxValue));
             }
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -72,43 +56,30 @@ public class GuiBiomeChangerSlider extends GuiButton {
         }
     }
     
-    /**
-     * Returns true if the mouse has been pressed on this control. Equivalent of MouseListener.mousePressed(MouseEvent
-     * e).
-     */
-    public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3)
-    {
-        if( super.mousePressed(par1Minecraft, par2, par3) && this.enabled )
-        {
-            this.sliderValue = (float)(par2 - (this.xPosition + 4)) / (float)(this.width - 8);
+    @Override
+    public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
+        if( super.mousePressed(mc, mouseX, mouseY) && this.enabled ) {
+            this.sliderValue = (float)(mouseX - (this.xPosition + 4)) / (float)(this.width - 8);
 
-            if( this.sliderValue < 1.0F / maxValue )
-            {
+            if( this.sliderValue < 1.0F / maxValue ) {
                 this.sliderValue = 1.0F / maxValue;
             }
 
-            if( this.sliderValue > 1.0F )
-            {
+            if( this.sliderValue > 1.0F ) {
                 this.sliderValue = 1.0F;
             }
 
             this.displayString = this.title + ": " + MathHelper.floor_float(this.sliderValue * this.maxValue);
-//			Proxy_Client.sendBCTEData(0, bcte.xCoord, bcte.yCoord, bcte.zCoord, new byte[] {(byte)2, (byte)(MathHelper.floor_float(this.sliderValue * this.maxValue))});
-            PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "bcGuiAction", this.bcte, (byte) 2, MathHelper.floor_float(this.sliderValue * this.maxValue));
+            ESPModRegistry.sendPacketSrv("bcGuiAction", this.bcte, (byte) 2, MathHelper.floor_float(this.sliderValue * this.maxValue));
             this.dragging = true;
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
-    /**
-     * Fired when the mouse button is released. Equivalent of MouseListener.mouseReleased(MouseEvent e).
-     */
-    public void mouseReleased(int par1, int par2)
-    {
+    @Override
+    public void mouseReleased(int mouseX, int mouseY) {
         this.dragging = false;
     }
 }

@@ -2,18 +2,19 @@ package sanandreasp.mods.EnderStuffPlus.client.gui;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import sanandreasp.core.manpack.managers.SAPLanguageManager;
-import sanandreasp.core.manpack.mod.packet.PacketRegistry;
 import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketSetWeather;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityWeatherAltar;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 
-public class GuiWeatherAltar extends GuiScreen implements Textures {
-
+@SideOnly(Side.CLIENT)
+public class GuiWeatherAltar extends GuiScreen implements Textures
+{
 	private TileEntityWeatherAltar altar;
 	
     protected int xSize = 226;
@@ -24,8 +25,8 @@ public class GuiWeatherAltar extends GuiScreen implements Textures {
     private GuiButton btnSun, btnRain, btnStorm;
     private GuiTextField txtDuration;
     
-    public GuiWeatherAltar(TileEntityWeatherAltar par1Altar) {
-    	this.altar = par1Altar;
+    public GuiWeatherAltar(TileEntityWeatherAltar tileAltar) {
+    	this.altar = tileAltar;
     	this.allowUserInput = true;
 	}
     
@@ -45,7 +46,7 @@ public class GuiWeatherAltar extends GuiScreen implements Textures {
     }
 	
 	@Override
-	public void drawScreen(int par1, int par2, float par3) {
+	public void drawScreen(int mouseX, int mouseY, float partTicks) {
     	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(GUI_WEATHERALTAR);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
@@ -61,7 +62,7 @@ public class GuiWeatherAltar extends GuiScreen implements Textures {
 			this.txtDuration.setTextColor(0xFFFFFF);
 		}
 		
-		super.drawScreen(par1, par2, par3);
+		super.drawScreen(mouseX, mouseY, partTicks);
 	}
 	
 	private int getDurationInt() {
@@ -86,37 +87,37 @@ public class GuiWeatherAltar extends GuiScreen implements Textures {
     }
     
     @Override
-	protected void mouseClicked(int par1, int par2, int par3)
+	protected void mouseClicked(int mouseX, int mouseY, int mouseBtn)
     {
-        super.mouseClicked(par1, par2, par3);
-        this.txtDuration.mouseClicked(par1, par2, par3);
+        super.mouseClicked(mouseX, mouseY, mouseBtn);
+        this.txtDuration.mouseClicked(mouseX, mouseY, mouseBtn);
     }
 	
     @Override
-	protected void keyTyped(char par1, int par2)
-    {
-    	this.txtDuration.textboxKeyTyped(par1, par2);
+	protected void keyTyped(char key, int keyCode) {
+    	this.txtDuration.textboxKeyTyped(key, keyCode);
 
-    	if( (par2 == 28 || par2 == 1) && this.txtDuration.isFocused() ) {
+    	if( (keyCode == 28 || keyCode == 1) && this.txtDuration.isFocused() ) {
     		this.txtDuration.setFocused(false);
-    	}
-    	else if( (par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.keyCode) && !this.txtDuration.isFocused() ) {
+    	} else if( (keyCode == 1 || keyCode == this.mc.gameSettings.keyBindInventory.keyCode)
+    			   && !this.txtDuration.isFocused() )
+    	{
     		this.mc.thePlayer.closeScreen();
     	}
     }
     
     @Override
-    protected void actionPerformed(GuiButton par1GuiButton) {
+    protected void actionPerformed(GuiButton button) {
     	int dur = getDurationInt();
     	if( dur > 0 ) {
-	    	if( par1GuiButton.id == this.btnSun.id ) {
-	    		PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "setWeather", 0, dur, this.altar.xCoord, this.altar.yCoord, this.altar.zCoord, this.mc.theWorld);
+	    	if( button.id == this.btnSun.id ) {
+	    		ESPModRegistry.sendPacketSrv("setWeather", 0, dur, this.altar.xCoord, this.altar.yCoord, this.altar.zCoord, this.mc.theWorld);
 	    		this.mc.thePlayer.closeScreen();
-	    	} else if( par1GuiButton.id == this.btnRain.id ) {
-	    		PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "setWeather", 1, dur, this.altar.xCoord, this.altar.yCoord, this.altar.zCoord, this.mc.theWorld);
+	    	} else if( button.id == this.btnRain.id ) {
+	    		ESPModRegistry.sendPacketSrv("setWeather", 1, dur, this.altar.xCoord, this.altar.yCoord, this.altar.zCoord, this.mc.theWorld);
 	    		this.mc.thePlayer.closeScreen();
-	    	} else if( par1GuiButton.id == this.btnStorm.id ) {
-	    		PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "setWeather", 2, dur, this.altar.xCoord, this.altar.yCoord, this.altar.zCoord, this.mc.theWorld);
+	    	} else if( button.id == this.btnStorm.id ) {
+	    		ESPModRegistry.sendPacketSrv("setWeather", 2, dur, this.altar.xCoord, this.altar.yCoord, this.altar.zCoord, this.mc.theWorld);
 	    		this.mc.thePlayer.closeScreen();
 	    	}
     	}

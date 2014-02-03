@@ -12,21 +12,24 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import sanandreasp.core.manpack.managers.SAPLanguageManager;
 import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.inventory.Container_BiomeChanger;
 import sanandreasp.mods.EnderStuffPlus.registry.RegistryBiomeChanger;
 
-public class GuiBiomeChangerFuel extends GuiBiomeChangerBase implements Textures {
-	
+@SideOnly(Side.CLIENT)
+public class GuiBiomeChangerFuel extends GuiBiomeChangerBase implements Textures
+{
 	private HashMap<Integer, Entry<ItemStack, Integer>> fuelEntries;
 	private int entryPos = 0;
 	private boolean isScrolling = false;
 	private float currScrollPos = 0F;
 	
-	public GuiBiomeChangerFuel(Container par1Container) {
-		super(par1Container);
-		bcte = ((Container_BiomeChanger)par1Container).biomeChanger;
+	public GuiBiomeChangerFuel(Container cont) {
+		super(cont);
+		this.bcte = ((Container_BiomeChanger)cont).biomeChanger;
 				
 		this.fuelEntries = RegistryBiomeChanger.getFuelList();
 	}
@@ -38,19 +41,17 @@ public class GuiBiomeChangerFuel extends GuiBiomeChangerBase implements Textures
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
+	protected void drawGuiContainerBackgroundLayer(float partTicks, int mouseX, int mouseY) {
 		this.mc.getTextureManager().bindTexture(GUI_BIOMECHANGER_I);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        int l = guiLeft;
-        int i1 = guiTop;
-        drawTexturedModalRect(l, i1, 0, 0, xSize, ySize);
+        drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, xSize, ySize);
         
         if( needsScrollBars() ) {
 	        int scrollX = 163;
 	        int scrollY = 19 + (int)(66F * currScrollPos);
-	        drawTexturedModalRect(scrollX + l, scrollY + i1, 176, 0, 6, 6);
+	        drawTexturedModalRect(scrollX + this.guiLeft, scrollY + this.guiTop, 176, 0, 6, 6);
         } else {
-	        drawTexturedModalRect(l + 163, i1 + 19, 176, 6, 6, 6);
+	        drawTexturedModalRect(this.guiLeft + 163, this.guiTop + 19, 176, 6, 6, 6);
         }
         
         GL11.glEnable(32826 /*GL_RESCALE_NORMAL_EXT*/);
@@ -62,7 +63,7 @@ public class GuiBiomeChangerFuel extends GuiBiomeChangerBase implements Textures
 	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		RenderHelper.disableStandardItemLighting();
 		this.fontRenderer.drawString(SAPLanguageManager.getTranslated("tile.enderstuffp:biomeChanger.name"), 8, 8, 0x404040);
 		String s = SAPLanguageManager.getTranslated("enderstuffplus.biomeChanger.gui1.range") + " " + ((Container_BiomeChanger)this.inventorySlots).biomeChanger.getMaxRange();
@@ -92,59 +93,58 @@ public class GuiBiomeChangerFuel extends GuiBiomeChangerBase implements Textures
 	}
 	
 	@Override
-	public void drawScreen(int par1, int par2, float par3) {
-        boolean var4 = Mouse.isButtonDown(0);
+	public void drawScreen(int mouseX, int mouseY, float partTicks) {
+        boolean leftMBDown = Mouse.isButtonDown(0);
         
         int scrollMinX = guiLeft + 163;
         int scrollMaxX = scrollMinX + 6;
         int scrollMinY = guiTop + 19;
         int scrollMaxY = scrollMinY + 72;
         
-        if( !isScrolling && var4 && this.needsScrollBars() && par1 > scrollMinX && par1 < scrollMaxX && par2 > scrollMinY && par2 < scrollMaxY ) {
-        	isScrolling = true;
-        } else if( !var4 ) {
-        	isScrolling = false;
+        if( !this.isScrolling && leftMBDown && this.needsScrollBars() && mouseX > scrollMinX && mouseX < scrollMaxX && mouseY > scrollMinY && mouseY < scrollMaxY ) {
+        	this.isScrolling = true;
+        } else if( !leftMBDown ) {
+        	this.isScrolling = false;
         }
         
-        if( isScrolling ) {
-        	int sY = (int) (66F / (float)(fuelEntries.size() - 4));
-	        for( int y = 0; y < fuelEntries.size() - 3; y++ ) {
-	        	if( par2 > sY * y + guiTop || par1 < sY * y + guiTop ) {
-	        		entryPos = y;
+        if( this.isScrolling ) {
+        	int sY = (int) (66F / (float)(this.fuelEntries.size() - 4));
+	        for( int y = 0; y < this.fuelEntries.size() - 3; y++ ) {
+	        	if( mouseY > sY * y + this.guiTop || mouseX < sY * y + this.guiTop ) {
+	        		this.entryPos = y;
 	        	}
 	        }
-	        currScrollPos = ((float)(par2 - scrollMinY - 3) / 66F);
+	        this.currScrollPos = ((float)(mouseY - scrollMinY - 3) / 66F);
         }
         
-        if( currScrollPos < 0.0F )
-        	currScrollPos = 0.0F;
-        if( currScrollPos > 1.0F )
-        	currScrollPos = 1.0F;
+        if( this.currScrollPos < 0.0F ) {
+        	this.currScrollPos = 0.0F;
+        }
+        if( this.currScrollPos > 1.0F ) {
+        	this.currScrollPos = 1.0F;
+        }
 		
-		super.drawScreen(par1, par2, par3);
+		super.drawScreen(mouseX, mouseY, partTicks);
 	}
 	
 	private boolean needsScrollBars() {
 		return this.fuelEntries.size() > 4;
 	}
 	
-	public void handleMouseInput()
-    {
+	@Override
+	public void handleMouseInput() {
         super.handleMouseInput();
-        int var1 = Mouse.getEventDWheel();
+        int dWheel = Mouse.getEventDWheel();
 
-        if( var1 != 0 && this.needsScrollBars() )
-        {
-            if( var1 < 0 )
-            {
+        if( dWheel != 0 && this.needsScrollBars() ) {
+            if( dWheel < 0 ) {
                 this.entryPos = Math.min(this.entryPos + 1, this.fuelEntries.size() - 4);
-    	        currScrollPos = (float)entryPos / ((float)(fuelEntries.size() - 4));
+                this.currScrollPos = (float)this.entryPos / ((float)(this.fuelEntries.size() - 4));
             }
 
-            if( var1 > 0 )
-            {
+            if( dWheel > 0 ) {
             	this.entryPos = Math.max(this.entryPos - 1, 0);
-    	        currScrollPos = (float)entryPos / ((float)(fuelEntries.size() - 4));
+            	this.currScrollPos = (float)this.entryPos / ((float)(this.fuelEntries.size() - 4));
             }
         }
     }
