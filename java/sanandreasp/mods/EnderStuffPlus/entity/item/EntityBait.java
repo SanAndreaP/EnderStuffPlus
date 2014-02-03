@@ -2,7 +2,7 @@ package sanandreasp.mods.EnderStuffPlus.entity.item;
 
 import java.util.List;
 
-import sanandreasp.mods.EnderStuffPlus.packet.PacketsSendToClient;
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,12 +31,12 @@ public class EntityBait extends Entity {
 			this.setDead();
 		}
 		
-	    PacketsSendToClient.sendParticle(this, (byte)0, this.posX, this.posY, this.posZ, 1D, 0.5D, 0.7D);
+		ESPModRegistry.sendPacketAllRng("fxPortal", this.posX, this.posY, this.posZ, 128.0D, this.dimension, this.posX, this.posY, this.posZ, 1.0F, 0.5F, 0.7F, this.width, this.height);
 	    
 	    if( !this.worldObj.isRemote ) {
 	    	AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(
-	    			this.posX - 32, this.posY - 32, this.posZ - 32,
-	    			this.posX + 32, this.posY + 32, this.posZ + 32
+	    			this.posX - 32.0D, this.posY - 32.0D, this.posZ - 32.0D,
+	    			this.posX + 32.0D, this.posY + 32.0D, this.posZ + 32.0D
 	    	);
 	    	
 	    	List<EntityBait> myBaits = this.worldObj.getEntitiesWithinAABB(EntityBait.class, aabb);

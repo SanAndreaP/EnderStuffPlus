@@ -73,45 +73,47 @@ public class WorldGenEndLeak extends WorldGenerator {
 					double rad5 = Math.pow(radius-7, 2);
 					double rad6 = Math.pow(radius-9, 2);
 					
+					Block baseBlock = random.nextInt(10) == 0 ? Block.whiteStone : ESPModRegistry.corruptES;
+					
 					if( radVec <= rad6 ) {
 						if( !this.replace(world, x+i, y+j, z+k, 0) ) {
-							if( isInEnd && world.getBlockId(x+i, y+j, z+k) == ESPModRegistry.corruptES.blockID )
-								world.setBlockToAir(x+i, y+j, z+k);
+							if( isInEnd && world.getBlockId(x+i, y+j, z+k) == ESPModRegistry.corruptES.blockID );
+//								world.setBlockToAir(x+i, y+j, z+k);
 							else
-								this.replace(world, x+i, y+j, z+k, ESPModRegistry.corruptES.blockID);
+								this.replace(world, x+i, y+j, z+k, baseBlock.blockID);
 						}
 					} else if( radVec > rad6 && radVec <= rad5 ) {
 						if( random.nextInt(3) > 0 && !this.replace(world, x+i, y+j, z+k, 0) ) {
-							if( isInEnd && world.getBlockId(x+i, y+j, z+k) == ESPModRegistry.corruptES.blockID )
-								world.setBlockToAir(x+i, y+j, z+k);
+							if( isInEnd && world.getBlockId(x+i, y+j, z+k) == ESPModRegistry.corruptES.blockID );
+//								world.setBlockToAir(x+i, y+j, z+k);
 							else
-								this.replace(world, x+i, y+j, z+k, ESPModRegistry.corruptES.blockID);
+								this.replace(world, x+i, y+j, z+k, baseBlock.blockID);
 						}
 					} else if( radVec > rad5 && radVec <= rad4 ) {
 						if( random.nextInt(5) == 0 )
-							this.replace(world, x+i, y+j, z+k, ESPModRegistry.corruptES.blockID);
+							this.replace(world, x+i, y+j, z+k, baseBlock.blockID);
 						else if( random.nextInt(3) == 0 ) {
 							if( !this.replace(world, x+i, y+j, z+k, 0) && world.getBlockId(x+i, y+j, z+k) != Block.obsidian.blockID ) {
-								if( isInEnd && world.getBlockId(x+i, y+j, z+k) == ESPModRegistry.corruptES.blockID )
-									world.setBlockToAir(x+i, y+j, z+k);
+								if( isInEnd && world.getBlockId(x+i, y+j, z+k) == ESPModRegistry.corruptES.blockID );
+//									world.setBlockToAir(x+i, y+j, z+k);;
 								else
-									world.setBlock(x+i, y+j, z+k, ESPModRegistry.corruptES.blockID);
+									world.setBlock(x+i, y+j, z+k, baseBlock.blockID);
 							}
 						}
 					} else if( radVec > rad4 && radVec <= rad3 ) {
 						if( random.nextInt(2) == 0 )
-							this.replace(world, x+i, y+j, z+k, ESPModRegistry.corruptES.blockID);
+							this.replace(world, x+i, y+j, z+k, baseBlock.blockID);
 					} else if( radVec > rad3 && radVec <= rad2 ) {
-						this.replace(world, x+i, y+j, z+k, ESPModRegistry.corruptES.blockID);
+						this.replace(world, x+i, y+j, z+k, baseBlock.blockID);
 						if( random.nextInt(32) == 0 ) {
 							this.createPillar(random, world, x+i, y+j+1, z+k);
 						}
 					} else if( radVec > rad2 && radVec <= rad1 ) {
 						if( random.nextInt(2) == 0 )
-							this.replace(world, x+i, y+j, z+k, ESPModRegistry.corruptES.blockID);
+							this.replace(world, x+i, y+j, z+k, baseBlock.blockID);
 					} else if( radVec > rad1 ) {
 						if( random.nextInt(5) == 0 )
-							this.replace(world, x+i, y+j, z+k, ESPModRegistry.corruptES.blockID);
+							this.replace(world, x+i, y+j, z+k, baseBlock.blockID);
 					}
 				}
 			}
@@ -122,13 +124,14 @@ public class WorldGenEndLeak extends WorldGenerator {
 		for( int i = -3; i <= 3; i++ ) {
 			for( int k = -3; k <= 3; k++ ) {
 				for( int j = 0; j <= maxHgt+radius; j++ ) {
+				Block baseBlock = random.nextInt(10) == 0 ? Block.whiteStone : ESPModRegistry.corruptES;
 				int radVec = Math.abs(i) + Math.abs(j-radius) + Math.abs(k);
 					if( j > radius || radVec <= radius ) {
 						radVec = Math.abs(i) + Math.round(((float)Math.abs(j)/((float)maxHgt+(float)radius))*3F) + Math.abs(k);
 						if( radVec <= 3 ) {
 							if( i == 0 && k == 0 && radVec == 2 && !spawnerSet ) {
 								this.placeMobSpawner(random, world, x+i, y+j-radius-1, z+k);
-								world.setBlock(x+i, y+j-radius, z+k, ESPModRegistry.corruptES.blockID);
+								world.setBlock(x+i, y+j-radius, z+k, baseBlock.blockID);
 								spawnerSet = true;
 							} else if( i == 0 && k == 0 && j == maxHgt+radius ) {
 								RegistryDungeonLoot.placeLootChest(world, x+i, y+j-radius, z+k, RegistryDungeonLoot.ENDLEAK_CHEST, random, 8);
@@ -136,7 +139,7 @@ public class WorldGenEndLeak extends WorldGenerator {
 //								if( random.nextInt(256) == 0 ) 
 //									world.setBlock(x+i, y+j-radius, z+k, ESPModRegistry.niobOre.blockID);
 //								else
-									world.setBlock(x+i, y+j-radius, z+k, ESPModRegistry.corruptES.blockID);
+									world.setBlock(x+i, y+j-radius, z+k, baseBlock.blockID);
 							}
 						}
 					}

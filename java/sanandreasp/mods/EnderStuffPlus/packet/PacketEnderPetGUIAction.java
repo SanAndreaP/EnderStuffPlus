@@ -1,10 +1,9 @@
 package sanandreasp.mods.EnderStuffPlus.packet;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.logging.Level;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,23 +11,43 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.network.INetworkManager;
 import net.minecraft.world.WorldServer;
+import sanandreasp.core.manpack.mod.packet.ISAPPacketHandler;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderAvis;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderMiss;
 import sanandreasp.mods.EnderStuffPlus.entity.IEnderPet;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 
-public class PacketRecvEnderPetGUIAction extends PacketBase {
+public class PacketEnderPetGUIAction implements ISAPPacketHandler
+{
 	@Override
-	public void handle(DataInputStream iStream, EntityPlayer player) throws IOException {
+	public byte[] getDataForPacket(Object... data) throws Exception {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		DataOutputStream dos = new DataOutputStream(bos);
+		
+		dos.writeInt((Integer)data[0]);
+		dos.writeByte((Byte)data[1]);
+		
+		byte[] bytes = bos.toByteArray();
+		
+		dos.close();
+		bos.close();
+		
+		return bytes;
+	}
+
+	@Override
+	public void processData(INetworkManager manager, Player player, byte[] data) throws Exception {
+		ByteArrayInputStream bis = new ByteArrayInputStream(data);
+		DataInputStream dis = new DataInputStream(bis);
+
 		WorldServer serverWorld = (WorldServer) ((EntityPlayerMP)player).worldObj;
-		EntityLiving entity = (EntityLiving) serverWorld.getEntityByID(iStream.readInt());
+		EntityLiving entity = (EntityLiving) serverWorld.getEntityByID(dis.readInt());
 		if( entity != null && (entity instanceof IEnderPet) ) {
 			IEnderPet pet = ((IEnderPet)entity);
-			switch(iStream.readByte()) {
+			switch(dis.readByte()) {
 				case 0: {
 					((EntityPlayerMP)player).mountEntity(entity);
 				} break;
@@ -47,7 +66,6 @@ public class PacketRecvEnderPetGUIAction extends PacketBase {
 		                	nbt.setByte("petID", (byte)0);
 		                	nbt.setFloat("missHealth", miss.getHealth());
 		                	nbt.setInteger("missColor", miss.getColor());
-//		                	nbt.setBoolean("missWaterImmune", miss.isImmuneToWater());
 		                	nbt.setInteger("missCoatColor", miss.getCoat() & 31);
 		                	nbt.setInteger("missCoatBase", miss.getCoat() >> 5);
 		                	nbt.setBoolean("missNoFallDmg", miss.canGetFallDmg());
@@ -59,7 +77,6 @@ public class PacketRecvEnderPetGUIAction extends PacketBase {
 		                	nbt.setFloat("avisHealth", avis.getHealth());
 		                	nbt.setFloat("avisCondition", avis.currFlightCondition);
 		                	nbt.setInteger("avisColor", avis.getColor());
-//		                	nbt.setBoolean("avisWaterImmune", avis.isImmuneToWater());
 		                	nbt.setInteger("avisCoatColor", avis.getCoat() & 31);
 		                	nbt.setInteger("avisCoatBase", avis.getCoat() >> 5);
 		                	nbt.setBoolean("avisSaddle", avis.isImmuneToWater());
@@ -70,31 +87,13 @@ public class PacketRecvEnderPetGUIAction extends PacketBase {
                 		entity.entityDropItem(is, 0.0F);
                 	if( !((EntityPlayerMP)player).capabilities.isCreativeMode )
                 		((EntityPlayerMP)player).inventory.consumeInventoryItem(Item.egg.itemID);
-                	player.inventoryContainer.detectAndSendChanges();
+                	((EntityPlayer)player).inventoryContainer.detectAndSendChanges();
                 	entity.setDead();
 				} break;
 			}
 		}
+		
+		dis.close();
+		bis.close();
 	}
-	
-	public static void send(int entityID, byte subID) {
-		ByteArrayOutputStream bos = null;
-		DataOutputStream dos = null;
-		try {
-			bos = new ByteArrayOutputStream();
-			dos = new DataOutputStream(bos);
-			
-			dos.writeInt(0x002);
-			dos.writeInt(entityID);
-			dos.writeByte(subID);
-			
-			PacketDispatcher.sendPacketToServer(new Packet250CustomPayload(ESPModRegistry.channelID, bos.toByteArray()));
-			
-			dos.close();
-			bos.close();
-		} catch(IOException e) {
-			FMLLog.log(ESPModRegistry.modID, Level.WARNING, e, "Failed to send packet PacketRecvJump to server!");
-		}
-	}
-
 }

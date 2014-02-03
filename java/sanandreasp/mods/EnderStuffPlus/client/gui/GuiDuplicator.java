@@ -4,9 +4,11 @@ import org.lwjgl.opengl.GL11;
 
 import sanandreasp.core.manpack.helpers.client.GuiItemTab;
 import sanandreasp.core.manpack.managers.SAPLanguageManager;
+import sanandreasp.core.manpack.mod.packet.PacketRegistry;
 import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.inventory.Container_Duplicator;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketRecvDupeInsertLevels;
+import sanandreasp.mods.EnderStuffPlus.packet.PacketDupeInsertLevels;
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.RegistryDuplicator;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityDuplicator;
 import net.minecraft.client.Minecraft;
@@ -104,7 +106,7 @@ public class GuiDuplicator extends GuiContainer implements Textures {
 	@Override
 	protected void actionPerformed(GuiButton par1GuiButton) {
 		if( par1GuiButton.id == this.insertXP.id ) {
-			PacketRecvDupeInsertLevels.send((TileEntityDuplicator) Minecraft.getMinecraft().theWorld.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord));
+			PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "dupeInsLevels", (TileEntityDuplicator) Minecraft.getMinecraft().theWorld.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord));
 		} else super.actionPerformed(par1GuiButton);
 	}
 	

@@ -2,7 +2,7 @@ package sanandreasp.mods.EnderStuffPlus.block;
 
 import java.util.List;
 
-import sanandreasp.core.manpack.helpers.client.IGlowBlockOverlay;
+import sanandreasp.core.manpack.helpers.IGlowBlockOverlay;
 import sanandreasp.core.manpack.helpers.client.RenderBlockGlowOverlay;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

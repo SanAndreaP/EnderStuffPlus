@@ -92,6 +92,8 @@ public class ManagerPackHelper {
 	}
 	
 	private int checkVersion(String currVer, String expectedVer) {
+		currVer = currVer.replaceAll(".*?-(.*)", "$1");
+		
 		String currSplit[] = currVer.split("\\.");
 		String exptSplit[] = expectedVer.split("\\.");
 		

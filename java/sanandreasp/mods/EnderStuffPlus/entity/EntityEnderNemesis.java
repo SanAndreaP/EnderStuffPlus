@@ -21,13 +21,13 @@ public class EntityEnderNemesis extends EntityEndermanESP implements Textures {
 	}
 	
 	@Override
-	public void spawnParticle(int id, double X, double Y, double Z, double dataI, double dataII, double dataIII) {
-    	if( id == 0 ) {
+	public void spawnParticle(String type, double X, double Y, double Z, float dataI, float dataII, float dataIII) {
+//    	if( id == 0 ) {
     		dataI = 0F;
     		dataII = 0F;
     		dataIII = 1F;
-    	}
-		super.spawnParticle(id, X, Y, Z, dataI, dataII, dataIII);
+//    	}
+		super.spawnParticle(type, X, Y, Z, dataI, dataII, dataIII);
 	}
 
 	@Override

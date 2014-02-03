@@ -12,11 +12,13 @@ import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.opengl.GL11;
 
 import sanandreasp.core.manpack.managers.SAPLanguageManager;
+import sanandreasp.core.manpack.mod.packet.PacketRegistry;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderAvis;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderMiss;
 import sanandreasp.mods.EnderStuffPlus.entity.IEnderPet;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketRecvEnderName;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketRecvEnderPetGUIAction;
+import sanandreasp.mods.EnderStuffPlus.packet.PacketSetEnderName;
+import sanandreasp.mods.EnderStuffPlus.packet.PacketEnderPetGUIAction;
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -120,7 +122,7 @@ public class GuiEnderPet extends GuiScreen {
     		return;
 		}
 		
-		PacketRecvEnderPetGUIAction.send(((Entity)this.pet).entityId, (byte)par1GuiButton.id);
+		PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "enderGuiAction", ((Entity)this.pet).entityId, (byte)par1GuiButton.id);
 		mc.thePlayer.closeScreen();
 	}
 	
@@ -162,7 +164,7 @@ public class GuiEnderPet extends GuiScreen {
     	if( this.nameTxt.getText().isEmpty() || this.nameTxt.getText().equals(translate("rename")) )
     		return;
     	
-    	PacketRecvEnderName.send(((Entity)pet).entityId, this.nameTxt.getText());
+    	PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "setEnderName", ((Entity)pet).entityId, this.nameTxt.getText());
     }
 	
 	@Override

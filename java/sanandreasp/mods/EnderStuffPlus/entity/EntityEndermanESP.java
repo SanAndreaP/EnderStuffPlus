@@ -20,7 +20,6 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketsSendToClient;
 import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 
@@ -142,8 +141,10 @@ public class EntityEndermanESP extends EntityMob {
         }
     }
     
-    public void spawnParticle(int id, double X, double Y, double Z, double dataI, double dataII, double dataIII) {
-    	PacketsSendToClient.sendParticle(this, (byte) (id & 255), X, Y, Z, dataI, dataII, dataIII);
+    public void spawnParticle(String type, double X, double Y, double Z, float dataI, float dataII, float dataIII) {
+		ESPModRegistry.sendPacketAllRng(
+				"fxPortal", this.posX, this.posY, this.posZ, 128.0D, this.dimension, this.posX, this.posY,
+				this.posZ, dataI, dataII, dataIII, this.width, this.height);
     }
 
     @Override
@@ -196,9 +197,7 @@ public class EntityEndermanESP extends EntityMob {
             }
         }
 
-        for( i = 0; i < 2; ++i ) {
-        	if( this.worldObj.isRemote ) this.spawnParticle(0, this.posX, this.posY, this.posZ, 0D, 0D, 0D);
-        }
+        this.spawnParticle("livingUpd", this.posX, this.posY, this.posZ, 0.0F, 0.0F, 0.0F);
 
         if( this.worldObj.isDaytime() && !this.worldObj.isRemote && this.calmInDaylight ) {
             float f = this.getBrightness(1.0F);
@@ -314,13 +313,10 @@ public class EntityEndermanESP extends EntityMob {
 
             for( l = 0; l < short1; ++l ) {
                 double d6 = (double)l / ((double)short1 - 1.0D);
-                float f = (this.rand.nextFloat() - 0.5F) * 0.2F;
-                float f1 = (this.rand.nextFloat() - 0.5F) * 0.2F;
-                float f2 = (this.rand.nextFloat() - 0.5F) * 0.2F;
                 double d7 = d3 + (this.posX - d3) * d6 + (this.rand.nextDouble() - 0.5D) * (double)this.width * 2.0D;
                 double d8 = d4 + (this.posY - d4) * d6 + this.rand.nextDouble() * (double)this.height;
                 double d9 = d5 + (this.posZ - d5) * d6 + (this.rand.nextDouble() - 0.5D) * (double)this.width * 2.0D;
-                this.spawnParticle(3, d7, d8, d9, (double)f, (double)f1, (double)f2);
+                this.spawnParticle("teleport", d7, d8, d9, 0.0F, 0.0F, 0.0F);
             }
 
             this.worldObj.playSoundEffect(d3, d4, d5, this.getPortalSound(), 1.0F, 1.0F);

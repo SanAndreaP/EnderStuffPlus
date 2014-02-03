@@ -33,7 +33,6 @@ import sanandreasp.mods.EnderStuffPlus.entity.EntityAvisArrow;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderAvis;
 import sanandreasp.mods.EnderStuffPlus.entity.IEnderCreature;
 import sanandreasp.mods.EnderStuffPlus.entity.IEnderPet;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketsSendToClient;
 
 public class ServerEvents {
 	
@@ -165,7 +164,12 @@ public class ServerEvents {
 					spawnParticles = true;
 				}
 			}
-			if( spawnParticles) PacketsSendToClient.sendParticle(evt.entityLiving, (byte)5, evt.entityLiving.posX, evt.entityLiving.posY, evt.entityLiving.posZ );
+			if( spawnParticles ) {
+	        	ESPModRegistry.sendPacketAllRng("fxPortal",
+	        			evt.entityLiving.posX, evt.entityLiving.posY, evt.entityLiving.posZ, 128.0D, player.dimension,
+	        			evt.entityLiving.posX, evt.entityLiving.posY, evt.entityLiving.posZ, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F
+	        	);
+			}
 		}
 	}
 	
@@ -212,7 +216,9 @@ public class ServerEvents {
 					}
 				}
 				if( transportSucceed ) {
-					PacketsSendToClient.sendParticle(entity, (byte)5, entity.posX, entity.posY, entity.posZ);
+		        	ESPModRegistry.sendPacketAllRng("fxPortal", entity.posX, entity.posY, entity.posZ,
+		        			128.0D, entity.dimension, entity.posX, entity.posY, entity.posZ, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F
+		        	);
 					event.entityPlayer.inventoryContainer.detectAndSendChanges();
 					if( event.entityPlayer.openContainer != null )
 						event.entityPlayer.inventoryContainer.detectAndSendChanges();

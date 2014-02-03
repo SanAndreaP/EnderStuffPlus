@@ -43,13 +43,13 @@ public class EntityEnderIgnis extends EntityEndermanESP implements IEnderCreatur
 	}
 	
 	@Override
-	public void spawnParticle(int id, double X, double Y, double Z, double dataI, double dataII, double dataIII) {
-    	if( id == 0 ) {
+	public void spawnParticle(String type, double X, double Y, double Z, float dataI, float dataII, float dataIII) {
+//    	if( id == 0 ) {
     		dataI = 1F;
     		dataII = 1F;
     		dataIII = 0F;
-    	}
-		super.spawnParticle(id, X, Y, Z, dataI, dataII, dataIII);
+//    	}
+		super.spawnParticle(type, X, Y, Z, dataI, dataII, dataIII);
 	}
 
 	@Override

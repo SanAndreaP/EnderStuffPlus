@@ -7,7 +7,6 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import sanandreasp.core.manpack.helpers.CommonUsedStuff;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketsSendToClient;
 import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import net.minecraft.block.Block;
@@ -89,7 +88,9 @@ public class ItemNiobShears extends ItemShears {
             itemstack.damageItem(1, player);
             player.addStat(StatList.mineBlockStatArray[id], 1);
             if( transportSucceed ) {
-            	PacketsSendToClient.sendParticle(player.worldObj, x, y, z, (byte)5);
+            	ESPModRegistry.sendPacketAllRng("fxPortal", x, y, z, 128.0D, player.dimension, x+0.5F, y+0.5F, z+0.5F,
+            			0.5F, 0.0F, 1.0F, 1.0F, 1.0F
+            	);
             	player.inventoryContainer.detectAndSendChanges();
             	if( player.openContainer != null )
             		player.inventoryContainer.detectAndSendChanges();

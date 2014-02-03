@@ -23,13 +23,16 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
+import sanandreasp.core.manpack.helpers.CommonUsedStuff;
 import sanandreasp.core.manpack.helpers.ItemBlockNamedMeta;
 import sanandreasp.core.manpack.managers.SAPConfigManager;
 import sanandreasp.core.manpack.managers.SAPLanguageManager;
 import sanandreasp.core.manpack.managers.SAPUpdateManager;
+import sanandreasp.core.manpack.mod.packet.PacketRegistry;
 import sanandreasp.mods.ManagerPackHelper;
 import sanandreasp.mods.EnderStuffPlus.block.BlockAvisEgg;
 import sanandreasp.mods.EnderStuffPlus.block.BlockBiomeChanger;
+import sanandreasp.mods.EnderStuffPlus.block.BlockCorruptEndStone;
 import sanandreasp.mods.EnderStuffPlus.block.BlockDuplicator;
 import sanandreasp.mods.EnderStuffPlus.block.BlockEndLeaves;
 import sanandreasp.mods.EnderStuffPlus.block.BlockEndLog;
@@ -39,7 +42,7 @@ import sanandreasp.mods.EnderStuffPlus.block.BlockEnderDoor;
 import sanandreasp.mods.EnderStuffPlus.block.BlockEnderWood;
 import sanandreasp.mods.EnderStuffPlus.block.BlockSaplingEndTree;
 import sanandreasp.mods.EnderStuffPlus.block.BlockWeatherAltar;
-import sanandreasp.mods.EnderStuffPlus.client.packet.PacketHandlerClient;
+//import sanandreasp.mods.EnderStuffPlus.client.packet.PacketHandlerClient;
 import sanandreasp.mods.EnderStuffPlus.enchantment.EnchantmentEnderChestTeleport;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityAvisArrow;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderAvis;
@@ -69,7 +72,7 @@ import sanandreasp.mods.EnderStuffPlus.item.tool.ItemNiobPickaxe;
 import sanandreasp.mods.EnderStuffPlus.item.tool.ItemNiobShears;
 import sanandreasp.mods.EnderStuffPlus.item.tool.ItemNiobShovel;
 import sanandreasp.mods.EnderStuffPlus.item.tool.ItemNiobSword;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketHandlerCommon;
+//import sanandreasp.mods.EnderStuffPlus.packet.PacketHandlerCommon;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityAvisEgg;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityBiomeChanger;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityDuplicator;
@@ -86,21 +89,19 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
-import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(modid=ESPModRegistry.modID, name="EnderStuff+", version="1.1.0", dependencies="required-after:sapmanpackcore")
-@NetworkMod(clientSideRequired=true, serverSideRequired=false,
-	clientPacketHandlerSpec = @SidedPacketHandler(channels=ESPModRegistry.channelID, packetHandler=PacketHandlerClient.class),
-	serverPacketHandlerSpec = @SidedPacketHandler(channels=ESPModRegistry.channelID, packetHandler=PacketHandlerCommon.class))
-public class ESPModRegistry {
-	
+@Mod(modid=ESPModRegistry.modID, name="EnderStuff+", version=ESPModRegistry.version, dependencies="required-after:sapmanpack")
+@NetworkMod(clientSideRequired=true, serverSideRequired=false)
+public class ESPModRegistry
+{
 	public static final String modID = "EnderStuffPlus";
-	public static final String channelID = "EnderStuffP";
 	public static final String proxyCmn = "sanandreasp.mods.EnderStuffPlus.registry.CommonProxy";
 	public static final String proxyClt = "sanandreasp.mods.EnderStuffPlus.client.registry.ClientProxy";
+	public static final String version = "1.6.4-1.1.0";
 	
 	public static ConfigRegistry conf;
 	
@@ -236,8 +237,7 @@ public class ESPModRegistry {
 											.setResistance(5.0F)
 											.setStepSound(Block.soundWoodFootstep)
 											.setCreativeTab(ESPModRegistry.espTab);
-		ESPModRegistry.corruptES		= new Block(ConfigRegistry.blockIDs.get("Corrupt End Stone").intValue(), Block.whiteStone.blockMaterial)
-											.setTextureName("enderstuffp:corrupt_end_stone")
+		ESPModRegistry.corruptES		= new BlockCorruptEndStone(ConfigRegistry.blockIDs.get("Corrupt End Stone").intValue())
 											.setUnlocalizedName("enderstuffp:corruptES")
 											.setHardness(Block.whiteStone.blockHardness)
 											.setResistance(Block.whiteStone.blockResistance)
@@ -248,7 +248,7 @@ public class ESPModRegistry {
 		GameRegistry.registerTileEntity(TileEntityDuplicator.class, "duplicatorTE");
 		GameRegistry.registerTileEntity(TileEntityWeatherAltar.class, "weatherAltarTE");
 		
-		this.registerBlocks(
+		CommonUsedStuff.registerBlocks("enderstuffp:block",
 				ESPModRegistry.avisEgg,			ESPModRegistry.biomeChanger,
 				ESPModRegistry.duplicator,		ESPModRegistry.weatherAltar,
 				ESPModRegistry.blockEndDoor,	ESPModRegistry.enderLog, 
@@ -356,7 +356,7 @@ public class ESPModRegistry {
 											.setTextureName("enderstuffp:enderStick")
 											.setCreativeTab(ESPModRegistry.espTab);
 
-		this.registerItems(
+		CommonUsedStuff.registerItems("enderstuffp:item",
 				ESPModRegistry.espPearls,		ESPModRegistry.avisFeather, 
 				ESPModRegistry.avisArrow,		ESPModRegistry.avisCompass, 
 				ESPModRegistry.enderPetEgg,		ESPModRegistry.enderPetStaff, 
@@ -383,6 +383,7 @@ public class ESPModRegistry {
 		
 	// Misc registering
 		proxy.registerHandlers();
+		proxy.registerPackets();
 		RegistryDungeonLoot.init();
 	}
 
@@ -553,15 +554,15 @@ public class ESPModRegistry {
 		return biomes.toArray(new BiomeGenBase[0]);
 	}
 	
-	/** registers the Items **/
-	private void registerItems(Item... items) {
-		for( int i = 0; i < items.length; i++) GameRegistry.registerItem(items[i], "enderstuffp:item_"+i );
-	}
-	
-	/** registers the Blocks **/
-	private void registerBlocks(Block... blocks) {
-		for( int i = 0; i < blocks.length; i++) GameRegistry.registerBlock(blocks[i], "enderstuffp:block_"+i );
-	}
+//	/** registers the Items **/
+//	private void registerItems(Item... items) {
+//		for( int i = 0; i < items.length; i++) GameRegistry.registerItem(items[i], "enderstuffp:item_"+i );
+//	}
+//	
+//	/** registers the Blocks **/
+//	private void registerBlocks(Block... blocks) {
+//		for( int i = 0; i < blocks.length; i++) GameRegistry.registerBlock(blocks[i], "enderstuffp:block_"+i );
+//	}
 	
 	public static boolean hasPlayerFullNiob(EntityPlayer player) {
 		boolean b = true;
@@ -569,11 +570,27 @@ public class ESPModRegistry {
 			if( player.getCurrentArmor(i) == null ) {
 				b = false;
 				break;
-			} else if( player.getCurrentArmor(i).itemID != ESPModRegistry.niobSet.get(i).itemID ) {
+			} else if( player.getCurrentArmor(i).getItem() != niobSet.get(i).getItem() ) {
 				b = false;
 				break;
 			}
 		}
 		return b;
+	}
+	
+	public static void sendPacketSrv(String name, Object...data) {
+		PacketRegistry.sendPacketToServer(modID, name, data);
+	}
+	
+	public static void sendPacketAllRng(String name, double x, double y, double z, double rng, int dimID, Object...data) {
+		PacketRegistry.sendPacketToAllAround(modID, name, x, y, z, rng, dimID, data);
+	}
+	
+	public static void sendPacketAllPlyr(String name, Object...data) {
+		PacketRegistry.sendPacketToAllPlayers(modID, name, data);
+	}
+	
+	public static void sendPacketPlyr(String name, EntityPlayer player, Object...data) {
+		PacketRegistry.sendPacketToPlayer(modID, name, (Player)player, data);
 	}
 }

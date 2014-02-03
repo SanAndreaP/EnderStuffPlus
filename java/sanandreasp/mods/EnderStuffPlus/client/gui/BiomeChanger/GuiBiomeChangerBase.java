@@ -2,10 +2,10 @@ package sanandreasp.mods.EnderStuffPlus.client.gui.BiomeChanger;
 
 import sanandreasp.core.manpack.helpers.client.GuiItemTab;
 import sanandreasp.core.manpack.managers.SAPLanguageManager;
+import sanandreasp.core.manpack.mod.packet.PacketRegistry;
 import sanandreasp.mods.EnderStuffPlus.client.registry.IconRegistry;
 import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketRecvBCGUIAction;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketRecvChangeBCGUI;
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityBiomeChanger;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiButton;
@@ -57,18 +57,23 @@ public abstract class GuiBiomeChangerBase extends GuiContainer {
 		int id = par1GuiButton.id;
 		if( id == tabActivate.id ) {
 			if( bcte.isActive() ) {
-				PacketRecvBCGUIAction.send(this.bcte, (byte) 0, 0);
+				PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "bcGuiAction", this.bcte, (byte) 0, 0);
+//				PacketBCGUIAction.send(this.bcte, (byte) 0, 0);
 				this.mc.displayGuiScreen(null);
 			} else {
-				PacketRecvBCGUIAction.send(this.bcte, (byte) 0, 0);
+				PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "bcGuiAction", this.bcte, (byte) 0, 0);
+//				PacketBCGUIAction.send(this.bcte, (byte) 0, 0);
 				this.mc.displayGuiScreen(null);
 			}
 		} else if( id == tabFuel.id ) {
-			PacketRecvChangeBCGUI.send(1, this.bcte.xCoord, this.bcte.yCoord, this.bcte.zCoord, this.mc.thePlayer);
+			PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "bcGuiChange", 1, this.bcte.xCoord, this.bcte.yCoord, this.bcte.zCoord, this.mc.thePlayer);
+//			PacketChangeBCGUI.send(1, this.bcte.xCoord, this.bcte.yCoord, this.bcte.zCoord, this.mc.thePlayer);
 		} else if( id == tabBiomes.id ) {
-			PacketRecvChangeBCGUI.send(2, this.bcte.xCoord, this.bcte.yCoord, this.bcte.zCoord, this.mc.thePlayer);
+			PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "bcGuiChange", 2, this.bcte.xCoord, this.bcte.yCoord, this.bcte.zCoord, this.mc.thePlayer);
+//			PacketChangeBCGUI.send(2, this.bcte.xCoord, this.bcte.yCoord, this.bcte.zCoord, this.mc.thePlayer);
 		} else if( id == tabCofig.id ) {
-			PacketRecvChangeBCGUI.send(3, this.bcte.xCoord, this.bcte.yCoord, this.bcte.zCoord, this.mc.thePlayer);
+			PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "bcGuiChange", 3, this.bcte.xCoord, this.bcte.yCoord, this.bcte.zCoord, this.mc.thePlayer);
+//			PacketChangeBCGUI.send(3, this.bcte.xCoord, this.bcte.yCoord, this.bcte.zCoord, this.mc.thePlayer);
 		}
 	}
 	

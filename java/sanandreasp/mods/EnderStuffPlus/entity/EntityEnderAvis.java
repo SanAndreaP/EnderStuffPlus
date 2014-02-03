@@ -19,16 +19,16 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import sanandreasp.mods.EnderStuffPlus.client.packet.PacketRecvShowPetGUI;
+import sanandreasp.core.manpack.mod.packet.PacketRegistry;
 import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.item.ItemRaincoat;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketRecvMove;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketsSendToClient;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
+import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class EntityEnderAvis extends EntityCreature implements IEnderPet, IEnderCreature, Textures {
+public class EntityEnderAvis extends EntityCreature implements IEnderPet, IEnderCreature, Textures
+{
 	public int ticksFlying = 0;
 	public float field_752_b = 0.0F;
 	public float destPos = 0.0F;
@@ -258,11 +258,14 @@ public class EntityEnderAvis extends EntityCreature implements IEnderPet, IEnder
 					return true;
 				} else if( playerItem.getItem() instanceof ItemFood && this.getHealth() < this.getMaxHealth() ) {
 					this.heal(((ItemFood)playerItem.getItem()).getHealAmount());
-					PacketsSendToClient.sendParticle(this, (byte) 2, this.posX, this.posY, this.posZ);
+					ESPModRegistry.sendPacketAllRng(
+							"fxTameAcc", this.posX, this.posY, this.posZ, 128.0D, this.dimension, this.posX, this.posY,
+							this.posZ, this.width, this.height
+					);
 					playerItem.stackSize--;
 					return true;
 				} else if( playerItem.itemID == ESPModRegistry.enderPetStaff.itemID ) {
-					PacketRecvShowPetGUI.send(this, par1EntityPlayer);
+					PacketRegistry.sendPacketToPlayer(ESPModRegistry.modID, "showPetGui", (Player)par1EntityPlayer, this);
 					return true;
 				} else if( playerItem.itemID == Item.saddle.itemID && !this.isSaddled() ) {
 					this.setSaddled(true);
@@ -283,15 +286,19 @@ public class EntityEnderAvis extends EntityCreature implements IEnderPet, IEnder
 		
 		if( this.isTamed() && !this.worldObj.isRemote ) {
 			par1EntityPlayer.addChatMessage(String.format(
-				"\247d[%s]\247f " + StatCollector.translateToLocal("enderstuffplus.chat.name"),
-				StatCollector.translateToLocal("entity.EnderAvis.name"), this.getName().isEmpty() ? EnumChatFormatting.OBFUSCATED + "RANDOM" + EnumChatFormatting.RESET : this.getName())
+					"\247d[%s]\247f " + StatCollector.translateToLocal("enderstuffplus.chat.name"),
+					StatCollector.translateToLocal("entity.EnderAvis.name"), 
+					this.getName().isEmpty() 
+						? EnumChatFormatting.OBFUSCATED + "RANDOM" + EnumChatFormatting.RESET 
+						: this.getName()
+				)
 			);
 			if( this.ownerName.equals(par1EntityPlayer.username) ) {
 				int percHealth = (int)(this.getHealth() / this.getMaxHealth() * 100F);
 				int percCondit = (int)(this.currFlightCondition * 10F);
-				par1EntityPlayer.addChatMessage("  "+String.format(StatCollector.translateToLocal("enderstuffplus.chat.avisFriend"), percHealth, percCondit));
+				par1EntityPlayer.addChatMessage("  " + String.format(StatCollector.translateToLocal("enderstuffplus.chat.avisFriend"), percHealth, percCondit));
 			} else {
-				par1EntityPlayer.addChatMessage("  "+String.format(StatCollector.translateToLocal("enderstuffplus.chat.stranger"), ownerName));
+				par1EntityPlayer.addChatMessage("  " + String.format(StatCollector.translateToLocal("enderstuffplus.chat.stranger"), ownerName));
 			}
 			return true;
 		}
@@ -470,9 +477,6 @@ public class EntityEnderAvis extends EntityCreature implements IEnderPet, IEnder
 		
 		EntityPlayer ep = this.getOwningPlayer(25F);
 
-//        AttributeInstance attributeinstance = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
-//        attributeinstance.removeModifier(attributes);
-//        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.3D);
 		if( this.isTamed( )
 				&& !this.isSitting()
 				&& !this.isRidden()
@@ -480,7 +484,6 @@ public class EntityEnderAvis extends EntityCreature implements IEnderPet, IEnder
 				&& this.getDistanceToEntity(ep) > 2F
 				&& this.ownerName.equals(ep.username)) {
 			this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 24F, false, false, !this.isImmuneToWater(), !this.isImmuneToWater()));
-//            attributeinstance.applyModifier(attributes);
 		} else if( this.isTamed( )
 				&& !this.isSitting()
 				&& !this.isRidden()
@@ -489,15 +492,10 @@ public class EntityEnderAvis extends EntityCreature implements IEnderPet, IEnder
 				&& ep.getCurrentEquippedItem().getItem() instanceof ItemFood
 				&& this.getDistanceToEntity(ep) > 2F
 				&& this.getHealth() < this.getMaxHealth()) {
-//            attributeinstance.applyModifier(attributes);
 			this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 8F, false, false, !this.isImmuneToWater(), !this.isImmuneToWater()));
 		}
 		
-//		if( this.entityToAttack != null )
-//            attributeinstance.applyModifier(attributes);
-		
 		if( isRiddenDW() && riddenByEntity != null ) {
-//            attributeinstance.applyModifier(attributes);
 			this.jumpMovementFactor = this.walkSpeed / 5.0F;
 			EntityPlayer var1 = (EntityPlayer) this.riddenByEntity;
 			this.rotationYawHead = var1.rotationYawHead;
@@ -548,8 +546,10 @@ public class EntityEnderAvis extends EntityCreature implements IEnderPet, IEnder
 	public void processRiding(EntityPlayerSP player) {
 		if( ESPModRegistry.isJumping(player) ) {
 			ESPModRegistry.proxy.setJumping(true, this);
+		} else {
+			ESPModRegistry.proxy.setJumping(false, this);
 		}
-		PacketRecvMove.send(player.movementInput.moveForward, player.movementInput.moveStrafe);
+		PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "riddenMove", player.movementInput.moveForward, player.movementInput.moveStrafe);
 	}
 	
 	@Override

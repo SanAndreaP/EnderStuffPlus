@@ -8,8 +8,9 @@ import net.minecraft.inventory.Container;
 import org.lwjgl.opengl.GL11;
 
 import sanandreasp.core.manpack.helpers.CommonUsedStuff;
+import sanandreasp.core.manpack.mod.packet.PacketRegistry;
 import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketRecvBCGUIAction;
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityBiomeChanger;
 
 public class GuiBiomeChangerConfig extends GuiBiomeChangerBase implements Textures {
@@ -91,13 +92,14 @@ public class GuiBiomeChangerConfig extends GuiBiomeChangerBase implements Textur
 	protected void actionPerformed(GuiButton par1GuiButton) {
 		int id = par1GuiButton.id;
 		if( id == this.btn_circular.id ) {
-			PacketRecvBCGUIAction.send(this.bcte, (byte) 3, 0);
+			PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "bcGuiAction", this.bcte, (byte) 3, 0);
+//			PacketBCGUIAction.send(this.bcte, (byte) 3, 0);
 		} else if( id == this.btn_rhombic.id ) {
-			PacketRecvBCGUIAction.send(this.bcte, (byte) 3, 1);
+			PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "bcGuiAction", this.bcte, (byte) 3, 1);
 		} else if( id == this.btn_square.id ) {
-			PacketRecvBCGUIAction.send(this.bcte, (byte) 3, 2);
+			PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "bcGuiAction", this.bcte, (byte) 3, 2);
 		} else if( id == this.btn_chngBlocks.id ) {
-			PacketRecvBCGUIAction.send(this.bcte, (byte) 4, 0);
+			PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "bcGuiAction", this.bcte, (byte) 4, 0);
 		} else {
 			super.actionPerformed(par1GuiButton);
 		}

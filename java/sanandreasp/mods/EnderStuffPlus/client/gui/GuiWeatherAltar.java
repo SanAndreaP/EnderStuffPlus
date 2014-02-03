@@ -3,8 +3,10 @@ package sanandreasp.mods.EnderStuffPlus.client.gui;
 import org.lwjgl.opengl.GL11;
 
 import sanandreasp.core.manpack.managers.SAPLanguageManager;
+import sanandreasp.core.manpack.mod.packet.PacketRegistry;
 import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketRecvSetWeather;
+import sanandreasp.mods.EnderStuffPlus.packet.PacketSetWeather;
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityWeatherAltar;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -108,13 +110,13 @@ public class GuiWeatherAltar extends GuiScreen implements Textures {
     	int dur = getDurationInt();
     	if( dur > 0 ) {
 	    	if( par1GuiButton.id == this.btnSun.id ) {
-	    		PacketRecvSetWeather.send(0, dur, this.altar.xCoord, this.altar.yCoord, this.altar.zCoord, this.mc.theWorld);
+	    		PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "setWeather", 0, dur, this.altar.xCoord, this.altar.yCoord, this.altar.zCoord, this.mc.theWorld);
 	    		this.mc.thePlayer.closeScreen();
 	    	} else if( par1GuiButton.id == this.btnRain.id ) {
-	    		PacketRecvSetWeather.send(1, dur, this.altar.xCoord, this.altar.yCoord, this.altar.zCoord, this.mc.theWorld);
+	    		PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "setWeather", 1, dur, this.altar.xCoord, this.altar.yCoord, this.altar.zCoord, this.mc.theWorld);
 	    		this.mc.thePlayer.closeScreen();
 	    	} else if( par1GuiButton.id == this.btnStorm.id ) {
-	    		PacketRecvSetWeather.send(2, dur, this.altar.xCoord, this.altar.yCoord, this.altar.zCoord, this.mc.theWorld);
+	    		PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "setWeather", 2, dur, this.altar.xCoord, this.altar.yCoord, this.altar.zCoord, this.mc.theWorld);
 	    		this.mc.thePlayer.closeScreen();
 	    	}
     	}

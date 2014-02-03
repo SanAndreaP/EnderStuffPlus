@@ -15,7 +15,8 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
-import sanandreasp.mods.EnderStuffPlus.client.packet.PacketRecvChngBiome;
+import sanandreasp.core.manpack.mod.packet.PacketRegistry;
+import sanandreasp.mods.EnderStuffPlus.client.packet.PacketChngBiome;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.RegistryBiomeChanger;
 import cpw.mods.fml.relauncher.Side;
@@ -454,7 +455,7 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
 			if( this.ticksExisted % (30 * (this.isReplacingBlocks ? 2 : 1)) == 0 && !this.worldObj.isRemote ) {
 				this.changeBiome(this.getCurrRange(), false);
 				this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ESPModRegistry.biomeChanger.blockID, 1, this.getCurrRange());
-				PacketRecvChngBiome.send(this, this.getCurrRange());
+				PacketRegistry.sendPacketToAllAround(ESPModRegistry.modID, "setWeather", this.xCoord, this.yCoord, this.zCoord, 256, this.worldObj.provider.dimensionId, this, this.getCurrRange());
 				this.setCurrRange(this.getCurrRange()+1);
 				
 				if( this.getCurrRange() >= this.getMaxRange() ) {

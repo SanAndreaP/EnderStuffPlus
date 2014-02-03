@@ -3,14 +3,13 @@ package sanandreasp.mods.EnderStuffPlus.block;
 import java.util.List;
 import java.util.Random;
 
+import sanandreasp.mods.EnderStuffPlus.client.particle.ParticleFXFuncCollection;
 import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityReddustFX;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -61,19 +60,9 @@ public class BlockEndLeaves extends BlockLeaves
     @Override
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-    	//TODO: outsource this into the ClientProxy!!!
-    	
     	super.randomDisplayTick(world, x, y, z, rand);
     	
-    	Block blockBelow = Block.blocksList[world.getBlockId(x, y-1, z)];
-    	if( (blockBelow == null || blockBelow.isAirBlock(world, x, y-1, z)) && rand.nextInt(2) == 1 ) {
-            double partX = (double)((float)x + rand.nextFloat());
-            double partY = (double)y - 0.05D;
-            double partZ = (double)((float)z + rand.nextFloat());
-            EntityReddustFX fx = new EntityReddustFX(world, partX, partY, partZ, 66F / 255F, 0.0F, 88F / 255F);
-            fx.motionY = -0.2D;
-            Minecraft.getMinecraft().effectRenderer.addEffect(fx);
-        }
+    	ParticleFXFuncCollection.spawnEndLeavesFX(world, x, y, z, rand);
     }
     
     @Override

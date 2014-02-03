@@ -1,14 +1,16 @@
 package sanandreasp.mods.EnderStuffPlus.client.registry;
 
-import java.io.DataInputStream;
-import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
+import sanandreasp.core.manpack.mod.packet.PacketRegistry;
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderNemesis;
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderIgnis;
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderNivis;
-import sanandreasp.mods.EnderStuffPlus.client.packet.PacketRecvSpawnParticle;
+import sanandreasp.mods.EnderStuffPlus.client.packet.PacketChngBiome;
+import sanandreasp.mods.EnderStuffPlus.client.packet.PacketShowPetGUI;
+import sanandreasp.mods.EnderStuffPlus.client.packet.particle.PacketFXSpawnPortalFX;
+import sanandreasp.mods.EnderStuffPlus.client.packet.particle.PacketFXSpawnTameAccept;
 import sanandreasp.mods.EnderStuffPlus.client.particle.EntityWeatherAltarParticleFX;
 import sanandreasp.mods.EnderStuffPlus.client.render.ItemRendererGlowTools;
 import sanandreasp.mods.EnderStuffPlus.client.render.ItemRendererNiobBow;
@@ -39,8 +41,6 @@ import sanandreasp.mods.EnderStuffPlus.entity.item.EntityBait;
 import sanandreasp.mods.EnderStuffPlus.entity.item.EntityPearlIgnis;
 import sanandreasp.mods.EnderStuffPlus.entity.item.EntityPearlMiss;
 import sanandreasp.mods.EnderStuffPlus.entity.item.EntityPearlNivis;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketBase;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketRecvJump;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.CommonProxy;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityBiomeChanger;
@@ -60,13 +60,8 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class ClientProxy extends CommonProxy {
 	
-	private PacketBase spawnPartPacket;
-	
 	@Override
 	public void registerClientStuff() {
-		this.spawnPartPacket = new PacketRecvSpawnParticle();
-		
-//		RenderingRegistry.registerEntityRenderingHandler(EntityEndermanESP.class, new RenderEnderman());
 		RenderingRegistry.registerEntityRenderingHandler(EntityEnderNivis.class, new RenderEnderNivis(new ModelEnderNivis(), 0.7F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityEnderIgnis.class, new RenderEnderIgnis(new ModelEnderIgnis(), 0.7F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityEnderMiss.class, new RenderEnderMiss());
@@ -108,6 +103,17 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	@Override
+	public void registerPackets() {
+		super.registerPackets();
+		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "changeBiome", new PacketChngBiome());
+		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "showPetGui", new PacketShowPetGUI());
+		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "fxPortal", new PacketFXSpawnPortalFX());
+		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "fxTameAcc", new PacketFXSpawnTameAccept());
+		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "fxTameRef", new PacketFXSpawnTameAccept());
+		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "fxRayball", new PacketFXSpawnTameAccept());
+	}
+	
+	@Override
 	public int addArmor(String string) {
 		return RenderingRegistry.addNewArmourRendererPrefix(string);
 	}
@@ -115,20 +121,10 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void setJumping(boolean b, EntityLiving entity) {
 		if( b ) {
-			PacketRecvJump.send(entity.entityId);
+			PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "riddenJump", entity.entityId);
 		}
 	}
 	
-	@Override
-	public void spawnParticleFromDIS(DataInputStream dis) {
-		try {
-			dis.readInt();
-			this.spawnPartPacket.handle(dis, Minecraft.getMinecraft().thePlayer);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-    
     @Override
     public void spawnDupeFX(World par1World, int par2x, int par3y, int par4z, Random par5Random) {
         int var6 = par1World.getBlockMetadata(par2x, par3y, par4z);

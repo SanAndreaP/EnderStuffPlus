@@ -1,6 +1,6 @@
 package sanandreasp.mods.EnderStuffPlus.entity.item;
 
-import sanandreasp.mods.EnderStuffPlus.packet.PacketsSendToClient;
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -35,9 +35,10 @@ public class EntityPearlIgnis extends EntityThrowable {
             movingobjectposition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0.0F);
         }
         
-        for( int i = 0; i < 8; i++ )
-            PacketsSendToClient.sendParticle(this, (byte)0, this.posX, this.posY, this.posZ, 1.0D, 0.3D, 0.0D);
-
+        for( int i = 0; i < 8; i++ ) {
+        	ESPModRegistry.sendPacketAllRng("fxPortal", this.posX, this.posY, this.posZ, 128D, this.dimension, this.posX, this.posY, this.posZ, 1.0F, 0.3F, 0.0F, this.width, this.height);
+        }
+		
         if( !this.worldObj.isRemote ) {
             if( movingobjectposition.typeOfHit == EnumMovingObjectType.TILE && this.getThrower() instanceof EntityPlayer ) {
                 int var13 = movingobjectposition.blockX;
@@ -114,5 +115,5 @@ public class EntityPearlIgnis extends EntityThrowable {
     public boolean canImpactOnLiquid() {
         return true;
     }
-
+    
 }

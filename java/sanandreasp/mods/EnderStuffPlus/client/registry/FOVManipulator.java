@@ -4,12 +4,13 @@ import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 
-public class FOVManipulator {
+public class FOVManipulator
+{
 	@ForgeSubscribe
 	public void onUpdateFOV(FOVUpdateEvent event) {
 		float f = event.fov;
 		
-		if( event.entity.isUsingItem() && event.entity.getItemInUse().itemID == ESPModRegistry.niobBow.itemID ) {
+		if( event.entity.isUsingItem() && event.entity.getItemInUse().getItem() == ESPModRegistry.niobBow ) {
 			int i = event.entity.getItemInUseDuration();
 			float f1 = (float)i / 10.0F;
 			

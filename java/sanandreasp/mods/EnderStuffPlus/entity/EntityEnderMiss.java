@@ -28,15 +28,17 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
-import sanandreasp.mods.EnderStuffPlus.client.packet.PacketRecvShowPetGUI;
+import sanandreasp.core.manpack.mod.packet.PacketRegistry;
+import sanandreasp.mods.EnderStuffPlus.client.packet.PacketShowPetGUI;
 import sanandreasp.mods.EnderStuffPlus.item.ItemRaincoat;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketRecvMove;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketsSendToClient;
+import sanandreasp.mods.EnderStuffPlus.packet.PacketRiddenMove;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
+import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnderCreature {
+public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnderCreature
+{
 	private static final UUID entityUUID = UUID.fromString("2B4AD668-5FE7-4338-B476-B035D7B5E80A");
     private static final AttributeModifier attributes = (new AttributeModifier(entityUUID, "Attacking speed boost", 6.199999809265137D, 0)).setSaved(false);
     
@@ -325,11 +327,21 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 				if( this.rand.nextInt(10) == 0 ) {
 					this.setTamed(true);
 					this.ownerName = par1EntityPlayer.username;
-					if( !this.worldObj.isRemote ) this.spawnParticle((byte) 2, posX, posY, posZ, 0D, 0D, 0D);
+					if( !this.worldObj.isRemote ) {
+						ESPModRegistry.sendPacketAllRng("fxTameAcc", this.posX, this.posY, this.posZ, 128.0D, 
+							this.dimension, this.posX, this.posY, this.posZ, this.width, this.height
+						);
+//						this.spawnParticle((byte) 2, posX, posY, posZ, 0D, 0D, 0D);
+					}
 					playerItem.stackSize--;
 					return true;
 				} else {
-					if( !this.worldObj.isRemote ) this.spawnParticle((byte) 1, posX, posY, posZ, 0D, 0D, 0D);
+					if( !this.worldObj.isRemote ) {
+						ESPModRegistry.sendPacketAllRng("fxTameRef", this.posX, this.posY, this.posZ, 128.0D, 
+							this.dimension, this.posX, this.posY, this.posZ, this.width, this.height
+						);
+//						this.spawnParticle((byte) 1, posX, posY, posZ, 0D, 0D, 0D);
+					}
 					playerItem.stackSize--;
 					return true;
 				}
@@ -341,21 +353,26 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 					this.setCoat(playerItem.getItemDamage() >> 5, playerItem.getItemDamage() & 31);
 					playerItem.stackSize--;
 					return true;
-				} else if( playerItem.itemID == ESPModRegistry.avisFeather.itemID && this.canGetFallDmg() ) {
+				} else if( playerItem.getItem() == ESPModRegistry.avisFeather && this.canGetFallDmg() ) {
 					setCanGetFallDmg(false);
 					playerItem.stackSize--;
 					return true;
-				} else if( playerItem.itemID == Item.dyePowder.itemID && playerItem.getItemDamage() != this.getColor() ) {
+				} else if( playerItem.getItem() == Item.dyePowder && playerItem.getItemDamage() != this.getColor() ) {
 					setColor(playerItem.getItemDamage());
 					playerItem.stackSize--;
 					return true;
 				} else if( playerItem.getItem() instanceof ItemFood && this.getHealth() < this.getMaxHealth() ) {
 					this.heal(((ItemFood)playerItem.getItem()).getHealAmount());
-					if( !this.worldObj.isRemote ) this.spawnParticle((byte) 2, posX, posY, posZ, 0D, 0D, 0D);
+					if( !this.worldObj.isRemote ) {
+						ESPModRegistry.sendPacketAllRng("fxTameAcc", this.posX, this.posY, this.posZ, 128.0D, 
+							this.dimension, this.posX, this.posY, this.posZ, this.width, this.height
+						);
+//						this.spawnParticle((byte) 2, posX, posY, posZ, 0D, 0D, 0D);
+					}
 					playerItem.stackSize--;
 					return true;
-				} else if( playerItem.itemID == ESPModRegistry.enderPetStaff.itemID ) {
-					PacketRecvShowPetGUI.send(this, par1EntityPlayer);
+				} else if( playerItem.getItem() == ESPModRegistry.enderPetStaff ) {
+					PacketRegistry.sendPacketToPlayer(ESPModRegistry.modID, "showPetGui", (Player)par1EntityPlayer, this);
 					return true;
 				}
 			}
@@ -591,7 +608,7 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
             }
         }
 
-        if( this.worldObj.isRemote ) this.spawnParticle((byte) 0, posX, posY, posZ, 1D, 0.5D, 0.7D);
+       	this.spawnParticle("livingUpd", this.posX, this.posY, this.posZ);
 
 		if( this.worldObj.isDaytime() && !this.worldObj.isRemote && !this.isTamed() ) {
 			float var6 = this.getBrightness(1.0F);
@@ -634,7 +651,7 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 			jumpTicks = 15;
 			ESPModRegistry.proxy.setJumping(true, this);
 		}
-		PacketRecvMove.send(player.movementInput.moveForward, player.movementInput.moveStrafe);
+		PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "riddenMove", player.movementInput.moveForward, player.movementInput.moveStrafe);
 	}
 	
 	@Override
@@ -721,9 +738,11 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 	public boolean shouldRiderFaceForward(EntityPlayer player) {
 		return true;
 	}
-	
-	public void spawnParticle(int id, double X, double Y, double Z, double dataI, double dataII, double dataIII) {
-    	PacketsSendToClient.sendParticle(this, (byte) (id & 255), X, Y, Z, dataI, dataII, dataIII);
+
+    public void spawnParticle(String type, double X, double Y, double Z) {
+		ESPModRegistry.sendPacketAllRng(
+				"fxPortal", this.posX, this.posY, this.posZ, 128.0D, this.dimension, this.posX, this.posY,
+				this.posZ, 1.0F, 0.5F, 0.7F, this.width, this.height);
     }
 	
 	protected boolean teleportRandomly() {
@@ -781,13 +800,10 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 
             for( l = 0; l < short1; ++l ) {
                 double d6 = (double)l / ((double)short1 - 1.0D);
-                float f = (this.rand.nextFloat() - 0.5F) * 0.2F;
-                float f1 = (this.rand.nextFloat() - 0.5F) * 0.2F;
-                float f2 = (this.rand.nextFloat() - 0.5F) * 0.2F;
                 double d7 = d3 + (this.posX - d3) * d6 + (this.rand.nextDouble() - 0.5D) * (double)this.width * 2.0D;
                 double d8 = d4 + (this.posY - d4) * d6 + this.rand.nextDouble() * (double)this.height;
                 double d9 = d5 + (this.posZ - d5) * d6 + (this.rand.nextDouble() - 0.5D) * (double)this.width * 2.0D;
-                this.spawnParticle(3, d7, d8, d9, (double)f, (double)f1, (double)f2);
+                this.spawnParticle("teleport", d7, d8, d9);
             }
 
 			this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "mob.endermen.portal", 1.0F, 1.0F);

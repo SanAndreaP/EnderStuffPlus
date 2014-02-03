@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.stats.StatList;
 import sanandreasp.core.manpack.helpers.CommonUsedStuff;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketsSendToClient;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 
 public final class NiobToolHelper {
@@ -47,7 +46,7 @@ public final class NiobToolHelper {
 			if( nugget != null ) {
 				nugget = CommonUsedStuff.addItemStackToInventory(nugget, player.inventory);
         		if( nugget != null ) {
-        			CommonUsedStuff.dropBlockAsItem_do(block, player.worldObj, X, Y, Z, nugget);
+        			CommonUsedStuff.dropBlockAsItem(block, player.worldObj, X, Y, Z, nugget);
         		}
 			}
         }
@@ -61,12 +60,18 @@ public final class NiobToolHelper {
             			: itemstack1.copy();
             	if( newStack != null ) {
             		newStack = CommonUsedStuff.addItemStackToInventory(newStack.copy(), player.inventory);
-            		if( newStack != null )
-            			CommonUsedStuff.dropBlockAsItem_do(block, player.worldObj, X, Y, Z, newStack);
-            		else 
-                		PacketsSendToClient.sendParticle(player.worldObj, X, Y, Z, (byte) 0);
-            	} else
-            		PacketsSendToClient.sendParticle(player.worldObj, X, Y, Z, (byte) 0);
+            		if( newStack != null ) {
+            			CommonUsedStuff.dropBlockAsItem(block, player.worldObj, X, Y, Z, newStack);
+            		} else {
+                    	ESPModRegistry.sendPacketAllRng("fxPortal", X, Y, Z, 128.0D, player.dimension, 
+                    			X+0.5F, Y+0.5F, Z+0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F
+                    	);
+            		}
+            	} else {
+                	ESPModRegistry.sendPacketAllRng("fxPortal", X, Y, Z, 128.0D, player.dimension,
+                			X+0.5F, Y+0.5F, Z+0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F
+                	);
+            	}
             }
         } else {
             ArrayList<ItemStack> items = block.getBlockDropped(player.worldObj, X, Y, Z, blockMeta, fortune);
@@ -78,11 +83,17 @@ public final class NiobToolHelper {
             	if( newStack != null ) {
             		newStack = CommonUsedStuff.addItemStackToInventory(newStack.copy(), player.inventory);
             		if( newStack != null ) {
-            			CommonUsedStuff.dropBlockAsItem_do(block, player.worldObj, X, Y, Z, newStack);
-            		} else
-                		PacketsSendToClient.sendParticle(player.worldObj, X, Y, Z, (byte) 0);
-            	} else
-            		PacketsSendToClient.sendParticle(player.worldObj, X, Y, Z, (byte) 0);
+            			CommonUsedStuff.dropBlockAsItem(block, player.worldObj, X, Y, Z, newStack);
+            		} else {
+                    	ESPModRegistry.sendPacketAllRng("fxPortal", X, Y, Z, 128.0D, player.dimension,
+                    			X+0.5F, Y+0.5F, Z+0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F
+                    	);
+            		}
+            	} else {
+                	ESPModRegistry.sendPacketAllRng("fxPortal", X, Y, Z, 128.0D, player.dimension,  X+0.5F, Y+0.5F, Z+0.5F,
+                			0.5F, 0.0F, 1.0F, 1.0F, 1.0F
+                	);
+            	}
             }
         }
         

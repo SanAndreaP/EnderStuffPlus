@@ -2,9 +2,9 @@ package sanandreasp.mods.EnderStuffPlus.client.gui.BiomeChanger;
 
 import org.lwjgl.opengl.GL11;
 
-import sanandreasp.mods.EnderStuffPlus.packet.PacketRecvBCGUIAction;
+import sanandreasp.core.manpack.mod.packet.PacketRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityBiomeChanger;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.MathHelper;
@@ -63,7 +63,7 @@ public class GuiBiomeChangerSlider extends GuiButton {
 
                 this.displayString = this.title + ": " + MathHelper.floor_float(this.sliderValue * this.maxValue);
 //				Proxy_Client.sendBCTEData(0, bcte.xCoord, bcte.yCoord, bcte.zCoord, new byte[] {(byte)2, (byte)(MathHelper.floor_float(this.sliderValue * this.maxValue))});
-				PacketRecvBCGUIAction.send(this.bcte, (byte) 2, MathHelper.floor_float(this.sliderValue * this.maxValue));
+                PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "bcGuiAction", this.bcte, (byte) 2, MathHelper.floor_float(this.sliderValue * this.maxValue));
             }
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -94,7 +94,7 @@ public class GuiBiomeChangerSlider extends GuiButton {
 
             this.displayString = this.title + ": " + MathHelper.floor_float(this.sliderValue * this.maxValue);
 //			Proxy_Client.sendBCTEData(0, bcte.xCoord, bcte.yCoord, bcte.zCoord, new byte[] {(byte)2, (byte)(MathHelper.floor_float(this.sliderValue * this.maxValue))});
-			PacketRecvBCGUIAction.send(this.bcte, (byte) 2, MathHelper.floor_float(this.sliderValue * this.maxValue));
+            PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "bcGuiAction", this.bcte, (byte) 2, MathHelper.floor_float(this.sliderValue * this.maxValue));
             this.dragging = true;
             return true;
         }

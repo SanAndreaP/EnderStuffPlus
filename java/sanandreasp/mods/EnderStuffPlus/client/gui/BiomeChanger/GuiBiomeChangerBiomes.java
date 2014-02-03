@@ -14,8 +14,9 @@ import org.lwjgl.opengl.GL11;
 import com.google.common.collect.Maps;
 
 import sanandreasp.core.manpack.managers.SAPLanguageManager;
+import sanandreasp.core.manpack.mod.packet.PacketRegistry;
 import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketRecvBCGUIAction;
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.RegistryBiomeChanger;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityBiomeChanger;
 
@@ -119,7 +120,8 @@ public class GuiBiomeChangerBiomes extends GuiBiomeChangerBase implements Textur
         	int x = this.guiLeft + 8, y = this.guiTop + 21 + 13*i;
         	if( par1 < x + 11 && par1 >= x && par2 < y + 11 && par2 >= y ) {
         		this.bcte.setBiomeID(this.biomeList.get(entryPos + i).biomeID);
-        		PacketRecvBCGUIAction.send(this.bcte, (byte)1, this.biomeList.get(entryPos + i).biomeID);
+    			PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "bcGuiAction", this.bcte, (byte)1, this.biomeList.get(entryPos + i).biomeID);
+//        		PacketBCGUIAction.send(this.bcte, (byte)1, this.biomeList.get(entryPos + i).biomeID);
 				break;
         	}
         }

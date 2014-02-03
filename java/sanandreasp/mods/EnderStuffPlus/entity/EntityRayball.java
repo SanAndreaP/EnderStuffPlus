@@ -1,4 +1,5 @@
 package sanandreasp.mods.EnderStuffPlus.entity;
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -8,8 +9,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketsSendToClient;
-//import net.minecraft.client.Minecraft;
 
 public class EntityRayball extends EntityFireball {
 	public EntityRayball(World par1World) {
@@ -30,7 +29,9 @@ public class EntityRayball extends EntityFireball {
 	public void onUpdate() {
 		super.onUpdate();
 		this.extinguish();
-		PacketsSendToClient.sendParticle(this, (byte) 4, this.posX, this.posY, this.posZ);
+		ESPModRegistry.sendPacketAllRng("fxRayball", this.posX, this.posY, this.posZ, 128.0D, this.dimension, this.posX,
+				this.posY, this.posZ
+		);
 	}
 
 	@Override
