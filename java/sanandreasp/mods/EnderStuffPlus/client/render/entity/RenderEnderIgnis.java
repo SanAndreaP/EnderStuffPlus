@@ -11,12 +11,14 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
 import java.util.Random;
+
 import org.lwjgl.opengl.GL11;
 
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderIgnis;
-import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderIgnis;
+import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 
 public class RenderEnderIgnis extends RenderLiving implements Textures {
 

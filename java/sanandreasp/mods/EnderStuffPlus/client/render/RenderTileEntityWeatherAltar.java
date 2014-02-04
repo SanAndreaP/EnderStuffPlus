@@ -10,12 +10,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 
 import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelWeatherAltar;
 import sanandreasp.mods.EnderStuffPlus.client.registry.IconRegistry;
-import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
+import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityWeatherAltar;
 
 @SideOnly(Side.CLIENT)

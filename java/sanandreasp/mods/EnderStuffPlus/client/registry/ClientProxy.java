@@ -1,7 +1,5 @@
 package sanandreasp.mods.EnderStuffPlus.client.registry;
 
-import java.util.List;
-import java.util.Random;
 import sanandreasp.core.manpack.mod.packet.PacketRegistry;
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderNemesis;
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderIgnis;
@@ -10,7 +8,6 @@ import sanandreasp.mods.EnderStuffPlus.client.packet.PacketChngBiome;
 import sanandreasp.mods.EnderStuffPlus.client.packet.PacketShowPetGUI;
 import sanandreasp.mods.EnderStuffPlus.client.packet.particle.PacketFXSpawnPortalFX;
 import sanandreasp.mods.EnderStuffPlus.client.packet.particle.PacketFXSpawnTameAccept;
-import sanandreasp.mods.EnderStuffPlus.client.particle.EntityWeatherAltarParticleFX;
 import sanandreasp.mods.EnderStuffPlus.client.render.ItemRendererGlowTools;
 import sanandreasp.mods.EnderStuffPlus.client.render.ItemRendererNiobBow;
 import sanandreasp.mods.EnderStuffPlus.client.render.ItemRendererWeatherAltar;
@@ -49,12 +46,8 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityAuraFX;
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -125,57 +118,4 @@ public class ClientProxy extends CommonProxy
 			PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "riddenJump", entity.entityId);
 		}
 	}
-	
-    @Override
-    public void spawnDupeFX(World par1World, int par2x, int par3y, int par4z, Random par5Random) {
-        int var6 = par1World.getBlockMetadata(par2x, par3y, par4z);
-        float var7 = (float)par2x + 0.50F;
-        float var8 = (float)par3y + 0.3F + par5Random.nextFloat() * 6.0F / 16.0F;
-        float var9 = (float)par4z + 0.50F;
-        float var10 = 0.70F;
-        float var11 = par5Random.nextFloat() * 0.4F - 0.2F;
-        
-        double partX = 0F, partY = (double)var8, partZ = 0F;
-
-        if( var6 == 5 )
-        {
-        	partX = (double)(var7 - var10);
-        	partZ = (double)(var9 + var11);
-        }
-        else if( var6 == 7 )
-        {
-        	partX = (double)(var7 + var10);
-        	partZ = (double)(var9 + var11);
-        }
-        else if( var6 == 6 )
-        {
-        	partX = (double)(var7 + var11);
-        	partZ = (double)(var9 - var10);
-        }
-        else if( var6 == 4 )
-        {
-        	partX = (double)(var7 + var11);
-        	partZ = (double)(var9 + var10);
-        }
-        
-        EntityFX particle = new EntityAuraFX(par1World, partX, partY, partZ, 0.0D, 0.0D, 0.0D);;
-        particle.setParticleTextureIndex(66);
-        particle.setRBGColorF(0.25F + par5Random.nextFloat() * 0.25F, 0.0F, 1.0F);
-        Minecraft.getMinecraft().effectRenderer.addEffect(particle);
-        particle.setPosition(partX, partY, partZ);
-    }
-    
-    @Override
-    public void spawnWeatherAltarFX(World par1World, int par2x, int par3y, int par4z, Random par5Random) {
-		TileEntityWeatherAltar altar = (TileEntityWeatherAltar) par1World.getBlockTileEntity(par2x, par3y, par4z);
-		List<Integer[]> blockCoords = altar.getSurroundingPillars();
-		for( Integer[] coords : blockCoords ) {
-			if( par5Random.nextInt(8) == 0 ) {
-				EntityFX particle = new EntityWeatherAltarParticleFX(par1World, (double)par2x + 0.5D, (double)par3y + 2.0D, (double)par4z + 0.5D, (double)((float)(coords[0] - par2x) + par5Random.nextFloat()) - 0.5D, (double)((float)(coords[1] - par3y) - par5Random.nextFloat() - 1.0F), (double)((float)(coords[2] - par4z) + par5Random.nextFloat()) - 0.5D);
-				particle.setParticleTextureIndex(66);
-		        particle.setRBGColorF(0.25F + par5Random.nextFloat() * 0.25F, 0.0F, 1.0F);
-		        Minecraft.getMinecraft().effectRenderer.addEffect(particle);
-			}
-		}
-    }
 }

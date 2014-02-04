@@ -8,16 +8,14 @@ import net.minecraftforge.client.event.sound.PlayBackgroundMusicEvent;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 
-public class SoundRegistry {
-	
+@SideOnly(Side.CLIENT)
+public class SoundRegistry
+{
 	SoundPool end_BG_Music;
 	
 	@ForgeSubscribe
-	@SideOnly(Side.CLIENT)
-    public void onSound(SoundLoadEvent event)
-    {
-        try
-        {
+    public void onSound(SoundLoadEvent event) {
+        try {
         	addSound(event, "endermiss/", "idle", 5);
         	addSound(event, "endermiss/", "hit", 4);
         	addSound(event, "endermiss/", "death", 1);
@@ -38,24 +36,19 @@ public class SoundRegistry {
         	
         	end_BG_Music.addSound("enderstuffp:weird_ambiance1.ogg");
         	end_BG_Music.addSound("enderstuffp:weird_ambiance2.ogg");
-        	
-//        	addMusic(event, "weird_ambiance", 2);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println("Failed to register one or more sounds:");
             e.printStackTrace();
         }
     }
 
 	@ForgeSubscribe
-	@SideOnly(Side.CLIENT)
 	public void onMusic(PlayBackgroundMusicEvent event) {
-		if( Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().thePlayer.dimension == 1 )
+		if( Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().thePlayer.dimension == 1 ) {
 			event.result = end_BG_Music.getRandomSound();
+		}
 	}
 
-	@SideOnly(Side.CLIENT)
 	private void addSound(SoundLoadEvent event, String path, String fileName, int qty) throws Exception {
 		if( qty < 2 ) {
 			event.manager.addSound("enderstuffp:"+path+fileName+".ogg");
@@ -65,18 +58,4 @@ public class SoundRegistry {
 			}
 		}
     }
-	
-//	private void addMusic(SoundLoadEvent event, String path, String fileName, int qty) throws Exception {
-//		if( qty < 2 ) {
-//			event.manager.addSound("enderstuffp:"+path+fileName+".ogg");
-//		} else {
-//			for( int i = 1; i <= qty; i++ ) {
-//				event.manager.addSound("enderstuffp:"+path+fileName+String.valueOf(i)+".ogg");
-//			}
-//		}
-//    }
-//	
-//	private void addMusic(SoundLoadEvent event, String fileName, int qty) throws Exception {
-//		this.addMusic(event, "", fileName, qty);
-//	}
 }

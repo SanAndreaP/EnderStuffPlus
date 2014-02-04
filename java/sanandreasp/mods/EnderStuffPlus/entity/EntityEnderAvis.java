@@ -20,9 +20,9 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import sanandreasp.core.manpack.mod.packet.PacketRegistry;
-import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.item.ItemRaincoat;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -47,7 +47,7 @@ public class EntityEnderAvis extends EntityCreature implements IEnderPet, IEnder
 		this.walkSpeed = this.getAIMoveSpeed() * 1.6F;
 		
 		this.dataWatcher.addObject(15, new Byte((byte) 0));
-		this.dataWatcher.addObject(16, new Byte((byte) this.rand.nextInt(ItemRaincoat.dyeColors.length - 3)));
+		this.dataWatcher.addObject(16, new Byte((byte) this.rand.nextInt(ItemRaincoat.colorList.size() - 3)));
 		this.dataWatcher.addObject(17, (int)20);
 		this.dataWatcher.addObject(22, -1);
 	}
@@ -150,9 +150,10 @@ public class EntityEnderAvis extends EntityCreature implements IEnderPet, IEnder
 	}
 	
 	public float[] getCollarColor(int id) {
-		float red = (ItemRaincoat.dyeColors[id] >> 16 & 255) / 255.0F;
-		float green = (ItemRaincoat.dyeColors[id] >> 8 & 255) / 255.0F;
-		float blue = (ItemRaincoat.dyeColors[id] & 255) / 255.0F;
+		int color = ItemRaincoat.colorList.get(id).getColor();
+		float red = (color >> 16 & 255) / 255.0F;
+		float green = (color >> 8 & 255) / 255.0F;
+		float blue = (color & 255) / 255.0F;
 
 		return new float[] { red, green, blue };
 	}
@@ -416,7 +417,7 @@ public class EntityEnderAvis extends EntityCreature implements IEnderPet, IEnder
 		}
 		
 		if( !worldObj.isRemote ) {
-			if( (this.dataWatcher.getWatchableObjectInt(22) & 31) >= ItemRaincoat.dyeColors.length )
+			if( (this.dataWatcher.getWatchableObjectInt(22) & 31) >= ItemRaincoat.colorList.size() )
 				this.dataWatcher.updateObject(22, -1);
 			setRiddenDW(isRidden());
 			

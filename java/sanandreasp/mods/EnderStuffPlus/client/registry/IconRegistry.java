@@ -1,13 +1,16 @@
 package sanandreasp.mods.EnderStuffPlus.client.registry;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import sanandreasp.mods.EnderStuffPlus.client.texture.TextureAvisCompass;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Icon;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 
-public class IconRegistry {
-	
+@SideOnly(Side.CLIENT)
+public class IconRegistry
+{
 	public static Icon sun, rain, thunder, activeOn, activeOff, spanner, enderball;
 	public static TextureAtlasSprite compass;
 	

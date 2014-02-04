@@ -4,11 +4,12 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+
 import org.lwjgl.opengl.GL11;
 
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderRay;
-import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderRay;
+import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 
 public class RenderEnderRay extends RenderLiving implements Textures {
 

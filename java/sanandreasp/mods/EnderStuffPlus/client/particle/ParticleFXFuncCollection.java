@@ -1,13 +1,19 @@
 package sanandreasp.mods.EnderStuffPlus.client.particle;
 
+import java.util.List;
 import java.util.Random;
 
+import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityWeatherAltar;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityAuraFX;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntityReddustFX;
 import net.minecraft.world.World;
 
+@SideOnly(Side.CLIENT)
 public final class ParticleFXFuncCollection
 {
 	private static Random rand = new Random();
@@ -24,36 +30,34 @@ public final class ParticleFXFuncCollection
         }
 	}
 	
-	public static void spawnPortalFX(World world, double posX, double posY, double posZ, float colorR, float colorG, float colorB, float width, float height) {
-		for( int k = 0; k < 2; k++ ) {
-			EntityFX part = new ParticleFX_EnderMob(
+	public static void spawnPortalFX(World world, double x, double y, double z, float clrRed, float clrGreen, float clrBlue, float width, float height) {
+		for( int i = 0; i < 2; i++ ) {
+			EntityFX part = new EntityEnderMobFX(
 					world,
-					posX + (rand.nextDouble() - 0.5D) * width,
-					(posY + rand.nextDouble() * height) - 0.25D,
-					posZ + (rand.nextDouble() - 0.5D) * width,
+					x + (rand.nextDouble() - 0.5D) * width,
+					(y + rand.nextDouble() * height) - 0.25D,
+					z + (rand.nextDouble() - 0.5D) * width,
 					(rand.nextDouble() - 0.5D) * 2D, -rand.nextDouble(),
 					(rand.nextDouble() - 0.5D) * 2D,
-					(float)colorR,
-					(float)colorG,
-					(float)colorB
+					(float)clrRed,
+					(float)clrGreen,
+					(float)clrBlue
 			);
 			Minecraft.getMinecraft().effectRenderer.addEffect(part);
 		}
 	}
 	
-	public static void spawnRayballFX(World world, double posX, double posY, double posZ) {
-		Minecraft.getMinecraft().effectRenderer.addEffect(
-				new ParticleFX_Rayball(world, posX, posY + 0.25D, posZ, 1.0F, 0.0F, 1.0F)
-		);
+	public static void spawnRayballFX(World world, double x, double y, double z) {
+		Minecraft.getMinecraft().effectRenderer.addEffect(new EntityRayballFX(world, x, y + 0.25D, z, 1.0F, 0.0F, 1.0F));
 	}
 	
-	public static void spawnRefuseTameFX(World world, double posX, double posY, double posZ, float width, float height) {
-		for( int k = 0; k < 7; k++ ) {
+	public static void spawnRefuseTameFX(World world, double x, double y, double z, float width, float height) {
+		for( int i = 0; i < 7; i++ ) {
 			world.spawnParticle(
 					"smoke",
-					posX + rand.nextFloat() * width * 2.0F - width,
-					posY + 0.5D + rand.nextFloat() * height,
-					posZ + rand.nextFloat() * width * 2.0F - width,
+					x + rand.nextFloat() * width * 2.0F - width,
+					y + 0.5D + rand.nextFloat() * height,
+					z + rand.nextFloat() * width * 2.0F - width,
 					rand.nextGaussian() * 0.02D,
 					rand.nextGaussian() * 0.02D,
 					rand.nextGaussian() * 0.02D
@@ -61,17 +65,59 @@ public final class ParticleFXFuncCollection
 		}
 	}
 	
-	public static void spawnAcceptTameFX(World world, double posX, double posY, double posZ, float width, float height) {
-		for( int var3 = 0; var3 < 7; ++var3 ) {
+	public static void spawnAcceptTameFX(World world, double x, double y, double z, float width, float height) {
+		for( int i = 0; i < 7; ++i ) {
 			world.spawnParticle(
 					"heart",
-					posX + rand.nextFloat() * width * 2.0F - width,
-					posY + 0.5D + rand.nextFloat() * height,
-					posZ + rand.nextFloat() * width * 2.0F - width,
+					x + rand.nextFloat() * width * 2.0F - width,
+					y + 0.5D + rand.nextFloat() * height,
+					z + rand.nextFloat() * width * 2.0F - width,
 					rand.nextGaussian() * 0.02D,
 					rand.nextGaussian() * 0.02D,
 					rand.nextGaussian() * 0.02D
 			);
+		}
+	}
+	
+	public static void spawnDupeFX(World world, int x, int y, int z, Random rand) {
+		int meta = world.getBlockMetadata(x, y, z);
+		double partX = (double)x + 0.5D;
+		double partY = (double)y + 0.3D + rand.nextDouble() * 6.0D / 16.0D;
+		double partZ = (double)z + 0.5D;
+		float shift = 0.7F;
+		float randPos = rand.nextFloat() * 0.4F - 0.2F;
+		
+		if( meta == 5 ) {
+			partX -= shift;
+			partZ += randPos;
+		} else if( meta == 7 ) {
+			partX += shift;
+			partZ += randPos;
+		} else if( meta == 6 ) {
+			partX += randPos;
+			partZ -= shift;
+		} else if( meta == 4 ) {
+			partX += randPos;
+			partZ += shift;
+		}
+		
+		EntityFX particle = new EntityAuraFX(world, partX, partY, partZ, 0.0D, 0.0D, 0.0D);;
+		particle.setParticleTextureIndex(66);
+		particle.setRBGColorF(0.25F + rand.nextFloat() * 0.25F, 0.0F, 1.0F);
+		Minecraft.getMinecraft().effectRenderer.addEffect(particle);
+		particle.setPosition(partX, partY, partZ);
+	}
+  
+	public static void spawnWeatherAltarFX(World world, int x, int y, int z, Random rand) {
+		TileEntityWeatherAltar altar = (TileEntityWeatherAltar) world.getBlockTileEntity(x, y, z);
+		List<Integer[]> blockCoords = altar.getSurroundingPillars();
+		for( Integer[] coords : blockCoords ) {
+			if( rand.nextInt(8) == 0 ) {
+				EntityFX particle = new EntityWeatherAltarFX(world, (double)x + 0.5D, (double)y + 2.0D, (double)z + 0.5D, (double)((float)(coords[0] - x) + rand.nextFloat()) - 0.5D, (double)((float)(coords[1] - y) - rand.nextFloat() - 1.0F), (double)((float)(coords[2] - z) + rand.nextFloat()) - 0.5D);
+				particle.setParticleTextureIndex(66);
+		        particle.setRBGColorF(0.25F + rand.nextFloat() * 0.25F, 0.0F, 1.0F);
+		        Minecraft.getMinecraft().effectRenderer.addEffect(particle);
+			}
 		}
 	}
 }

@@ -6,21 +6,20 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.world.World;
 
 @SideOnly(Side.CLIENT)
-public class EntityWeatherAltarParticleFX extends EntityFX
+public class EntityWeatherAltarFX extends EntityFX
 {
-    private double field_70568_aq;
-    private double field_70567_ar;
-    private double field_70566_as;
+    private double initX;
+    private double initY;
+    private double initZ;
 
-    public EntityWeatherAltarParticleFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12)
-    {
-        super(par1World, par2+par8, par4+par10, par6+par12, par8, par10, par12);
-        this.motionX = par8;
-        this.motionY = par10;
-        this.motionZ = par12;
-        this.field_70568_aq = par2;
-        this.field_70567_ar = par4;
-        this.field_70566_as = par6;
+    public EntityWeatherAltarFX(World world, double x, double y, double z, double motX, double motY, double motZ) {
+        super(world, x+motX, y+motY, z+motZ, motX, motY, motZ);
+        this.motionX = motX;
+        this.motionY = motY;
+        this.motionZ = motZ;
+        this.initX = x;
+        this.initY = y;
+        this.initZ = z;
         float f = this.rand.nextFloat() * 0.6F + 0.4F;
         this.particleScale = this.rand.nextFloat() * 0.5F + 0.2F;
         this.particleRed = this.particleGreen = this.particleBlue = 1.0F * f;
@@ -31,8 +30,8 @@ public class EntityWeatherAltarParticleFX extends EntityFX
         this.setParticleTextureIndex((int)(Math.random() * 26.0D + 1.0D + 224.0D));
     }
 
-    public int getBrightnessForRender(float par1)
-    {
+    @Override
+    public int getBrightnessForRender(float par1) {
         int i = super.getBrightnessForRender(par1);
         float f1 = (float)this.particleAge / (float)this.particleMaxAge;
         f1 *= f1;
@@ -54,11 +53,8 @@ public class EntityWeatherAltarParticleFX extends EntityFX
     	super.setPosition(par1, par3, par5);
     }
 
-    /**
-     * Gets how bright this entity is.
-     */
-    public float getBrightness(float par1)
-    {
+    @Override
+    public float getBrightness(float par1) {
         float f1 = super.getBrightness(par1);
         float f2 = (float)this.particleAge / (float)this.particleMaxAge;
         f2 *= f2;
@@ -66,12 +62,8 @@ public class EntityWeatherAltarParticleFX extends EntityFX
         return f1 * (1.0F - f2) + f2;
     }
 
-    /**
-     * Called to update the entity's position/logic.
-     */
-    public void onUpdate()
-    {
-//    	super.onUpdate();
+    @Override
+    public void onUpdate() {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
@@ -80,12 +72,11 @@ public class EntityWeatherAltarParticleFX extends EntityFX
         float f1 = 1.0F - f;
         f1 *= f1;
         f1 *= f1;
-        this.posX = this.field_70568_aq + this.motionX * (double)f;
-        this.posY = this.field_70567_ar + this.motionY * (double)f - (double)(f1 * 1.2F);
-        this.posZ = this.field_70566_as + this.motionZ * (double)f;
+        this.posX = this.initX + this.motionX * (double)f;
+        this.posY = this.initY + this.motionY * (double)f - (double)(f1 * 1.2F);
+        this.posZ = this.initZ + this.motionZ * (double)f;
 
-        if( this.particleAge++ >= this.particleMaxAge )
-        {
+        if( this.particleAge++ >= this.particleMaxAge ) {
             this.setDead();
         }
     }

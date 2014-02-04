@@ -1,25 +1,19 @@
 package sanandreasp.mods.EnderStuffPlus.client.registry;
 
 import java.util.EnumSet;
-
 import sanandreasp.mods.EnderStuffPlus.entity.IEnderPet;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public class TickHandlerPlayerClt implements ITickHandler {
-
-	public TickHandlerPlayerClt() {
-		
-	}
-
+@SideOnly(Side.CLIENT)
+public class TickHandlerPlayerClt implements ITickHandler
+{
 	@Override
-	public void tickStart(EnumSet<TickType> type, Object... tickData) {
-
-	}
+	public void tickStart(EnumSet<TickType> type, Object... tickData) { }
 
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
@@ -39,5 +33,4 @@ public class TickHandlerPlayerClt implements ITickHandler {
 	public String getLabel() {
 		return "ESPPlrTicksCLT";
 	}
-
 }

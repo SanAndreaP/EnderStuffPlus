@@ -4,8 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-
 import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import sanandreasp.core.manpack.mod.packet.ISAPPacketHandler;
 import sanandreasp.mods.EnderStuffPlus.entity.IEnderPet;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
@@ -14,6 +15,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 
+@SideOnly(Side.CLIENT)
 public class PacketShowPetGUI implements ISAPPacketHandler
 {
 	@Override

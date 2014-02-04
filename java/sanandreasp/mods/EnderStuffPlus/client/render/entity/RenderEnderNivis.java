@@ -13,13 +13,14 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
 import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderNivis;
-import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderNivis;
+import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 
 // Referenced classes of package net.minecraft.src:
 //            RenderLiving, ModelEnderman, EntityEnderman, OpenGlHelper, 

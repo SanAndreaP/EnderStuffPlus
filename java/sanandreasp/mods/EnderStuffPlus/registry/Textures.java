@@ -1,17 +1,14 @@
-package sanandreasp.mods.EnderStuffPlus.client.registry;
+package sanandreasp.mods.EnderStuffPlus.registry;
 
 import net.minecraft.util.ResourceLocation;
 
-public interface Textures {
+public interface Textures
+{
 	public static final ResourceLocation BIOMECHANGER_TEXTURE			= new ResourceLocation("enderstuffp", "textures/blocks/biomeChanger.png");
 	public static final ResourceLocation WEATHERALTAR_TEXTURE			= new ResourceLocation("enderstuffp", "textures/blocks/weatherAltar.png");
 	
 	public static final ResourceLocation ENDERMISS_TEXTURE				= new ResourceLocation("enderstuffp", "textures/entities/enderMiss.png");
 	public static final ResourceLocation ENDERMISS_TEXTURE_SPEC			= new ResourceLocation("enderstuffp", "textures/entities/enderMissSpec.png");
-//	public static final ResourceLocation ENDERMISS_CAPE_TEXTURE			= new ResourceLocation("enderstuffp", "textures/entities/enderMissCape.png");
-//	public static final ResourceLocation ENDERMISS_CAPESTR_TEXTURE		= new ResourceLocation("enderstuffp", "textures/entities/enderMissCapeStripes.png");
-//	public static final ResourceLocation ENDERAVIS_CAPE_TEXTURE			= new ResourceLocation("enderstuffp", "textures/entities/enderAvisCape.png");
-//	public static final ResourceLocation ENDERAVIS_CAPESTR_TEXTURE		= new ResourceLocation("enderstuffp", "textures/entities/enderAvisCapeStripes.png");
 	public static final ResourceLocation ENDERMISS_GLOW_TEXTURE			= new ResourceLocation("enderstuffp", "textures/entities/enderMissGlow.png");
 	public static final ResourceLocation ENDERMISS_GLOW_TEXTURE_SPEC	= new ResourceLocation("enderstuffp", "textures/entities/enderMissSpecGlow.png");
 	public static final ResourceLocation ENDERAVIS_TEXTURE				= new ResourceLocation("enderstuffp", "textures/entities/enderAvis.png");
@@ -40,8 +37,6 @@ public interface Textures {
 
 	public static final ResourceLocation ARROW_AVIS						= new ResourceLocation("enderstuffp", "textures/entities/avisArrow.png");
 	
-//	public static final ResourceLocation TEX_ARMOR_NIOBIUM_1			= new ResourceLocation("EnderStuffP", "textures/armor/niob_1.png");
-//	public static final ResourceLocation TEX_ARMOR_NIOBIUM_2			= new ResourceLocation("EnderStuffP", "textures/armor/niob_2.png");
 	public static final String TEX_ARMOR_NIOBIUM_1			= "enderstuffp:textures/models/armor/niob_1.png";
 	public static final String TEX_ARMOR_NIOBIUM_2			= "enderstuffp:textures/models/armor/niob_2.png";
 	
@@ -72,7 +67,8 @@ public interface Textures {
 		new ResourceLocation("enderstuffp", "textures/entities/enderMiss_cape/stripes_niob.png"),
 		new ResourceLocation("enderstuffp", "textures/entities/enderMiss_cape/stripes_iron.png"),
 		new ResourceLocation("enderstuffp", "textures/entities/enderMiss_cape/stripes_reds.png"),
-		new ResourceLocation("enderstuffp", "textures/entities/enderMiss_cape/stripes_obsd.png")
+		new ResourceLocation("enderstuffp", "textures/entities/enderMiss_cape/stripes_obsd.png"),
+		new ResourceLocation("enderstuffp", "textures/entities/enderMiss_cape/stripes_tant.png")
 	};
 	
 	public static final ResourceLocation ENDERAVIS_CAPES_CLR[] = new ResourceLocation[] {
@@ -102,6 +98,7 @@ public interface Textures {
 		new ResourceLocation("enderstuffp", "textures/entities/enderAvis_cape/stripes_niob.png"),
 		new ResourceLocation("enderstuffp", "textures/entities/enderAvis_cape/stripes_iron.png"),
 		new ResourceLocation("enderstuffp", "textures/entities/enderAvis_cape/stripes_reds.png"),
-		new ResourceLocation("enderstuffp", "textures/entities/enderAvis_cape/stripes_obsd.png")
+		new ResourceLocation("enderstuffp", "textures/entities/enderAvis_cape/stripes_obsd.png"),
+		new ResourceLocation("enderstuffp", "textures/entities/enderAvis_cape/stripes_tant.png")
 	};
 }

@@ -78,12 +78,12 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 		this.stepHeight = 1.0F;
 		this.walkSpeed = this.getAIMoveSpeed() * 1.6F;
 		
-		this.dataWatcher.addObject(18, new Byte((byte) this.rand.nextInt(ItemRaincoat.dyeColors.length - 3)));
+		this.dataWatcher.addObject(18, new Byte((byte) this.rand.nextInt(ItemRaincoat.colorList.size() - 3)));
 		this.dataWatcher.addObject(21, new Byte((byte) 0));
 		this.dataWatcher.addObject(22, -1);
 		
 		if( this.rand.nextInt(1024) == 0 ) {
-			setCoat(this.rand.nextInt(2), this.rand.nextInt(ItemRaincoat.dyeColors.length));
+			setCoat(this.rand.nextInt(2), this.rand.nextInt(ItemRaincoat.colorList.size()));
 		}
 		setSpecial(this.rand.nextInt(16) == 0);
 		setCanGetFallDmg(true);
@@ -189,9 +189,11 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 	}
 	
 	public float[] getBowColor() {
-		float red = (ItemRaincoat.dyeColors[this.dataWatcher.getWatchableObjectByte(18)] >> 16 & 255) / 255.0F;
-		float green = (ItemRaincoat.dyeColors[this.dataWatcher.getWatchableObjectByte(18)] >> 8 & 255) / 255.0F;
-		float blue = (ItemRaincoat.dyeColors[this.dataWatcher.getWatchableObjectByte(18)] & 255) / 255.0F;
+		int color = ItemRaincoat.colorList.get(this.dataWatcher.getWatchableObjectByte(18)).getColor();
+		
+		float red = (color >> 16 & 255) / 255.0F;
+		float green = (color >> 8 & 255) / 255.0F;
+		float blue = (color & 255) / 255.0F;
 
 		return new float[] { red, green, blue };
 	}
@@ -519,7 +521,7 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 	@Override
 	public void onLivingUpdate() {
 		if( !this.worldObj.isRemote ) {
-			if( (this.getCoat() & 31) >= ItemRaincoat.dyeColors.length ) {
+			if( (this.getCoat() & 31) >= ItemRaincoat.colorList.size() ) {
 				this.dataWatcher.updateObject(22, -1);
 			}
 			

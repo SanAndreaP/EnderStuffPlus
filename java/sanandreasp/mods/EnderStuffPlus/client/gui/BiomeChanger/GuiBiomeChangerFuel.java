@@ -15,9 +15,9 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import sanandreasp.core.manpack.managers.SAPLanguageManager;
-import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.inventory.Container_BiomeChanger;
 import sanandreasp.mods.EnderStuffPlus.registry.RegistryBiomeChanger;
+import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 
 @SideOnly(Side.CLIENT)
 public class GuiBiomeChangerFuel extends GuiBiomeChangerBase implements Textures

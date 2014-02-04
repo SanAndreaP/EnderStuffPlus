@@ -4,6 +4,7 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import sanandreasp.mods.EnderStuffPlus.client.particle.ParticleFXFuncCollection;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityWeatherAltar;
 import net.minecraft.block.Block;
@@ -66,7 +67,7 @@ public class BlockWeatherAltar extends BlockDirectional implements ITileEntityPr
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-		ESPModRegistry.proxy.spawnWeatherAltarFX(world, x, y, z, rand);
+		ParticleFXFuncCollection.spawnWeatherAltarFX(world, x, y, z, rand);
 	}
 
 }

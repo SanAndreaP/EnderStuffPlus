@@ -10,8 +10,8 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import sanandreasp.core.manpack.helpers.CommonUsedStuff;
-import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityBiomeChanger;
 
 @SideOnly(Side.CLIENT)

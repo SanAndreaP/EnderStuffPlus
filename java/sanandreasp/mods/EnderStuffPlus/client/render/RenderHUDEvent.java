@@ -8,9 +8,9 @@ import net.minecraftforge.event.ForgeSubscribe;
 
 import org.lwjgl.opengl.GL11;
 
-import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderAvis;
 import sanandreasp.mods.EnderStuffPlus.entity.IEnderPet;
+import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 
 public class RenderHUDEvent extends Gui implements Textures {
 	private Minecraft mc;

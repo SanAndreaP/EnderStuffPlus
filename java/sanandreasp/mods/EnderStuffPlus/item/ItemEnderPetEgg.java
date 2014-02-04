@@ -118,7 +118,7 @@ public class ItemEnderPetEgg extends Item {
                 	if( nbt.hasKey("missColor") ) 
                 		var9.setColor(nbt.getInteger("missColor"));
                 	else
-                		var9.setColor(par0World.rand.nextInt(ItemRaincoat.dyeColors.length - 3));
+                		var9.setColor(par0World.rand.nextInt(ItemRaincoat.colorList.size() - 3));
                 	var9.setSpecial(nbt.getBoolean("missSpecial"));
                     par0World.spawnEntityInWorld(var9);
                     return true;
@@ -135,7 +135,7 @@ public class ItemEnderPetEgg extends Item {
                 	if( nbt.hasKey("avisColor") ) 
                 		var9.setColor(nbt.getInteger("avisColor"));
                 	else
-                		var9.setColor(par0World.rand.nextInt(ItemRaincoat.dyeColors.length - 3));
+                		var9.setColor(par0World.rand.nextInt(ItemRaincoat.colorList.size() - 3));
                 	var9.setSaddled(nbt.getBoolean("avisSaddle"));
                     par0World.spawnEntityInWorld(var9);
                     return true;

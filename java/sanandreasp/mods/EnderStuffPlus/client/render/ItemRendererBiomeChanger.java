@@ -3,7 +3,7 @@ package sanandreasp.mods.EnderStuffPlus.client.render;
 import org.lwjgl.opengl.GL11;
 
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelBiomeChanger;
-import sanandreasp.mods.EnderStuffPlus.client.registry.Textures;
+import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;

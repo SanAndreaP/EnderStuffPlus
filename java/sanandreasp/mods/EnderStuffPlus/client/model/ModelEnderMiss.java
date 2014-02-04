@@ -30,12 +30,12 @@ public class ModelEnderMiss extends ModelBiped
 		this.textureHeight = 64;
 
 		this.bipedHead = new ModelRenderer(this, 0, 0);
-		this.bipedHead.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, -14.0F);
-		this.bipedHead.setRotationPoint(0.0F, 0.0F, 0.0F);
+		this.bipedHead.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, 0.0F);
+		this.bipedHead.setRotationPoint(0.0F, -13.5F, 0.0F);
 		
 		this.bipedHeadwear = new ModelRenderer(this, 0, 16);
 		this.bipedHeadwear.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, -0.5F);
-		this.bipedHeadwear.setRotationPoint(0.0F, -14.0F, 0.0F);
+		this.bipedHeadwear.setRotationPoint(0.0F, -13.5F, 0.0F);
 		
 		this.bipedBody = new ModelRenderer(this, 32, 16);
 		this.bipedBody.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, 0.0F);
@@ -65,7 +65,7 @@ public class ModelEnderMiss extends ModelBiped
 		
 		this.bow = new ModelRenderer(this, 35, 0);
 		this.bow.addBox(-5.0F, -13.0F, 0.0F, 10, 5, 0, 0.0F);
-		this.bow.setRotationPoint(0.0F, -14.0F, 0.0F);
+		this.bow.setRotationPoint(0.0F, -13.5F, 0.0F);
 	}
 
 	@Override
@@ -259,7 +259,7 @@ public class ModelEnderMiss extends ModelBiped
 		this.bipedRightLeg.rotationPointY = -5.0F;
 		this.bipedLeftLeg.rotationPointY = -5.0F;
 		this.bipedHead.rotationPointZ = -0.0F;
-		this.bipedHead.rotationPointY = -13.0F;
+		this.bipedHead.rotationPointY = -14.0F;
 		this.bow.rotationPointX = this.bipedHeadwear.rotationPointX = this.bipedHead.rotationPointX;
 		this.bow.rotationPointY = this.bipedHeadwear.rotationPointY = this.bipedHead.rotationPointY;
 		this.bow.rotationPointZ = this.bipedHeadwear.rotationPointZ = this.bipedHead.rotationPointZ;
@@ -291,14 +291,14 @@ public class ModelEnderMiss extends ModelBiped
 		} else {
 			float var1 = -14.0F;
 
-			this.bipedHead.rotationPointY = var1;
-			this.bipedHeadwear.rotationPointY = var1;
+			this.bipedHead.rotationPointY = var1+0.5F;
+			this.bipedHeadwear.rotationPointY = var1+0.5F;
 			this.bipedBody.rotationPointY = var1;
 			this.bipedRightArm.rotationPointY = 2.0F + var1;
 			this.bipedLeftArm.rotationPointY = 2.0F + var1;
 			this.bipedRightLeg.rotationPointY = 10.0F + var1;
 			this.bipedLeftLeg.rotationPointY = 10.0F + var1;
-			this.bow.rotationPointY = var1;
+			this.bow.rotationPointY = var1+0.5F;
 		}
 	}
 }

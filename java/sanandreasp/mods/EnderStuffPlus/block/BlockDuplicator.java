@@ -15,7 +15,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
+import sanandreasp.mods.EnderStuffPlus.client.particle.ParticleFXFuncCollection;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityDuplicator;
 import cpw.mods.fml.relauncher.Side;
@@ -106,7 +106,7 @@ public class BlockDuplicator extends BlockDirectional implements ITileEntityProv
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-		ESPModRegistry.proxy.spawnDupeFX(world, x, y, z, rand);
+		ParticleFXFuncCollection.spawnDupeFX(world, x, y, z, rand);
 	}
 
 	@Override

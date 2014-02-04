@@ -4,13 +4,15 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.INetworkManager;
 import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import sanandreasp.core.manpack.mod.packet.ISAPPacketHandler;
 import sanandreasp.mods.EnderStuffPlus.client.particle.ParticleFXFuncCollection;
 
+@SideOnly(Side.CLIENT)
 public class PacketFXSpawnRayballFX implements ISAPPacketHandler
 {
 	@Override
