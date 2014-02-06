@@ -1,12 +1,16 @@
 package sanandreasp.mods.EnderStuffPlus.client.render;
 
 import org.lwjgl.opengl.GL11;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import sanandreasp.core.manpack.helpers.client.ItemRenderHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
-public class ItemRendererNiobBow implements IItemRenderer {
+@SideOnly(Side.CLIENT)
+public class ItemRendererNiobBow implements IItemRenderer
+{
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
 		return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON;
@@ -28,22 +32,25 @@ public class ItemRendererNiobBow implements IItemRenderer {
 
 			// contra-translate the item from it's standard translation
 			// also apply some more scale or else the bow is tiny
-            float f2 = 3F - (1F/3F);
+            float scale = 3F - (1F/3F);
+            
             GL11.glRotatef(-20.0F, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(-60.0F, 0.0F, 0.0F, 1.0F);
-            GL11.glScalef(f2, f2, f2);
+            GL11.glScalef(scale, scale, scale);
             GL11.glTranslatef(-0.25F, -0.1875F, 0.1875F);
             
             // render the item as 'real' bow
-            float f3 = 0.625F;
+            scale = 0.625F;
+            
             GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
             GL11.glRotatef(-20.0F, 0.0F, 1.0F, 0.0F);
-            GL11.glScalef(f3, -f3, f3);
+            GL11.glScalef(scale, -scale, scale);
             GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
             
             ItemRenderHelper.renderItem(entity, item, 0);
+            
 			GL11.glPopMatrix();
 		}
 		GL11.glPushMatrix(); // prevents GL Underflow errors

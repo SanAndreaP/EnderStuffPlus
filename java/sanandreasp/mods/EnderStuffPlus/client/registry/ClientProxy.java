@@ -1,9 +1,6 @@
 package sanandreasp.mods.EnderStuffPlus.client.registry;
 
 import sanandreasp.core.manpack.mod.packet.PacketRegistry;
-import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderNemesis;
-import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderIgnis;
-import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderNivis;
 import sanandreasp.mods.EnderStuffPlus.client.packet.PacketChngBiome;
 import sanandreasp.mods.EnderStuffPlus.client.packet.PacketShowPetGUI;
 import sanandreasp.mods.EnderStuffPlus.client.packet.particle.PacketFXSpawnPortalFX;
@@ -23,7 +20,7 @@ import sanandreasp.mods.EnderStuffPlus.client.render.entity.RenderEnderMiss;
 import sanandreasp.mods.EnderStuffPlus.client.render.entity.RenderEnderNemesis;
 import sanandreasp.mods.EnderStuffPlus.client.render.entity.RenderEnderNivis;
 import sanandreasp.mods.EnderStuffPlus.client.render.entity.RenderEnderRay;
-import sanandreasp.mods.EnderStuffPlus.client.render.entity.RenderRayball;
+import sanandreasp.mods.EnderStuffPlus.client.render.entity.projectile.RenderRayball;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityAvisArrow;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderAvis;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderIgnis;
@@ -56,15 +53,15 @@ public class ClientProxy extends CommonProxy
 {
 	@Override
 	public void registerClientStuff() {
-		RenderingRegistry.registerEntityRenderingHandler(EntityEnderNivis.class, new RenderEnderNivis(new ModelEnderNivis(), 0.7F));
-		RenderingRegistry.registerEntityRenderingHandler(EntityEnderIgnis.class, new RenderEnderIgnis(new ModelEnderIgnis(), 0.7F));
+		RenderingRegistry.registerEntityRenderingHandler(EntityEnderNivis.class, new RenderEnderNivis());
+		RenderingRegistry.registerEntityRenderingHandler(EntityEnderIgnis.class, new RenderEnderIgnis());
 		RenderingRegistry.registerEntityRenderingHandler(EntityEnderMiss.class, new RenderEnderMiss());
 		RenderingRegistry.registerEntityRenderingHandler(EntityEnderRay.class, new RenderEnderRay());
 		RenderingRegistry.registerEntityRenderingHandler(EntityEnderAvis.class, new RenderEnderAvis());
 		RenderingRegistry.registerEntityRenderingHandler(EntityRayball.class, new RenderRayball(1F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityAvisArrow.class, new RenderAvisArrow());
 		RenderingRegistry.registerEntityRenderingHandler(EntityWeatherAltarFirework.class, new RenderWeatherAltarFirework());
-		RenderingRegistry.registerEntityRenderingHandler(EntityEnderNemesis.class, new RenderEnderNemesis(new ModelEnderNemesis(), 0.7F));
+		RenderingRegistry.registerEntityRenderingHandler(EntityEnderNemesis.class, new RenderEnderNemesis());
         RenderingRegistry.registerEntityRenderingHandler(EntityPearlNivis.class, new RenderSnowball(ESPModRegistry.espPearls, 0));
         RenderingRegistry.registerEntityRenderingHandler(EntityPearlIgnis.class, new RenderSnowball(ESPModRegistry.espPearls, 1));
         RenderingRegistry.registerEntityRenderingHandler(EntityPearlMiss.class, new RenderSnowball(ESPModRegistry.espPearls, 2));
@@ -91,14 +88,17 @@ public class ClientProxy extends CommonProxy
 		MinecraftForge.EVENT_BUS.register(new RenderHUDEvent());
 		MinecraftForge.EVENT_BUS.register(new FOVManipulator());
 		MinecraftForge.EVENT_BUS.register(new IconRegistry());
+		
 		TickRegistry.registerTickHandler(new TickHandlerPlayerClt(), Side.CLIENT);
         TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
+        
 		super.registerHandlers();
 	}
 	
 	@Override
 	public void registerPackets() {
 		super.registerPackets();
+		
 		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "changeBiome", new PacketChngBiome());
 		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "showPetGui", new PacketShowPetGUI());
 		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "fxPortal", new PacketFXSpawnPortalFX());
@@ -113,8 +113,8 @@ public class ClientProxy extends CommonProxy
 	}
 	
 	@Override
-	public void setJumping(boolean b, EntityLiving entity) {
-		if( b ) {
+	public void setJumping(boolean jump, EntityLiving entity) {
+		if( jump ) {
 			PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "riddenJump", entity.entityId);
 		}
 	}

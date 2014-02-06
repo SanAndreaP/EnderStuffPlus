@@ -1,14 +1,16 @@
 package sanandreasp.mods.EnderStuffPlus.client.render;
 
 import org.lwjgl.opengl.GL11;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import sanandreasp.core.manpack.helpers.client.ItemRenderHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
-public class ItemRendererGlowTools implements IItemRenderer {
-	
+@SideOnly(Side.CLIENT)
+public class ItemRendererGlowTools implements IItemRenderer
+{
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
 		return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON;

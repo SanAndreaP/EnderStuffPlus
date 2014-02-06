@@ -63,27 +63,33 @@ public class RenderEnderAvis extends RenderLiving implements Textures
 
 	protected int renderPassSpecial(EntityEnderAvis avis, int pass, float partTicks) {
 		if( pass == 0 ) {
-			setRenderPassModel(this.avisModel);
+			this.setRenderPassModel(this.avisModel);
 			this.bindTexture(ENDERAVIS_GLOW_TEXTURE);
+			
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glDisable(GL11.GL_ALPHA_TEST);
 			GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-			char bright = 0xF0;
+			
+			int bright = 0xF0;
 			int brightX = bright % 65536;
 			int brightY = bright / 65536;
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX / 1.0F, brightY / 1.0F);
+			
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glDepthMask(false);
+			
 			return 1;
 		} else if( pass == 1 ) {
 			GL11.glDepthMask(true);
-			int var5 = avis.getBrightnessForRender(partTicks);
-			int var6 = var5 % 65536;
-			int var7 = var5 / 65536;
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, var6 / 1.0F, var7 / 1.0F);
+			
+			int bright = avis.getBrightnessForRender(partTicks);
+			int brightX = bright % 65536;
+			int brightY = bright / 65536;
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX / 1.0F, brightY / 1.0F);
+			
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			
-			setRenderPassModel(this.coatModel);
+			this.setRenderPassModel(this.coatModel);
 			
 			if( avis.isImmuneToWater() ) {
 		        if( (avis.getCoat() & 31) == 18 ) {
@@ -91,23 +97,25 @@ public class RenderEnderAvis extends RenderLiving implements Textures
 		        	GL11.glEnable(GL11.GL_BLEND);
 		        	GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		        }
+		        
 				this.bindTexture(ENDERAVIS_CAPES_CLR[avis.getCoatColor()]);
-//				setRenderPassModel(this.coatModel);
 				
 				return 1;
-			} else {
-				return 0;
 			}
 		} else if( pass == 2 && avis.isImmuneToWater() ) {
 	        if( (avis.getCoat() & 31) == 18 ) {
 	        	GL11.glDisable(GL11.GL_BLEND);
 	        }
+	        
 			this.bindTexture(ENDERAVIS_CAPES_STR[avis.getCoatBaseColor()]);
+			
 			return 1;
 		} else if( pass == 3 && avis.isSaddled() ) {
 			this.bindTexture(ENDERAVIS_TEXTURE_SADDLE);
+			
 			return 1;
 		}
+		
 		return 0;
 	}
 
