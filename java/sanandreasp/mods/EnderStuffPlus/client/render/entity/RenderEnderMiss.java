@@ -181,7 +181,7 @@ public class RenderEnderMiss extends RenderLiving implements Textures
 			
 			GL11.glPushMatrix();
 			
-			this.missModel.bipedLeftArm.postRender(partTicks);
+			this.missModel.bipedLeftArm.postRender(0.0625F);
 			
 			GL11.glTranslatef(-0.0625F, 1.4375F, 0.0625F);
 			GL11.glTranslatef(0.10F, 0.1875F, -0.1075F);

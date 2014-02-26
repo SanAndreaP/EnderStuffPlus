@@ -24,8 +24,8 @@ import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 
 public class EntityEndermanESP extends EntityMob {
-    private static final UUID field_110192_bp = UUID.fromString("020E0DFB-87AE-4653-9556-831010E291A0");
-    private static final AttributeModifier attackingSpeedBoostModifier = (new AttributeModifier(field_110192_bp, "Attacking speed boost", 6.199999809265137D, 0)).setSaved(false);
+    private static final UUID classUUID = UUID.fromString("020E0DFB-87AE-4653-9556-831010E291A0");
+    private static final AttributeModifier attackingSpeedBoostModifier = (new AttributeModifier(classUUID, "Attacking speed boost", 6.199999809265137D, 0)).setSaved(false);
     public static boolean[] carriableBlocks = new boolean[Block.blocksList.length];
 
 	public boolean isImmuneToWater = false;

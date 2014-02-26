@@ -1,33 +1,31 @@
 package sanandreasp.mods.EnderStuffPlus.entity;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 
-public class EntityAvisArrow extends EntityArrow {
-	
-	protected boolean inGround = false;
-
-	public EntityAvisArrow(World par1World) {
-		super(par1World);
+public class EntityAvisArrow extends EntityArrow
+{
+	public EntityAvisArrow(World world) {
+		super(world);
 	}
 
-	public EntityAvisArrow(World par1World, double par2, double par4, double par6) {
-		super(par1World, par2, par4, par6);
+	public EntityAvisArrow(World world, double x, double y, double z) {
+		super(world, x, y, z);
 	}
 
-	public EntityAvisArrow(World par1World, EntityLivingBase par2EntityLiving, EntityLivingBase par3EntityLiving, float par4, float par5) {
-		super(par1World, par2EntityLiving, par3EntityLiving, par4, par5);
+	public EntityAvisArrow(World world, EntityLivingBase shooter, EntityLivingBase target, float motionMulti, float precision) {
+		super(world, shooter, target, motionMulti, precision);
 	}
 
-	public EntityAvisArrow(World par1World, EntityLivingBase par2EntityLiving, float par3) {
-		super(par1World, par2EntityLiving, par3);
+	public EntityAvisArrow(World world, EntityLivingBase shooter, float motionMulti) {
+		super(world, shooter, motionMulti);
 	}
 	
-	
-
 	@Override
 	public void onUpdate() {
 		double prevMotionX = this.motionX;
@@ -41,19 +39,17 @@ public class EntityAvisArrow extends EntityArrow {
 		this.motionZ = prevMotionZ;
 	}
 	
-
-    public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
-    {
-        if( !this.worldObj.isRemote )
-        {
-            if( this.inGround && this.arrowShake <= 0 && (
-            		(this.canBePickedUp == 1 && par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(ESPModRegistry.avisArrow, 1)))
-            		||
-            		par1EntityPlayer.capabilities.isCreativeMode
-            ) )
+    public void onCollideWithPlayer(EntityPlayer player) {
+        if( !this.worldObj.isRemote ) {
+        	NBTTagCompound origNBT = new NBTTagCompound();
+        	this.writeEntityToNBT(origNBT);
+        	
+            if( origNBT.getByte("inGround") == 1 && this.arrowShake <= 0
+                && ((this.canBePickedUp == 1 && player.inventory.addItemStackToInventory(new ItemStack(ESPModRegistry.avisArrow, 1)))
+            		|| player.capabilities.isCreativeMode) )
             {
                 this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                par1EntityPlayer.onItemPickup(this, 1);
+                player.onItemPickup(this, 1);
                 this.setDead();
             }
         }

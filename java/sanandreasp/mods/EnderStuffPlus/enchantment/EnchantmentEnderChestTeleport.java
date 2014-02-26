@@ -3,23 +3,24 @@ package sanandreasp.mods.EnderStuffPlus.enchantment;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class EnchantmentEnderChestTeleport extends Enchantment {
-
-    public EnchantmentEnderChestTeleport(int par1, int par2) {
-        super(par1, par2, EnumEnchantmentType.all);
+public class EnchantmentEnderChestTeleport extends Enchantment
+{
+    public EnchantmentEnderChestTeleport(int effectId, int weight) {
+        super(effectId, weight, EnumEnchantmentType.all);
         this.setName("enderChestTel");
     }
 
     @Override
-    public int getMinEnchantability(int par1) {
+    public int getMinEnchantability(int level) {
         return 15;
     }
 
     @Override
-    public int getMaxEnchantability(int par1) {
-        return super.getMinEnchantability(par1) + 50;
+    public int getMaxEnchantability(int level) {
+        return super.getMinEnchantability(level) + 50;
     }
 
     @Override
@@ -28,27 +29,25 @@ public class EnchantmentEnderChestTeleport extends Enchantment {
     }
 
     @Override
-    public boolean canApplyTogether(Enchantment par1Enchantment) {
-        return super.canApplyTogether(par1Enchantment);
+    public boolean canApplyTogether(Enchantment ench) {
+        return super.canApplyTogether(ench);
     }
 
     @Override
-    public boolean canApply(ItemStack par1ItemStack) {
-    	int id = par1ItemStack.itemID;
-        return super.canApply(par1ItemStack)
-        		&& (
-        				id == ESPModRegistry.niobPick.itemID ||
-        				id == ESPModRegistry.niobAxe.itemID ||
-        				id == ESPModRegistry.niobShovel.itemID ||
-        				id == ESPModRegistry.niobHoe.itemID ||
-        				id == ESPModRegistry.niobSword.itemID ||
-        				id == ESPModRegistry.niobShears.itemID
-        		   );
+    public boolean canApply(ItemStack stack) {
+    	Item itm = stack.getItem();
+        return super.canApply(stack)
+        	   && (itm == ESPModRegistry.niobPick
+        	       || itm == ESPModRegistry.niobAxe
+        	       || itm == ESPModRegistry.niobShovel
+        	       || itm == ESPModRegistry.niobHoe
+        	       || itm == ESPModRegistry.niobSword
+        	       || itm == ESPModRegistry.niobShears
+        		  );
     }
     
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack) {
     	return this.canApply(stack);
     }
-
 }

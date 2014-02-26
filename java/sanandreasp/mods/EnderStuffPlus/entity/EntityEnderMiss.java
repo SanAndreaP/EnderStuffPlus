@@ -225,6 +225,7 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 		return this.dataWatcher.getWatchableObjectInt(22);
 	}
 	
+	@Override
 	public int getCoatBaseColor() {
 		return getCoat() == -1 ? -1 : this.getCoat() >> 5;
 	}
@@ -290,6 +291,7 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 		return super.getMountedYOffset() + (this.isRidden() ? 0.6F : 0.0F);
 	}
 
+	@Override
 	public String getName() {
 		return this.getCustomNameTag();
 	}
@@ -333,7 +335,6 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 						ESPModRegistry.sendPacketAllRng("fxTameAcc", this.posX, this.posY, this.posZ, 128.0D, 
 							this.dimension, this.posX, this.posY, this.posZ, this.width, this.height
 						);
-//						this.spawnParticle((byte) 2, posX, posY, posZ, 0D, 0D, 0D);
 					}
 					playerItem.stackSize--;
 					return true;
@@ -342,7 +343,6 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 						ESPModRegistry.sendPacketAllRng("fxTameRef", this.posX, this.posY, this.posZ, 128.0D, 
 							this.dimension, this.posX, this.posY, this.posZ, this.width, this.height
 						);
-//						this.spawnParticle((byte) 1, posX, posY, posZ, 0D, 0D, 0D);
 					}
 					playerItem.stackSize--;
 					return true;
@@ -369,7 +369,6 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 						ESPModRegistry.sendPacketAllRng("fxTameAcc", this.posX, this.posY, this.posZ, 128.0D, 
 							this.dimension, this.posX, this.posY, this.posZ, this.width, this.height
 						);
-//						this.spawnParticle((byte) 2, posX, posY, posZ, 0D, 0D, 0D);
 					}
 					playerItem.stackSize--;
 					return true;
@@ -402,6 +401,7 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 		return false;
 	}
 
+	@Override
 	public boolean isFollowing() {
 		return (this.dataWatcher.getWatchableObjectByte(21) & 64) == 64;
 	}
@@ -432,6 +432,7 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 		}
 	}
 
+	@Override
 	public boolean isSitting() {
 		try {
 			return (this.dataWatcher.getWatchableObjectByte(21) & 4) == 4;
@@ -555,18 +556,20 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
         AttributeInstance attributeinstance = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
         attributeinstance.removeModifier(attributes);
 
-		if( this.isTamed() && !this.isSitting() && !this.isRidden() && ep != null && this.getDistanceToEntity(ep ) > 2F
+		if( this.isTamed() && !this.isSitting() && !this.isRidden() && ep != null && this.getDistanceToEntity(ep) > 2F
 				&& this.ownerName.equals(ep.username)
-				&& this.isFollowing()) {
+				&& this.isFollowing() )
+		{
 			this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 24F, false, false, !this.isImmuneToWater(), !this.isImmuneToWater()));
             attributeinstance.applyModifier(attributes);
 			if( this.getDistanceToEntity(ep) > 10F && this.teleportTimer <= 0 && Math.abs(ep.posY - this.posY) < 6F ) {
 				this.teleportToEntity(ep);
 			}
-		} else if( this.isTamed() && !this.isRidden() && ep != null && ep.getCurrentEquippedItem( ) != null
+		} else if( this.isTamed() && !this.isRidden() && ep != null && ep.getCurrentEquippedItem() != null
 				&& ep.getCurrentEquippedItem().getItem() instanceof ItemFood
 				&& this.getDistanceToEntity(ep) > 2F
-				&& this.needFood() && !this.isSitting()) {
+				&& this.needFood() && !this.isSitting() )
+		{
             attributeinstance.applyModifier(attributes);
 			this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 8F, false, false, !this.isImmuneToWater(), !this.isImmuneToWater()));
 		}
@@ -702,10 +705,12 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 		this.dataWatcher.updateObject(18, new Byte((byte)clr));
 	}
 	
+	@Override
 	public void setFollowing(boolean b) {
 		setBoolean(b, 64, 21);
 	}
-
+	
+	@Override
 	public void setName(String name) {
 		this.setCustomNameTag(name);
 	}

@@ -1,8 +1,6 @@
 package sanandreasp.mods.EnderStuffPlus.entity.item;
 
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,26 +12,24 @@ import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-public class EntityPearlNivis extends EntityThrowable {
-    
-    public EntityPearlNivis(World par1World) {
-        super(par1World);
+public class EntityPearlNivis extends EntityThrowable
+{
+    public EntityPearlNivis(World world) {
+        super(world);
     }
     
-    public EntityPearlNivis(World par1World, EntityLivingBase par2EntityLivingBase) {
-        super(par1World, par2EntityLivingBase);
+    public EntityPearlNivis(World world, EntityLivingBase livingBase) {
+        super(world, livingBase);
     }
 
-    @SideOnly(Side.CLIENT)
-    public EntityPearlNivis(World par1World, double par2, double par4, double par6)
-    {
-        super(par1World, par2, par4, par6);
+    public EntityPearlNivis(World world, double x, double y, double z) {
+        super(world, x, y, z);
     }
 
     @Override
-    protected void onImpact(MovingObjectPosition movingobjectposition) {
-        if( movingobjectposition.entityHit != null ) {
-            movingobjectposition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0.0F);
+    protected void onImpact(MovingObjectPosition movingObjPos) {
+        if( movingObjPos.entityHit != null ) {
+            movingObjPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0.0F);
         }
         
         for( int i = 0; i < 8; i++ ) {
@@ -41,10 +37,10 @@ public class EntityPearlNivis extends EntityThrowable {
         }
 
         if( !this.worldObj.isRemote ) {
-            if( movingobjectposition.typeOfHit == EnumMovingObjectType.TILE && this.getThrower() instanceof EntityPlayer ) {
-                int var13 = movingobjectposition.blockX;
-                int var14 = movingobjectposition.blockY;
-                int var15 = movingobjectposition.blockZ;
+            if( movingObjPos.typeOfHit == EnumMovingObjectType.TILE && this.getThrower() instanceof EntityPlayer ) {
+                int var13 = movingObjPos.blockX;
+                int var14 = movingObjPos.blockY;
+                int var15 = movingObjPos.blockZ;
         
                 if( !this.worldObj.canMineBlock((EntityPlayer)this.getThrower(), var13, var14, var15) ) {
                     this.setDead();
@@ -56,8 +52,9 @@ public class EntityPearlNivis extends EntityThrowable {
                 for( int i = -3; i <= 3; i++ ) {
                     for( int j = -3; j <= 3; j++ ) {
                         for( int k = -3; k <= 3; k++ ) {
-                            if( Math.sqrt(i*i + j*j + k*k) > 3.4D )
+                            if( Math.sqrt(i*i + j*j + k*k) > 3.4D ) {
                                 continue;
+                            }
                             
                             int blockID = this.worldObj.getBlockId(var13 + i, var14 + j, var15 + k);
                             
@@ -79,10 +76,11 @@ public class EntityPearlNivis extends EntityThrowable {
                 if( playSound ) {
                     this.worldObj.playSoundEffect(var13, var14, var15, "random.fizz", 1.0F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
                 }
-            } else if( movingobjectposition.typeOfHit == EnumMovingObjectType.ENTITY && movingobjectposition.entityHit != null ) {
-            	if( movingobjectposition.entityHit instanceof EntityLivingBase )
-            		((EntityLivingBase)movingobjectposition.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 300, 0));
-                movingobjectposition.entityHit.extinguish();
+            } else if( movingObjPos.typeOfHit == EnumMovingObjectType.ENTITY && movingObjPos.entityHit != null ) {
+            	if( movingObjPos.entityHit instanceof EntityLivingBase ) {
+            		((EntityLivingBase)movingObjPos.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 300, 0));
+            	}
+                movingObjPos.entityHit.extinguish();
             }
             
             this.setDead();
