@@ -39,13 +39,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnderCreature
 {
-	private static final UUID entityUUID = UUID.fromString("2B4AD668-5FE7-4338-B476-B035D7B5E80A");
-    private static final AttributeModifier attributes = (new AttributeModifier(entityUUID, "Attacking speed boost", 6.199999809265137D, 0)).setSaved(false);
+    private static final AttributeModifier speedyTamed = (new AttributeModifier(UUID.fromString("020E0DFB-87AE-4653-9556-831010E291A0"), "Tamerfollowing speed boost", 6.199999809265137D, 0)).setSaved(false);
     
 	public String ownerName = "";
 	public int jumpTicks = 0;
 
-	protected float walkSpeed;
 	protected int attackStrength = 0;
 	protected static boolean[] canCarryBlocks = new boolean[Block.blocksList.length];
 
@@ -76,7 +74,7 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 		this.attackStrength = 0;
 		this.setSize(0.6F, 2.9F);
 		this.stepHeight = 1.0F;
-		this.walkSpeed = this.getAIMoveSpeed() * 1.6F;
+//		this.walkSpeed = this.getAIMoveSpeed() * 1.6F;
 		
 		this.dataWatcher.addObject(18, new Byte((byte) this.rand.nextInt(ItemRaincoat.colorList.size() - 3)));
 		this.dataWatcher.addObject(21, new Byte((byte) 0));
@@ -554,14 +552,18 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 
 		EntityPlayer ep = this.getOwningPlayer(25F);
         AttributeInstance attributeinstance = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
-        attributeinstance.removeModifier(attributes);
+        attributeinstance.removeModifier(speedyTamed);
 
-		if( this.isTamed() && !this.isSitting() && !this.isRidden() && ep != null && this.getDistanceToEntity(ep) > 2F
+		if( this.isTamed()
+				&& !this.isSitting()
+				&& !this.isRidden()
+				&& ep != null
+				&& this.getDistanceToEntity(ep) > 2F
 				&& this.ownerName.equals(ep.username)
 				&& this.isFollowing() )
 		{
 			this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 24F, false, false, !this.isImmuneToWater(), !this.isImmuneToWater()));
-            attributeinstance.applyModifier(attributes);
+            attributeinstance.applyModifier(speedyTamed);
 			if( this.getDistanceToEntity(ep) > 10F && this.teleportTimer <= 0 && Math.abs(ep.posY - this.posY) < 6F ) {
 				this.teleportToEntity(ep);
 			}
@@ -570,7 +572,7 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 				&& this.getDistanceToEntity(ep) > 2F
 				&& this.needFood() && !this.isSitting() )
 		{
-            attributeinstance.applyModifier(attributes);
+            attributeinstance.applyModifier(speedyTamed);
 			this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 8F, false, false, !this.isImmuneToWater(), !this.isImmuneToWater()));
 		}
 
@@ -639,8 +641,8 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 		super.onLivingUpdate();
 		
 		if( isRiddenDW() && riddenByEntity != null ) {
-            attributeinstance.applyModifier(attributes);
-			this.jumpMovementFactor = this.walkSpeed / 5.0F;
+            attributeinstance.applyModifier(speedyTamed);
+			this.jumpMovementFactor = (this.getAIMoveSpeed() * 1.6F) / 5.0F;
 			EntityPlayer var1 = (EntityPlayer) this.riddenByEntity;
 			this.rotationYawHead = var1.rotationYawHead;
 			this.setRotation(var1.rotationYaw, 0.0F);
@@ -843,7 +845,7 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 		}
 
 		if( !this.isRiddenDW() ) {
-			this.jumpMovementFactor = this.walkSpeed / 5.0F;
+			this.jumpMovementFactor = (this.getAIMoveSpeed() * 1.6F) / 5.0F;
 
 			super.updateEntityActionState();
 		}
