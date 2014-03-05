@@ -2,9 +2,12 @@ package sanandreasp.mods.EnderStuffPlus.client.model;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+
 import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -17,7 +20,7 @@ public class ModelEnderMiss extends ModelBiped
 	public boolean hasAvisFeather = false;
 	public boolean isRidden = false;
 	public boolean isSitting = false;
-	public float bowClr[] = new float[3];
+//	public float bowClr[] = new float[3];
 	
 	public ModelRenderer bipedBodyCoat, bow;
 
@@ -181,15 +184,14 @@ public class ModelEnderMiss extends ModelBiped
         } else {
             this.bipedBody.render(partTicks);
         }
-        	
-        
-		GL11.glPushMatrix();
-		if( entity instanceof EntityLiving && ((EntityLiving) entity).hurtTime <= 0 ) {
-			GL11.glColor3f(this.bowClr[0], this.bowClr[1], this.bowClr[2]);
-		}
-		this.bow.render(partTicks);
-		GL11.glColor3f(1F, 1F, 1F);
-		GL11.glPopMatrix();
+		
+//		GL11.glPushMatrix();
+//		if( entity instanceof EntityLiving && ((EntityLiving) entity).hurtTime <= 0 ) {
+//			GL11.glColor3f(this.bowClr[0], this.bowClr[1], this.bowClr[2]);
+//		}
+//		this.bow.render(partTicks);
+//		GL11.glColor3f(1F, 1F, 1F);
+//		GL11.glPopMatrix();
 	}
 
 	@Override
