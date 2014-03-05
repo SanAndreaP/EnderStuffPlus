@@ -52,7 +52,7 @@ public class EntityEnderNivis extends EntityEndermanESP implements IEnderCreatur
 	
 	@Override
 	protected int getDamageDropped() {
-		return 1;
+		return 0;
 	}
 
 	@Override

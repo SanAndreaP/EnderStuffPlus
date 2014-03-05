@@ -88,7 +88,7 @@ public class EntityEnderIgnis extends EntityEndermanESP implements IEnderCreatur
 	
 	@Override
 	protected int getDamageDropped() {
-		return 0;
+		return 1;
 	}
 
 	@SuppressWarnings("unused")
