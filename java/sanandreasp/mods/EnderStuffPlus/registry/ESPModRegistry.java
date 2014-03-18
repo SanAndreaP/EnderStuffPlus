@@ -13,6 +13,7 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumArmorMaterial;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,6 +23,8 @@ import net.minecraft.world.biome.SpawnListEntry;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import sanandreasp.core.manpack.helpers.CommonUsedStuff;
 import sanandreasp.core.manpack.helpers.ItemBlockNamedMeta;
@@ -33,6 +36,7 @@ import sanandreasp.mods.EnderStuffPlus.block.BlockAvisEgg;
 import sanandreasp.mods.EnderStuffPlus.block.BlockBiomeChanger;
 import sanandreasp.mods.EnderStuffPlus.block.BlockCorruptEndStone;
 import sanandreasp.mods.EnderStuffPlus.block.BlockDuplicator;
+import sanandreasp.mods.EnderStuffPlus.block.BlockEndFluid;
 import sanandreasp.mods.EnderStuffPlus.block.BlockEndLeaves;
 import sanandreasp.mods.EnderStuffPlus.block.BlockEndLog;
 import sanandreasp.mods.EnderStuffPlus.block.BlockEndOre;
@@ -119,7 +123,9 @@ public class ESPModRegistry
 
 	public static Block	avisEgg, endOre, endBlock, biomeChanger, duplicator,
 						weatherAltar, blockEndDoor, enderLeaves, enderLog, sapEndTree,
-						enderPlanks, corruptES;
+						enderPlanks, corruptES, endFluidBlock;
+	
+	public static Fluid endFluid;
 	
 	public static Enchantment enderChestTel;
 
@@ -178,6 +184,29 @@ public class ESPModRegistry
 				},
 				EnumArmorMaterial.GOLD.getEnchantability()
 			);
+/** 
+ * 
+ * //// TESTIN' STUFF
+ * 		
+ */
+		ESPModRegistry.endFluid = new Fluid("enderstuffp:endfluid");
+		ESPModRegistry.endFluid.setBlockID(ConfigRegistry.blockIDs.get("End Fluid"));
+		ESPModRegistry.endFluid.setDensity(-500);
+		ESPModRegistry.endFluid.setTemperature(150);
+		ESPModRegistry.endFluid.setLuminosity(8);
+		ESPModRegistry.endFluid.setViscosity(500);
+		ESPModRegistry.endFluid.setRarity(EnumRarity.uncommon);
+		endFluid.setGaseous(true);
+		
+		FluidRegistry.registerFluid(ESPModRegistry.endFluid);
+		
+		ESPModRegistry.endFluidBlock = new BlockEndFluid(ConfigRegistry.blockIDs.get("End Fluid"), endFluid, Material.water);
+		GameRegistry.registerBlock(endFluidBlock, "enderstuffp:bollocks");
+/** 
+ * 
+ * //// TESTIN' STUFF
+ * 		
+ */
 		
 	// Blocks
 		ESPModRegistry.avisEgg			= new BlockAvisEgg(ConfigRegistry.blockIDs.get("Avis Egg").intValue())

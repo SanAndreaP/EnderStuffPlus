@@ -3,6 +3,7 @@ package sanandreasp.mods.EnderStuffPlus.client.registry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import sanandreasp.mods.EnderStuffPlus.client.texture.TextureAvisCompass;
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Icon;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -15,7 +16,7 @@ public class IconRegistry
 	public static TextureAtlasSprite compass;
 	
 	@ForgeSubscribe
-	public void onItemIconRegister(TextureStitchEvent.Pre evt) {
+	public void onTexStitchPre(TextureStitchEvent.Pre evt) {
 		if( evt.map.textureType == 1 ) {
 			IconRegistry.sun = evt.map.registerIcon("enderstuffp:sun");
 			IconRegistry.rain = evt.map.registerIcon("enderstuffp:rain");
@@ -27,5 +28,10 @@ public class IconRegistry
 			
 			evt.map.setTextureEntry("enderstuffp:compass", IconRegistry.compass = new TextureAvisCompass());
 		}
+	}
+	
+	@ForgeSubscribe
+	public void onTexStitchPost(TextureStitchEvent.Post evt) {
+		ESPModRegistry.endFluid.setIcons(ESPModRegistry.endFluidBlock.getBlockTextureFromSide(0), ESPModRegistry.endFluidBlock.getBlockTextureFromSide(1));
 	}
 }

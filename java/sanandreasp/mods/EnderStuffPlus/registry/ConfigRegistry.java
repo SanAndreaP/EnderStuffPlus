@@ -35,6 +35,7 @@ public final class ConfigRegistry {
 		blockIDs.put("Ender Planks",		1009);
 		blockIDs.put("Ender Sapling",		1010);
 		blockIDs.put("Corrupt End Stone",	1011);
+		blockIDs.put("End Fluid",			1012);
 		
 		itemIDs.put("ESP Pearls", 			10000);
 		itemIDs.put("Ender Flesh",			10002);
