@@ -3,7 +3,6 @@ package sanandreasp.mods.EnderStuffPlus.client.gui.BiomeChanger;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import sanandreasp.core.manpack.helpers.client.GuiItemTab;
-import sanandreasp.core.manpack.managers.SAPLanguageManager;
 import sanandreasp.mods.EnderStuffPlus.client.registry.IconRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.Textures;
@@ -72,9 +71,5 @@ public abstract class GuiBiomeChangerBase extends GuiContainer
 		} else if( id == this.tabCofig.id ) {
 			ESPModRegistry.sendPacketSrv("bcGuiChange", 3, this.bcte.xCoord, this.bcte.yCoord, this.bcte.zCoord, this.mc.thePlayer);
 		}
-	}
-	
-	protected String translate(String s) {
-		return SAPLanguageManager.getTranslated(s);
 	}
 }

@@ -15,7 +15,7 @@ import com.google.common.collect.Maps;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import sanandreasp.core.manpack.managers.SAPLanguageManager;
+import sanandreasp.core.manpack.helpers.CUS;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.RegistryBiomeChanger;
 import sanandreasp.mods.EnderStuffPlus.registry.Textures;
@@ -71,7 +71,7 @@ public class GuiBiomeChangerBiomes extends GuiBiomeChangerBase implements Textur
 	    
 	    GL11.glPushMatrix();
 	    GL11.glTranslated(this.guiLeft, this.guiTop, 0F);
-		this.fontRenderer.drawString(SAPLanguageManager.getTranslated("tile.enderstuffp:biomeChanger.name"), 8, 8, 0x404040);
+		this.fontRenderer.drawString(CUS.getTranslated("tile.enderstuffp:biomeChanger.name"), 8, 8, 0x404040);
 		this.mc.getTextureManager().bindTexture(GUI_BIOMECHANGER_II);
 		for( int i = this.entryPos; i < 14 + this.entryPos; i++ ) {
 	        int x = 8, y = 21 + 13*(i-this.entryPos);

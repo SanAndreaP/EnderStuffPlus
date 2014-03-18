@@ -43,28 +43,28 @@ public class EntityEndermanESP extends EntityMob {
     public static final int TP_LIQUID = 1;
     public static final int TP_DAYTIME = 2;
     public static final int TP_PROJECTILE = 3;
+	
+	static {
+		carriableBlocks[Block.grass.blockID] = true;
+		carriableBlocks[Block.dirt.blockID] = true;
+		carriableBlocks[Block.sand.blockID] = true;
+		carriableBlocks[Block.gravel.blockID] = true;
+		carriableBlocks[Block.plantYellow.blockID] = true;
+		carriableBlocks[Block.plantRed.blockID] = true;
+		carriableBlocks[Block.mushroomBrown.blockID] = true;
+		carriableBlocks[Block.mushroomRed.blockID] = true;
+		carriableBlocks[Block.tnt.blockID] = true;
+		carriableBlocks[Block.cactus.blockID] = true;
+		carriableBlocks[Block.blockClay.blockID] = true;
+		carriableBlocks[Block.pumpkin.blockID] = true;
+		carriableBlocks[Block.melon.blockID] = true;
+		carriableBlocks[Block.mycelium.blockID] = true;
+	}
 
     public EntityEndermanESP(World par1World) {
         super(par1World);
         this.setSize(0.6F, 2.9F);
         this.stepHeight = 1.0F;
-		
-		{
-			EntityEndermanESP.carriableBlocks[Block.grass.blockID] = ConfigRegistry.griefing;
-			EntityEndermanESP.carriableBlocks[Block.dirt.blockID] = ConfigRegistry.griefing;
-			EntityEndermanESP.carriableBlocks[Block.sand.blockID] = ConfigRegistry.griefing;
-			EntityEndermanESP.carriableBlocks[Block.gravel.blockID] = ConfigRegistry.griefing;
-			EntityEndermanESP.carriableBlocks[Block.plantYellow.blockID] = ConfigRegistry.griefing;
-			EntityEndermanESP.carriableBlocks[Block.plantRed.blockID] = ConfigRegistry.griefing;
-			EntityEndermanESP.carriableBlocks[Block.mushroomBrown.blockID] = ConfigRegistry.griefing;
-			EntityEndermanESP.carriableBlocks[Block.mushroomRed.blockID] = ConfigRegistry.griefing;
-			EntityEndermanESP.carriableBlocks[Block.tnt.blockID] = ConfigRegistry.griefing;
-			EntityEndermanESP.carriableBlocks[Block.cactus.blockID] = ConfigRegistry.griefing;
-			EntityEndermanESP.carriableBlocks[Block.blockClay.blockID] = ConfigRegistry.griefing;
-			EntityEndermanESP.carriableBlocks[Block.pumpkin.blockID] = ConfigRegistry.griefing;
-			EntityEndermanESP.carriableBlocks[Block.melon.blockID] = ConfigRegistry.griefing;
-			EntityEndermanESP.carriableBlocks[Block.mycelium.blockID] = ConfigRegistry.griefing;
-		}
     }
 
     @Override
@@ -164,7 +164,7 @@ public class EntityEndermanESP extends EntityMob {
         this.prevTarget = this.entityToAttack;
         int i;
 
-        if( !this.worldObj.isRemote && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") ) {
+        if( !this.worldObj.isRemote && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && ConfigRegistry.griefing ) {
             int j;
             int k;
             int l;

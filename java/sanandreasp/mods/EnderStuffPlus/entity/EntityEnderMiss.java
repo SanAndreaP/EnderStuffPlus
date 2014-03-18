@@ -1,8 +1,8 @@
 package sanandreasp.mods.EnderStuffPlus.entity;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
@@ -28,10 +28,10 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
+import sanandreasp.core.manpack.helpers.CUS;
 import sanandreasp.core.manpack.mod.packet.PacketRegistry;
-import sanandreasp.mods.EnderStuffPlus.client.packet.PacketShowPetGUI;
 import sanandreasp.mods.EnderStuffPlus.item.ItemRaincoat;
-import sanandreasp.mods.EnderStuffPlus.packet.PacketRiddenMove;
+import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -45,7 +45,7 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 	public int jumpTicks = 0;
 
 	protected int attackStrength = 0;
-	protected static boolean[] canCarryBlocks = new boolean[Block.blocksList.length];
+	protected static boolean[] carriableBlocks = new boolean[Block.blocksList.length];
 
 	protected int teleportDelay = 0;
 	public int teleportTimer = 0;
@@ -53,84 +53,85 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 	private int prevBaseClr = -1;
 	
 	static {
-		canCarryBlocks[Block.grass.blockID] = true;
-		canCarryBlocks[Block.dirt.blockID] = true;
-		canCarryBlocks[Block.sand.blockID] = true;
-		canCarryBlocks[Block.gravel.blockID] = true;
-		canCarryBlocks[Block.plantYellow.blockID] = true;
-		canCarryBlocks[Block.plantRed.blockID] = true;
-		canCarryBlocks[Block.mushroomBrown.blockID] = true;
-		canCarryBlocks[Block.mushroomRed.blockID] = true;
-		canCarryBlocks[Block.tnt.blockID] = true;
-		canCarryBlocks[Block.cactus.blockID] = true;
-		canCarryBlocks[Block.blockClay.blockID] = true;
-		canCarryBlocks[Block.pumpkin.blockID] = true;
-		canCarryBlocks[Block.melon.blockID] = true;
-		canCarryBlocks[Block.mycelium.blockID] = true;
+		carriableBlocks[Block.grass.blockID] = true;
+		carriableBlocks[Block.dirt.blockID] = true;
+		carriableBlocks[Block.sand.blockID] = true;
+		carriableBlocks[Block.gravel.blockID] = true;
+		carriableBlocks[Block.plantYellow.blockID] = true;
+		carriableBlocks[Block.plantRed.blockID] = true;
+		carriableBlocks[Block.mushroomBrown.blockID] = true;
+		carriableBlocks[Block.mushroomRed.blockID] = true;
+		carriableBlocks[Block.tnt.blockID] = true;
+		carriableBlocks[Block.cactus.blockID] = true;
+		carriableBlocks[Block.blockClay.blockID] = true;
+		carriableBlocks[Block.pumpkin.blockID] = true;
+		carriableBlocks[Block.melon.blockID] = true;
+		carriableBlocks[Block.mycelium.blockID] = true;
 	}
 	
-	public EntityEnderMiss(World par1World) {
-		super(par1World);
+	public EntityEnderMiss(World world) {
+		super(world);
 		this.attackStrength = 0;
 		this.setSize(0.6F, 2.9F);
 		this.stepHeight = 1.0F;
-//		this.walkSpeed = this.getAIMoveSpeed() * 1.6F;
 		
 		this.dataWatcher.addObject(18, new Byte((byte) this.rand.nextInt(ItemRaincoat.colorList.size() - 3)));
 		this.dataWatcher.addObject(21, new Byte((byte) 0));
 		this.dataWatcher.addObject(22, -1);
 		
 		if( this.rand.nextInt(1024) == 0 ) {
-			setCoat(this.rand.nextInt(2), this.rand.nextInt(ItemRaincoat.colorList.size()));
+			setCoat(this.rand.nextInt(ItemRaincoat.baseList.size()), this.rand.nextInt(ItemRaincoat.colorList.size()));
 		}
+		
 		setSpecial(this.rand.nextInt(16) == 0);
 		setCanGetFallDmg(true);
 	}
 	
 	@Override
-	protected void attackEntity(Entity par1Entity, float par2) {
-
-	}
+	protected void attackEntity(Entity entity, float dmg) { }
 	
 	@Override
-	public boolean attackEntityAsMob(Entity par1Entity) {
+	public boolean attackEntityAsMob(Entity entity) {
 		return false;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-		if( !this.worldObj.isRemote )
+	@SuppressWarnings("unchecked")
+	public boolean attackEntityFrom(DamageSource dmgSource, float dmg) {
+		if( !this.worldObj.isRemote ) {
 			setSitting(false);
+		}
 		
-		if( this.isRidden() && par1DamageSource != null && par1DamageSource.getEntity() instanceof EntityPlayer )
+		if( this.isRidden() && dmgSource != null && dmgSource.getEntity() instanceof EntityPlayer ) {
 			return false;
+		}
 
-		if( par1DamageSource instanceof EntityDamageSourceIndirect && !this.isTamed() ) {
-			for( int var3 = 0; var3 < 64; ++var3 ) {
+		if( dmgSource instanceof EntityDamageSourceIndirect && !this.isTamed() ) {
+			for( int i = 0; i < 64; ++i ) {
 				if( this.teleportRandomly() ) {
 					return false;
 				}
 			}
 
 			return false;
-		} else if( this.isTamed() && par1DamageSource.equals(DamageSource.fall) && !this.canGetFallDmg() ) {
+		} else if( this.isTamed() && dmgSource.equals(DamageSource.fall) && !this.canGetFallDmg() ) {
 			return false;
 		} else {
-			if( par1DamageSource.getEntity() != null && par1DamageSource.getEntity() instanceof EntityPlayer && !this.isTamed() ) {
+			if( dmgSource.getEntity() != null && dmgSource.getEntity() instanceof EntityPlayer && !this.isTamed() ) {
 				List<Entity> entities = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, (this.boundingBox.copy()).expand(16D, 16D, 16D));
+				
 				for( Entity entity : entities ) {
 					if( entity != null && (entity instanceof EntityEnderman) ) {
-						((EntityEnderman) entity).setTarget((EntityPlayer)par1DamageSource.getEntity());
+						((EntityEnderman) entity).setTarget((EntityPlayer)dmgSource.getEntity());
 						((EntityEnderman) entity).setScreaming(true);
 					} else if( entity != null && (entity instanceof EntityEndermanESP) ) {
-						((EntityEndermanESP) entity).setTarget((EntityPlayer)par1DamageSource.getEntity());
+						((EntityEndermanESP) entity).setTarget((EntityPlayer)dmgSource.getEntity());
 						((EntityEndermanESP) entity).setScreaming(true);
 					}
 				}
 			}
 			
-			return super.attackEntityFrom(par1DamageSource, par2);
+			return super.attackEntityFrom(dmgSource, dmg);
 		}
 	}
 	
@@ -160,8 +161,10 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 	}
 	
 	@Override
-	protected void fall(float par1) {
-		if( this.canGetFallDmg()) super.fall(par1 );
+	protected void fall(float fallDist) {
+		if( this.canGetFallDmg() ) {
+			super.fall(fallDist);
+		}
 	}
 	
 	@Override
@@ -182,8 +185,8 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 	}
 	
 	@Override
-	public float getBlockPathWeight(int par1, int par2, int par3) {
-		return 0.5F - this.worldObj.getLightBrightness(par1, par2, par3) * (this.isTamed() ? -1 : 1);
+	public float getBlockPathWeight(int x, int y, int z) {
+		return 0.5F - this.worldObj.getLightBrightness(x, y, z) * (this.isTamed() ? -1 : 1);
 	}
 	
 	public float[] getBowColor() {
@@ -194,16 +197,6 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 		float blue = (color & 255) / 255.0F;
 
 		return new float[] { red, green, blue };
-	}
-	
-	@Override
-	public float getBrightness(float par1) {
-		return super.getBrightness(par1);
-	}
-	
-	@Override
-	public int getBrightnessForRender(float par1) {
-		return super.getBrightnessForRender(par1);
 	}
 
 	@Override
@@ -247,11 +240,11 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 	}
 
     @Override
-    protected void dropFewItems(boolean par1, int par2) {
+    protected void dropFewItems(boolean hitByPlyr, int lootLvl) {
         int j = this.getDropItemId();
 
         if( j > 0 && !this.isTamed() ) {
-            int k = this.rand.nextInt(2 + par2);
+            int k = this.rand.nextInt(2 + lootLvl);
 
             for( int l = 0; l < k; ++l ) {
             	this.entityDropItem(new ItemStack(j, 1, 2), 0.0F);
@@ -298,16 +291,18 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 	private EntityPlayer getOwningPlayer(float distance) {
 		if( !this.worldObj.isRemote && this.isTamed() ) {
 			Iterator<EntityPlayer> players = this.worldObj.playerEntities.iterator();
-			while(players.hasNext()) {
+			while( players.hasNext() ) {
 				EntityPlayer currPlayer = players.next();
 				if( this.ownerName.equals(currPlayer.username) ) {
-					if( this.getDistanceToEntity(currPlayer) < distance )
+					if( this.getDistanceToEntity(currPlayer) < distance ) {
 						return currPlayer;
-					else
+					} else {
 						return null;
+					}
 				}
 			}
 		}
+		
 		return null;
 	}
 
@@ -322,13 +317,13 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 	}
 
 	@Override
-	public boolean interact(EntityPlayer par1EntityPlayer) {
-		if( par1EntityPlayer.getCurrentEquippedItem() != null ) {
-			ItemStack playerItem = par1EntityPlayer.getCurrentEquippedItem();
-			if( playerItem.itemID == Block.plantYellow.blockID && !this.worldObj.isRemote && (!this.isTamed() || ownerName.isEmpty()) ) {
+	public boolean interact(EntityPlayer player) {
+		if( player.getCurrentEquippedItem() != null ) {
+			ItemStack playerItem = player.getCurrentEquippedItem();
+			if( CUS.areItemInstEqual(playerItem, Block.plantYellow) && !this.worldObj.isRemote && (!this.isTamed() || ownerName.isEmpty()) ) {
 				if( this.rand.nextInt(10) == 0 ) {
 					this.setTamed(true);
-					this.ownerName = par1EntityPlayer.username;
+					this.ownerName = player.username;
 					if( !this.worldObj.isRemote ) {
 						ESPModRegistry.sendPacketAllRng("fxTameAcc", this.posX, this.posY, this.posZ, 128.0D, 
 							this.dimension, this.posX, this.posY, this.posZ, this.width, this.height
@@ -345,19 +340,20 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 					playerItem.stackSize--;
 					return true;
 				}
-			} else if( this.isTamed() && this.ownerName.equals(par1EntityPlayer.username) && !isRidden() && !worldObj.isRemote ) {
-				if( playerItem.itemID == ESPModRegistry.rainCoat.itemID && this.getCoat() != playerItem.getItemDamage() ) {
-					if( this.getCoat() >= 0 && !par1EntityPlayer.capabilities.isCreativeMode)
-						par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(ESPModRegistry.rainCoat, 1, this.getCoat()));
-					par1EntityPlayer.inventoryContainer.detectAndSendChanges();
+			} else if( this.isTamed() && this.ownerName.equals(player.username) && !isRidden() && !worldObj.isRemote ) {
+				if( CUS.areItemInstEqual(playerItem, ESPModRegistry.rainCoat) && this.getCoat() != playerItem.getItemDamage() ) {
+					if( this.getCoat() >= 0 && !player.capabilities.isCreativeMode) {
+						player.inventory.addItemStackToInventory(new ItemStack(ESPModRegistry.rainCoat, 1, this.getCoat()));
+					}
+					player.inventoryContainer.detectAndSendChanges();
 					this.setCoat(playerItem.getItemDamage() >> 5, playerItem.getItemDamage() & 31);
 					playerItem.stackSize--;
 					return true;
-				} else if( playerItem.getItem() == ESPModRegistry.avisFeather && this.canGetFallDmg() ) {
+				} else if( CUS.areItemInstEqual(playerItem, ESPModRegistry.avisFeather) && this.canGetFallDmg() ) {
 					setCanGetFallDmg(false);
 					playerItem.stackSize--;
 					return true;
-				} else if( playerItem.getItem() == Item.dyePowder && playerItem.getItemDamage() != this.getColor() ) {
+				} else if( CUS.areItemInstEqual(playerItem, Item.dyePowder) && playerItem.getItemDamage() != this.getColor() ) {
 					setColor(playerItem.getItemDamage());
 					playerItem.stackSize--;
 					return true;
@@ -370,28 +366,28 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 					}
 					playerItem.stackSize--;
 					return true;
-				} else if( playerItem.getItem() == ESPModRegistry.enderPetStaff ) {
-					PacketRegistry.sendPacketToPlayer(ESPModRegistry.modID, "showPetGui", (Player)par1EntityPlayer, this);
+				} else if( CUS.areItemInstEqual(playerItem, ESPModRegistry.enderPetStaff) ) {
+					PacketRegistry.sendPacketToPlayer(ESPModRegistry.modID, "showPetGui", (Player)player, this);
 					return true;
 				}
 			}
 		}
 
 		if( this.isRidden() && !this.worldObj.isRemote ) {
-			par1EntityPlayer.mountEntity(null);
+			player.mountEntity(null);
 			return true;
 		}
 		
 		if( this.isTamed() && !this.worldObj.isRemote ) {
-			par1EntityPlayer.addChatMessage(
+			player.addChatMessage(
 				String.format("\247d[%s]\247f " + StatCollector.translateToLocal("enderstuffplus.chat.name"),
 				StatCollector.translateToLocal("entity.EnderMiss.name"), this.getName().isEmpty() ? EnumChatFormatting.OBFUSCATED + "RANDOM" + EnumChatFormatting.RESET : this.getName())
 			);
-			if( this.ownerName.equals(par1EntityPlayer.username) ) {
+			if( this.ownerName.equals(player.username) ) {
 				int percHealth = (int)(this.getHealth() / this.getMaxHealth() * 100F);
-				par1EntityPlayer.addChatMessage("  "+String.format(StatCollector.translateToLocal("enderstuffplus.chat.missFriend"), percHealth));
+				player.addChatMessage("  "+String.format(StatCollector.translateToLocal("enderstuffplus.chat.missFriend"), percHealth));
 			} else {
-				par1EntityPlayer.addChatMessage("  "+String.format(StatCollector.translateToLocal("enderstuffplus.chat.stranger"), ownerName));
+				player.addChatMessage("  "+String.format(StatCollector.translateToLocal("enderstuffplus.chat.stranger"), ownerName));
 			}
 			return true;
 		}
@@ -414,8 +410,8 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 	}
 	
 	@Override
-	public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-		return this.getCoatBaseColor() != 1 || !Potion.potionTypes[par1PotionEffect.getPotionID()].isBadEffect();
+	public boolean isPotionApplicable(PotionEffect effect) {
+		return this.getCoatBaseColor() != 1 || !Potion.potionTypes[effect.getPotionID()].isBadEffect();
 	}
 	
 	public boolean isRidden() {
@@ -448,23 +444,23 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 	}
 
 	protected boolean isValidLightLevel() {
-		int var1 = MathHelper.floor_double(this.posX);
-		int var2 = MathHelper.floor_double(this.boundingBox.minY);
-		int var3 = MathHelper.floor_double(this.posZ);
+		int x = MathHelper.floor_double(this.posX);
+		int y = MathHelper.floor_double(this.boundingBox.minY);
+		int z = MathHelper.floor_double(this.posZ);
 	
-		if( this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, var1, var2, var3) > this.rand.nextInt(32) ) {
+		if( this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, x, y, z) > this.rand.nextInt(32) ) {
 			return false;
 		} else {
-			int var4 = this.worldObj.getBlockLightValue(var1, var2, var3);
+			int blockLight = this.worldObj.getBlockLightValue(x, y, z);
 	
 			if( this.worldObj.isThundering() ) {
-				int var5 = this.worldObj.skylightSubtracted;
+				int skyLight = this.worldObj.skylightSubtracted;
 				this.worldObj.skylightSubtracted = 10;
-				var4 = this.worldObj.getBlockLightValue(var1, var2, var3);
-				this.worldObj.skylightSubtracted = var5;
+				blockLight = this.worldObj.getBlockLightValue(x, y, z);
+				this.worldObj.skylightSubtracted = skyLight;
 			}
 	
-			return var4 <= this.rand.nextInt(8);
+			return blockLight <= this.rand.nextInt(8);
 		}
 	}
 	
@@ -482,9 +478,9 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 			}
 
 			if( this.isSprinting() ) {
-				float var1 = this.rotationYaw * 0.017453292F;
-				this.motionX -= MathHelper.sin(var1) * 0.2F;
-				this.motionZ += MathHelper.cos(var1) * 0.2F;
+				float rotYaw = this.rotationYaw * 0.017453292F;
+				this.motionX -= MathHelper.sin(rotYaw) * 0.2F;
+				this.motionZ += MathHelper.cos(rotYaw) * 0.2F;
 			}
 
 			this.isAirBorne = true;
@@ -493,24 +489,24 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 	}
 
 	@Override
-	public void moveEntity(double var1, double var3, double var5) {
-		float var7 = this.width / 2.0F;
+	public void moveEntity(double x, double y, double z) {
+		float hWidth = this.width / 2.0F;
 
-		float var8 = (float) this.getMountedYOffset() + (this.isRidden() ? 1.2F : 0.5F) + this.yOffset;
-		this.boundingBox.setBounds(this.posX - var7,
+		float yOff = (float) this.getMountedYOffset() + (this.isRidden() ? 1.2F : 0.5F) + this.yOffset;
+		this.boundingBox.setBounds(this.posX - hWidth,
 				this.posY - this.yOffset + this.ySize,
-				this.posZ - var7,
-				this.posX + var7,
-				this.posY - this.yOffset + this.ySize + var8,
-				this.posZ + var7);
-		super.moveEntity(var1, var3, var5);
-		var8 = this.height;
-		this.boundingBox.setBounds(this.posX - var7,
+				this.posZ - hWidth,
+				this.posX + hWidth,
+				this.posY - this.yOffset + this.ySize + yOff,
+				this.posZ + hWidth);
+		super.moveEntity(x, y, z);
+		yOff = this.height;
+		this.boundingBox.setBounds(this.posX - hWidth,
 				this.posY - this.yOffset + this.ySize,
-				this.posZ - var7,
-				this.posX + var7,
-				this.posY - this.yOffset + this.ySize + var8,
-				this.posZ + var7);
+				this.posZ - hWidth,
+				this.posX + hWidth,
+				this.posY - this.yOffset + this.ySize + yOff,
+				this.posZ + hWidth);
 	}
 
 	public boolean needFood() {
@@ -535,14 +531,21 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 			}
 		}
 		
-		if( jumpTicks > 0 ) jumpTicks--;
+		if( jumpTicks > 0 ) {
+			jumpTicks--;
+		}
 		
-		if( !worldObj.isRemote ) setRiddenDW(isRidden());
+		if( !worldObj.isRemote ) {
+			setRiddenDW(isRidden());
+		}
 		
-		if( this.teleportTimer > 0 ) this.teleportTimer--;
+		if( this.teleportTimer > 0 ) {
+			this.teleportTimer--;
+		}
 		
-		if( this.isRidden() && this.riddenByEntity.isDead && this.isTamed() && !this.worldObj.isRemote )
+		if( this.isRidden() && this.riddenByEntity.isDead && this.isTamed() && !this.worldObj.isRemote ) {
 			this.setSitting(true);
+		}
 
 		if( this.isSitting() ) {
 			this.height = 0.9F;
@@ -555,23 +558,27 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
         attributeinstance.removeModifier(speedyTamed);
 
 		if( this.isTamed()
-				&& !this.isSitting()
-				&& !this.isRidden()
-				&& ep != null
-				&& this.getDistanceToEntity(ep) > 2F
-				&& this.ownerName.equals(ep.username)
-				&& this.isFollowing() )
-		{
+			&& !this.isSitting()
+			&& !this.isRidden()
+			&& ep != null
+			&& this.getDistanceToEntity(ep) > 2F
+			&& this.ownerName.equals(ep.username)
+			&& this.isFollowing() 
+		) {
 			this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 24F, false, false, !this.isImmuneToWater(), !this.isImmuneToWater()));
             attributeinstance.applyModifier(speedyTamed);
 			if( this.getDistanceToEntity(ep) > 10F && this.teleportTimer <= 0 && Math.abs(ep.posY - this.posY) < 6F ) {
 				this.teleportToEntity(ep);
 			}
-		} else if( this.isTamed() && !this.isRidden() && ep != null && ep.getCurrentEquippedItem() != null
-				&& ep.getCurrentEquippedItem().getItem() instanceof ItemFood
-				&& this.getDistanceToEntity(ep) > 2F
-				&& this.needFood() && !this.isSitting() )
-		{
+		} else if( this.isTamed()
+				   && !this.isRidden()
+				   && ep != null
+				   && ep.getCurrentEquippedItem() != null
+				   && ep.getCurrentEquippedItem().getItem() instanceof ItemFood
+				   && this.getDistanceToEntity(ep) > 2F
+				   && this.needFood()
+				   && !this.isSitting()
+		) {
             attributeinstance.applyModifier(speedyTamed);
 			this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 8F, false, false, !this.isImmuneToWater(), !this.isImmuneToWater()));
 		}
@@ -582,34 +589,31 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 
 		this.entityToAttack = null;
 
-        if( !this.worldObj.isRemote && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") ) {
-        	int i;
-            int j;
-            int k;
-            int l;
+        if( !this.worldObj.isRemote && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && ConfigRegistry.griefing ) {
+        	int x, y, z, blockID;
 
-            if( this.getCarried() == 0 && !this.isTamed()) {
+            if( this.getCarried() == 0 && !this.isTamed() ) {
                 if( this.rand.nextInt(20) == 0 ) {
-                    i = MathHelper.floor_double(this.posX - 2.0D + this.rand.nextDouble() * 4.0D);
-                    j = MathHelper.floor_double(this.posY + this.rand.nextDouble() * 3.0D);
-                    k = MathHelper.floor_double(this.posZ - 2.0D + this.rand.nextDouble() * 4.0D);
-                    l = this.worldObj.getBlockId(i, j, k);
+                    x = MathHelper.floor_double(this.posX - 2.0D + this.rand.nextDouble() * 4.0D);
+                    y = MathHelper.floor_double(this.posY + this.rand.nextDouble() * 3.0D);
+                    z = MathHelper.floor_double(this.posZ - 2.0D + this.rand.nextDouble() * 4.0D);
+                    blockID = this.worldObj.getBlockId(x, y, z);
 
-                    if( canCarryBlocks[l] ) {
-                        this.setCarried(this.worldObj.getBlockId(i, j, k));
-                        this.setCarryingData(this.worldObj.getBlockMetadata(i, j, k));
-                        this.worldObj.setBlock(i, j, k, 0);
+                    if( carriableBlocks[blockID] ) {
+                        this.setCarried(this.worldObj.getBlockId(x, y, z));
+                        this.setCarryingData(this.worldObj.getBlockMetadata(x, y, z));
+                        this.worldObj.setBlock(x, y, z, 0);
                     }
                 }
             } else if( (this.rand.nextInt(2000) == 0 || this.isTamed()) && this.getCarried() != 0 ) {
-                i = MathHelper.floor_double(this.posX - 1.0D + this.rand.nextDouble() * 2.0D);
-                j = MathHelper.floor_double(this.posY + this.rand.nextDouble() * 2.0D);
-                k = MathHelper.floor_double(this.posZ - 1.0D + this.rand.nextDouble() * 2.0D);
-                l = this.worldObj.getBlockId(i, j, k);
-                int i1 = this.worldObj.getBlockId(i, j - 1, k);
+                x = MathHelper.floor_double(this.posX - 1.0D + this.rand.nextDouble() * 2.0D);
+                y = MathHelper.floor_double(this.posY + this.rand.nextDouble() * 2.0D);
+                z = MathHelper.floor_double(this.posZ - 1.0D + this.rand.nextDouble() * 2.0D);
+                blockID = this.worldObj.getBlockId(x, y, z);
+                int belowBID = this.worldObj.getBlockId(x, y - 1, z);
 
-                if( l == 0 && i1 > 0 && Block.blocksList[i1].renderAsNormalBlock() ) {
-                    this.worldObj.setBlock(i, j, k, this.getCarried(), this.getCarryingData(), 3);
+                if( blockID == 0 && belowBID > 0 && Block.blocksList[belowBID].renderAsNormalBlock() ) {
+                    this.worldObj.setBlock(x, y, z, this.getCarried(), this.getCarryingData(), 3);
                     this.setCarried(0);
                 }
             }
@@ -618,14 +622,14 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
        	this.spawnParticle("livingUpd", this.posX, this.posY, this.posZ);
 
 		if( this.worldObj.isDaytime() && !this.worldObj.isRemote && !this.isTamed() ) {
-			float var6 = this.getBrightness(1.0F);
+			float bright = this.getBrightness(1.0F);
 
-			if (var6 > 0.5F
+			if (bright > 0.5F
 					&& this.worldObj.canBlockSeeTheSky(
 							MathHelper.floor_double(this.posX),
 							MathHelper.floor_double(this.posY),
 							MathHelper.floor_double(this.posZ))
-					&& this.rand.nextFloat() * 30.0F < (var6 - 0.4F) * 2.0F) {
+					&& this.rand.nextFloat() * 30.0F < (bright - 0.4F) * 2.0F) {
 				this.teleportRandomly();
 			}
 		}
@@ -665,10 +669,13 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 	public void readEntityFromNBT(NBTTagCompound par1nbtTagCompound) {
 		super.readEntityFromNBT(par1nbtTagCompound);
 		this.setTamed(par1nbtTagCompound.getBoolean("tamed"));
-		if( par1nbtTagCompound.hasKey("coatColor") )
+		
+		if( par1nbtTagCompound.hasKey("coatColor") ) {
 			this.dataWatcher.updateObject(22, par1nbtTagCompound.getInteger("coatColor"));
-		else
+		} else {
 			this.setCoat(0, par1nbtTagCompound.getBoolean("immuneToWater") ? 16 : -1);
+		}
+		
 		this.setCanGetFallDmg(par1nbtTagCompound.getBoolean("fallDmg"));
 		this.setSitting(par1nbtTagCompound.getBoolean("sitting"));
 		this.setSpecial(par1nbtTagCompound.getBoolean("special"));
@@ -676,11 +683,15 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 		this.setCarried(par1nbtTagCompound.getShort("carried"));
 		this.setCarryingData(par1nbtTagCompound.getShort("carriedData"));
 		this.setColor(par1nbtTagCompound.getByte("clrID"));
+		
 		this.ownerName = (par1nbtTagCompound.getString("owner"));
-		if( par1nbtTagCompound.hasKey("petName"))
+		
+		if( par1nbtTagCompound.hasKey("petName")) {
 			this.setName(par1nbtTagCompound.getString("petName"));
-		if( this.getName().equals(EnumChatFormatting.OBFUSCATED + "RANDOM" + EnumChatFormatting.RESET) )
+		}
+		if( this.getName().equals(EnumChatFormatting.OBFUSCATED + "RANDOM" + EnumChatFormatting.RESET) ) {
 			this.setName("");
+		}
 	}
 	
 	private void setBoolean(boolean b, int flag, int dwId) {

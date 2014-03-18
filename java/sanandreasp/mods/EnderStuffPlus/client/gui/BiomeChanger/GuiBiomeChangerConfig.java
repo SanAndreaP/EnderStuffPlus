@@ -9,7 +9,8 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import sanandreasp.core.manpack.helpers.CommonUsedStuff;
+
+import sanandreasp.core.manpack.helpers.CUS;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityBiomeChanger;
@@ -36,12 +37,12 @@ public class GuiBiomeChangerConfig extends GuiBiomeChangerBase implements Textur
 		
 		this.tabCofig.enabled = false;
         
-		this.buttonList.add(this.sld_range = new GuiBiomeChangerSlider(4, this.guiLeft + 13, this.guiTop + 30, this.bcte, this.translate("enderstuffplus.biomeChanger.gui1.range"), this.bcte.getMaxRange(), 128F));
+		this.buttonList.add(this.sld_range = new GuiBiomeChangerSlider(4, this.guiLeft + 13, this.guiTop + 30, this.bcte, CUS.getTranslated("enderstuffplus.biomeChanger.gui1.range"), this.bcte.getMaxRange(), 128F));
 		
-		this.buttonList.add(this.btn_circular = new GuiButton(this.buttonList.size(), this.guiLeft + 13, this.guiTop + 70, 50, 20, this.translate("enderstuffplus.biomeChanger.gui3.form1")));
-		this.buttonList.add(this.btn_square = new GuiButton(this.buttonList.size(), this.guiLeft + 13 + 50, this.guiTop + 70, 50, 20, this.translate("enderstuffplus.biomeChanger.gui3.form2")));
-		this.buttonList.add(this.btn_rhombic = new GuiButton(this.buttonList.size(), this.guiLeft + 13 + 100, this.guiTop + 70, 50, 20, this.translate("enderstuffplus.biomeChanger.gui3.form3")));
-		this.buttonList.add(this.btn_chngBlocks = new GuiButton(this.buttonList.size(), this.guiLeft + 13, this.guiTop + 100, 150, 20, this.translate("enderstuffplus.biomeChanger.gui3.blocks")));
+		this.buttonList.add(this.btn_circular = new GuiButton(this.buttonList.size(), this.guiLeft + 13, this.guiTop + 70, 50, 20, CUS.getTranslated("enderstuffplus.biomeChanger.gui3.form1")));
+		this.buttonList.add(this.btn_square = new GuiButton(this.buttonList.size(), this.guiLeft + 13 + 50, this.guiTop + 70, 50, 20, CUS.getTranslated("enderstuffplus.biomeChanger.gui3.form2")));
+		this.buttonList.add(this.btn_rhombic = new GuiButton(this.buttonList.size(), this.guiLeft + 13 + 100, this.guiTop + 70, 50, 20, CUS.getTranslated("enderstuffplus.biomeChanger.gui3.form3")));
+		this.buttonList.add(this.btn_chngBlocks = new GuiButton(this.buttonList.size(), this.guiLeft + 13, this.guiTop + 100, 150, 20, CUS.getTranslated("enderstuffplus.biomeChanger.gui3.blocks")));
 	}
 	
 	@Override
@@ -65,12 +66,12 @@ public class GuiBiomeChangerConfig extends GuiBiomeChangerBase implements Textur
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		RenderHelper.disableStandardItemLighting();
 
-		this.fontRenderer.drawString(this.translate("tile.enderstuffp:biomeChanger.name"), 8, 8, 0x404040);
-		this.fontRenderer.drawString(this.translate("enderstuffplus.biomeChanger.gui3.periform"), 8, 61, 0x404040);
-		this.fontRenderer.drawString(this.translate("enderstuffplus.biomeChanger.gui3.stats"), 8, 130, 0x404040);
+		this.fontRenderer.drawString(CUS.getTranslated("tile.enderstuffp:biomeChanger.name"), 8, 8, 0x404040);
+		this.fontRenderer.drawString(CUS.getTranslated("enderstuffplus.biomeChanger.gui3.periform"), 8, 61, 0x404040);
+		this.fontRenderer.drawString(CUS.getTranslated("enderstuffplus.biomeChanger.gui3.stats"), 8, 130, 0x404040);
 		
-		this.fontRenderer.drawString(String.format(this.translate("enderstuffplus.biomeChanger.gui3.remain"), this.bcte.getMaxRange() - this.bcte.getCurrRange()), 20, 155, 0x404040);
-		this.fontRenderer.drawString(String.format(this.translate("enderstuffplus.biomeChanger.gui3.processed"), this.bcte.getCurrRange()), 20, 165, 0x404040);
+		this.fontRenderer.drawString(String.format(CUS.getTranslated("enderstuffplus.biomeChanger.gui3.remain"), this.bcte.getMaxRange() - this.bcte.getCurrRange()), 20, 155, 0x404040);
+		this.fontRenderer.drawString(String.format(CUS.getTranslated("enderstuffplus.biomeChanger.gui3.processed"), this.bcte.getCurrRange()), 20, 165, 0x404040);
 		RenderHelper.enableGUIStandardItemLighting();
 	}
 	
@@ -83,9 +84,9 @@ public class GuiBiomeChangerConfig extends GuiBiomeChangerBase implements Textur
 		this.sld_range.enabled = this.btn_chngBlocks.enabled = !this.bcte.isActive();
 		
 		this.btn_chngBlocks.displayString = 
-				translate("enderstuffplus.biomeChanger.gui3.blocks")
+				CUS.getTranslated("enderstuffplus.biomeChanger.gui3.blocks")
 				+": "
-				+translate(this.bcte.isReplacingBlocks ? "options.on" : "options.off");
+				+CUS.getTranslated(this.bcte.isReplacingBlocks ? "options.on" : "options.off");
 		super.drawScreen(mouseX, mouseY, partTicks);
 	}
 	
@@ -109,9 +110,9 @@ public class GuiBiomeChangerConfig extends GuiBiomeChangerBase implements Textur
 	protected void mouseMovedOrUp(int mouseX, int mouseY, int which) {
 		super.mouseMovedOrUp(mouseX, mouseY, which);
 		
-		if( CommonUsedStuff.getSelectedBtn(this) != null && which == 0 ) {
-			CommonUsedStuff.getSelectedBtn(this).mouseReleased(mouseX, mouseY);
-            CommonUsedStuff.setSelectedBtn(this, null);
+		if( CUS.getSelectedBtn(this) != null && which == 0 ) {
+			CUS.getSelectedBtn(this).mouseReleased(mouseX, mouseY);
+            CUS.setSelectedBtn(this, null);
         }
 	}
 

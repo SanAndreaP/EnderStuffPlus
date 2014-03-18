@@ -165,10 +165,12 @@ public class ServerEvents {
 				}
 			}
 			if( spawnParticles ) {
-	        	ESPModRegistry.sendPacketAllRng("fxPortal",
-	        			evt.entityLiving.posX, evt.entityLiving.posY, evt.entityLiving.posZ, 128.0D, player.dimension,
-	        			evt.entityLiving.posX, evt.entityLiving.posY, evt.entityLiving.posZ, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F
-	        	);
+				for( int i = 0; i < 20; i++ ) {
+		        	ESPModRegistry.sendPacketAllRng("fxPortal",
+		        			evt.entityLiving.posX, evt.entityLiving.posY, evt.entityLiving.posZ, 128.0D, player.dimension,
+		        			evt.entityLiving.posX, evt.entityLiving.posY, evt.entityLiving.posZ, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F
+		        	);
+				}
 			}
 		}
 	}

@@ -8,8 +8,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+
 import org.lwjgl.opengl.GL11;
-import sanandreasp.core.manpack.managers.SAPLanguageManager;
+
+import sanandreasp.core.manpack.helpers.CUS;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderAvis;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderMiss;
 import sanandreasp.mods.EnderStuffPlus.entity.IEnderPet;
@@ -41,7 +43,7 @@ public class GuiEnderPet extends GuiScreen
 		
 		this.nameTxt = new GuiTextField(this.fontRenderer, (this.width - 198) / 2, this.yPos + 30, 198, 15);
 		String name = this.enderPet.getName();
-		this.nameTxt.setText(name.isEmpty() ? translate("rename") : name);
+		this.nameTxt.setText(name.isEmpty() ? CUS.getTranslated("rename") : name);
 		
 		int color = 0xFFFFFF;
         if( this.enderPet.getEntity() instanceof EntityEnderMiss ) {
@@ -50,7 +52,7 @@ public class GuiEnderPet extends GuiScreen
         	color = 0xFF00FF;
         }
 		
-    	GuiButton btn1 = new GuiButtonPetGUI(0, (this.width - 200) / 2, yPos + 55, 200, 15, translate("mount"), color).setBGAlpha(128);
+    	GuiButton btn1 = new GuiButtonPetGUI(0, (this.width - 200) / 2, yPos + 55, 200, 15, CUS.getTranslated("mount"), color).setBGAlpha(128);
     	boolean canMount = true;
     	if( this.enderPet.isSitting() ) {
     		canMount = false;
@@ -61,24 +63,16 @@ public class GuiEnderPet extends GuiScreen
     	}
     	btn1.enabled = canMount;
     	this.buttonList.add(btn1);
-    	GuiButton btn2 = new GuiButtonPetGUI(1, (this.width - 200) / 2, this.yPos + 71, 200, 15, this.enderPet.isSitting() ? this.translate("standUp") : translate("sit"), color).setBGAlpha(128);
+    	GuiButton btn2 = new GuiButtonPetGUI(1, (this.width - 200) / 2, this.yPos + 71, 200, 15, this.enderPet.isSitting() ? CUS.getTranslated("standUp") : CUS.getTranslated("sit"), color).setBGAlpha(128);
     	this.buttonList.add(btn2);
-    	GuiButton btn3 = new GuiButtonPetGUI(2, (this.width - 200) / 2, this.yPos + 87, 200, 15, this.enderPet.isFollowing() ? this.translate("stay") : translate("follow"), color).setBGAlpha(128);
+    	GuiButton btn3 = new GuiButtonPetGUI(2, (this.width - 200) / 2, this.yPos + 87, 200, 15, this.enderPet.isFollowing() ? CUS.getTranslated("stay") : CUS.getTranslated("follow"), color).setBGAlpha(128);
     	btn3.enabled = !enderPet.isSitting();
     	this.buttonList.add(btn3);
-    	GuiButton btn4 = new GuiButtonPetGUI(3, (this.width - 200) / 2, this.yPos + 103, 200, 15, this.translate("putIntoEgg"), color).setBGAlpha(128);
+    	GuiButton btn4 = new GuiButtonPetGUI(3, (this.width - 200) / 2, this.yPos + 103, 200, 15, CUS.getTranslated("putIntoEgg"), color).setBGAlpha(128);
     	btn4.enabled = this.owner.inventory.hasItemStack(new ItemStack(Item.egg)) || this.owner.capabilities.isCreativeMode;
     	this.buttonList.add(btn4);
-    	GuiButton btn5 = new GuiButtonPetGUI(4, (this.width - 200) / 2, this.yPos + 139, 200, 15, this.translate("close"), 0xA0A0A0).setBGAlpha(128);
+    	GuiButton btn5 = new GuiButtonPetGUI(4, (this.width - 200) / 2, this.yPos + 139, 200, 15, CUS.getTranslated("close"), 0xA0A0A0).setBGAlpha(128);
     	this.buttonList.add(btn5);
-	}
-	
-	private String translate(String key) {
-		return SAPLanguageManager.getTranslated("enderstuffplus.guipet."+key);
-	}
-	
-	private String translateFormat(String key, Object... obj) {
-		return SAPLanguageManager.getTranslatedFormat("enderstuffplus.guipet."+key, obj);
 	}
 	
 	@Override
@@ -91,10 +85,10 @@ public class GuiEnderPet extends GuiScreen
         					? EnumChatFormatting.OBFUSCATED + "RANDOM" + EnumChatFormatting.RESET
         					: enderPet.getName();
         if( enderPet.getEntity() instanceof EntityEnderMiss ) {
-        	title = translateFormat("title.miss", petName);
+        	title = CUS.getTranslated("title.miss", petName);
         	color = 0xFF9090;
         } else if( enderPet.getEntity() instanceof EntityEnderAvis ) {
-        	title = translateFormat("title.avis", petName);
+        	title = CUS.getTranslated("title.avis", petName);
         	color = 0xFF00FF;
         }
         
@@ -106,7 +100,7 @@ public class GuiEnderPet extends GuiScreen
     	this.drawGradientRect((this.width + 205) / 2 + 4, this.height / 2, (this.width + 205) / 2 + 5, this.height, 0xFF000000+color, 0x00000000+color);
     	GL11.glColor4f(1f, 1f, 1f, 0f);
     	
-    	this.fontRenderer.drawString(translate("name"), (this.width - 200) / 2, 20 + this.yPos, 0xFFFFFF);
+    	this.fontRenderer.drawString(CUS.getTranslated("name"), (this.width - 200) / 2, 20 + this.yPos, 0xFFFFFF);
         
         this.nameTxt.drawTextBox();
                 
@@ -129,7 +123,7 @@ public class GuiEnderPet extends GuiScreen
 	public void updateScreen() {
     	super.updateScreen();
     	this.nameTxt.updateCursorCounter();
-    	if( this.nameTxt.isFocused() && this.nameTxt.getText().equals(this.translate("rename")) )
+    	if( this.nameTxt.isFocused() && this.nameTxt.getText().equals(CUS.getTranslated("rename")) )
     		this.nameTxt.setText("");
     }
     
@@ -147,7 +141,7 @@ public class GuiEnderPet extends GuiScreen
     		this.nameTxt.setFocused(false);
     		writeEntityName();
     		if( this.nameTxt.getText().isEmpty() ) {
-    			this.nameTxt.setText(this.translate("rename"));
+    			this.nameTxt.setText(CUS.getTranslated("rename"));
     		}
     	} else if( (keyCode == 1 || keyCode == this.mc.gameSettings.keyBindInventory.keyCode)
     			   && !this.nameTxt.isFocused() )
@@ -158,7 +152,7 @@ public class GuiEnderPet extends GuiScreen
     }
     
     private void writeEntityName() {
-    	if( this.nameTxt.getText().isEmpty() || this.nameTxt.getText().equals(translate("rename")) ) {
+    	if( this.nameTxt.getText().isEmpty() || this.nameTxt.getText().equals(CUS.getTranslated("rename")) ) {
     		return;
     	}
     	

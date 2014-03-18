@@ -26,7 +26,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import sanandreasp.core.manpack.helpers.CommonUsedStuff;
 import sanandreasp.core.manpack.helpers.ItemBlockNamedMeta;
 import sanandreasp.core.manpack.managers.SAPConfigManager;
-import sanandreasp.core.manpack.managers.SAPLanguageManager;
 import sanandreasp.core.manpack.managers.SAPUpdateManager;
 import sanandreasp.core.manpack.mod.packet.PacketRegistry;
 import sanandreasp.mods.ManagerPackHelper;
@@ -141,7 +140,6 @@ public class ESPModRegistry
 		
 		manHelper.initMan(
 				new SAPConfigManager("EnderStuffPlus", "EnderStuffPlus.txt", "/sanandreasp/"),
-				new SAPLanguageManager("/sanandreasp/EnderStuffPlus/", "1.1", "EnderStuff+"),
 				new SAPUpdateManager("EnderStuffPlus", 1, 1, 0, "http://dl.dropbox.com/u/56920617/EnderStuffPMod_latest.txt", "http://www.minecraftforum.net/topic/936911-")
 		);
 		
@@ -450,9 +448,6 @@ public class ESPModRegistry
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent evt) {
 		if( !ESPModRegistry.manHelper.loading ) return;
-	
-	// Language localizations
-		LangRegistry.loadLangs(manHelper.getLangMan());
 		
 	// Craftings & Smeltings
 		FurnaceRecipes.smelting().addSmelting(ESPModRegistry.endOre.blockID, 0, new ItemStack(ESPModRegistry.endIngot, 1, 0), 0.85F);
@@ -567,10 +562,7 @@ public class ESPModRegistry
 	public static boolean hasPlayerFullNiob(EntityPlayer player) {
 		boolean b = true;
 		for( int i = 0; i < 4; i++ ) {
-			if( player.getCurrentArmor(i) == null ) {
-				b = false;
-				break;
-			} else if( player.getCurrentArmor(i).getItem() != niobSet.get(i).getItem() ) {
+			if( player.getCurrentArmor(i) == null || (player.getCurrentArmor(i).getItem() != niobSet.get(i).getItem()) ) {
 				b = false;
 				break;
 			}

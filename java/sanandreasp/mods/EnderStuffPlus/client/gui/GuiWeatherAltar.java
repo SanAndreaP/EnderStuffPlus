@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import sanandreasp.core.manpack.managers.SAPLanguageManager;
+import sanandreasp.core.manpack.helpers.CUS;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityWeatherAltar;
@@ -37,9 +37,9 @@ public class GuiWeatherAltar extends GuiScreen implements Textures
         this.guiLeft = (this.width - this.xSize) / 2;
         this.guiTop = (this.height - this.ySize) / 2;
         
-        this.buttonList.add(this.btnSun = new GuiButton(this.buttonList.size(), this.guiLeft + 10, this.guiTop + 75, 66, 20, SAPLanguageManager.getTranslated("enderstuffplus.weatherAltar.sun")));
-        this.buttonList.add(this.btnRain = new GuiButton(this.buttonList.size(), this.guiLeft + 10+67, this.guiTop + 75, 66, 20, SAPLanguageManager.getTranslated("enderstuffplus.weatherAltar.rain")));
-        this.buttonList.add(this.btnStorm = new GuiButton(this.buttonList.size(), this.guiLeft + 10+134, this.guiTop + 75, 66, 20, SAPLanguageManager.getTranslated("enderstuffplus.weatherAltar.thunder")));
+        this.buttonList.add(this.btnSun = new GuiButton(this.buttonList.size(), this.guiLeft + 10, this.guiTop + 75, 66, 20, CUS.getTranslated("enderstuffplus.weatherAltar.sun")));
+        this.buttonList.add(this.btnRain = new GuiButton(this.buttonList.size(), this.guiLeft + 10+67, this.guiTop + 75, 66, 20, CUS.getTranslated("enderstuffplus.weatherAltar.rain")));
+        this.buttonList.add(this.btnStorm = new GuiButton(this.buttonList.size(), this.guiLeft + 10+134, this.guiTop + 75, 66, 20, CUS.getTranslated("enderstuffplus.weatherAltar.thunder")));
         
         this.txtDuration = new GuiTextField(this.fontRenderer, this.guiLeft + 10, this.guiTop + 45, 200, 15);
         this.txtDuration.setText("1");
@@ -51,8 +51,8 @@ public class GuiWeatherAltar extends GuiScreen implements Textures
         this.mc.getTextureManager().bindTexture(GUI_WEATHERALTAR);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		
-		this.fontRenderer.drawString(SAPLanguageManager.getTranslated("tile.enderstuffp:weatherAltar.name"), this.guiLeft + 6, this.guiTop + 6, 0x808080);
-        this.fontRenderer.drawString(SAPLanguageManager.getTranslated("enderstuffplus.weatherAltar.duration"), this.guiLeft + 12, this.guiTop + 35, 0x808080);
+		this.fontRenderer.drawString(CUS.getTranslated("tile.enderstuffp:weatherAltar.name"), this.guiLeft + 6, this.guiTop + 6, 0x808080);
+        this.fontRenderer.drawString(CUS.getTranslated("enderstuffplus.weatherAltar.duration"), this.guiLeft + 12, this.guiTop + 35, 0x808080);
 		
 		this.txtDuration.drawTextBox();
 		

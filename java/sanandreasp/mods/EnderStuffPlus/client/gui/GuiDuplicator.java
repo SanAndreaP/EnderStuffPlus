@@ -4,8 +4,8 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import sanandreasp.core.manpack.helpers.CUS;
 import sanandreasp.core.manpack.helpers.client.GuiItemTab;
-import sanandreasp.core.manpack.managers.SAPLanguageManager;
 import sanandreasp.mods.EnderStuffPlus.inventory.Container_Duplicator;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.RegistryDuplicator;
@@ -41,7 +41,7 @@ public class GuiDuplicator extends GuiContainer implements Textures
 	public void initGui() {
 		super.initGui();
 		
-		this.insertXP = new GuiItemTab( 0, this.guiLeft + this.xSize - 3, this.guiTop + 49, this.translate("enderstuffplus.duplicator.insertXP"), Item.blazeRod.getIconFromDamage(0), true, true, GUI_BUTTONS);
+		this.insertXP = new GuiItemTab( 0, this.guiLeft + this.xSize - 3, this.guiTop + 49, CUS.getTranslated("enderstuffplus.duplicator.insertXP"), Item.blazeRod.getIconFromDamage(0), true, true, GUI_BUTTONS);
 		this.buttonList.add(this.insertXP);
 	}
 
@@ -57,8 +57,8 @@ public class GuiDuplicator extends GuiContainer implements Textures
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		RenderHelper.disableStandardItemLighting();
 		TileEntityDuplicator dupeTile = (TileEntityDuplicator) Minecraft.getMinecraft().theWorld.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord);
-		this.fontRenderer.drawString(this.translate("tile.enderstuffp:duplicator.name"), this.ySize - this.fontRenderer.getStringWidth(translate("tile.duplicator.name")) - 8, 8, 0x404040);
-        this.fontRenderer.drawString(this.translate("container.inventory"), 8, this.ySize - 96 + 2, 0x404040);
+		this.fontRenderer.drawString(CUS.getTranslated("tile.enderstuffp:duplicator.name"), this.ySize - this.fontRenderer.getStringWidth(CUS.getTranslated("tile.duplicator.name")) - 8, 8, 0x404040);
+        this.fontRenderer.drawString(CUS.getTranslated("container.inventory"), 8, this.ySize - 96 + 2, 0x404040);
         
         String s = Integer.toString(dupeTile.getStoredLvl());
         this.drawStringWithFrame(this.fontRenderer, s, this.xSize - 8 - this.fontRenderer.getStringWidth(s), 50, 0x80ff20, 0x000000);
@@ -82,7 +82,7 @@ public class GuiDuplicator extends GuiContainer implements Textures
             drawRect(124, 48, this.xSize-7, 59, 0x40FFFFFF);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             drawTexturedModalRect(125, 49, 176, 26, 9, 9);
-        	drawCreativeTabHoveringText(translate("enderstuffplus.duplicator.storedXP"), mouseX - this.guiLeft, mouseY - this.guiTop);
+        	drawCreativeTabHoveringText(CUS.getTranslated("enderstuffplus.duplicator.storedXP"), mouseX - this.guiLeft, mouseY - this.guiTop);
     		RenderHelper.disableStandardItemLighting();
         } else {
             drawRect(124, 48, this.xSize-7, 59, 0x40000000);
@@ -98,7 +98,7 @@ public class GuiDuplicator extends GuiContainer implements Textures
             drawRect(124, 61, this.xSize-7, 75, 0x40FFFFFF);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             drawTexturedModalRect(125, 62, 185, 26, 11, 12);
-        	drawCreativeTabHoveringText(translate("enderstuffplus.duplicator.neededXP"), mouseX - this.guiLeft, mouseY - this.guiTop);
+        	drawCreativeTabHoveringText(CUS.getTranslated("enderstuffplus.duplicator.neededXP"), mouseX - this.guiLeft, mouseY - this.guiTop);
     		RenderHelper.disableStandardItemLighting();
         } else {
             drawRect(124, 61, this.xSize-7, 75, 0x40000000);
@@ -124,9 +124,5 @@ public class GuiDuplicator extends GuiContainer implements Textures
 		fontRenderer.drawString(text, x, y-1, bgColor);
 		fontRenderer.drawString(text, x, y+1, bgColor);
 		fontRenderer.drawString(text, x, y, fgColor);
-	}
-	
-	protected String translate(String s) {
-		return SAPLanguageManager.getTranslated(s);
 	}
 }

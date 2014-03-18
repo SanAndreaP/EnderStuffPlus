@@ -13,14 +13,13 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import sanandreasp.core.manpack.managers.SAPConfigManager;
-import sanandreasp.core.manpack.managers.SAPLanguageManager;
 import sanandreasp.core.manpack.managers.SAPUpdateManager;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 
 public class ManagerPackHelper {
 	public boolean loading = true;
-	private Object cfgmanInst, updmanInst, langmanInst;
+	private Object cfgmanInst, updmanInst;
 	
 	@SuppressWarnings("rawtypes")
 	public void checkManPack(String modname) {
@@ -58,18 +57,13 @@ public class ManagerPackHelper {
 		}
 	}
 	
-	public void initMan(SAPConfigManager cfgman, SAPLanguageManager langman, SAPUpdateManager updman) {
+	public void initMan(SAPConfigManager cfgman, SAPUpdateManager updman) {
 		this.cfgmanInst = cfgman;
-		this.langmanInst = langman;
 		this.updmanInst = updman;
 	}
 	
 	public SAPConfigManager getCfgMan() {
 		return (SAPConfigManager) (this.cfgmanInst != null && this.cfgmanInst instanceof SAPConfigManager ? this.cfgmanInst : null);
-	}
-	
-	public SAPLanguageManager getLangMan() {
-		return (SAPLanguageManager) (this.langmanInst != null && this.langmanInst instanceof SAPLanguageManager ? this.langmanInst : null);
 	}
 	
 	public SAPUpdateManager getUpdMan() {

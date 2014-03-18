@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import sanandreasp.core.manpack.managers.SAPLanguageManager;
+import sanandreasp.core.manpack.helpers.CUS;
 import sanandreasp.mods.EnderStuffPlus.inventory.Container_BiomeChanger;
 import sanandreasp.mods.EnderStuffPlus.registry.RegistryBiomeChanger;
 import sanandreasp.mods.EnderStuffPlus.registry.Textures;
@@ -65,8 +65,8 @@ public class GuiBiomeChangerFuel extends GuiBiomeChangerBase implements Textures
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		RenderHelper.disableStandardItemLighting();
-		this.fontRenderer.drawString(SAPLanguageManager.getTranslated("tile.enderstuffp:biomeChanger.name"), 8, 8, 0x404040);
-		String s = SAPLanguageManager.getTranslated("enderstuffplus.biomeChanger.gui1.range") + " " + ((Container_BiomeChanger)this.inventorySlots).biomeChanger.getMaxRange();
+		this.fontRenderer.drawString(CUS.getTranslated("tile.enderstuffp:biomeChanger.name"), 8, 8, 0x404040);
+		String s = CUS.getTranslated("enderstuffplus.biomeChanger.gui1.range") + " " + ((Container_BiomeChanger)this.inventorySlots).biomeChanger.getMaxRange();
 		this.fontRenderer.drawString(s, this.xSize - 8 - this.fontRenderer.getStringWidth(s), 96, 0x808080);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 0x404040);
 		

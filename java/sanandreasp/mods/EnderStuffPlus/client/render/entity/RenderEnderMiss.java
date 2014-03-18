@@ -50,114 +50,129 @@ public class RenderEnderMiss extends RenderLiving implements Textures
 		
 		this.applyStats(miss);
 		this.doRenderLiving(miss, x, y, z, yaw, partTicks);
-
-		Tessellator tess = Tessellator.instance;
-		double minU = 0.352D, minV = -0.0781D, maxU = 0.4295D, maxV = 0.0781D;
-        float yawHead = this.interpolateRotation(miss.prevRotationYawHead, miss.rotationYawHead, partTicks);
-        float pitch = miss.prevRotationPitch + (miss.rotationPitch - miss.prevRotationPitch) * partTicks;
+	}
+	
+	@Override
+	protected void renderModel(EntityLivingBase livingBase, float limbSwing, float prevLimbSwing, float rotFloat, float rotYaw, float rotPitch, float par7) {
+		super.renderModel(livingBase, limbSwing, prevLimbSwing, rotFloat, rotYaw, rotPitch, par7);
 		
-        float[] bowClr = miss.getBowColor();
-        
-		GL11.glPushMatrix();
-		GL11.glColor3f(bowClr[0], bowClr[1], bowClr[2]);
-		if( miss.isSitting() ) {
-			GL11.glTranslated(x, y+0.88, z);
-		} else {
-			GL11.glTranslated(x, y+2.35, z);
+		if( livingBase instanceof EntityEnderMiss ) {
+			EntityEnderMiss miss = (EntityEnderMiss)livingBase;
+			Tessellator tess = Tessellator.instance;
+			double minU = 0.352D;
+			double minV = -0.0781D;
+			double maxU = 0.4295D;
+			double maxV = 0.0781D;
+			
+	        float[] bowClr = miss.hurtTime > 0 ? new float[] {1F, 0.1F, 0.1F} : miss.getBowColor();
+	        
+			GL11.glPushMatrix();
+			GL11.glColor3f(bowClr[0], bowClr[1], bowClr[2]);
+			
+			if( miss.isSitting() ) {
+				GL11.glTranslated(0F, 0.625F, 0F);
+			} else {
+				GL11.glTranslated(0F, -0.84F, 0F);
+			}
+			
+			GL11.glRotatef(rotYaw, 0F, 1F, 0);
+			GL11.glRotatef(180F, 1F, 0F, 0F);
+			GL11.glRotatef(rotPitch, 1F, 0, 0);
+			GL11.glTranslatef(-0.25F, 0.5F, 0.03125F);
+			
+			this.bindTexture(this.getEntityTexture(miss));
+			
+			tess.startDrawingQuads();
+			tess.setNormal(0.0F, 0.0F, 1.0F);
+			tess.addVertexWithUV(0.0D, 0.0D, 0.0D, minU, maxV);
+			tess.addVertexWithUV(0.5D, 0.0D, 0.0D, maxU, maxV);
+			tess.addVertexWithUV(0.5D, 0.5D, 0.0D, maxU, minV);
+			tess.addVertexWithUV(0.0D, 0.5D, 0.0D, minU, minV);
+			tess.draw();
+			tess.startDrawingQuads();
+			tess.setNormal(0.0F, 0.0F, -1.0F);
+			
+			GL11.glTranslatef(0F, 0.0F, -0.0625F);
+			
+	        tess.addVertexWithUV(0.0D, 0.5D, 0.0D, minU, minV);
+	        tess.addVertexWithUV(0.5D, 0.5D, 0.0D, maxU, minV);
+	        tess.addVertexWithUV(0.5D, 0.0D, 0.0D, maxU, maxV);
+	        tess.addVertexWithUV(0.0D, 0.0D, 0.0D, minU, maxV);
+	        tess.draw();
+	        
+	        int count;
+	        double posRatio;
+	        double posRatioShifted;
+	        double texturePos;
+	        int width = 10;
+	        int height = 10;
+	        double textureOffW = 0.5F * (minU - maxU) / (float)width;
+	        double textureOffH = 0.5F * (maxV - minV) / (float)height;
+	        double depth = 0.0625F;
+	        
+			GL11.glTranslatef(0F, 0.0F, 0.0625F);
+
+	        tess.startDrawingQuads();
+	        tess.setNormal(-1.0F, 0.0F, 0.0F);
+
+	        for( count = 0; count < width; ++count ) {
+	            posRatio = (double)count / (double)width;
+	            texturePos = minU + (maxU - minU) * posRatio - textureOffW;
+	            
+	            tess.addVertexWithUV(posRatio*0.5D, 0.0D, (0.0F - depth), texturePos, maxV);
+	            tess.addVertexWithUV(posRatio*0.5D, 0.0D, 0.0D, texturePos, maxV);
+	            tess.addVertexWithUV(posRatio*0.5D, 0.5D, 0.0D, texturePos, minV);
+	            tess.addVertexWithUV(posRatio*0.5D, 0.5D, (0.0F - depth), texturePos, minV);
+	        }
+
+	        tess.draw();
+	        tess.startDrawingQuads();
+	        tess.setNormal(1.0F, 0.0F, 0.0F);
+
+	        for( count = 0; count < width; ++count ) {
+	            posRatio = (double)count / (double)width;
+	            texturePos = minU + (maxU - minU) * posRatio - textureOffW;
+	            posRatioShifted = posRatio + 1D / (double)width;
+	            
+	            tess.addVertexWithUV(posRatioShifted*0.5D, 0.5D, (0.0F - depth), texturePos, minV);
+	            tess.addVertexWithUV(posRatioShifted*0.5D, 0.5D, 0.0D, texturePos, minV);
+	            tess.addVertexWithUV(posRatioShifted*0.5D, 0.0D, 0.0D, texturePos, maxV);
+	            tess.addVertexWithUV(posRatioShifted*0.5D, 0.0D, (0.0F - depth), texturePos, maxV);
+	        }
+
+	        tess.draw();
+	        tess.startDrawingQuads();
+	        tess.setNormal(0.0F, 1.0F, 0.0F);
+
+	        for( count = 0; count < height; ++count ) {
+	            posRatio = (double)count / (double)height;
+	            texturePos = maxV + (minV - maxV) * posRatio - textureOffH;
+	            posRatioShifted = posRatio + 1.0D / (double)height;
+	            
+	            tess.addVertexWithUV(0.0D, posRatioShifted*0.5D, 0.0D, minU, texturePos);
+	            tess.addVertexWithUV(0.5D, posRatioShifted*0.5D, 0.0D, maxU, texturePos);
+	            tess.addVertexWithUV(0.5D, posRatioShifted*0.5D, (0.0F - depth), maxU, texturePos);
+	            tess.addVertexWithUV(0.0D, posRatioShifted*0.5D, (0.0F - depth), minU, texturePos);
+	        }
+
+	        tess.draw();
+	        tess.startDrawingQuads();
+	        tess.setNormal(0.0F, -1.0F, 0.0F);
+
+	        for( count = 0; count < height; ++count ) {
+	            posRatio = (double)count / (double)height;
+	            texturePos = maxV + (minV - maxV) * posRatio - textureOffH;
+	            
+	            tess.addVertexWithUV(0.5D, posRatio*0.5D, 0.0D, maxU, texturePos);
+	            tess.addVertexWithUV(0.0D, posRatio*0.5D, 0.0D, minU, texturePos);
+	            tess.addVertexWithUV(0.0D, posRatio*0.5D, (0.0F - depth), minU, texturePos);
+	            tess.addVertexWithUV(0.5D, posRatio*0.5D, (0.0F - depth), maxU, texturePos);
+	        }
+
+	        tess.draw();
+	        
+			GL11.glPopMatrix();
 		}
-		GL11.glRotatef(yawHead, 0F, -1F, 0);
-		GL11.glRotatef(pitch, 1F, 0, 0);
-		GL11.glTranslatef(-0.25F, 0.5F, 0.03125F);
-		
-		this.bindTexture(this.getEntityTexture(entity));
-		tess.startDrawingQuads();
-		tess.setNormal(0.0F, 0.0F, 1.0F);
-		tess.addVertexWithUV(0.0D, 0.0D, 0.0D, minU, maxV);
-		tess.addVertexWithUV(0.5D, 0.0D, 0.0D, maxU, maxV);
-		tess.addVertexWithUV(0.5D, 0.5D, 0.0D, maxU, minV);
-		tess.addVertexWithUV(0.0D, 0.5D, 0.0D, minU, minV);
-		tess.draw();
-		tess.startDrawingQuads();
-		tess.setNormal(0.0F, 0.0F, -1.0F);
-		GL11.glTranslatef(0F, 0.0F, -0.0625F);
-        tess.addVertexWithUV(0.0D, 0.5D, 0.0D, minU, minV);
-        tess.addVertexWithUV(0.5D, 0.5D, 0.0D, maxU, minV);
-        tess.addVertexWithUV(0.5D, 0.0D, 0.0D, maxU, maxV);
-        tess.addVertexWithUV(0.0D, 0.0D, 0.0D, minU, maxV);
-        tess.draw();
-        
-        int k;
-        double f7;
-        double f8;
-        int width = 10;
-        int height = 10;
-        double f5 = 0.5F * (minU - maxU) / (float)width;
-        double f6 = 0.5F * (maxV - minV) / (float)height;
-        double par7 = 0.0625F;
-		GL11.glTranslatef(0F, 0.0F, 0.0625F);
-
-        tess.startDrawingQuads();
-        tess.setNormal(-1.0F, 0.0F, 0.0F);
-
-        for (k = 0; k < width; ++k)
-        {
-            f7 = (double)k / (double)width;
-            f8 = minU + (maxU - minU) * f7 - f5;
-            tess.addVertexWithUV(f7*0.5D, 0.0D, (0.0F - par7), f8, maxV);
-            tess.addVertexWithUV(f7*0.5D, 0.0D, 0.0D, f8, maxV);
-            tess.addVertexWithUV(f7*0.5D, 0.5D, 0.0D, f8, minV);
-            tess.addVertexWithUV(f7*0.5D, 0.5D, (0.0F - par7), f8, minV);
-        }
-
-        tess.draw();
-        tess.startDrawingQuads();
-        tess.setNormal(1.0F, 0.0F, 0.0F);
-        double f9;
-
-        for (k = 0; k < width; ++k)
-        {
-            f7 = (double)k / (double)width;
-            f8 = minU + (maxU - minU) * f7 - f5;
-            f9 = f7 + 1D / (double)width;
-            tess.addVertexWithUV(f9*0.5D, 0.5D, (0.0F - par7), f8, minV);
-            tess.addVertexWithUV(f9*0.5D, 0.5D, 0.0D, f8, minV);
-            tess.addVertexWithUV(f9*0.5D, 0.0D, 0.0D, f8, maxV);
-            tess.addVertexWithUV(f9*0.5D, 0.0D, (0.0F - par7), f8, maxV);
-        }
-
-        tess.draw();
-        tess.startDrawingQuads();
-        tess.setNormal(0.0F, 1.0F, 0.0F);
-
-        for (k = 0; k < height; ++k)
-        {
-            f7 = (double)k / (double)height;
-            f8 = maxV + (minV - maxV) * f7 - f6;
-            f9 = f7 + 1.0D / (float)height;
-            tess.addVertexWithUV(0.0D, f9*0.5D, 0.0D, minU, f8);
-            tess.addVertexWithUV(0.5D, f9*0.5D, 0.0D, maxU, f8);
-            tess.addVertexWithUV(0.5D, f9*0.5D, (0.0F - par7), maxU, f8);
-            tess.addVertexWithUV(0.0D, f9*0.5D, (0.0F - par7), minU, f8);
-        }
-
-        tess.draw();
-        tess.startDrawingQuads();
-        tess.setNormal(0.0F, -1.0F, 0.0F);
-
-        for (k = 0; k < height; ++k)
-        {
-            f7 = (double)k / (double)height;
-            f8 = maxV + (minV - maxV) * f7 - f6;
-            tess.addVertexWithUV(0.5D, f7*0.5D, 0.0D, maxU, f8);
-            tess.addVertexWithUV(0.0D, f7*0.5D, 0.0D, minU, f8);
-            tess.addVertexWithUV(0.0D, f7*0.5D, (0.0F - par7), minU, f8);
-            tess.addVertexWithUV(0.5D, f7*0.5D, (0.0F - par7), maxU, f8);
-        }
-
-        tess.draw();
-        
-        
-		GL11.glPopMatrix();
 	}
 
 	protected void renderCarrying(EntityEnderMiss miss, float partTicks) {
@@ -190,7 +205,7 @@ public class RenderEnderMiss extends RenderLiving implements Textures
 	}
 
 	protected int renderPassSpecial(EntityEnderMiss miss, int pass, float partTicks) {
-		if( pass == 0 ) {
+		if( pass == 0 && miss.hurtTime <= 0 ) {
 			this.setRenderPassModel(this.missModel);
 			this.bindTexture(miss.isSpecial() ? ENDERMISS_GLOW_TEXTURE_SPEC : ENDERMISS_GLOW_TEXTURE);
 			
@@ -259,7 +274,7 @@ public class RenderEnderMiss extends RenderLiving implements Textures
 			this.missModel.bipedRightArm.postRender(0.0625F);
 			
 			GL11.glTranslatef(-0.0625F, 1.4375F, 0.0625F);
-			GL11.glTranslatef(0.25F, 0.1875F, -0.1875F);
+			GL11.glTranslatef(0.25F, 0.2875F, -0.1875F);
 			GL11.glScalef(scale, scale, scale);
 			GL11.glRotatef(60.0F, 0.0F, 0.0F, 1.0F);
 			GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
@@ -285,14 +300,14 @@ public class RenderEnderMiss extends RenderLiving implements Textures
 		}
 		
 		if( !miss.canGetFallDmg() ) {
-			float scale = 0.15F;
+			float scale = 0.22F;
 			
 			GL11.glPushMatrix();
 			
 			this.missModel.bipedLeftArm.postRender(0.0625F);
 			
 			GL11.glTranslatef(-0.0625F, 1.4375F, 0.0625F);
-			GL11.glTranslatef(0.10F, 0.1875F, -0.1075F);
+			GL11.glTranslatef(0.10F, 0.2875F, -0.1075F);
 			GL11.glScalef(scale, scale, scale);
 			GL11.glRotatef(60.0F, 0.0F, 0.0F, 1.0F);
 			GL11.glRotatef(-110.0F, 1.0F, 0.0F, 0.0F);
@@ -337,16 +352,4 @@ public class RenderEnderMiss extends RenderLiving implements Textures
 	protected ResourceLocation getEntityTexture(Entity entity) {
 		return ((EntityEnderMiss)entity).isSpecial() ? ENDERMISS_TEXTURE_SPEC : ENDERMISS_TEXTURE;
 	}
-	
-    private float interpolateRotation(float par1, float par2, float par3) {
-        float f3;
-
-        for( f3 = par2 - par1; f3 < -180.0F; f3 += 360.0F ) { ; }
-
-        while( f3 >= 180.0F ) {
-            f3 -= 360.0F;
-        }
-
-        return par1 + par3 * f3;
-    }
 }

@@ -2,12 +2,8 @@ package sanandreasp.mods.EnderStuffPlus.client.model;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-
 import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -20,9 +16,8 @@ public class ModelEnderMiss extends ModelBiped
 	public boolean hasAvisFeather = false;
 	public boolean isRidden = false;
 	public boolean isSitting = false;
-//	public float bowClr[] = new float[3];
 	
-	public ModelRenderer bipedBodyCoat, bow;
+	public ModelRenderer bipedBodyCoat;
 
 	public ModelEnderMiss(boolean cape) {
 		super(0.0F, -14.0F, 64, 32);
@@ -65,10 +60,6 @@ public class ModelEnderMiss extends ModelBiped
 		this.bipedLeftLeg.mirror = true;
 		this.bipedLeftLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 30, 2, 0.0F);
 		this.bipedLeftLeg.setRotationPoint(2.0F, -4.0F, 0.0F);
-		
-		this.bow = new ModelRenderer(this, 35, 0);
-		this.bow.addBox(-5.0F, -13.0F, 0.0F, 10, 5, 0, 0.0F);
-		this.bow.setRotationPoint(0.0F, -13.5F, 0.0F);
 	}
 
 	@Override
@@ -184,14 +175,6 @@ public class ModelEnderMiss extends ModelBiped
         } else {
             this.bipedBody.render(partTicks);
         }
-		
-//		GL11.glPushMatrix();
-//		if( entity instanceof EntityLiving && ((EntityLiving) entity).hurtTime <= 0 ) {
-//			GL11.glColor3f(this.bowClr[0], this.bowClr[1], this.bowClr[2]);
-//		}
-//		this.bow.render(partTicks);
-//		GL11.glColor3f(1F, 1F, 1F);
-//		GL11.glPopMatrix();
 	}
 
 	@Override
@@ -262,15 +245,15 @@ public class ModelEnderMiss extends ModelBiped
 		this.bipedLeftLeg.rotationPointY = -5.0F;
 		this.bipedHead.rotationPointZ = -0.0F;
 		this.bipedHead.rotationPointY = -14.0F;
-		this.bow.rotationPointX = this.bipedHeadwear.rotationPointX = this.bipedHead.rotationPointX;
-		this.bow.rotationPointY = this.bipedHeadwear.rotationPointY = this.bipedHead.rotationPointY;
-		this.bow.rotationPointZ = this.bipedHeadwear.rotationPointZ = this.bipedHead.rotationPointZ;
-		this.bow.rotateAngleX = this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX;
-		this.bow.rotateAngleY = this.bipedHeadwear.rotateAngleY = this.bipedHead.rotateAngleY;
-		this.bow.rotateAngleZ = this.bipedHeadwear.rotateAngleZ = this.bipedHead.rotateAngleZ;
+		this.bipedHeadwear.rotationPointX = this.bipedHead.rotationPointX;
+		this.bipedHeadwear.rotationPointY = this.bipedHead.rotationPointY;
+		this.bipedHeadwear.rotationPointZ = this.bipedHead.rotationPointZ;
+		this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX;
+		this.bipedHeadwear.rotateAngleY = this.bipedHead.rotateAngleY;
+		this.bipedHeadwear.rotateAngleZ = this.bipedHead.rotateAngleZ;
 
 		if( this.isAttacking ) {
-			this.bow.rotationPointY = this.bipedHead.rotationPointY -= 1.0F * 5.0F;
+			this.bipedHead.rotationPointY -= 1.0F * 5.0F;
 		}
 
 		if( this.isSitting ) {
@@ -281,7 +264,6 @@ public class ModelEnderMiss extends ModelBiped
 			this.bipedLeftArm.rotationPointY = 12.0F;
 			this.bipedRightLeg.rotationPointY = 22.0F;
 			this.bipedLeftLeg.rotationPointY = 22.0F;
-			this.bow.rotationPointY = 10.0F;
 
 			this.bipedRightArm.rotateAngleX = -(float) Math.PI / 3 - 0.1F;
 			this.bipedLeftArm.rotateAngleX = -(float) Math.PI / 3 - 0.1F;
@@ -300,7 +282,6 @@ public class ModelEnderMiss extends ModelBiped
 			this.bipedLeftArm.rotationPointY = 2.0F + var1;
 			this.bipedRightLeg.rotationPointY = 10.0F + var1;
 			this.bipedLeftLeg.rotationPointY = 10.0F + var1;
-			this.bow.rotationPointY = var1+0.5F;
 		}
 	}
 }

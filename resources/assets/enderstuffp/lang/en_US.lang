@@ -1,0 +1,93 @@
+tile.enderstuffp:avisEgg.name=Avis Egg
+tile.enderstuffp:biomeChanger.name=Biome Changer
+tile.enderstuffp:duplicator.name=Duplicator
+tile.enderstuffp:weatherAltar.name=Weather Altar
+tile.enderstuffp:enderLeaves.name=Endertree Leaves
+tile.enderstuffp:enderLog.name=Endertree Log
+tile.enderstuffp:enderWood.name=Endertree Planks
+tile.enderstuffp:enderSapling.name=Endertree Sapling
+tile.enderstuffp:oreNiob_0.name=Niobium Ore
+tile.enderstuffp:oreNiob_1.name=Tantalum Ore
+tile.enderstuffp:blockNiob_0.name=Block of Niobium
+tile.enderstuffp:blockNiob_1.name=Block of Tantalum
+
+item.enderstuffp:enderFlesh.name=Ender Flesh
+item.enderstuffp:avisFeather.name=Avis Feather
+item.enderstuffp:avisArrow.name=Avis Arrow
+item.enderstuffp:avisCompass.name=Avis Compass
+item.enderPetEgg.name=Spawn tamed
+item.enderstuffp:petStaff.name=Enderpet Staff
+item.enderstuffp:niobIngot.name=Niobium Ingot
+item.enderstuffp:bowNiob.name=Niobium Bow
+item.enderstuffp:rainCoat.name=Ender-Raincoat
+item.enderstuffp:niobHelmet.name=Niobium Helmet
+item.enderstuffp:niobChestplate.name=Niobium Chestplate
+item.enderstuffp:niobLeggings.name=Niobium Leggins
+item.enderstuffp:niobBoots.name=Niobium Boots
+item.enderstuffp:niobPick.name=Niobium Pickaxe
+item.enderstuffp:niobShovel.name=Niobium Shovel
+item.enderstuffp:niobAxe.name=Niobium Axe
+item.enderstuffp:niobHoe.name=Niobium Hoe
+item.enderstuffp:niobSword.name=Niobium Sword
+item.enderstuffp:niobShears.name=Niobium Shears
+item.enderstuffp:niobNugget.name=Niobium Nugget
+item.enderstuffp:doorNiob.name=Niobium Door
+item.enderstuffp:enderStick.name=Endertree Stick
+item.enderstuffp:espPearls0.name=Nivis Pearl
+item.enderstuffp:espPearls1.name=Ignis Pearl
+item.enderstuffp:espPearls2.name=Endermiss Pearl
+
+entity.EnderNivis.name=Ender Nivis
+entity.EnderIgnis.name=Ender Ignis
+entity.EnderRay.name=Ender Ray
+entity.EnderMiss.name=Ender Miss
+entity.EnderAvis.name=Ender Avis
+entity.EnderNemesis.name=Ender Nemesis
+
+enderstuffplus.petegg.health=Health
+enderstuffplus.petegg.hasSpecSkin=Has special skin
+enderstuffplus.petegg.immuneToH2O=Has Raincoat
+enderstuffplus.petegg.fallDmg=Can get fall damage
+enderstuffplus.petegg.true=yes
+enderstuffplus.petegg.false=no
+
+enderstuffplus.guipet.title.miss=I am %s, the Ender Miss
+enderstuffplus.guipet.title.avis=I am %s, the Ender Avis
+enderstuffplus.guipet.mount=mount
+enderstuffplus.guipet.sit=sit
+enderstuffplus.guipet.standUp=stand up
+enderstuffplus.guipet.stay=stay
+enderstuffplus.guipet.follow=follow
+enderstuffplus.guipet.putIntoEgg=put me into an egg
+enderstuffplus.guipet.close=Done
+enderstuffplus.guipet.rename=Rename me!
+enderstuffplus.guipet.name=Name:
+
+enderstuffplus.chat.name=My name is %s.
+enderstuffplus.chat.missFriend=I have %s%% Health and you are my friend.
+enderstuffplus.chat.avisFriend=I have %s%% Health, %s%% stamina and you are my friend.
+enderstuffplus.chat.stranger=My friend is %s
+
+enderstuffplus.biomeChanger.gui1.range=Range
+enderstuffplus.biomeChanger.gui3.blocks=Change blocks
+enderstuffplus.biomeChanger.gui3.periform=Form of the area:
+enderstuffplus.biomeChanger.gui3.form1=Circular
+enderstuffplus.biomeChanger.gui3.form2=Rhombic
+enderstuffplus.biomeChanger.gui3.form3=Square
+enderstuffplus.biomeChanger.gui3.stats=Statistics:
+enderstuffplus.biomeChanger.gui3.remain=Remaining: %s
+enderstuffplus.biomeChanger.gui3.processed=Processed: %s
+
+enderstuffplus.duplicator.insertXP=Insert XP-Levels
+enderstuffplus.duplicator.storedXP=stored XP-Levels
+enderstuffplus.duplicator.neededXP=needed XP-Levels
+
+enderstuffplus.weatherAltar.duration=Duration
+enderstuffplus.weatherAltar.sun=Sun
+enderstuffplus.weatherAltar.rain=Rain
+enderstuffplus.weatherAltar.thunder=Thunder
+
+itemGroup.ESPTab=EnderStuff+ Items
+itemGroup.ESPTabCoats=EnderStuff+ Ender Raincoats
+
+enchantment.enderChestTel=Ender Chest Teleporter
