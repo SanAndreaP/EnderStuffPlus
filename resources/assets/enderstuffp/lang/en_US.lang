@@ -91,3 +91,5 @@ itemGroup.ESPTab=EnderStuff+ Items
 itemGroup.ESPTabCoats=EnderStuff+ Ender Raincoats
 
 enchantment.enderChestTel=Ender Chest Teleporter
+
+death.attack.enderstuffp:endAcid=%1$s was corroded by plasmatic ender gas

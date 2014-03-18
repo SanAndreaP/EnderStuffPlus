@@ -1,5 +1,6 @@
 package sanandreasp.mods.EnderStuffPlus.registry;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.SpawnListEntry;
 import net.minecraftforge.common.BiomeDictionary;
@@ -26,6 +28,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import sanandreasp.core.manpack.helpers.CUS;
 import sanandreasp.core.manpack.helpers.CommonUsedStuff;
 import sanandreasp.core.manpack.helpers.ItemBlockNamedMeta;
 import sanandreasp.core.manpack.managers.SAPConfigManager;
@@ -137,6 +140,8 @@ public class ESPModRegistry
 	public static CreativeTabs espTab, espTabCoats;
 	
 	public static ManagerPackHelper manHelper = new ManagerPackHelper();
+	
+	public static DamageSource endAcid;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt) {
@@ -417,6 +422,8 @@ public class ESPModRegistry
 	@EventHandler
 	public void init(FMLInitializationEvent evt) {
 		if( !manHelper.loading ) return;
+		
+		endAcid = CUS.getNewDmgSrc("enderstuffp:endAcid");
 
 		RegistryDuplicator.registerFuel(new ItemStack(ESPModRegistry.endIngot), 100);
 		RegistryDuplicator.registerFuel(new ItemStack(Item.diamond), 160);
