@@ -395,7 +395,7 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 					
 					return true;
 				} else if( CUS.areItemInstEqual(playerItem, ESPModRegistry.enderPetStaff) ) {
-					PacketRegistry.sendPacketToPlayer(ESPModRegistry.modID, "showPetGui", (Player)player, this);
+					PacketRegistry.sendPacketToPlayer(ESPModRegistry.MOD_ID, "showPetGui", (Player)player, this);
 					
 					return true;
 				}
@@ -699,7 +699,7 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 		}
 		
 		PacketRegistry.sendPacketToServer(
-				ESPModRegistry.modID, "riddenMove", player.movementInput.moveForward, player.movementInput.moveStrafe
+				ESPModRegistry.MOD_ID, "riddenMove", player.movementInput.moveForward, player.movementInput.moveStrafe
 		);
 	}
 	

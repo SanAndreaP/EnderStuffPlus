@@ -41,14 +41,14 @@ public class CommonProxy
 	}
 
 	public void registerPackets() {
-		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "bcGuiAction", new PacketBCGUIAction());
-		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "bcGuiChange", new PacketChangeBCGUI());
-		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "dupeInsLevels", new PacketDupeInsertLevels());
-		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "setEnderName", new PacketSetEnderName());
-		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "enderGuiAction", new PacketEnderPetGUIAction());
-		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "riddenJump", new PacketRiddenJump());
-		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "riddenMove", new PacketRiddenMove());
-		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "setWeather", new PacketSetWeather());
+		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "bcGuiAction", new PacketBCGUIAction());
+		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "bcGuiChange", new PacketChangeBCGUI());
+		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "dupeInsLevels", new PacketDupeInsertLevels());
+		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "setEnderName", new PacketSetEnderName());
+		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "enderGuiAction", new PacketEnderPetGUIAction());
+		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "riddenJump", new PacketRiddenJump());
+		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "riddenMove", new PacketRiddenMove());
+		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "setWeather", new PacketSetWeather());
 	}
     
 }

@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ItemRegistry;
 
 public class EntityAvisArrow extends EntityArrow
 {
@@ -45,7 +46,7 @@ public class EntityAvisArrow extends EntityArrow
         	this.writeEntityToNBT(origNBT);
         	
             if( origNBT.getByte("inGround") == 1 && this.arrowShake <= 0
-                && ((this.canBePickedUp == 1 && player.inventory.addItemStackToInventory(new ItemStack(ESPModRegistry.avisArrow, 1)))
+                && ((this.canBePickedUp == 1 && player.inventory.addItemStackToInventory(new ItemStack(ItemRegistry.avisArrow, 1)))
             		|| player.capabilities.isCreativeMode) )
             {
                 this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -53,5 +54,9 @@ public class EntityAvisArrow extends EntityArrow
                 this.setDead();
             }
         }
+    }
+    
+    public boolean _SAP_(EntityPlayer player) {
+    	return true;
     }
 }

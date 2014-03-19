@@ -455,7 +455,7 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
 			if( this.ticksExisted % (30 * (this.isReplacingBlocks ? 2 : 1)) == 0 && !this.worldObj.isRemote ) {
 				this.changeBiome(this.getCurrRange(), false);
 				this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ESPModRegistry.biomeChanger.blockID, 1, this.getCurrRange());
-				PacketRegistry.sendPacketToAllAround(ESPModRegistry.modID, "setWeather", this.xCoord, this.yCoord, this.zCoord, 256, this.worldObj.provider.dimensionId, this, this.getCurrRange());
+				PacketRegistry.sendPacketToAllAround(ESPModRegistry.MOD_ID, "setWeather", this.xCoord, this.yCoord, this.zCoord, 256, this.worldObj.provider.dimensionId, this, this.getCurrRange());
 				this.setCurrRange(this.getCurrRange()+1);
 				
 				if( this.getCurrRange() >= this.getMaxRange() ) {

@@ -278,7 +278,7 @@ public class EntityEnderAvis extends EntityCreature implements IEnderPet, IEnder
 					
 					return true;
 				} else if( playerItem.itemID == ESPModRegistry.enderPetStaff.itemID ) {
-					PacketRegistry.sendPacketToPlayer(ESPModRegistry.modID, "showPetGui", (Player)player, this);
+					PacketRegistry.sendPacketToPlayer(ESPModRegistry.MOD_ID, "showPetGui", (Player)player, this);
 					
 					return true;
 				} else if( playerItem.itemID == Item.saddle.itemID && !this.isSaddled() ) {
@@ -578,7 +578,7 @@ public class EntityEnderAvis extends EntityCreature implements IEnderPet, IEnder
 		} else {
 			ESPModRegistry.proxy.setJumping(false, this);
 		}
-		PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "riddenMove", player.movementInput.moveForward, player.movementInput.moveStrafe);
+		PacketRegistry.sendPacketToServer(ESPModRegistry.MOD_ID, "riddenMove", player.movementInput.moveForward, player.movementInput.moveStrafe);
 	}
 	
 	@Override
@@ -690,5 +690,9 @@ public class EntityEnderAvis extends EntityCreature implements IEnderPet, IEnder
 		par1nbtTagCompound.setBoolean("isFollowing", this.isFollowing());
 		par1nbtTagCompound.setFloat("currFlightCond", this.currFlightCondition);
 		par1nbtTagCompound.setString("owner", this.ownerName);
+	}
+	
+	public boolean _SAP_canDismountWithLSHIFT(EntityPlayer player) {
+		return this.onGround;
 	}
 }

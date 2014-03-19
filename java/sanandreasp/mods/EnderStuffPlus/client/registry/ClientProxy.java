@@ -99,12 +99,12 @@ public class ClientProxy extends CommonProxy
 	public void registerPackets() {
 		super.registerPackets();
 		
-		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "changeBiome", new PacketChngBiome());
-		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "showPetGui", new PacketShowPetGUI());
-		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "fxPortal", new PacketFXSpawnPortalFX());
-		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "fxTameAcc", new PacketFXSpawnTameAccept());
-		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "fxTameRef", new PacketFXSpawnTameAccept());
-		PacketRegistry.registerPacketHandler(ESPModRegistry.modID, "fxRayball", new PacketFXSpawnTameAccept());
+		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "changeBiome", new PacketChngBiome());
+		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "showPetGui", new PacketShowPetGUI());
+		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "fxPortal", new PacketFXSpawnPortalFX());
+		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "fxTameAcc", new PacketFXSpawnTameAccept());
+		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "fxTameRef", new PacketFXSpawnTameAccept());
+		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "fxRayball", new PacketFXSpawnTameAccept());
 	}
 	
 	@Override
@@ -115,7 +115,7 @@ public class ClientProxy extends CommonProxy
 	@Override
 	public void setJumping(boolean jump, EntityLiving entity) {
 		if( jump ) {
-			PacketRegistry.sendPacketToServer(ESPModRegistry.modID, "riddenJump", entity.entityId);
+			PacketRegistry.sendPacketToServer(ESPModRegistry.MOD_ID, "riddenJump", entity.entityId);
 		}
 	}
 }

@@ -53,7 +53,7 @@ public class EntityPearlMiss extends EntityThrowable
         }
     }
     
-    public boolean canImpactOnLiquid() {
+    public boolean _SAP_canImpactOnLiquid() {
         return true;
     }
 }
