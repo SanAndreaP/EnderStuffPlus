@@ -79,7 +79,7 @@ public final class ParticleFXFuncCollection
 		}
 	}
 	
-	public static void spawnDupeFX(World world, int x, int y, int z, Random rand) {
+	public static void spawnDuplicatorFX(World world, int x, int y, int z, Random rand) {
 		int meta = world.getBlockMetadata(x, y, z);
 		double partX = (double)x + 0.5D;
 		double partY = (double)y + 0.3D + rand.nextDouble() * 6.0D / 16.0D;

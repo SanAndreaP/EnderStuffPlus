@@ -2,12 +2,13 @@ package sanandreasp.mods.EnderStuffPlus.world;
 
 import java.util.Random;
 
+import sanandreasp.mods.EnderStuffPlus.registry.BlockRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.RegistryDungeonLoot;
+
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenHills;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
-import sanandreasp.mods.EnderStuffPlus.registry.RegistryDungeonLoot;
 
 public class WorldGenAvisNest extends WorldGenerator {
 	@Override
@@ -22,31 +23,32 @@ public class WorldGenAvisNest extends WorldGenerator {
 				}
 			}
 		}
-		
+
 		// empty room
 		for( int x = posX - 2; x <= posX + 2; x++ ) {
 			for( int y = posY - 3; y <= posY - 1; y++ ) {
 				for( int z = posZ - 2; z <= posZ + 2; z++ ) {
-					if( world.getBlockId(x, y, z) != 0 )
-						world.setBlock(x, y, z, 0);
+					if( world.getBlockId(x, y, z) != 0 ) {
+                        world.setBlock(x, y, z, 0);
+                    }
 				}
 			}
 		}
-		
+
 		// ceiling
 		for( int x = posX - 2; x <= posX + 2; x++ ) {
 			for( int z = posZ - 2; z <= posZ +2; z++ ) {
 				world.setBlock(x, posY, z, Block.stoneBrick.blockID, rand.nextInt(3), 3);
 			}
 		}
-		
+
 		// floor
 		for( int x = posX - 2; x <= posX + 2; x++ ) {
 			for( int z = posZ - 2; z <= posZ +2; z++ ) {
 				world.setBlock(x, posY - 4, z, Block.stoneBrick.blockID, rand.nextInt(3), 3);
 			}
 		}
-		
+
 		// walls
 		for( int y = posY - 3; y <= posY - 1; y++ ) {
 			for( int x = posX - 2; x <= posX + 2; x++ ) {
@@ -58,16 +60,16 @@ public class WorldGenAvisNest extends WorldGenerator {
 				world.setBlock(posX + 3, y, z, Block.stoneBrick.blockID, y == posY-2 ? 3 : rand.nextInt(3), 3);
 			}
 		}
-		
+
 		// place avis egg
-		world.setBlock(posX, posY-3, posZ, ESPModRegistry.avisEgg.blockID);
-		
+		world.setBlock(posX, posY-3, posZ, BlockRegistry.avisEgg.blockID);
+
 		// place chest in corner
 		int chestX = posX + 2*(rand.nextBoolean() ? -1 : 1);
 		int chestY = posY - 3;
 		int chestZ = posZ + 2*(rand.nextBoolean() ? -1 : 1);
 		RegistryDungeonLoot.placeLootChest(world, chestX, chestY, chestZ, RegistryDungeonLoot.AVIS_CHEST, rand, 8);
-		
+
 		return true;
 	}
 }

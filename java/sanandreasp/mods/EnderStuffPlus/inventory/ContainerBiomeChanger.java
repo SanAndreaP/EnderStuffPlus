@@ -10,14 +10,14 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityBiomeChanger;
 
-public class Container_BiomeChanger extends Container {
+public class ContainerBiomeChanger extends Container {
 	public TileEntityBiomeChanger biomeChanger;
 	@SuppressWarnings("rawtypes")
 	private List copiedInvSlots = new ArrayList();
 	@SuppressWarnings("rawtypes")
 	private List copiedInvItems = new ArrayList();
 
-	public Container_BiomeChanger(InventoryPlayer par1InventoryPlayer, TileEntityBiomeChanger par2BiomeChanger) {
+	public ContainerBiomeChanger(InventoryPlayer par1InventoryPlayer, TileEntityBiomeChanger par2BiomeChanger) {
 		this.biomeChanger = par2BiomeChanger;
 		
         for( int col = 0; col < biomeChanger.getSizeInventory(); col++ ) {

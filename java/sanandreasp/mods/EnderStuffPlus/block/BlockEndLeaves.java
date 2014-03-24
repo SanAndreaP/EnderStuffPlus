@@ -4,10 +4,9 @@ import java.util.List;
 import java.util.Random;
 
 import sanandreasp.mods.EnderStuffPlus.client.particle.ParticleFXFuncCollection;
+import sanandreasp.mods.EnderStuffPlus.registry.BlockRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
-import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -17,20 +16,61 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockEndLeaves extends BlockLeaves
-{
-	@SideOnly(Side.CLIENT)
-    private Icon[] iconArray;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-	public BlockEndLeaves(int id) {
-		super(id);
-		this.graphicsLevel = false;
-	}
+public class BlockEndLeaves
+    extends BlockLeaves
+{
+    @SideOnly(Side.CLIENT)
+    private Icon[] icons = new Icon[2];
+
+    public BlockEndLeaves(int id) {
+        super(id);
+        this.graphicsLevel = false;
+    }
+
+    @Override
+    public boolean canDragonDestroy(World world, int x, int y, int z) {
+        return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int colorMultiplier(IBlockAccess blockAccess, int x, int y, int z) {
+        return 0xFFFFFF;
+    }
+
+    @Override
+    public void dropBlockAsItemWithChance(World world, int x, int y, int z, int meta, float velocity, int fortuneLevel) {
+        if( !world.isRemote ) {
+            int randomChance = 20;
+
+            if( fortuneLevel > 0 ) {
+                randomChance -= 2 << fortuneLevel;
+                if( randomChance < 10 ) {
+                    randomChance = 10;
+                }
+            }
+
+            if( world.rand.nextInt(randomChance) == 0 ) {
+                this.dropBlockAsItem_do(world, x, y, z, new ItemStack(BlockRegistry.sapEndTree.blockID, 1, 0));
+            }
+        }
+    }
 
     @Override
     @SideOnly(Side.CLIENT)
     public int getBlockColor() {
         return 0xFFFFFF;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Icon getIcon(int side, int meta) {
+        this.graphicsLevel = Block.leaves.graphicsLevel;
+
+        return this.icons[this.graphicsLevel ? 0 : 1];
     }
 
     @Override
@@ -41,74 +81,37 @@ public class BlockEndLeaves extends BlockLeaves
 
     @Override
     @SideOnly(Side.CLIENT)
-    public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
-    	return 0xFFFFFF;
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public void getSubBlocks(int id, CreativeTabs creativeTab, List stacks) {
+        stacks.add(new ItemStack(id, 1, 0));
     }
-    
+
     @Override
     public boolean isOpaqueCube() {
-    	this.graphicsLevel = Block.leaves.graphicsLevel;
+        this.graphicsLevel = Block.leaves.graphicsLevel;
+
         return !this.graphicsLevel;
     }
-    
-    @Override
-    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
-    	this.graphicsLevel = Block.leaves.graphicsLevel;
-    	return super.shouldSideBeRendered(world, x, y, z, side);
-    }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-    	super.randomDisplayTick(world, x, y, z, rand);
-    	
-    	ParticleFXFuncCollection.spawnEndLeavesFX(world, x, y, z, rand);
-    }
-    
-    @Override
-    public void dropBlockAsItemWithChance(World world, int x, int y, int z, int meta, float velocity, int fortuneLvl) {
-        if( !world.isRemote ) {
-            int randChance = 20;
-
-            if( fortuneLvl > 0 ) {
-                randChance -= 2 << fortuneLvl;
-
-                if( randChance < 10 ) {
-                    randChance = 10;
-                }
-            }
-
-            if( world.rand.nextInt(randChance) == 0 ) {
-                this.dropBlockAsItem_do(world, x, y, z, new ItemStack(ESPModRegistry.sapEndTree.blockID, 1, 0));
-            }
-        }
-    }
-    
-	@Override
-    @SideOnly(Side.CLIENT)
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public void getSubBlocks(int id, CreativeTabs tab, List stacks) {
-    	stacks.add(new ItemStack(id, 1, 0));
+    public void randomDisplayTick(World world, int x, int y, int z, Random random) {
+        super.randomDisplayTick(world, x, y, z, random);
+        ParticleFXFuncCollection.spawnEndLeavesFX(world, x, y, z, random);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Icon getIcon(int side, int meta) {
-    	this.graphicsLevel = Block.leaves.graphicsLevel;
-        return this.iconArray[this.graphicsLevel ? 0 : 1];
+    public void registerIcons(IconRegister iconRegister) {
+        String nA = (!ConfigRegistry.useAnimations ? "_NA" : "");
+        this.icons[0] = iconRegister.registerIcon("enderstuffp:enderLeaves" + nA);
+        this.icons[1] = iconRegister.registerIcon("enderstuffp:enderLeaves_opaque" + nA);
     }
-    
+
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister regIcon) {
-    	iconArray = new Icon[2];
-    	String nA = (!ConfigRegistry.useAnimations ? "_NA" : "");
-    	this.iconArray[0] = regIcon.registerIcon("enderstuffp:enderLeaves" + nA);
-    	this.iconArray[1] = regIcon.registerIcon("enderstuffp:enderLeaves_opaque" + nA);
-    }
-    
-    @Override
-    public boolean canDragonDestroy(World world, int x, int y, int z) {
-    	return false;
+    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side) {
+        this.graphicsLevel = Block.leaves.graphicsLevel;
+
+        return super.shouldSideBeRendered(blockAccess, x, y, z, side);
     }
 }

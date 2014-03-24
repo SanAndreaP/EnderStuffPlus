@@ -1,16 +1,17 @@
 // Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
 // Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode fieldsfirst 
+// Decompiler options: packimports(3) braces deadcode fieldsfirst
 
 package sanandreasp.mods.EnderStuffPlus.entity;
+import sanandreasp.mods.EnderStuffPlus.registry.ItemRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.Textures;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
-import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 
 
 public class EntityEnderNivis extends EntityEndermanESP implements IEnderCreature, Textures {
@@ -22,7 +23,7 @@ public class EntityEnderNivis extends EntityEndermanESP implements IEnderCreatur
 		this.experienceValue = 8;
 		this.isImmuneToWater = true;
 	}
-	
+
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
@@ -47,9 +48,9 @@ public class EntityEnderNivis extends EntityEndermanESP implements IEnderCreatur
 
 	@Override
 	protected int getDropItemId() {
-		return ESPModRegistry.espPearls.itemID;
+		return ItemRegistry.espPearls.itemID;
 	}
-	
+
 	@Override
 	protected int getDamageDropped() {
 		return 0;
@@ -57,13 +58,13 @@ public class EntityEnderNivis extends EntityEndermanESP implements IEnderCreatur
 
 	@Override
 	public void onLivingUpdate() {
-		if( this.ticksExisted % 5 == 0 && !worldObj.isRemote ) {
+		if( this.ticksExisted % 5 == 0 && !this.worldObj.isRemote ) {
 			this.setBlockIce();
 		}
 
 		super.onLivingUpdate();
 	}
-	
+
 	@Override
 	public void spawnParticle(String type, double X, double Y, double Z, float dataI, float dataII, float dataIII) {
 //    	if( id == 0 ) {
@@ -88,24 +89,26 @@ public class EntityEnderNivis extends EntityEndermanESP implements IEnderCreatur
 			for( int z = -2; z <= 2; z++ ) {
 				if( Math.sqrt((x * x) + (z * z)) <= 2.3D ) {
 					if (this.worldObj.getBlockId(blockPosX + x, blockPosY,
-							blockPosZ + z) == Block.waterStill.blockID)
-						this.worldObj.setBlock(blockPosX + x,
+							blockPosZ + z) == Block.waterStill.blockID) {
+                        this.worldObj.setBlock(blockPosX + x,
 								blockPosY, blockPosZ + z, Block.ice.blockID);
+                    }
 				}
 			}
 		}
 	}
-	
+
 	@Override
 	public float getAIMoveSpeed() {
 		return this.entityToAttack != null ? 0.15F : 0.1F;
 	}
-	
+
 	@Override
 	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-		if( par1DamageSource.isFireDamage() )
-			par2 *= 5;
-		
+		if( par1DamageSource.isFireDamage() ) {
+            par2 *= 5;
+        }
+
 		return super.attackEntityFrom(par1DamageSource, par2);
 	}
 }

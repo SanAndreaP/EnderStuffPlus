@@ -11,8 +11,8 @@ import sanandreasp.mods.EnderStuffPlus.client.gui.BiomeChanger.GuiBiomeChangerBi
 import sanandreasp.mods.EnderStuffPlus.client.gui.BiomeChanger.GuiBiomeChangerConfig;
 import sanandreasp.mods.EnderStuffPlus.client.gui.BiomeChanger.GuiBiomeChangerFuel;
 import sanandreasp.mods.EnderStuffPlus.entity.IEnderPet;
-import sanandreasp.mods.EnderStuffPlus.inventory.Container_BiomeChanger;
-import sanandreasp.mods.EnderStuffPlus.inventory.Container_Duplicator;
+import sanandreasp.mods.EnderStuffPlus.inventory.ContainerBiomeChanger;
+import sanandreasp.mods.EnderStuffPlus.inventory.ContainerDuplicator;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityBiomeChanger;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityDuplicator;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityWeatherAltar;
@@ -23,9 +23,9 @@ public class GuiHandler implements IGuiHandler {
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		if( ID == 1 ) {
-			return new Container_BiomeChanger(player.inventory, (TileEntityBiomeChanger)world.getBlockTileEntity(x, y, z));
+			return new ContainerBiomeChanger(player.inventory, (TileEntityBiomeChanger)world.getBlockTileEntity(x, y, z));
 		} else if( ID == 4 ) {
-			return new Container_Duplicator(player.inventory, (TileEntityDuplicator)world.getBlockTileEntity(x, y, z));
+			return new ContainerDuplicator(player.inventory, (TileEntityDuplicator)world.getBlockTileEntity(x, y, z));
 		}
 		return null;
 	}
@@ -38,13 +38,13 @@ public class GuiHandler implements IGuiHandler {
 			if( entityClt instanceof IEnderPet )
 				return new GuiEnderPet((IEnderPet)entityClt, player);
 		} else if( ID == 1 ) {
-			return new GuiBiomeChangerFuel((Container_BiomeChanger) getServerGuiElement(ID, player, world, x, y, z));
+			return new GuiBiomeChangerFuel((ContainerBiomeChanger) getServerGuiElement(ID, player, world, x, y, z));
 		} else if( ID == 2 ) {
 			return new GuiBiomeChangerBiomes((TileEntityBiomeChanger) world.getBlockTileEntity(x, y, z));
 		} else if( ID == 3 ) {
 			return new GuiBiomeChangerConfig((TileEntityBiomeChanger) world.getBlockTileEntity(x, y, z));
 		} else if( ID == 4 ) {
-			return new GuiDuplicator((Container_Duplicator)getServerGuiElement(ID, player, world, x, y, z));
+			return new GuiDuplicator((ContainerDuplicator)getServerGuiElement(ID, player, world, x, y, z));
 		} else if( ID == 5 ) {
 			return new GuiWeatherAltar((TileEntityWeatherAltar)world.getBlockTileEntity(x, y, z));
 		}

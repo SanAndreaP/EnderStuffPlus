@@ -15,7 +15,7 @@ item.enderstuffp:enderFlesh.name=Enderfleisch
 item.enderstuffp:avisFeather.name=Avisfeder
 item.enderstuffp:avisArrow.name=Avispfeil
 item.enderstuffp:avisCompass.name=Avis-Kompass
-item.enderPetEgg.name=Spawn gezähmte
+item.enderstuffp:enderPetEgg.name=Spawn gezähmte
 item.enderstuffp:petStaff.name=Ender-Haustierstab
 item.enderstuffp:niobIngot.name=Niobbarren
 item.enderstuffp:bowNiob.name=Niobbogen
@@ -45,9 +45,12 @@ entity.EnderAvis.name=Ender Avis
 entity.EnderNemesis.name=Ender Nemesis
 
 enderstuffplus.petegg.health=Gesundheit
-enderstuffplus.petegg.hasSpecSkin=Hat besondere Haut
-enderstuffplus.petegg.immuneToH2O=Hat Regenmantel
-enderstuffplus.petegg.fallDmg=Kann Fallschaden erleiden
+enderstuffplus.petegg.immuneToH2O=Regenmantel
+enderstuffplus.petegg.hasSpecSkin=Besondere Haut
+enderstuffplus.petegg.immuneToH2O=Regenmantel
+enderstuffplus.petegg.fallDmg=Erleidet Fallschaden
+enderstuffplus.petegg.condition=Ausdauer
+enderstuffplus.petegg.saddle=Gesattelt
 enderstuffplus.petegg.true=Ja
 enderstuffplus.petegg.false=Nein
 

@@ -1,13 +1,16 @@
 package sanandreasp.mods.EnderStuffPlus.item;
 
 import java.util.List;
+
+import com.google.common.collect.ImmutableList;
+
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import com.google.common.collect.ImmutableList;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -18,21 +21,21 @@ public class ItemRaincoat extends Item
 		private final int clr;
 		private final String dsc;
 		private final String nm;
-		
+
 		public CoatBaseEntry(String name, int color, String desc) {
 			this.clr = color;
 			this.dsc = desc;
 			this.nm = name;
 		}
-		
+
 		public int getColor() {
 			return this.clr;
 		}
-		
+
 		public String getDesc() {
 			return this.dsc;
 		}
-		
+
 		public String getName() {
 			return this.nm;
 		}
@@ -42,48 +45,48 @@ public class ItemRaincoat extends Item
 	{
 		private final int clr;
 		private final String nm;
-		
+
 		public CoatColorEntry(String name, int color) {
 			this.clr = color;
 			this.nm = name;
 		}
-		
+
 		public int getColor() {
 			return this.clr;
 		}
-		
+
 		public String getName() {
 			return this.nm;
 		}
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	private Icon iconBase;
 	@SideOnly(Side.CLIENT)
 	private Icon iconOver;
-	
+
 	public static final ImmutableList<CoatColorEntry> colorList = ImmutableList.of(
-			new CoatColorEntry("Black", 0x1C1C22),
-			new CoatColorEntry("Red", 0xC62127),
-			new CoatColorEntry("Green", 0x4A6B18),
-			new CoatColorEntry("Brown", 0x663311),
-			new CoatColorEntry("Blue", 0x142EAF),
-			new CoatColorEntry("Purple", 0x8C39BC),
-			new CoatColorEntry("Cyan", 0x2D7C9D),
-			new CoatColorEntry("Light Gray", 0xA9A9A9),
-			new CoatColorEntry("Gray", 0x848484),
-			new CoatColorEntry("Pink", 0xFF81E8),
-			new CoatColorEntry("Lemon Green", 0x83D41C),
-			new CoatColorEntry("Yellow", 0xE7E72A),
-			new CoatColorEntry("Light Blue", 0x8FB9F4),
-			new CoatColorEntry("Magenta", 0xFF08D2),
-			new CoatColorEntry("Orange", 0xFF8000),
-			new CoatColorEntry("White", 0xFFFFFF),
-			new CoatColorEntry("Gold", 0xFFC545),
-			new CoatColorEntry("Niobium", 0x3C408B),
-			new CoatColorEntry("Transparent", 0xCDCDCD)
+			new CoatColorEntry("Black",          0x1A1515),
+			new CoatColorEntry("Red",            0xCF3B37),
+			new CoatColorEntry("Green",          0x3D591B),
+			new CoatColorEntry("Brown",          0x663A20),
+			new CoatColorEntry("Blue",           0x3343C6),
+			new CoatColorEntry("Purple",         0xB54AE7),
+			new CoatColorEntry("Cyan",           0x349EC1),
+			new CoatColorEntry("Light Gray",     0xD3D8D8),
+			new CoatColorEntry("Gray",           0x4D4D4D),
+			new CoatColorEntry("Pink",           0xF4BBD1),
+			new CoatColorEntry("Lemon Green",    0x50E243),
+			new CoatColorEntry("Yellow",         0xE4DC2A),
+			new CoatColorEntry("Light Blue",     0x98C2F1),
+			new CoatColorEntry("Magenta",        0xE66AEB),
+			new CoatColorEntry("Orange",         0xF7B24C),
+			new CoatColorEntry("White",          0xF8F8F8),
+			new CoatColorEntry("Gold",           0xC5B600),
+			new CoatColorEntry("Niobium",        0x141E61),
+			new CoatColorEntry("Transparent",    0xCDCDCD)
 	);
-	
+
 	public static final ImmutableList<CoatBaseEntry> baseList = ImmutableList.of(
 			new CoatBaseEntry("Gold", 0xFFC545, "+50% pet speed boost"),
 			new CoatBaseEntry("Niobium", 0x3C408B, "protection from bad potion effects"),
@@ -104,34 +107,37 @@ public class ItemRaincoat extends Item
 	public boolean requiresMultipleRenderPasses() {
 		return true;
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamageForRenderPass(int par1, int par2) {
 		return par2 == 0 ? this.iconBase : this.iconOver;
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack par1ItemStack, int par2) {
 		int dmg = par1ItemStack.getItemDamage();
-		if( (dmg & 31) >= 0 && (dmg & 31) < colorList.size() && par2 == 0 )
-			return colorList.get(dmg & 31).getColor();
-		if( par2 > 0 )
-			return baseList.get(dmg >> 5).getColor();
-		
+		if( (dmg & 31) >= 0 && (dmg & 31) < colorList.size() && par2 == 0 ) {
+            return colorList.get(dmg & 31).getColor();
+        }
+		if( par2 > 0 ) {
+            return baseList.get(dmg >> 5).getColor();
+        }
+
 		return super.getColorFromItemStack(par1ItemStack, par2);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		int clr = par1ItemStack.getItemDamage() & 31;
 		int bas = par1ItemStack.getItemDamage() >> 5;
-		
-		if( clr < colorList.asList().size() && clr >= 0 )
-			par3List.add("\247oColor: " + colorList.get(clr).getName());
+
+		if( clr < colorList.asList().size() && clr >= 0 ) {
+            par3List.add("\247oColor: " + colorList.get(clr).getName());
+        }
 		if( bas < baseList.asList().size() && bas >= 0 ) {
 			par3List.add("\247oBase: " + baseList.get(bas).getName());
 			String[] split = baseList.get(bas).getDesc().split("\n");
@@ -140,14 +146,14 @@ public class ItemRaincoat extends Item
 			}
 		}
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister) {
 		this.itemIcon = this.iconBase = par1IconRegister.registerIcon("enderstuffp:rainCoatBase");
 		this.iconOver = par1IconRegister.registerIcon("enderstuffp:rainCoatStripes");
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	@SuppressWarnings({ "unchecked", "rawtypes" })

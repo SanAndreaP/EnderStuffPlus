@@ -1,16 +1,17 @@
 // Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
 // Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode fieldsfirst 
+// Decompiler options: packimports(3) braces deadcode fieldsfirst
 
 package sanandreasp.mods.EnderStuffPlus.entity;
+import sanandreasp.mods.EnderStuffPlus.registry.ItemRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.Textures;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
-import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 
 public class EntityEnderIgnis extends EntityEndermanESP implements IEnderCreature, Textures {
 
@@ -18,7 +19,7 @@ public class EntityEnderIgnis extends EntityEndermanESP implements IEnderCreatur
 		super(world);
 		this.experienceValue = 8;
 		this.isImmuneToFire = true;
-		
+
         carriableBlocks[Block.grass.blockID] = false;
         carriableBlocks[Block.dirt.blockID] = false;
         carriableBlocks[Block.sand.blockID] = false;
@@ -34,14 +35,14 @@ public class EntityEnderIgnis extends EntityEndermanESP implements IEnderCreatur
         carriableBlocks[Block.melon.blockID] = false;
         carriableBlocks[Block.mycelium.blockID] = false;
 	}
-	
+
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(80.0D);
         this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(10.0D);
 	}
-	
+
 	@Override
 	public void spawnParticle(String type, double X, double Y, double Z, float dataI, float dataII, float dataIII) {
 //    	if( id == 0 ) {
@@ -77,15 +78,16 @@ public class EntityEnderIgnis extends EntityEndermanESP implements IEnderCreatur
 		if( super.attackEntityAsMob(entity) ) {
 			entity.setFire(3);
 			return true;
-		} else
-			return false;
+		} else {
+            return false;
+        }
 	}
 
 	@Override
 	protected int getDropItemId() {
-		return ESPModRegistry.espPearls.itemID;
+		return ItemRegistry.espPearls.itemID;
 	}
-	
+
 	@Override
 	protected int getDamageDropped() {
 		return 1;
@@ -102,10 +104,11 @@ public class EntityEnderIgnis extends EntityEndermanESP implements IEnderCreatur
 				for( int z = -2; z <= 2; z++ ) {
 					if( Math.sqrt((x * x) + (y * y) + (z * z)) <= 2D ) {
 						if (this.worldObj.getBlockId(blockPosX + x, blockPosY
-								+ y, blockPosZ + z) == 0)
-							this.worldObj.setBlock(blockPosX + x,
+								+ y, blockPosZ + z) == 0) {
+                            this.worldObj.setBlock(blockPosX + x,
 									blockPosY + y, blockPosZ + z,
 									Block.fire.blockID);
+                        }
 					}
 				}
 			}

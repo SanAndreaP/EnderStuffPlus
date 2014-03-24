@@ -21,7 +21,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 
 public final class EntityRegistryESP
 {
-	public static final void init() {
+	public static final void initiate() {
 		registerSpawnings();
 	}
 	

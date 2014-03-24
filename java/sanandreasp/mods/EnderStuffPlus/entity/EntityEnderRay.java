@@ -3,6 +3,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import sanandreasp.mods.EnderStuffPlus.registry.ItemRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.Textures;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -17,8 +20,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
-import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 
 public class EntityEnderRay extends EntityFlying implements IMob, IEnderCreature, Textures {
 
@@ -39,26 +40,27 @@ public class EntityEnderRay extends EntityFlying implements IMob, IEnderCreature
 		this.hasSpecialTexture = this.rand.nextInt(2) == 0;
 		this.experienceValue = 10;
 	}
-	
+
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20.0D);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.3D);
 	}
-	
+
 	@Override
 	public void onUpdate() {
-		if( this.worldObj.difficultySetting == 0 && !this.worldObj.isRemote )
-			this.setDead();
-		
+		if( this.worldObj.difficultySetting == 0 && !this.worldObj.isRemote ) {
+            this.setDead();
+        }
+
 		super.onUpdate();
 	}
 
 	@Override
 	protected void updateEntityActionState() {
-		EntityPlayer player = worldObj.getClosestPlayerToEntity(this, 256);
-		
+		EntityPlayer player = this.worldObj.getClosestPlayerToEntity(this, 256);
+
 		if( player != null && this.getDistanceToEntity(player) > 64 ) {
 			this.courseChangeCooldown = 0;
 			this.waypointX = player.posX;
@@ -221,18 +223,19 @@ public class EntityEnderRay extends EntityFlying implements IMob, IEnderCreature
 	public int getMaxSpawnedInChunk() {
 		return 1;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private boolean checkIfEntitiesExist(Class<? extends Entity> entityClass, int maxCount) {
 		int cnt = 0;
 		Iterator<? extends Entity> entities = this.worldObj.loadedEntityList.iterator();
-		
+
 		while( entities.hasNext() ) {
 			Entity entity = entities.next();
 			if( entity.getClass().isAssignableFrom(entityClass) ) {
 				cnt++;
-				if( cnt > maxCount )
-					return true;
+				if( cnt > maxCount ) {
+                    return true;
+                }
 			}
 		}
 		return false;
@@ -240,7 +243,7 @@ public class EntityEnderRay extends EntityFlying implements IMob, IEnderCreature
 
 	@Override
 	protected void dropFewItems(boolean par1, int par2) {
-		int var3 = ESPModRegistry.enderFlesh.itemID;
+		int var3 = ItemRegistry.enderFlesh.itemID;
 		int damage = this.rand.nextInt(5) == 0 ? 1 : 0;
 
 		if( var3 > 0 ) {
@@ -266,7 +269,7 @@ public class EntityEnderRay extends EntityFlying implements IMob, IEnderCreature
 		rareItems.add(new ItemStack(Item.shovelDiamond, 1));
 		rareItems.add(new ItemStack(Item.pickaxeDiamond, 1));
 		rareItems.add(new ItemStack(Item.bootsDiamond, 1));
-		rareItems.add(new ItemStack(ESPModRegistry.enderFlesh, 1, 2));
+		rareItems.add(new ItemStack(ItemRegistry.enderFlesh, 1, 2));
 
 		this.entityDropItem(rareItems.get(this.rand.nextInt(rareItems.size())), 0.0F);
 	}

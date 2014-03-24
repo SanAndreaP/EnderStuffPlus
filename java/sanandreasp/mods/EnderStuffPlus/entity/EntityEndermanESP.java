@@ -2,6 +2,9 @@ package sanandreasp.mods.EnderStuffPlus.entity;
 
 import java.util.UUID;
 
+import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -18,10 +21,9 @@ import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
-import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
-import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 
 public class EntityEndermanESP extends EntityMob {
     private static final AttributeModifier attackingSpeedBoostModifier = (new AttributeModifier(UUID.fromString("020E0DFB-87AE-4653-9556-831010E291A0"), "Attacking speed boost", 6.199999809265137D, 0)).setSaved(false);
@@ -36,14 +38,14 @@ public class EntityEndermanESP extends EntityMob {
     protected int jarOpeningCounter;
     protected Entity prevTarget;
     protected boolean hasTarget;
-    
+
     public boolean calmInDaylight = true;
-    
+
     public static final int TP_ATTACK = 0;
     public static final int TP_LIQUID = 1;
     public static final int TP_DAYTIME = 2;
     public static final int TP_PROJECTILE = 3;
-	
+
 	static {
 		carriableBlocks[Block.grass.blockID] = true;
 		carriableBlocks[Block.dirt.blockID] = true;
@@ -106,7 +108,7 @@ public class EntityEndermanESP extends EntityMob {
                 this.hasTarget = true;
 
                 if( this.jarOpeningCounter == 0 ) {
-                    this.worldObj.playSoundAtEntity(entityplayer, getScreamSound(), 1.0F, 1.0F);
+                    this.worldObj.playSoundAtEntity(entityplayer, this.getScreamSound(), 1.0F, 1.0F);
                 }
 
                 if( this.jarOpeningCounter++ == 5 ) {
@@ -123,23 +125,24 @@ public class EntityEndermanESP extends EntityMob {
     }
 
     protected boolean shouldAttackPlayer(EntityPlayer par1EntityPlayer) {
-    	if( ESPModRegistry.hasPlayerFullNiob(par1EntityPlayer) )
-    		return false;
-    	
+    	if( ESPModRegistry.hasPlayerFullNiob(par1EntityPlayer) ) {
+            return false;
+        }
+
         ItemStack itemstack = par1EntityPlayer.inventory.armorInventory[3];
 
         if( itemstack != null && itemstack.itemID == Block.pumpkin.blockID ) {
             return false;
         } else {
             Vec3 vec3 = par1EntityPlayer.getLook(1.0F).normalize();
-            Vec3 vec31 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX - par1EntityPlayer.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - (par1EntityPlayer.posY + (double)par1EntityPlayer.getEyeHeight()), this.posZ - par1EntityPlayer.posZ);
+            Vec3 vec31 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX - par1EntityPlayer.posX, this.boundingBox.minY + this.height / 2.0F - (par1EntityPlayer.posY + par1EntityPlayer.getEyeHeight()), this.posZ - par1EntityPlayer.posZ);
             double d0 = vec31.lengthVector();
             vec31 = vec31.normalize();
             double d1 = vec3.dotProduct(vec31);
             return d1 > 1.0D - 0.025D / d0 ? par1EntityPlayer.canEntityBeSeen(this) : false;
         }
     }
-    
+
     public void spawnParticle(String type, double X, double Y, double Z, float dataI, float dataII, float dataIII) {
 		ESPModRegistry.sendPacketAllRng(
 				"fxPortal", this.posX, this.posY, this.posZ, 128.0D, this.dimension, this.posX, this.posY,
@@ -248,17 +251,17 @@ public class EntityEndermanESP extends EntityMob {
 
     protected boolean teleportRandomly(int cause) {
         double d0 = this.posX + (this.rand.nextDouble() - 0.5D) * 64.0D;
-        double d1 = this.posY + (double)(this.rand.nextInt(64) - 32);
+        double d1 = this.posY + (this.rand.nextInt(64) - 32);
         double d2 = this.posZ + (this.rand.nextDouble() - 0.5D) * 64.0D;
         return this.teleportTo(cause, d0, d1, d2);
     }
 
     protected boolean teleportToEntity(int cause, Entity par1Entity) {
-        Vec3 vec3 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX - par1Entity.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - par1Entity.posY + (double)par1Entity.getEyeHeight(), this.posZ - par1Entity.posZ);
+        Vec3 vec3 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX - par1Entity.posX, this.boundingBox.minY + this.height / 2.0F - par1Entity.posY + par1Entity.getEyeHeight(), this.posZ - par1Entity.posZ);
         vec3 = vec3.normalize();
         double d0 = 16.0D;
         double d1 = this.posX + (this.rand.nextDouble() - 0.5D) * 8.0D - vec3.xCoord * d0;
-        double d2 = this.posY + (double)(this.rand.nextInt(16) - 8) - vec3.yCoord * d0;
+        double d2 = this.posY + (this.rand.nextInt(16) - 8) - vec3.yCoord * d0;
         double d3 = this.posZ + (this.rand.nextDouble() - 0.5D) * 8.0D - vec3.zCoord * d0;
         return this.teleportTo(cause, d1, d2, d3);
     }
@@ -311,10 +314,10 @@ public class EntityEndermanESP extends EntityMob {
             short short1 = 128;
 
             for( l = 0; l < short1; ++l ) {
-                double d6 = (double)l / ((double)short1 - 1.0D);
-                double d7 = d3 + (this.posX - d3) * d6 + (this.rand.nextDouble() - 0.5D) * (double)this.width * 2.0D;
-                double d8 = d4 + (this.posY - d4) * d6 + this.rand.nextDouble() * (double)this.height;
-                double d9 = d5 + (this.posZ - d5) * d6 + (this.rand.nextDouble() - 0.5D) * (double)this.width * 2.0D;
+                double d6 = l / (short1 - 1.0D);
+                double d7 = d3 + (this.posX - d3) * d6 + (this.rand.nextDouble() - 0.5D) * this.width * 2.0D;
+                double d8 = d4 + (this.posY - d4) * d6 + this.rand.nextDouble() * this.height;
+                double d9 = d5 + (this.posZ - d5) * d6 + (this.rand.nextDouble() - 0.5D) * this.width * 2.0D;
                 this.spawnParticle("teleport", d7, d8, d9, 0.0F, 0.0F, 0.0F);
             }
 
@@ -323,11 +326,11 @@ public class EntityEndermanESP extends EntityMob {
             return true;
         }
     }
-    
+
     protected String getPortalSound() {
     	return "mob.endermen.portal";
     }
-    
+
     protected String getScreamSound() {
     	return "mob.endermen.stare";
     }
@@ -351,7 +354,7 @@ public class EntityEndermanESP extends EntityMob {
     protected int getDropItemId() {
         return Item.enderPearl.itemID;
     }
-    
+
     protected int getDamageDropped() {
     	return 0;
     }
@@ -385,10 +388,12 @@ public class EntityEndermanESP extends EntityMob {
         return this.dataWatcher.getWatchableObjectByte(17);
     }
 
+    @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-    	if( par1DamageSource.equals(DamageSource.drown) && this.isImmuneToWater )
-    		return false;
-    	
+    	if( par1DamageSource.equals(DamageSource.drown) && this.isImmuneToWater ) {
+            return false;
+        }
+
         if( this.isEntityInvulnerable() ) {
             return false;
         } else {
@@ -421,7 +426,7 @@ public class EntityEndermanESP extends EntityMob {
     public void setScreaming(boolean par1) {
         this.dataWatcher.updateObject(18, Byte.valueOf((byte)(par1 ? 1 : 0)));
     }
-    
+
     @Override
     public boolean getCanSpawnHere() {
     	return super.getCanSpawnHere() || this.canSpawn;

@@ -1,6 +1,7 @@
 package sanandreasp.mods.EnderStuffPlus.enchantment;
 
-import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ItemRegistry;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.item.Item;
@@ -37,15 +38,15 @@ public class EnchantmentEnderChestTeleport extends Enchantment
     public boolean canApply(ItemStack stack) {
     	Item itm = stack.getItem();
         return super.canApply(stack)
-        	   && (itm == ESPModRegistry.niobPick
-        	       || itm == ESPModRegistry.niobAxe
-        	       || itm == ESPModRegistry.niobShovel
-        	       || itm == ESPModRegistry.niobHoe
-        	       || itm == ESPModRegistry.niobSword
-        	       || itm == ESPModRegistry.niobShears
+        	   && (itm == ItemRegistry.niobPick
+        	       || itm == ItemRegistry.niobAxe
+        	       || itm == ItemRegistry.niobShovel
+        	       || itm == ItemRegistry.niobHoe
+        	       || itm == ItemRegistry.niobSword
+        	       || itm == ItemRegistry.niobShears
         		  );
     }
-    
+
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack) {
     	return this.canApply(stack);

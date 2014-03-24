@@ -2,20 +2,21 @@ package sanandreasp.mods.EnderStuffPlus.world;
 
 import java.util.Random;
 
+import sanandreasp.mods.EnderStuffPlus.registry.BlockRegistry;
+
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 
 public class WorldGenUndergroundEnd extends WorldGenerator {
 
 	@Override
-	public boolean generate(World world, Random random, int i, int j, int k) 
+	public boolean generate(World world, Random random, int i, int j, int k)
 	{
 		//Begins the recursive generation
-		boolean b = recursiveGenerateSpheres(world,random,i,j,k,16);
+		boolean b = this.recursiveGenerateSpheres(world,random,i,j,k,16);
 
-		world.setBlock(i, j, k, ESPModRegistry.avisEgg.blockID);
+		world.setBlock(i, j, k, BlockRegistry.avisEgg.blockID);
 		return b;
 	}
 
@@ -25,16 +26,16 @@ public class WorldGenUndergroundEnd extends WorldGenerator {
 			return true;
 		}
 		int radius =  initialRadius - 4 + random.nextInt(9);
-		createSphere(world, random, i - 5 + random.nextInt(11), j ,k , radius, 4);
+		this.createSphere(world, random, i - 5 + random.nextInt(11), j ,k , radius, 4);
 		for( int c = 0;c<3+random.nextInt(3);c++ ){
-			int i1 = 0;		
+			int i1 = 0;
 			int j1 =2 + random.nextInt(10);
 			int k1 = 0;
 			while(Math.abs(i1) + Math.abs(k1) < radius*3/2 && world.getBlockId(i+i1,j-j1 ,k+k1 ) != Block.stone.blockID){
-				i1 += (2 - random.nextInt(5)); 
-				k1 += (2 - random.nextInt(5)); 
+				i1 += (2 - random.nextInt(5));
+				k1 += (2 - random.nextInt(5));
 			}
-			recursiveGenerateSpheres(world,random,i+i1,j-j1,k+k1,initialRadius - 3);
+			this.recursiveGenerateSpheres(world,random,i+i1,j-j1,k+k1,initialRadius - 3);
 		}
 		return true;
 	}
@@ -53,7 +54,7 @@ public class WorldGenUndergroundEnd extends WorldGenerator {
 					//Part which makes the loop cube into a sphere
 					if( Math.pow(i1, 2) + Math.pow(j1, 2) + Math.pow(k1, 2) < Math.pow(radius, 2) ){
 
-						if( canEdit(world,i + i1, j + j1, k + k1) ){
+						if( this.canEdit(world,i + i1, j + j1, k + k1) ){
 							//Puts set liquid if too close to bottom of world (right now it's lava)
 							if( j+j1 <10 ){
 								world.setBlock(i + i1, j + j1, k + k1, Block.waterStill.blockID, 0, random.nextBoolean() ? 2 : 3);
@@ -62,7 +63,7 @@ public class WorldGenUndergroundEnd extends WorldGenerator {
 							else if (
 									j1 == minimum+2 && world.getBlockId(i + i1, j + j1+1, k + k1) == 0 && world.getBlockId(i + i1, j + j1, k + k1) != 0){
 								if( random.nextInt(42) == 0 ){
-									plantObsidianPillar(world,random,i + i1, j + j1+1, k + k1, radius - random.nextInt(5));
+									this.plantObsidianPillar(world,random,i + i1, j + j1+1, k + k1, radius - random.nextInt(5));
 								}
 
 
@@ -80,18 +81,19 @@ public class WorldGenUndergroundEnd extends WorldGenerator {
 											break;
 										}
 									}
-									if( b )
-										world.setBlock(i + i1, j + j1, k + k1, Block.obsidian.blockID, 0, random.nextBoolean() ? 2 : 3);
-									else if( world.getBlockId(i + i1, j + j1 + 1, k + k1) != Block.waterStill.blockID && world.getBlockId(i + i1, j + j1 + 1, k + k1) != Block.waterMoving.blockID )
-										world.setBlock(i + i1, j + j1, k + k1, 0, 0, random.nextBoolean() ? 2 : 3);
+									if( b ) {
+                                        world.setBlock(i + i1, j + j1, k + k1, Block.obsidian.blockID, 0, random.nextBoolean() ? 2 : 3);
+                                    } else if( world.getBlockId(i + i1, j + j1 + 1, k + k1) != Block.waterStill.blockID && world.getBlockId(i + i1, j + j1 + 1, k + k1) != Block.waterMoving.blockID ) {
+                                        world.setBlock(i + i1, j + j1, k + k1, 0, 0, random.nextBoolean() ? 2 : 3);
+                                    }
 								}
 							}
 						}
 					}
 					//Putting mushroom grass and dirt etc. onto the side areas
 					else{
-						if( canEdit(world,i + i1, j + j1, k + k1) ){
-							if( world.getBlockId(i + i1, j + j1+1, k + k1) == 0 && world.getBlockId(i + i1, j + j1, k + k1) != 0 && j1<6 ){			
+						if( this.canEdit(world,i + i1, j + j1, k + k1) ){
+							if( world.getBlockId(i + i1, j + j1+1, k + k1) == 0 && world.getBlockId(i + i1, j + j1, k + k1) != 0 && j1<6 ){
 								if( j+j1 <10 ){
 									world.setBlock(i + i1, j + j1, k + k1, Block.waterStill.blockID, 0, random.nextBoolean() ? 2 : 3);
 								}
@@ -120,7 +122,9 @@ public class WorldGenUndergroundEnd extends WorldGenerator {
 		for( int i1 = 0; i1 < maxHeight; i1++ ) {
 			world.setBlock(i, j+i1, k, Block.obsidian.blockID, 0, random.nextBoolean() ? 2 : 3);
 		}
-		if( maxHeight > 1) world.setBlock(i, j+maxHeight, k, Block.glowStone.blockID, 0, random.nextBoolean() ? 2 : 3 );
+		if( maxHeight > 1) {
+            world.setBlock(i, j+maxHeight, k, Block.glowStone.blockID, 0, random.nextBoolean() ? 2 : 3 );
+        }
 	}
 //	public void plantSmallMushroom(World world, Random random, int i, int j, int k){
 ////		if( random.nextInt(5)==0 ){

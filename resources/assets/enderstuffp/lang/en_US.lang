@@ -15,7 +15,7 @@ item.enderstuffp:enderFlesh.name=Ender Flesh
 item.enderstuffp:avisFeather.name=Avis Feather
 item.enderstuffp:avisArrow.name=Avis Arrow
 item.enderstuffp:avisCompass.name=Avis Compass
-item.enderPetEgg.name=Spawn tamed
+item.enderstuffp:enderPetEgg.name=Spawn tamed
 item.enderstuffp:petStaff.name=Enderpet Staff
 item.enderstuffp:niobIngot.name=Niobium Ingot
 item.enderstuffp:bowNiob.name=Niobium Bow
@@ -45,9 +45,11 @@ entity.EnderAvis.name=Ender Avis
 entity.EnderNemesis.name=Ender Nemesis
 
 enderstuffplus.petegg.health=Health
-enderstuffplus.petegg.hasSpecSkin=Has special skin
-enderstuffplus.petegg.immuneToH2O=Has Raincoat
-enderstuffplus.petegg.fallDmg=Can get fall damage
+enderstuffplus.petegg.hasSpecSkin=Special Skin
+enderstuffplus.petegg.immuneToH2O=Raincoat
+enderstuffplus.petegg.fallDmg=Get Fall Damage
+enderstuffplus.petegg.condition=Condition
+enderstuffplus.petegg.saddle=Saddled
 enderstuffplus.petegg.true=yes
 enderstuffplus.petegg.false=no
 

@@ -8,10 +8,10 @@ import net.minecraft.item.ItemStack;
 import sanandreasp.mods.EnderStuffPlus.registry.RegistryDuplicator;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityDuplicator;
 
-public class Container_Duplicator extends Container {
+public class ContainerDuplicator extends Container {
 	public TileEntityDuplicator duplicator;
 
-	public Container_Duplicator(InventoryPlayer par1InventoryPlayer, TileEntityDuplicator par2Duplicator) {
+	public ContainerDuplicator(InventoryPlayer par1InventoryPlayer, TileEntityDuplicator par2Duplicator) {
 		this.duplicator = par2Duplicator;
 		
 //        for( int col = 0; col < biomeChanger.getSizeInventory(); col++ ) {

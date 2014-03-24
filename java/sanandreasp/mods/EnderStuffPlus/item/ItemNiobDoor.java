@@ -1,12 +1,13 @@
 package sanandreasp.mods.EnderStuffPlus.item;
 
+import sanandreasp.mods.EnderStuffPlus.registry.BlockRegistry;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 
 public class ItemNiobDoor extends Item {
 
@@ -14,7 +15,8 @@ public class ItemNiobDoor extends Item {
 		super(par1);
         this.maxStackSize = 1;
 	}
-	
+
+    @Override
     public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
         if( par7 != 1 )
@@ -26,7 +28,7 @@ public class ItemNiobDoor extends Item {
             ++par5;
             Block block;
 
-            block = ESPModRegistry.blockEndDoor;
+            block = BlockRegistry.blockEndDoor;
 
             if( par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack) && par2EntityPlayer.canPlayerEdit(par4, par5 + 1, par6, par7, par1ItemStack) )
             {
@@ -36,7 +38,7 @@ public class ItemNiobDoor extends Item {
                 }
                 else
                 {
-                    int i1 = MathHelper.floor_double((double)((par2EntityPlayer.rotationYaw + 180.0F) * 4.0F / 360.0F) - 0.5D) & 3;
+                    int i1 = MathHelper.floor_double((par2EntityPlayer.rotationYaw + 180.0F) * 4.0F / 360.0F - 0.5D) & 3;
                     placeDoorBlock(par3World, par4, par5, par6, i1, block);
                     --par1ItemStack.stackSize;
                     return true;

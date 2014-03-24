@@ -4,13 +4,16 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+
+import sanandreasp.core.manpack.mod.packet.ISAPPacketHandler;
+import sanandreasp.mods.EnderStuffPlus.client.particle.ParticleFXFuncCollection;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.INetworkManager;
+
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import sanandreasp.core.manpack.mod.packet.ISAPPacketHandler;
-import sanandreasp.mods.EnderStuffPlus.client.particle.ParticleFXFuncCollection;
 
 @SideOnly(Side.CLIENT)
 public class PacketFXSpawnTameAccept implements ISAPPacketHandler
@@ -19,18 +22,18 @@ public class PacketFXSpawnTameAccept implements ISAPPacketHandler
 	public byte[] getDataForPacket(Object... data) throws Exception {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		DataOutputStream dos = new DataOutputStream(bos);
-		
+
 		dos.writeDouble((Double)data[0]); //posX
 		dos.writeDouble((Double)data[1]); //posY
 		dos.writeDouble((Double)data[2]); //posZ
-		dos.writeFloat((Float)data[6]);   //width
-		dos.writeFloat((Float)data[7]);   //height
-		
+		dos.writeFloat((Float)data[3]);   //width
+		dos.writeFloat((Float)data[4]);   //height
+
 		byte[] bytes = bos.toByteArray();
-		
+
 		dos.close();
 		bos.close();
-		
+
 		return bytes;
 	}
 
@@ -38,16 +41,16 @@ public class PacketFXSpawnTameAccept implements ISAPPacketHandler
 	public void processData(INetworkManager manager, Player player, byte[] data) throws Exception {
 		ByteArrayInputStream bis = new ByteArrayInputStream(data);
 		DataInputStream dis = new DataInputStream(bis);
-		
+
 		ParticleFXFuncCollection.spawnAcceptTameFX(
 				Minecraft.getMinecraft().theWorld,
 				dis.readDouble(),
-				dis.readDouble(), 
-				dis.readDouble(), 
-				dis.readFloat(), 
+				dis.readDouble(),
+				dis.readDouble(),
+				dis.readFloat(),
 				dis.readFloat()
 		);
-		
+
 		dis.close();
 		bis.close();
 	}
