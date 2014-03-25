@@ -26,26 +26,19 @@ public class GuiDuplicator
     implements Textures
 {
     private GuiButton insertXP;
-    private int xCoord;
-    private int yCoord;
-    private int zCoord;
+    private TileEntityDuplicator teDuplicator;
 
     public GuiDuplicator(ContainerDuplicator container) {
         super(container);
 
         this.allowUserInput = true;
-        TileEntityDuplicator dupete = container.duplicator;
-        this.xCoord = dupete.xCoord;
-        this.yCoord = dupete.yCoord;
-        this.zCoord = dupete.zCoord;
+        this.teDuplicator = container.duplicator;
     }
 
     @Override
     protected void actionPerformed(GuiButton button) {
         if( button.id == this.insertXP.id ) {
-            ESPModRegistry.sendPacketSrv("dupeInsLevels",
-                                         (TileEntityDuplicator) this.mc.theWorld.getBlockTileEntity(this.xCoord, this.yCoord,
-                                                                                                    this.zCoord));
+            ESPModRegistry.sendPacketSrv("dupeInsLevels", this.teDuplicator);
         } else {
             super.actionPerformed(button);
         }
@@ -61,22 +54,19 @@ public class GuiDuplicator
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        TileEntityDuplicator dupeTile = (TileEntityDuplicator) this.mc.theWorld.getBlockTileEntity(this.xCoord, this.yCoord,
-                                                                                                   this.zCoord);
-        int height = 12 - MathHelper.ceiling_float_int((12F * ((float) dupeTile.getBurnTime() / (float) dupeTile.maxBurnTime)));
-        int length = (int) (19 * ((float) dupeTile.getProcTime()) / 18F);
-        String s = Integer.toString(dupeTile.getStoredLvl());
+        int height = 12 - MathHelper.ceiling_float_int((12F * ((float) this.teDuplicator.getBurnTime() / (float) this.teDuplicator.maxBurnTime)));
+        int length = (int) (19 * ((float) this.teDuplicator.getProcTime()) / 18F);
+        String s = Integer.toString(this.teDuplicator.getStoredLvl());
 
         RenderHelper.disableStandardItemLighting();
-        this.fontRenderer.drawString(CommonUsedStuff.getTranslated("tile.enderstuffp:duplicator.name"),
-                                     this.ySize
+        this.fontRenderer.drawString(CommonUsedStuff.getTranslated("tile.enderstuffp:duplicator.name"), this.ySize
                                      - this.fontRenderer.getStringWidth(CommonUsedStuff.getTranslated("tile.duplicator.name"))
                                      - 8, 8, 0x404040);
         this.fontRenderer.drawString(CommonUsedStuff.getTranslated("container.inventory"), 8, this.ySize - 96 + 2, 0x404040);
 
         this.drawStringWithFrame(this.fontRenderer, s, this.xSize - 8 - this.fontRenderer.getStringWidth(s), 50, 0x80ff20, 0x000000);
 
-        s = Integer.toString(RegistryDuplicator.getNeededExp(dupeTile.getStackInSlot(0)));
+        s = Integer.toString(RegistryDuplicator.getNeededExp(this.teDuplicator.getStackInSlot(0)));
         this.drawStringWithFrame(this.fontRenderer, s, this.xSize - 8 - this.fontRenderer.getStringWidth(s), 65, 0x80ff20, 0x000000);
 
         this.mc.getTextureManager().bindTexture(GUI_DUPLICATOR);

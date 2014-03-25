@@ -22,17 +22,16 @@ public class ModelEnderMiss
     public boolean isCaped = false;
     public boolean isCarrying = false;
     public boolean isRidden = false;
-
     public boolean isSitting = false;
 
-    public ModelEnderMiss(boolean cape) {
+    public ModelEnderMiss(boolean hasCape) {
         super(0.0F, -14.0F, 64, 32);
 
-        this.isCaped = cape;
+        this.isCaped = hasCape;
 
         this.textureWidth = 128;
         this.textureHeight = 64;
-adsfsdf
+
         this.bipedHead = new ModelRenderer(this, 0, 0);
         this.bipedHead.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, 0.0F);
         this.bipedHead.setRotationPoint(0.0F, -13.5F, 0.0F);
@@ -73,60 +72,73 @@ adsfsdf
 
         if( !this.isSitting ) {
             GL11.glPushMatrix();
-            // System.out.println(this.bipedBody.rotateAngleY);
             GL11.glRotatef(this.bipedBody.rotateAngleY * 180F / (float) Math.PI, 0F, 1F, 0F);
             double skirtStretch = Math.max(this.bipedRightLeg.rotateAngleX, this.bipedLeftLeg.rotateAngleX) * 1.6D + 0.3D;
 
-            tessellator.startDrawingQuads();
+            tessellator.startDrawingQuads();            // left side
             tessellator.setNormal(1F, 0F, 0F);
-            tessellator.addVertexWithUV(-0.3D, 0.5D, 0.45 * skirtStretch, 64.0 / 256.0, 80.0 / 128.0); // minU,
-                                                                                                       // maxV
-            tessellator.addVertexWithUV(-0.3D, 0.5D, -0.45 * skirtStretch, 72.0 / 256.0, 80.0 / 128.0); // maxU,
-                                                                                                        // maxV
-            tessellator.addVertexWithUV(-0.25D, -0.125D, -0.125, 72.0 / 256.0, 64.0 / 128.0); // maxU,
-                                                                                              // minV
-            tessellator.addVertexWithUV(-0.25D, -0.125D, 0.125, 64.0 / 256.0, 64.0 / 128.0); // minU,
-                                                                                             // minV
+            tessellator.addVertexWithUV(-0.3D,   0.5D,    0.45 * skirtStretch, 64.0 / 256.0, 80.0 / 128.0); // minU, maxV
+            tessellator.addVertexWithUV(-0.3D,   0.5D,   -0.45 * skirtStretch, 72.0 / 256.0, 80.0 / 128.0); // maxU, maxV
+            tessellator.addVertexWithUV(-0.25D, -0.125D, -0.125,               72.0 / 256.0, 64.0 / 128.0); // maxU, minV
+            tessellator.addVertexWithUV(-0.25D, -0.125D,  0.125,               64.0 / 256.0, 64.0 / 128.0); // minU, minV
             tessellator.draw();
 
-            tessellator.startDrawingQuads();
+            tessellator.startDrawingQuads();            // front side
             tessellator.setNormal(0F, 0F, 1F);
-            tessellator.addVertexWithUV(-0.3D, 0.5D, -0.45D * skirtStretch, 72.0D / 256.0D, 80.0D / 128.0D); // maxU,
-                                                                                                             // maxV
-            tessellator.addVertexWithUV(0.3D, 0.5D, -0.45D * skirtStretch, 88.0D / 256.0D, 80.0D / 128.0D); // minU,
-                                                                                                            // maxV
-            tessellator.addVertexWithUV(0.25D, -0.125D, -0.125D, 88.0D / 256.0D, 64.0D / 128.0D); // minU,
-                                                                                                  // minV
-            tessellator.addVertexWithUV(-0.25D, -0.125D, -0.125D, 72.0D / 256.0D, 64.0D / 128.0D); // maxU,
-                                                                                                   // minV
+            tessellator.addVertexWithUV(-0.3D,   0.5D,   -0.45D * skirtStretch, 72.0D / 256.0D, 80.0D / 128.0D); // maxU, maxV
+            tessellator.addVertexWithUV(0.3D,    0.5D,   -0.45D * skirtStretch, 88.0D / 256.0D, 80.0D / 128.0D); // minU, maxV
+            tessellator.addVertexWithUV(0.25D,  -0.125D, -0.125D,               88.0D / 256.0D, 64.0D / 128.0D); // minU, minV
+            tessellator.addVertexWithUV(-0.25D, -0.125D, -0.125D,               72.0D / 256.0D, 64.0D / 128.0D); // maxU, minV
             tessellator.draw();
 
-            tessellator.startDrawingQuads();
+            tessellator.startDrawingQuads();            // right side
             tessellator.setNormal(-1F, 0F, 0F);
-            tessellator.addVertexWithUV(0.3D, 0.5D, 0.45 * skirtStretch, 64.0 / 256.0, 80.0 / 128.0); // minU,
-                                                                                                      // maxV
-            tessellator.addVertexWithUV(0.3D, 0.5D, -0.45 * skirtStretch, 72.0 / 256.0, 80.0 / 128.0); // maxU,
-                                                                                                       // maxV
-            tessellator.addVertexWithUV(0.25D, -0.125D, -0.125, 72.0 / 256.0, 64.0 / 128.0); // maxU,
-                                                                                             // minV
-            tessellator.addVertexWithUV(0.25D, -0.125D, 0.125, 64.0 / 256.0, 64.0 / 128.0); // minU,
-                                                                                            // minV
+            tessellator.addVertexWithUV(0.3D,   0.5D,    0.45 * skirtStretch, 64.0 / 256.0, 80.0 / 128.0); // minU, maxV
+            tessellator.addVertexWithUV(0.3D,   0.5D,   -0.45 * skirtStretch, 72.0 / 256.0, 80.0 / 128.0); // maxU, maxV
+            tessellator.addVertexWithUV(0.25D, -0.125D, -0.125,               72.0 / 256.0, 64.0 / 128.0); // maxU, minV
+            tessellator.addVertexWithUV(0.25D, -0.125D,  0.125,               64.0 / 256.0, 64.0 / 128.0); // minU, minV
             tessellator.draw();
 
-            tessellator.startDrawingQuads();
+            tessellator.startDrawingQuads();            // back side
             tessellator.setNormal(0F, 0F, -1F);
-            tessellator.addVertexWithUV(-0.3D, 0.5D, 0.45 * skirtStretch, 96.0 / 256.0, 80.0 / 128.0); // minU,
-                                                                                                       // maxV
-            tessellator.addVertexWithUV(0.3D, 0.5D, 0.45 * skirtStretch, 112.0 / 256.0, 80.0 / 128.0); // maxU,
-                                                                                                       // maxV
-            tessellator.addVertexWithUV(0.25D, -0.125D, 0.125, 112.0 / 256.0, 64.0 / 128.0); // maxU,
-                                                                                             // minV
-            tessellator.addVertexWithUV(-0.25D, -0.125D, 0.125, 96.0 / 256.0, 64.0 / 128.0); // minU,
-                                                                                             // minV
+            tessellator.addVertexWithUV(-0.3D,   0.5D,   0.45 * skirtStretch, 96.0 / 256.0,  80.0 / 128.0); // minU, maxV
+            tessellator.addVertexWithUV(0.3D,    0.5D,   0.45 * skirtStretch, 112.0 / 256.0, 80.0 / 128.0); // maxU, maxV
+            tessellator.addVertexWithUV(0.25D,  -0.125D, 0.125,               112.0 / 256.0, 64.0 / 128.0); // maxU, minV
+            tessellator.addVertexWithUV(-0.25D, -0.125D, 0.125,               96.0 / 256.0,  64.0 / 128.0); // minU, minV
             tessellator.draw();
             GL11.glPopMatrix();
         } else {
+            tessellator.startDrawingQuads();            // left side
+            tessellator.setNormal(1F, 0F, 0F);
+            tessellator.addVertexWithUV(-0.3D,   0.5D,    0.45,  64.0 / 256.0, 80.0 / 128.0); // minU, maxV
+            tessellator.addVertexWithUV(-0.3D,   0.5D,   -0.45,  72.0 / 256.0, 80.0 / 128.0); // maxU, maxV
+            tessellator.addVertexWithUV(-0.25D, -0.125D, -0.125, 72.0 / 256.0, 64.0 / 128.0); // maxU, minV
+            tessellator.addVertexWithUV(-0.25D, -0.125D,  0.125, 64.0 / 256.0, 64.0 / 128.0); // minU, minV
+            tessellator.draw();
 
+            tessellator.startDrawingQuads();            // front side
+            tessellator.setNormal(0F, 0F, 1F);
+            tessellator.addVertexWithUV(-0.3D,  1.25D, -0.7D,   72.0D / 256.0D, 80.0D / 128.0D); // maxU, maxV
+            tessellator.addVertexWithUV(0.3D,   1.25D, -0.7D,   88.0D / 256.0D, 80.0D / 128.0D); // minU, maxV
+            tessellator.addVertexWithUV(0.25D,  1.25D, -0.125D, 88.0D / 256.0D, 64.0D / 128.0D); // minU, minV
+            tessellator.addVertexWithUV(-0.25D, 1.25D, -0.125D, 72.0D / 256.0D, 64.0D / 128.0D); // maxU, minV
+            tessellator.draw();
+
+            tessellator.startDrawingQuads();            // right side
+            tessellator.setNormal(-1F, 0F, 0F);
+            tessellator.addVertexWithUV(0.3D,   0.5D,    0.45,  64.0 / 256.0, 80.0 / 128.0); // minU, maxV
+            tessellator.addVertexWithUV(0.3D,   0.5D,   -0.45,  72.0 / 256.0, 80.0 / 128.0); // maxU, maxV
+            tessellator.addVertexWithUV(0.25D, -0.125D, -0.125, 72.0 / 256.0, 64.0 / 128.0); // maxU, minV
+            tessellator.addVertexWithUV(0.25D, -0.125D,  0.125, 64.0 / 256.0, 64.0 / 128.0); // minU, minV
+            tessellator.draw();
+
+            tessellator.startDrawingQuads();            // back side
+            tessellator.setNormal(0F, 0F, -1F);
+            tessellator.addVertexWithUV(-0.3D,   0.5D,   0.45,  96.0 / 256.0,  80.0 / 128.0); // minU, maxV
+            tessellator.addVertexWithUV(0.3D,    0.5D,   0.45,  112.0 / 256.0, 80.0 / 128.0); // maxU, maxV
+            tessellator.addVertexWithUV(0.25D,  -0.125D, 0.125, 112.0 / 256.0, 64.0 / 128.0); // maxU, minV
+            tessellator.addVertexWithUV(-0.25D, -0.125D, 0.125, 96.0 / 256.0,  64.0 / 128.0); // minU, minV
+            tessellator.draw();
         }
     }
 
@@ -136,106 +148,85 @@ adsfsdf
         this.setRotationAngles(limbSwing, limbSwingAmount, rotFloat, rotYaw, rotPitch, partTicks, entity);
 
         if( this.isCaped ) {
-            GL11.glPushMatrix();
-            if( !this.isSitting ) {
-                GL11.glTranslatef(0F, 0.045F, 0F);
-            } else {
-                GL11.glTranslatef(0F, -0.025F, 0F);
-            }
-            GL11.glScalef(1.05F, 1.05F, 1.05F);
-            this.bipedHead.render(partTicks);
-            GL11.glPopMatrix();
-        } else {
-            this.bipedHead.render(partTicks);
-        }
-
-        if( this.isCaped ) {
-            GL11.glPushMatrix();
-            GL11.glTranslatef(this.bipedRightArm.rotationPointX * partTicks, this.bipedRightArm.rotationPointY
-                                                                             * partTicks,
-                              this.bipedRightArm.rotationPointZ * partTicks);
-            GL11.glRotatef(this.bipedRightArm.rotateAngleZ * (180F / (float) Math.PI), 0.0F, 0.0F, 1.0F);
-            GL11.glRotatef(this.bipedRightArm.rotateAngleY * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(this.bipedRightArm.rotateAngleX * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
-            this.bipedRightArm.rotateAngleZ = this.bipedRightArm.rotateAngleY = this.bipedRightArm.rotateAngleX = 0.0F;
-            GL11.glTranslatef(0.031F, !this.isSitting ? 0F : -0.015F, 0.0F);
-            GL11.glTranslatef(-this.bipedRightArm.rotationPointX * partTicks, -this.bipedRightArm.rotationPointY
-                                                                              * partTicks,
-                              -this.bipedRightArm.rotationPointZ * partTicks);
-            GL11.glScalef(1.1F, 1.01F, 1.1F);
-            this.bipedRightArm.render(partTicks);
-            GL11.glPopMatrix();
-        } else {
-            this.bipedRightArm.render(partTicks);
-        }
-
-        if( this.isCaped ) {
-            GL11.glPushMatrix();
-            GL11.glTranslatef(0F, -0.009F, 0F);
-            GL11.glScalef(1.05F, 1.01F, 1.05F);
-            this.drawSkirt(limbSwing, limbSwingAmount, partTicks);
-            this.bipedBody.render(partTicks);
+            GL11.glPushMatrix();                            // bipedHead
+              if( !this.isSitting ) {
+                  GL11.glTranslatef(0F, 0.045F, 0F);
+              } else {
+                  GL11.glTranslatef(0F, -0.025F, 0F);
+              }
+              GL11.glScalef(1.05F, 1.05F, 1.05F);
+              this.bipedHead.render(partTicks);
             GL11.glPopMatrix();
 
-            GL11.glPushMatrix();
-            GL11.glTranslatef(this.bipedLeftArm.rotationPointX * partTicks, this.bipedLeftArm.rotationPointY
-                                                                            * partTicks,
-                              this.bipedLeftArm.rotationPointZ * partTicks);
-            GL11.glRotatef(this.bipedLeftArm.rotateAngleZ * (180F / (float) Math.PI), 0.0F, 0.0F, 1.0F);
-            GL11.glRotatef(this.bipedLeftArm.rotateAngleY * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(this.bipedLeftArm.rotateAngleX * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
-            this.bipedLeftArm.rotateAngleZ = this.bipedLeftArm.rotateAngleY = this.bipedLeftArm.rotateAngleX = 0.0F;
-            GL11.glTranslatef(-0.031F, !this.isSitting ? 0F : -0.015F, 0.0F);
-            GL11.glTranslatef(-this.bipedLeftArm.rotationPointX * partTicks, -this.bipedLeftArm.rotationPointY
-                                                                             * partTicks,
-                              -this.bipedLeftArm.rotationPointZ * partTicks);
-            GL11.glScalef(1.1F, 1.01F, 1.1F);
-            this.bipedLeftArm.render(partTicks);
+            GL11.glPushMatrix();                            // bipedBody
+              GL11.glTranslatef(0F, -0.009F, 0F);
+              GL11.glScalef(1.05F, 1.01F, 1.05F);
+              this.drawSkirt(limbSwing, limbSwingAmount, partTicks);
+              this.bipedBody.render(partTicks);
             GL11.glPopMatrix();
-        } else {
-            this.bipedBody.render(partTicks);
 
-            this.bipedLeftArm.render(partTicks);
-        }
-
-        if( this.isCaped ) {
-            GL11.glPushMatrix();
-            GL11.glTranslatef(this.bipedRightLeg.rotationPointX * partTicks, this.bipedRightLeg.rotationPointY
-                                                                             * partTicks,
-                              this.bipedRightLeg.rotationPointZ * partTicks);
-            GL11.glRotatef(this.bipedRightLeg.rotateAngleZ * (180F / (float) Math.PI), 0.0F, 0.0F, 1.0F);
-            GL11.glRotatef(this.bipedRightLeg.rotateAngleY * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(this.bipedRightLeg.rotateAngleX * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
-            this.bipedRightLeg.rotateAngleZ = this.bipedRightLeg.rotateAngleY = this.bipedRightLeg.rotateAngleX = 0.0F;
-            GL11.glTranslatef(0.015F, !this.isSitting ? 0F : -0.015F, 0.0F);
-            GL11.glTranslatef(-this.bipedRightLeg.rotationPointX * partTicks, -this.bipedRightLeg.rotationPointY
-                                                                              * partTicks,
-                              -this.bipedRightLeg.rotationPointZ * partTicks);
-            GL11.glScalef(1.1F, 1.01F, 1.1F);
-            this.bipedRightLeg.render(partTicks);
+            GL11.glPushMatrix();                            // bipedLeftArm
+              GL11.glTranslatef(this.bipedLeftArm.rotationPointX * partTicks, this.bipedLeftArm.rotationPointY * partTicks,
+                                this.bipedLeftArm.rotationPointZ * partTicks);
+              GL11.glRotatef(this.bipedLeftArm.rotateAngleZ * (180.0F / (float) Math.PI), 0.0F, 0.0F, 1.0F);
+              GL11.glRotatef(this.bipedLeftArm.rotateAngleY * (180.0F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
+              GL11.glRotatef(this.bipedLeftArm.rotateAngleX * (180.0F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
+              this.bipedLeftArm.rotateAngleZ = this.bipedLeftArm.rotateAngleY = this.bipedLeftArm.rotateAngleX = 0.0F;
+              GL11.glTranslatef(-0.031F, !this.isSitting ? 0.0F : -0.015F, 0.0F);
+              GL11.glTranslatef(-this.bipedLeftArm.rotationPointX * partTicks, -this.bipedLeftArm.rotationPointY * partTicks,
+                                -this.bipedLeftArm.rotationPointZ * partTicks);
+              GL11.glScalef(1.1F, 1.01F, 1.1F);
+              this.bipedLeftArm.render(partTicks);
             GL11.glPopMatrix();
-        } else {
-            this.bipedRightLeg.render(partTicks);
-        }
 
-        if( this.isCaped ) {
-            GL11.glPushMatrix();
-            GL11.glTranslatef(this.bipedLeftLeg.rotationPointX * partTicks, this.bipedLeftLeg.rotationPointY
-                                                                            * partTicks,
+            GL11.glPushMatrix();                            // bipedRightArm
+              GL11.glTranslatef(this.bipedRightArm.rotationPointX * partTicks, this.bipedRightArm.rotationPointY * partTicks,
+                                this.bipedRightArm.rotationPointZ * partTicks);
+              GL11.glRotatef(this.bipedRightArm.rotateAngleZ * (180F / (float) Math.PI), 0.0F, 0.0F, 1.0F);
+              GL11.glRotatef(this.bipedRightArm.rotateAngleY * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
+              GL11.glRotatef(this.bipedRightArm.rotateAngleX * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
+              this.bipedRightArm.rotateAngleZ = this.bipedRightArm.rotateAngleY = this.bipedRightArm.rotateAngleX = 0.0F;
+              GL11.glTranslatef(0.031F, !this.isSitting ? 0F : -0.015F, 0.0F);
+              GL11.glTranslatef(-this.bipedRightArm.rotationPointX * partTicks, -this.bipedRightArm.rotationPointY * partTicks,
+                                -this.bipedRightArm.rotationPointZ * partTicks);
+              GL11.glScalef(1.1F, 1.01F, 1.1F);
+              this.bipedRightArm.render(partTicks);
+            GL11.glPopMatrix();
+
+            GL11.glPushMatrix();                            // bipedLeftLeg
+            GL11.glTranslatef(this.bipedLeftLeg.rotationPointX * partTicks, this.bipedLeftLeg.rotationPointY * partTicks,
                               this.bipedLeftLeg.rotationPointZ * partTicks);
             GL11.glRotatef(this.bipedLeftLeg.rotateAngleZ * (180F / (float) Math.PI), 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(this.bipedLeftLeg.rotateAngleY * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(this.bipedLeftLeg.rotateAngleX * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
             this.bipedLeftLeg.rotateAngleZ = this.bipedLeftLeg.rotateAngleY = this.bipedLeftLeg.rotateAngleX = 0.0F;
             GL11.glTranslatef(-0.015F, !this.isSitting ? 0F : -0.015F, 0.0F);
-            GL11.glTranslatef(-this.bipedLeftLeg.rotationPointX * partTicks, -this.bipedLeftLeg.rotationPointY
-                                                                             * partTicks,
+            GL11.glTranslatef(-this.bipedLeftLeg.rotationPointX * partTicks, -this.bipedLeftLeg.rotationPointY * partTicks,
                               -this.bipedLeftLeg.rotationPointZ * partTicks);
             GL11.glScalef(1.1F, 1.01F, 1.1F);
             this.bipedLeftLeg.render(partTicks);
             GL11.glPopMatrix();
+
+            GL11.glPushMatrix();                            // bipedRightLeg
+              GL11.glTranslatef(this.bipedRightLeg.rotationPointX * partTicks, this.bipedRightLeg.rotationPointY * partTicks,
+                                this.bipedRightLeg.rotationPointZ * partTicks);
+              GL11.glRotatef(this.bipedRightLeg.rotateAngleZ * (180F / (float) Math.PI), 0.0F, 0.0F, 1.0F);
+              GL11.glRotatef(this.bipedRightLeg.rotateAngleY * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
+              GL11.glRotatef(this.bipedRightLeg.rotateAngleX * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
+              this.bipedRightLeg.rotateAngleZ = this.bipedRightLeg.rotateAngleY = this.bipedRightLeg.rotateAngleX = 0.0F;
+              GL11.glTranslatef(0.015F, !this.isSitting ? 0F : -0.015F, 0.0F);
+              GL11.glTranslatef(-this.bipedRightLeg.rotationPointX * partTicks, -this.bipedRightLeg.rotationPointY * partTicks,
+                                -this.bipedRightLeg.rotationPointZ * partTicks);
+              GL11.glScalef(1.1F, 1.01F, 1.1F);
+              this.bipedRightLeg.render(partTicks);
+            GL11.glPopMatrix();
         } else {
+            this.bipedHead.render(partTicks);
+            this.bipedBody.render(partTicks);
+            this.bipedLeftArm.render(partTicks);
+            this.bipedRightArm.render(partTicks);
             this.bipedLeftLeg.render(partTicks);
+            this.bipedRightLeg.render(partTicks);
         }
 
         this.bipedHeadwear.render(partTicks);
@@ -248,17 +239,21 @@ adsfsdf
         super.setRotationAngles(limbSwing, limbSwingAmount, rotFloat, rotYaw, rotPitch, partTicks, entity);
 
         this.bipedHead.showModel = true;
+
         this.bipedBody.rotateAngleX = this.bipedBodyCoat.rotateAngleX = 0.0F;
         this.bipedBody.rotationPointY = this.bipedBodyCoat.rotationPointY = -14.0F;
         this.bipedBody.rotationPointZ = this.bipedBodyCoat.rotationPointZ = 0.0F;
+
         this.bipedRightArm.rotateAngleX = (float) (this.bipedRightArm.rotateAngleX * 0.5D);
         this.bipedLeftArm.rotateAngleX = (float) (this.bipedLeftArm.rotateAngleX * 0.5D);
         this.bipedRightLeg.rotateAngleX = (float) (this.bipedRightLeg.rotateAngleX * 0.5D);
         this.bipedLeftLeg.rotateAngleX = (float) (this.bipedLeftLeg.rotateAngleX * 0.5D);
+
         if( ((EntityEnderMiss) entity).getCoat() >= 0 ) {
             this.bipedLeftArm.rotateAngleZ -= 0.08;
             this.bipedRightArm.rotateAngleZ += 0.08;
         }
+
         float maxLimbRotation = 0.4F;
 
         if( this.bipedRightArm.rotateAngleX > maxLimbRotation ) {
@@ -311,13 +306,17 @@ adsfsdf
         this.bipedLeftArm.rotationPointZ = 0.0F;
         this.bipedRightLeg.rotationPointZ = 0.0F;
         this.bipedLeftLeg.rotationPointZ = 0.0F;
+
         this.bipedRightLeg.rotationPointY = -5.0F;
         this.bipedLeftLeg.rotationPointY = -5.0F;
+
         this.bipedHead.rotationPointZ = -0.0F;
         this.bipedHead.rotationPointY = -14.0F;
+
         this.bipedHeadwear.rotationPointX = this.bipedHead.rotationPointX;
         this.bipedHeadwear.rotationPointY = this.bipedHead.rotationPointY;
         this.bipedHeadwear.rotationPointZ = this.bipedHead.rotationPointZ;
+
         this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX;
         this.bipedHeadwear.rotateAngleY = this.bipedHead.rotateAngleY;
         this.bipedHeadwear.rotateAngleZ = this.bipedHead.rotateAngleZ;
@@ -353,13 +352,5 @@ adsfsdf
             this.bipedRightLeg.rotationPointY = 10.0F + var1;
             this.bipedLeftLeg.rotationPointY = 10.0F + var1;
         }
-        // if( ((EntityEnderMiss)entity).isSwingInProgress ) {
-        // // this.bipedRightArm.rotateAngleX = -0.6F;
-        // // this.bipedRightArm.rotateAngleX *= 2.2F;
-        // // this.bipedRightArm.rotateAngleY *= 2.2F;
-        // }
-        // this.bipedRightArm.rotateAngleX = 0F;
-        // this.bipedRightArm.rotateAngleY = 0F;
-        // this.bipedRightArm.rotateAngleZ = 0F;
     }
 }

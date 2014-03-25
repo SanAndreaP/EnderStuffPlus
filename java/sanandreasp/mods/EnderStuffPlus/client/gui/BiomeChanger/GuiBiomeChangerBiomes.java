@@ -69,39 +69,40 @@ public class GuiBiomeChangerBiomes
         }
 
         GL11.glPushMatrix();
-        GL11.glTranslated(this.guiLeft, this.guiTop, 0F);
-        this.fontRenderer.drawString(CommonUsedStuff.getTranslated("tile.enderstuffp:biomeChanger.name"), 8, 8, 0x404040);
-        this.mc.getTextureManager().bindTexture(GUI_BIOMECHANGER_II);
 
-        for( int i = this.entryPosition; i < 14 + this.entryPosition; i++ ) {
-            int x = 8;
-            int y = 21 + 13 * (i - this.entryPosition);
+          GL11.glTranslated(this.guiLeft, this.guiTop, 0F);
+          this.fontRenderer.drawString(CommonUsedStuff.getTranslated("tile.enderstuffp:biomeChanger.name"), 8, 8, 0x404040);
+          this.mc.getTextureManager().bindTexture(GUI_BIOMECHANGER_II);
 
-            if( i + this.entryPosition < this.biomeList.size() ) {
-                String s = this.biomeList.get(i).biomeName;
-                this.fontRenderer.drawString(s, x + 15, y + 2, 0xFFFFFF);
+          for( int i = this.entryPosition; i < 14 + this.entryPosition; i++ ) {
+              int x = 8;
+              int y = 21 + 13 * (i - this.entryPosition);
 
-                if( this.biomeList.get(i).biomeID == this.teBiomeChanger.getBiomeID() ) {
-                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                    this.mc.getTextureManager().bindTexture(GUI_BIOMECHANGER_II);
-                    this.drawTexturedModalRect(x, y, 176, 25, 11, 11);
-                } else if( mouseX < this.guiLeft + x + 11 && mouseX >= this.guiLeft + x
-                           && mouseY < this.guiTop + y + 11 && mouseY >= this.guiTop + y
-                           && !this.teBiomeChanger.isActive() ) {
-                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                    this.mc.getTextureManager().bindTexture(GUI_BIOMECHANGER_II);
-                    this.drawTexturedModalRect(x, y, 176, 14, 11, 11);
-                }
-            } else {
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                this.mc.getTextureManager().bindTexture(GUI_BIOMECHANGER_II);
-                this.drawTexturedModalRect(x, y, 148, 192, 11, 11);
-            }
-        }
+              if( i + this.entryPosition < this.biomeList.size() ) {
+                  String s = this.biomeList.get(i).biomeName;
+                  this.fontRenderer.drawString(s, x + 15, y + 2, 0xFFFFFF);
 
-        if( this.teBiomeChanger.isActive() ) {
-            Gui.drawRect(6, 19, 159, 203, 0xAA808080);
-        }
+                  if( this.biomeList.get(i).biomeID == this.teBiomeChanger.getBiomeID() ) {
+                      GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                      this.mc.getTextureManager().bindTexture(GUI_BIOMECHANGER_II);
+                      this.drawTexturedModalRect(x, y, 176, 25, 11, 11);
+                  } else if( mouseX < this.guiLeft + x + 11 && mouseX >= this.guiLeft + x
+                             && mouseY < this.guiTop + y + 11 && mouseY >= this.guiTop + y
+                             && !this.teBiomeChanger.isActive() ) {
+                      GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                      this.mc.getTextureManager().bindTexture(GUI_BIOMECHANGER_II);
+                      this.drawTexturedModalRect(x, y, 176, 14, 11, 11);
+                  }
+              } else {
+                  GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                  this.mc.getTextureManager().bindTexture(GUI_BIOMECHANGER_II);
+                  this.drawTexturedModalRect(x, y, 148, 192, 11, 11);
+              }
+          }
+
+          if( this.teBiomeChanger.isActive() ) {
+              Gui.drawRect(6, 19, 159, 203, 0xAA808080);
+          }
 
         GL11.glPopMatrix();
     }

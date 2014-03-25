@@ -12,16 +12,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ModelEnderIgnis
     extends ModelBase
 {
-    public int heldItemRight;
-    public boolean isAttacking;
-    public ModelRenderer bipedRightArm;
-    private ModelRenderer bipedHeadwear;
+    private ModelRenderer backHorn;
     private ModelRenderer bipedBody;
+    private ModelRenderer bipedHead;
+    private ModelRenderer bipedHeadwear;
     private ModelRenderer bipedLeftArm;
+    public ModelRenderer bipedRightArm;
     private ModelRenderer headHorn1;
     private ModelRenderer headHorn2;
-    private ModelRenderer backHorn;
-    private ModelRenderer bipedHead;
+    public int heldItemRight;
+    public boolean isAttacking;
 
     public ModelEnderIgnis() {
         this.isAttacking = false;
@@ -112,7 +112,8 @@ public class ModelEnderIgnis
         this.headHorn1.rotateAngleX = 2.181662F + this.bipedHead.rotateAngleX;
         this.headHorn2.rotateAngleX = 2.181662F + this.bipedHead.rotateAngleX;
 
-        this.bipedRightArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + 3.141593F) * 2.0F * limbSwingAmount * 0.5F;
+        this.bipedRightArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + 3.141593F) * 2.0F * limbSwingAmount
+                                          * 0.5F;
         this.bipedLeftArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
         this.bipedRightArm.rotateAngleZ = 0.3490659F;
         this.bipedLeftArm.rotateAngleZ = -0.3490659F;
@@ -147,7 +148,8 @@ public class ModelEnderIgnis
             onGroundVal = 1.0F - onGroundVal;
 
             float rightArmAngleX1 = MathHelper.sin(onGroundVal * 3.141593F);
-            float rightArmAngleX2 = MathHelper.sin(this.onGround * 3.141593F) * -(this.bipedHead.rotateAngleX - 0.7F) * 0.75F;
+            float rightArmAngleX2 = MathHelper.sin(this.onGround * 3.141593F) * -(this.bipedHead.rotateAngleX - 0.7F)
+                                    * 0.75F;
 
             this.bipedRightArm.rotateAngleX -= rightArmAngleX1 * 1.2D + rightArmAngleX2;
             this.bipedRightArm.rotateAngleY += this.bipedBody.rotateAngleY * 2.0F;

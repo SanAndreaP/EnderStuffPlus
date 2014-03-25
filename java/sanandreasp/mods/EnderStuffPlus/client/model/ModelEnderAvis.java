@@ -20,26 +20,27 @@ public class ModelEnderAvis
     public boolean isSitting = false;
     public boolean isTamed = false;
     public int ticksFlying = 0;
-    private ModelRenderer body;
-    private ModelRenderer neck;
-    private ModelRenderer bodyTailM;
-    private ModelRenderer bodyTailL;
-    private ModelRenderer bodyTailR;
-    private ModelRenderer head;
-    private ModelRenderer headTailM;
+
     private ModelRenderer beak1;
     private ModelRenderer beak2;
-    private ModelRenderer rightLeg;
-    private ModelRenderer leftLeg;
+    private ModelRenderer body;
+    private ModelRenderer bodyTailL;
+    private ModelRenderer bodyTailM;
+    private ModelRenderer bodyTailR;
     private ModelRenderer collar;
-    private ModelRenderer rightFoot;
-    private ModelRenderer leftFoot;
-    private ModelRenderer leftWingBone;
-    private ModelRenderer leftWing;
-    private ModelRenderer rightWingBone;
-    private ModelRenderer rightWing;
+    private ModelRenderer head;
     private ModelRenderer headTailL;
+    private ModelRenderer headTailM;
     private ModelRenderer headTailR;
+    private ModelRenderer leftFoot;
+    private ModelRenderer leftLeg;
+    private ModelRenderer leftWing;
+    private ModelRenderer leftWingBone;
+    private ModelRenderer neck;
+    private ModelRenderer rightFoot;
+    private ModelRenderer rightLeg;
+    private ModelRenderer rightWing;
+    private ModelRenderer rightWingBone;
 
     public ModelEnderAvis() {
         this.textureWidth = 64;

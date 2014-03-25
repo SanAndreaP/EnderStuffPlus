@@ -59,11 +59,11 @@ public class GuiBiomeChangerConfig
         int middle = (int) (((float) this.teBiomeChanger.getCurrRange() / (float) this.teBiomeChanger.getMaxRange()) * 161F);
 
         GL11.glPushMatrix();
-        GL11.glTranslatef(this.guiLeft, this.guiTop, 0F);
-        this.drawTexturedModalRect(7, 140, 0, 230, 161, 5);
-        this.drawTexturedModalRect(7, 140, 0, 235, middle, 5);
-        this.drawTexturedModalRect(7, 156, 161, 230, 12, 5);
-        this.drawTexturedModalRect(7, 166, 161, 235, 12, 5);
+          GL11.glTranslatef(this.guiLeft, this.guiTop, 0F);
+          this.drawTexturedModalRect(7, 140, 0, 230, 161, 5);
+          this.drawTexturedModalRect(7, 140, 0, 235, middle, 5);
+          this.drawTexturedModalRect(7, 156, 161, 230, 12, 5);
+          this.drawTexturedModalRect(7, 166, 161, 235, 12, 5);
         GL11.glPopMatrix();
     }
 

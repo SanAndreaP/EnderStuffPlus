@@ -678,7 +678,10 @@ public class EntityEnderMiss extends EntityCreature implements IEnderPet, IEnder
 			this.teleportDelay = 0;
 		}
 
-        this.updateArmSwingProgress();
+		if( !this.isSitting() ) {
+		    this.updateArmSwingProgress();
+		}
+
 		super.onLivingUpdate();
 
 		if( this.isRiddenDW() && this.riddenByEntity != null ) {

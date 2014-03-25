@@ -12,9 +12,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ModelBiomeChanger
     extends ModelBase
 {
-    private ModelRenderer base;
     public ModelRenderer floatyBox1;
     public ModelRenderer floatyBox2;
+    private ModelRenderer base;
 
     public ModelBiomeChanger() {
         this.base = new ModelRenderer(this, 0, 0);
