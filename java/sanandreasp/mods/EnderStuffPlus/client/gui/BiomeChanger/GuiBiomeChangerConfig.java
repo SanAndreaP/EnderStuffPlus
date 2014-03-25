@@ -20,7 +20,11 @@ public class GuiBiomeChangerConfig
     extends GuiBiomeChangerBase
     implements Textures
 {
-    private GuiButton circularButton, squareButton, rhombicButton, rangeSlider, changeBlocksButton;
+    private GuiButton circularButton;
+    private GuiButton squareButton;
+    private GuiButton rhombicButton;
+    private GuiButton rangeSlider;
+    private GuiButton changeBlocksButton;
 
     public GuiBiomeChangerConfig(TileEntityBiomeChanger tileBiomeChanger) {
         super(new Container() {

@@ -16,9 +16,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GuiBiomeChangerSlider
     extends GuiButton
 {
-    public boolean isDragging = false;
-    public float maxSliderValue = 1.0F;
-    public float sliderValue = 1.0F;
+    private boolean isDragging = false;
+    private float maxSliderValue = 1.0F;
+    private float sliderValue = 1.0F;
     private TileEntityBiomeChanger teBiomeChanger = null;
     private String title = "";
 

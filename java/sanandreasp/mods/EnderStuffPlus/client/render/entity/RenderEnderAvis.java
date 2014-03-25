@@ -37,12 +37,15 @@ public class RenderEnderAvis extends RenderLiving implements Textures
 	}
 
 	public void applyStatsToModel(EntityEnderAvis avis) {
-		this.coatModel.isFlying = this.avisModel.isFlying = !avis.onGround;
-		this.coatModel.isSitting = this.avisModel.isSitting = avis.isSitting();
-//		this.avisModel.motionY = avis.motionY;
-		this.avisModel.ticksFlying = avis.ticksFlying;
-		this.avisModel.isTamed = avis.isTamed();
-		this.avisModel.collarClr = avis.getCollarColor(avis.getColor());
+		this.coatModel.setFlying(!avis.onGround);
+		this.avisModel.setFlying(!avis.onGround);
+		
+		this.coatModel.setSitting(avis.isSitting());
+		this.avisModel.setSitting(avis.isSitting());
+		
+		this.avisModel.setTicksFlying(avis.ticksFlying);
+		this.avisModel.setTamed(avis.isTamed());
+		this.avisModel.setCollarColor(avis.getCollarColor(avis.getColor()));
 	}
 
 	@Override

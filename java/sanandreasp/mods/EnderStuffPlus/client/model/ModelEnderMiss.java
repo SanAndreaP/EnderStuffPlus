@@ -16,13 +16,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ModelEnderMiss
     extends ModelBiped
 {
-    public ModelRenderer bipedBodyCoat;
-    public boolean hasAvisFeather = false;
-    public boolean isAttacking = false;
-    public boolean isCaped = false;
-    public boolean isCarrying = false;
-    public boolean isRidden = false;
-    public boolean isSitting = false;
+    private ModelRenderer bipedBodyCoat;
+    private boolean isAttacking = false;
+    private boolean isCaped = false;
+    private boolean isCarrying = false;
+    private boolean isRidden = false;
+    private boolean isSitting = false;
 
     public ModelEnderMiss(boolean hasCape) {
         super(0.0F, -14.0F, 64, 32);
@@ -352,5 +351,21 @@ public class ModelEnderMiss
             this.bipedRightLeg.rotationPointY = 10.0F + var1;
             this.bipedLeftLeg.rotationPointY = 10.0F + var1;
         }
+    }
+    
+    public void setCarrying(boolean isCarrying) {
+        this.isCarrying = isCarrying;
+    }
+    
+    public void setAttacking(boolean isAttacking) {
+        this.isAttacking = isAttacking;
+    }
+
+    public void setRidden(boolean isRidden) {
+        this.isRidden = isRidden;
+    }
+    
+    public void setSitting(boolean isSitting) {
+        this.isSitting = isSitting;
     }
 }

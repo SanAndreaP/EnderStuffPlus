@@ -33,11 +33,12 @@ public class RenderEnderMiss extends RenderLiving implements Textures
 	}
 
 	public void applyStats(EntityEnderMiss miss) {
-		this.coatModel.isCarrying = this.missModel.isCarrying = miss.getCarried() > 0;
-		this.missModel.isCaped = false;
-		this.missModel.hasAvisFeather = !miss.canGetFallDmg();
-		this.coatModel.isRidden = this.missModel.isRidden = miss.isRidden();
-		this.coatModel.isSitting = this.missModel.isSitting = miss.isSitting();
+		this.coatModel.setCarrying(miss.getCarried() > 0);
+		this.missModel.setCarrying(miss.getCarried() > 0);
+		this.coatModel.setRidden(miss.isRidden());
+		this.missModel.setRidden(miss.isRidden());
+		this.coatModel.setRidden(miss.isSitting());
+		this.missModel.setRidden(miss.isSitting());
 	}
 
 	@Override

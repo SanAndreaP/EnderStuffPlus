@@ -15,11 +15,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ModelEnderAvis
     extends ModelBase
 {
-    public float[] collarClr = new float[3];
-    public boolean isFlying = false;
-    public boolean isSitting = false;
-    public boolean isTamed = false;
-    public int ticksFlying = 0;
+    private float[] collarColor;
+    private boolean isFlying = false;
+    private boolean isSitting = false;
+    private boolean isTamed = false;
+    private int ticksFlying = 0;
 
     private ModelRenderer beak1;
     private ModelRenderer beak2;
@@ -222,7 +222,7 @@ public class ModelEnderAvis
             GL11.glPushMatrix();
 
             if( entity instanceof EntityLiving && ((EntityLiving) entity).hurtTime <= 0 ) {
-                GL11.glColor3f(this.collarClr[0], this.collarClr[1], this.collarClr[2]);
+                GL11.glColor3f(this.collarColor[0], this.collarColor[1], this.collarColor[2]);
             }
 
             GL11.glScalef(1.1F, 1.1F, 1.1F);
@@ -285,5 +285,25 @@ public class ModelEnderAvis
             this.rightFoot.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
             this.leftFoot.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
         }
+    }
+    
+    public void setFlying(boolean isModelFlying) {
+        this.isFlying = isModelFlying;
+    }
+    
+    public void setSitting(boolean isModelSitting) {
+        this.isSitting = isModelSitting;
+    }
+    
+    public void setTicksFlying(int ticks) {
+        this.ticksFlying = ticks;
+    }
+    
+    public void setTamed(boolean isModelTamed) {
+        this.isTamed = isModelTamed;
+    }
+    
+    public void setCollarColor(float[] colors) {
+        this.collarColor = colors;
     }
 }

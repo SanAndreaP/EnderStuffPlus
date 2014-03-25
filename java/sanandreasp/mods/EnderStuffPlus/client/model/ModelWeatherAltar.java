@@ -10,7 +10,17 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ModelWeatherAltar
     extends ModelBase
 {
-    ModelRenderer altarBase1, altarBase2, altarBase3, throat, girder, stickM, stickR, stickL, plateM, plateR, plateL;
+    private ModelRenderer altarBase1;
+    private ModelRenderer altarBase2;
+    private ModelRenderer altarBase3;
+    private ModelRenderer throat;
+    private ModelRenderer girder;
+    private ModelRenderer stickM;
+    private ModelRenderer stickR;
+    private ModelRenderer stickL;
+    private ModelRenderer plateM;
+    private ModelRenderer plateR;
+    private ModelRenderer plateL;
 
     public ModelWeatherAltar() {
         this.textureWidth = 128;

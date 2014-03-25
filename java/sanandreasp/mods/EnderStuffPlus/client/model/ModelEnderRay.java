@@ -12,7 +12,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ModelEnderRay
     extends ModelBase
 {
-    ModelRenderer body, rightarm, leftarm, rightleg, leftleg, body2, righttail, lefttail;
+    private ModelRenderer body;
+    private ModelRenderer rightarm;
+    private ModelRenderer leftarm;
+    private ModelRenderer rightleg;
+    private ModelRenderer leftleg;
+    private ModelRenderer body2;
+    private ModelRenderer righttail;
+    private ModelRenderer lefttail;
 
     public ModelEnderRay() {
         this.textureWidth = 64;

@@ -40,10 +40,7 @@ public class RenderTileEntityBiomeChanger extends TileEntitySpecialRenderer impl
         GL11.glPushMatrix();
         GL11.glTranslatef((float)x + 0.5F, (float)y, (float)z + 0.5F);
         
-        this.modelBlock.floatyBox1.rotateAngleY = (float) (-te.renderCurrAngle / 180F * Math.PI);
-        this.modelBlock.floatyBox2.rotateAngleY = (float) (-te.renderCurrAngle / 180F * Math.PI);
-        this.modelBlock.floatyBox1.rotationPointY = (float) (13D + Math.sin(te.renderCurrAngle / 180 * Math.PI) * 0.5D);
-        this.modelBlock.floatyBox2.rotationPointY = (float) (13D - Math.sin(te.renderCurrAngle / 180 * Math.PI) * 0.5D);
+        this.modelBlock.setBoxRotations(te.renderCurrAngle);
         
         this.modelBlock.renderBlock();
         

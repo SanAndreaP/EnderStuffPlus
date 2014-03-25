@@ -17,11 +17,11 @@ public class ModelEnderIgnis
     private ModelRenderer bipedHead;
     private ModelRenderer bipedHeadwear;
     private ModelRenderer bipedLeftArm;
-    public ModelRenderer bipedRightArm;
+    private ModelRenderer bipedRightArm;
     private ModelRenderer headHorn1;
     private ModelRenderer headHorn2;
-    public int heldItemRight;
-    public boolean isAttacking;
+    private int heldItemRight;
+    private boolean isAttacking;
 
     public ModelEnderIgnis() {
         this.isAttacking = false;
@@ -192,5 +192,13 @@ public class ModelEnderIgnis
             this.headHorn2.rotationPointY -= 5F;
             this.headHorn1.rotationPointY -= 5F;
         }
+    }
+    
+    public void setAttacking(boolean isModelAttacking) {
+        this.isAttacking = isModelAttacking;
+    }
+    
+    public void rightArmPostRender() {
+        this.bipedRightArm.postRender(0.0625F);
     }
 }

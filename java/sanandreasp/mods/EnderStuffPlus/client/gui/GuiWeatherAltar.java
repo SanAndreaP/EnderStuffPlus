@@ -20,7 +20,6 @@ public class GuiWeatherAltar
     implements Textures
 {
     private TileEntityWeatherAltar teWeatherAltar;
-
     private GuiButton btnSun;
     private GuiButton btnRain;
     private GuiButton btnStorm;

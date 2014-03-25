@@ -4,50 +4,53 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.INetworkManager;
-import cpw.mods.fml.common.network.Player;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 import sanandreasp.core.manpack.mod.packet.ISAPPacketHandler;
 import sanandreasp.mods.EnderStuffPlus.client.particle.ParticleFXFuncCollection;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.INetworkManager;
+
+import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 @SideOnly(Side.CLIENT)
-public class PacketFXSpawnRayballFX implements ISAPPacketHandler
+public class PacketFXSpawnRayballFX
+    implements ISAPPacketHandler
 {
-	@Override
-	public byte[] getDataForPacket(Object... data) throws Exception {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		DataOutputStream dos = new DataOutputStream(bos);
-		
-		dos.writeDouble((Double)data[0]); //posX
-		dos.writeDouble((Double)data[1]); //posY
-		dos.writeDouble((Double)data[2]); //posZ
-		dos.writeFloat((Float)data[3]);   //colorR
-		dos.writeFloat((Float)data[4]);   //colorG
-		dos.writeFloat((Float)data[5]);   //colorB
-		dos.writeFloat((Float)data[6]);   //width
-		dos.writeFloat((Float)data[7]);   //height
-		
-		byte[] bytes = bos.toByteArray();
-		
-		dos.close();
-		bos.close();
-		
-		return bytes;
-	}
+    @Override
+    public byte[] getDataForPacket(Object... data) throws Exception {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        DataOutputStream dos = new DataOutputStream(bos);
+        byte[] bytes;
 
-	@Override
-	public void processData(INetworkManager manager, Player player, byte[] data) throws Exception {
-		ByteArrayInputStream bis = new ByteArrayInputStream(data);
-		DataInputStream dis = new DataInputStream(bis);
+        dos.writeDouble((Double) data[0]);          // posX
+        dos.writeDouble((Double) data[1]);          // posY
+        dos.writeDouble((Double) data[2]);          // posZ
+        dos.writeFloat((Float) data[3]);            // colorR
+        dos.writeFloat((Float) data[4]);            // colorG
+        dos.writeFloat((Float) data[5]);            // colorB
+        dos.writeFloat((Float) data[6]);            // width
+        dos.writeFloat((Float) data[7]);            // height
 
-		ParticleFXFuncCollection.spawnRayballFX(Minecraft.getMinecraft().theWorld,
-				dis.readDouble(), dis.readDouble(), dis.readDouble()
-		);
-		
-		dis.close();
-		bis.close();
-	}
-	
+        bytes = bos.toByteArray();
+
+        dos.close();
+        bos.close();
+
+        return bytes;
+    }
+
+    @Override
+    public void processData(INetworkManager manager, Player player, byte[] data) throws Exception {
+        ByteArrayInputStream bis = new ByteArrayInputStream(data);
+        DataInputStream dis = new DataInputStream(bis);
+
+        ParticleFXFuncCollection.spawnRayballFX(Minecraft.getMinecraft().theWorld, dis.readDouble(), dis.readDouble(), dis.readDouble());
+
+        dis.close();
+        bis.close();
+    }
+
 }

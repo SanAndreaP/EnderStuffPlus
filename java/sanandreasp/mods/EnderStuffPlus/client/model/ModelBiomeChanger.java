@@ -12,8 +12,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ModelBiomeChanger
     extends ModelBase
 {
-    public ModelRenderer floatyBox1;
-    public ModelRenderer floatyBox2;
+    private ModelRenderer floatyBox1;
+    private ModelRenderer floatyBox2;
     private ModelRenderer base;
 
     public ModelBiomeChanger() {
@@ -35,5 +35,12 @@ public class ModelBiomeChanger
         GL11.glPopMatrix();
         this.floatyBox1.rotationPointY = 13F;
         this.floatyBox2.rotationPointY = 13F;
+    }
+    
+    public void setBoxRotations(float angle) {
+        this.floatyBox1.rotateAngleY = (float) (-angle / 180F * Math.PI);
+        this.floatyBox2.rotateAngleY = (float) (-angle / 180F * Math.PI);
+        this.floatyBox1.rotationPointY = (float) (13D + Math.sin(angle / 180 * Math.PI) * 0.5D);
+        this.floatyBox2.rotationPointY = (float) (13D - Math.sin(angle / 180 * Math.PI) * 0.5D);
     }
 }

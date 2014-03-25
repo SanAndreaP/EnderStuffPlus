@@ -12,14 +12,25 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ModelEnderNivis
     extends ModelBase
 {
-    public ModelRenderer bipedHead;
-    public ModelRenderer bipedHeadwear, bipedBody, bipedRightArm1, bipedLeftArm1, bipedRightLeg, bipedLeftLeg,
-            bipedRightArm2;
-    public ModelRenderer bipedLeftArm2, Shape1, Shape2, Shape3, bipedRightLeg1, bipedLeftLeg1, bipedRightLeg2,
-            bipedLeftLeg2;
-    public int heldItemRight;
-    public boolean isAttacking;
-    public boolean isCarrying;
+    private ModelRenderer bipedHead;
+    private ModelRenderer bipedHeadwear;
+    private ModelRenderer bipedBody;
+    private ModelRenderer bipedRightArm1;
+    private ModelRenderer bipedLeftArm1;
+    private ModelRenderer bipedRightLeg;
+    private ModelRenderer bipedLeftLeg;
+    private ModelRenderer bipedRightArm2;
+    private ModelRenderer bipedLeftArm2;
+    private ModelRenderer spike1;
+    private ModelRenderer spike2;
+    private ModelRenderer spike3;
+    private ModelRenderer bipedRightLeg1;
+    private ModelRenderer bipedLeftLeg1;
+    private ModelRenderer bipedRightLeg2;
+    private ModelRenderer bipedLeftLeg2;
+    private int heldItemRight;
+    private boolean isAttacking;
+    private boolean isCarrying;
 
     public ModelEnderNivis() {
         this.textureWidth = 64;
@@ -79,26 +90,26 @@ public class ModelEnderNivis
         this.bipedLeftArm2.setTextureSize(64, 32);
         this.setRotation(this.bipedLeftArm2, 0F, 0F, -0.3490659F);
 
-        this.Shape1 = new ModelRenderer(this, 40, 16);
-        this.Shape1.addBox(-1F, 0F, -4F, 2, 5, 2);
-        this.Shape1.setRotationPoint(0F, -14F, 0F);
-        this.Shape1.setTextureSize(64, 32);
-        this.Shape1.mirror = true;
-        this.setRotation(this.Shape1, 1.919862F, 0F, 0F);
+        this.spike1 = new ModelRenderer(this, 40, 16);
+        this.spike1.addBox(-1F, 0F, -4F, 2, 5, 2);
+        this.spike1.setRotationPoint(0F, -14F, 0F);
+        this.spike1.setTextureSize(64, 32);
+        this.spike1.mirror = true;
+        this.setRotation(this.spike1, 1.919862F, 0F, 0F);
 
-        this.Shape2 = new ModelRenderer(this, 40, 16);
-        this.Shape2.addBox(-1F, 4F, 5F, 2, 8, 2);
-        this.Shape2.setRotationPoint(0F, -14F, 0F);
-        this.Shape2.setTextureSize(64, 32);
-        this.Shape2.mirror = true;
-        this.setRotation(this.Shape2, 1.882684F, 0F, 0F);
+        this.spike2 = new ModelRenderer(this, 40, 16);
+        this.spike2.addBox(-1F, 4F, 5F, 2, 8, 2);
+        this.spike2.setRotationPoint(0F, -14F, 0F);
+        this.spike2.setTextureSize(64, 32);
+        this.spike2.mirror = true;
+        this.setRotation(this.spike2, 1.882684F, 0F, 0F);
 
-        this.Shape3 = new ModelRenderer(this, 40, 16);
-        this.Shape3.addBox(-1F, -2F, -9F, 2, 5, 2);
-        this.Shape3.setRotationPoint(0F, -14F, 0F);
-        this.Shape3.setTextureSize(64, 32);
-        this.Shape3.mirror = true;
-        this.setRotation(this.Shape3, 1.919862F, 0F, 0F);
+        this.spike3 = new ModelRenderer(this, 40, 16);
+        this.spike3.addBox(-1F, -2F, -9F, 2, 5, 2);
+        this.spike3.setRotationPoint(0F, -14F, 0F);
+        this.spike3.setTextureSize(64, 32);
+        this.spike3.mirror = true;
+        this.setRotation(this.spike3, 1.919862F, 0F, 0F);
 
         this.bipedRightLeg1 = new ModelRenderer(this, 56, 0);
         this.bipedRightLeg1.addBox(-1F, -7F, 6F, 2, 10, 2);
@@ -146,9 +157,9 @@ public class ModelEnderNivis
         this.bipedLeftLeg.render(partTicks);
         this.bipedRightArm2.render(partTicks);
         this.bipedLeftArm2.render(partTicks);
-        this.Shape1.render(partTicks);
-        this.Shape2.render(partTicks);
-        this.Shape3.render(partTicks);
+        this.spike1.render(partTicks);
+        this.spike2.render(partTicks);
+        this.spike3.render(partTicks);
         this.bipedRightLeg1.render(partTicks);
         this.bipedLeftLeg1.render(partTicks);
         this.bipedRightLeg2.render(partTicks);
@@ -162,8 +173,8 @@ public class ModelEnderNivis
         this.bipedHead.rotateAngleX = rotPitch / 57.29578F;
         this.bipedHeadwear.rotateAngleY = this.bipedHead.rotateAngleY;
         this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX;
-        this.Shape2.rotateAngleY = this.bipedHead.rotateAngleY;
-        this.Shape2.rotateAngleX = 1.882684F + this.bipedHead.rotateAngleX;
+        this.spike2.rotateAngleY = this.bipedHead.rotateAngleY;
+        this.spike2.rotateAngleX = 1.882684F + this.bipedHead.rotateAngleX;
 
         this.bipedRightArm1.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + 3.141593F) * 2.0F * limbSwingAmount
                                            * 0.5F;
@@ -351,8 +362,8 @@ public class ModelEnderNivis
 
         this.bipedHead.rotationPointZ = -0.0F;
         this.bipedHead.rotationPointY = -14.0F;
-        this.Shape2.rotationPointZ = -0.0F;
-        this.Shape2.rotationPointY = -14.0F;
+        this.spike2.rotationPointZ = -0.0F;
+        this.spike2.rotationPointY = -14.0F;
         this.bipedHeadwear.rotationPointX = this.bipedHead.rotationPointX;
         this.bipedHeadwear.rotationPointY = this.bipedHead.rotationPointY;
         this.bipedHeadwear.rotationPointZ = this.bipedHead.rotationPointZ;
@@ -362,7 +373,19 @@ public class ModelEnderNivis
 
         if( this.isAttacking ) {
             this.bipedHead.rotationPointY -= 5F;
-            this.Shape2.rotationPointY -= 5F;
+            this.spike2.rotationPointY -= 5F;
         }
+    }
+    
+    public void setCarrying(boolean isCarrying) {
+        this.isCarrying = isCarrying;
+    }
+    
+    public void setAttacking(boolean isAttacking) {
+        this.isAttacking = isAttacking;
+    }
+    
+    public void rightArmPostRender() {
+        this.bipedRightArm2.postRender(0.0625F);
     }
 }

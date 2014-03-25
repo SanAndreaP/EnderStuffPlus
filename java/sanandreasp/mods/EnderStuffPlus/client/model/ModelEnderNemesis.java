@@ -11,7 +11,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ModelEnderNemesis
     extends ModelEnderman
 {
-    ModelRenderer rightWing, leftWing, heart;
+    private ModelRenderer rightWing;
+    private ModelRenderer leftWing;
+    private ModelRenderer heart;
 
     public ModelEnderNemesis() {
         super();
@@ -24,7 +26,7 @@ public class ModelEnderNemesis
         this.rightWing.setTextureSize(64, 32);
         this.rightWing.mirror = true;
         this.setRotation(this.rightWing, -0.0523599F, 1.099557F, 0.2443461F);
-sadASD
+
         this.leftWing = new ModelRenderer(this, 32, -4);
         this.leftWing.addBox(0F, 0F, 0F, 0, 16, 4);
         this.leftWing.setRotationPoint(4F, -14F, 0F);

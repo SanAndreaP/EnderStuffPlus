@@ -29,7 +29,7 @@ public class RenderEnderIgnis extends RenderLiving implements Textures
 	}
 
 	public void applyStats(EntityEnderIgnis ignis, double x, double y, double z, float yaw, float partTicks) {
-		this.ignisModel.isAttacking = ignis.isScreaming();
+		this.ignisModel.setAttacking(ignis.isScreaming());
 	}
 
 	protected int renderEyes(EntityEnderIgnis ignis, int pass, float partTicks) {
@@ -71,7 +71,7 @@ public class RenderEnderIgnis extends RenderLiving implements Textures
 			
 			GL11.glPushMatrix();
 			
-			this.ignisModel.bipedRightArm.postRender(0.0625F);
+			this.ignisModel.rightArmPostRender();
 			
 			GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
 			GL11.glTranslatef(0.05F, 0.5875F, -0.08F);

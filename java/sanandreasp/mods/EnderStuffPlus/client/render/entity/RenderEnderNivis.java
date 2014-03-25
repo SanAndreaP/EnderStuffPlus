@@ -32,8 +32,8 @@ public class RenderEnderNivis extends RenderLiving implements Textures
 	}
 
 	public void applyStats(EntityEnderNivis nivis, double x, double y, double z, float yaw, float partTicks) {
-		this.nivisModel.isCarrying = nivis.getCarried() > 0;
-		this.nivisModel.isAttacking = nivis.isScreaming();
+		this.nivisModel.setCarrying(nivis.getCarried() > 0);
+		this.nivisModel.setAttacking(nivis.isScreaming());
 	}
 
 	protected void renderCarrying(EntityEnderNivis nivis, float partTicks) {
@@ -105,7 +105,7 @@ public class RenderEnderNivis extends RenderLiving implements Textures
 			
 			GL11.glPushMatrix();
 			
-			this.nivisModel.bipedRightArm2.postRender(0.0625F);
+			this.nivisModel.rightArmPostRender();
 			
 			GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
 			GL11.glTranslatef(0.05F, 0.5875F, -0.08F);
