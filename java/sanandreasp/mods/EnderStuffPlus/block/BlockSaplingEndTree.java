@@ -2,6 +2,7 @@ package sanandreasp.mods.EnderStuffPlus.block;
 
 import java.util.Random;
 
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.world.WorldGenEndTree;
 
 import net.minecraft.block.Block;
@@ -20,8 +21,14 @@ public class BlockSaplingEndTree
 {
     public BlockSaplingEndTree(int id) {
         super(id);
+
         float size = 0.4F;
+
         this.setBlockBounds(0.5F - size, 0.0F, 0.5F - size, 0.5F + size, size * 2.0F, 0.5F + size);
+        this.setUnlocalizedName("esp:enderSapling");
+        this.setCreativeTab(ESPModRegistry.espTab);
+        this.setHardness(0.0F);
+        this.setStepSound(Block.soundGrassFootstep);
     }
 
     @Override

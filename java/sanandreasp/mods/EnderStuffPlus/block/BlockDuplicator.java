@@ -38,6 +38,9 @@ public class BlockDuplicator
 
     public BlockDuplicator(int id) {
         super(id, Material.rock);
+        this.setUnlocalizedName("esp:duplicator");
+        this.setCreativeTab(ESPModRegistry.espTab);
+        this.setHardness(1F);
     }
 
     @Override

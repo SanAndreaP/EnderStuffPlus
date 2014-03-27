@@ -4,7 +4,9 @@ import java.util.List;
 
 import sanandreasp.core.manpack.helpers.IGlowBlockOverlay;
 import sanandreasp.core.manpack.helpers.client.RenderBlockGlowOverlay;
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockOre;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -27,6 +29,11 @@ public class BlockEndOre
 
     public BlockEndOre(int id) {
         super(id);
+        this.setUnlocalizedName("esp:oreEnd");
+        this.setCreativeTab(ESPModRegistry.espTab);
+        this.setHardness(3.0F);
+        this.setResistance(5.0F);
+        this.setStepSound(Block.soundStoneFootstep);
     }
 
     @Override

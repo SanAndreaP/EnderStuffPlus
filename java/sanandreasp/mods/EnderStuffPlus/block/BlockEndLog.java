@@ -5,6 +5,7 @@ import java.util.Random;
 
 import sanandreasp.mods.EnderStuffPlus.registry.BlockRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -25,6 +26,11 @@ public class BlockEndLog
 
     public BlockEndLog(int id) {
         super(id, Material.wood);
+        this.setUnlocalizedName("esp:enderLog");
+        this.setCreativeTab(ESPModRegistry.espTab);
+        this.setHardness(2.0F);
+        this.setStepSound(Block.soundWoodFootstep);
+        this.setLightValue(4.1F / 15F);
     }
 
     @Override

@@ -2,6 +2,8 @@ package sanandreasp.mods.EnderStuffPlus.item;
 
 import java.util.List;
 
+import sanandreasp.core.manpack.helpers.CommonUsedStuff;
+
 import com.google.common.collect.ImmutableList;
 
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -66,25 +68,25 @@ public class ItemRaincoat extends Item
 	private Icon iconOver;
 
 	public static final ImmutableList<CoatColorEntry> colorList = ImmutableList.of(
-			new CoatColorEntry("Black",          0x1A1515),
-			new CoatColorEntry("Red",            0xCF3B37),
-			new CoatColorEntry("Green",          0x3D591B),
-			new CoatColorEntry("Brown",          0x663A20),
-			new CoatColorEntry("Blue",           0x3343C6),
-			new CoatColorEntry("Purple",         0xB54AE7),
-			new CoatColorEntry("Cyan",           0x349EC1),
-			new CoatColorEntry("Light Gray",     0xD3D8D8),
-			new CoatColorEntry("Gray",           0x4D4D4D),
-			new CoatColorEntry("Pink",           0xF4BBD1),
-			new CoatColorEntry("Lemon Green",    0x50E243),
-			new CoatColorEntry("Yellow",         0xE4DC2A),
-			new CoatColorEntry("Light Blue",     0x98C2F1),
-			new CoatColorEntry("Magenta",        0xE66AEB),
-			new CoatColorEntry("Orange",         0xF7B24C),
-			new CoatColorEntry("White",          0xF8F8F8),
-			new CoatColorEntry("Gold",           0xC5B600),
-			new CoatColorEntry("Niobium",        0x141E61),
-			new CoatColorEntry("Transparent",    0xCDCDCD)
+			new CoatColorEntry("item.esp:rainCoat.color.black",       0x1A1515),
+			new CoatColorEntry("item.esp:rainCoat.color.red",         0xCF3B37),
+			new CoatColorEntry("item.esp:rainCoat.color.green",       0x3D591B),
+			new CoatColorEntry("item.esp:rainCoat.color.brown",       0x663A20),
+			new CoatColorEntry("item.esp:rainCoat.color.blue",        0x3343C6),
+			new CoatColorEntry("item.esp:rainCoat.color.purple",      0xB54AE7),
+			new CoatColorEntry("item.esp:rainCoat.color.cyan",        0x349EC1),
+			new CoatColorEntry("item.esp:rainCoat.color.silver",      0xD3D8D8),
+			new CoatColorEntry("item.esp:rainCoat.color.gray",        0x4D4D4D),
+			new CoatColorEntry("item.esp:rainCoat.color.pink",        0xF4BBD1),
+			new CoatColorEntry("item.esp:rainCoat.color.lime",        0x50E243),
+			new CoatColorEntry("item.esp:rainCoat.color.yellow",      0xE4DC2A),
+			new CoatColorEntry("item.esp:rainCoat.color.lightBlue",   0x98C2F1),
+			new CoatColorEntry("item.esp:rainCoat.color.magenta",     0xE66AEB),
+			new CoatColorEntry("item.esp:rainCoat.color.orange",      0xF7B24C),
+			new CoatColorEntry("item.esp:rainCoat.color.white",       0xF8F8F8),
+			new CoatColorEntry("item.esp:rainCoat.color.gold",        0xC5B600),
+			new CoatColorEntry("item.esp:rainCoat.color.niobium",     0x141E61),
+			new CoatColorEntry("item.esp:rainCoat.color.transparent", 0xCDCDCD)
 	);
 
 	public static final ImmutableList<CoatBaseEntry> baseList = ImmutableList.of(
@@ -136,7 +138,7 @@ public class ItemRaincoat extends Item
 		int bas = par1ItemStack.getItemDamage() >> 5;
 
 		if( clr < colorList.asList().size() && clr >= 0 ) {
-            par3List.add("\247oColor: " + colorList.get(clr).getName());
+            par3List.add("\247oColor: " + CommonUsedStuff.getTranslated(colorList.get(clr).getName()));
         }
 		if( bas < baseList.asList().size() && bas >= 0 ) {
 			par3List.add("\247oBase: " + baseList.get(bas).getName());

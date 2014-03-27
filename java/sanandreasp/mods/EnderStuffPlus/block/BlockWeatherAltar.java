@@ -27,6 +27,9 @@ public class BlockWeatherAltar
 {
     public BlockWeatherAltar(int id) {
         super(id, Material.rock);
+        this.setUnlocalizedName("esp:weatherAltar");
+        this.setCreativeTab(ESPModRegistry.espTab);
+        this.setHardness(1F);
     }
 
     @Override

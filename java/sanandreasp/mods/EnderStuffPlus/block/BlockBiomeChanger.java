@@ -24,6 +24,9 @@ public class BlockBiomeChanger
 {
     public BlockBiomeChanger(int id, Material material) {
         super(id, material);
+        this.setUnlocalizedName("esp:biomeChanger");
+        this.setCreativeTab(ESPModRegistry.espTab);
+        this.setHardness(1F);
     }
 
     @Override

@@ -29,6 +29,9 @@ public class BlockEnderDoor
     public BlockEnderDoor(int id, Material material) {
         super(id, material);
         this.disableStats();
+        this.setUnlocalizedName("esp:enderDoor");
+        this.setHardness(5.0F);
+        this.setStepSound(Block.soundMetalFootstep);
     }
 
     @Override
