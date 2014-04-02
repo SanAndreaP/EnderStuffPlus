@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
-import sanandreasp.mods.EnderStuffPlus.registry.ItemRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ModItemRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 
 import net.minecraft.entity.Entity;
@@ -19,30 +19,34 @@ import net.minecraft.world.World;
 
 public class ItemNiobArmor
     extends ItemArmor
-    implements Textures
 {
+    public static final int RENDER_ID = ESPModRegistry.proxy.addArmor("niobArmor");
 
-    public static int renderID = ESPModRegistry.proxy.addArmor("niobArmor");
-
-    public ItemNiobArmor(int par1ID, EnumArmorMaterial material, int par2SlotID) {
-        super(par1ID, material, renderID, par2SlotID);
+    public ItemNiobArmor(int id, EnumArmorMaterial material, int slotId) {
+        super(id, material, RENDER_ID, slotId);
     }
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-        if( stack.itemID == ItemRegistry.niobHelmet.itemID || stack.itemID == ItemRegistry.niobPlate.itemID
-            || stack.itemID == ItemRegistry.niobBoots.itemID ) {
-            return TEX_ARMOR_NIOBIUM_1;
-        } else if( stack.itemID == ItemRegistry.niobLegs.itemID ) {
-            return TEX_ARMOR_NIOBIUM_2;
+        if( stack.getItem() == ModItemRegistry.niobHelmet || stack.getItem() == ModItemRegistry.niobPlate
+            || stack.getItem() == ModItemRegistry.niobBoots )
+        {
+            return Textures.TEX_ARMOR_NIOBIUM_1;
+        } else if( stack.itemID == ModItemRegistry.niobLegs.itemID ) {
+            return Textures.TEX_ARMOR_NIOBIUM_2;
         }
         return super.getArmorTexture(stack, entity, slot, type);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public void onArmorTickUpdate(World world, EntityPlayer player, ItemStack itemStack) {
-        if( player != null && !player.getActivePotionEffects().isEmpty() && !world.isRemote ) {
+    public boolean getIsRepairable(ItemStack brokenItem, ItemStack repairItem) {
+        return repairItem.itemID == ModItemRegistry.endIngot.itemID ? true : super.getIsRepairable(brokenItem, repairItem);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void onArmorTickUpdate(World world, EntityPlayer player, ItemStack stack) {
+        if( !world.isRemote && player != null && !player.getActivePotionEffects().isEmpty() ) {
             List<PotionEffect> badPotions = new ArrayList<PotionEffect>();
             for( PotionEffect pEffect : (Collection<PotionEffect>) player.getActivePotionEffects() ) {
                 if( Potion.potionTypes[pEffect.getPotionID()].isBadEffect() ) {
@@ -50,35 +54,23 @@ public class ItemNiobArmor
                 }
             }
             if( !badPotions.isEmpty() ) {
-                boolean b = true;
+                boolean shouldRemoveBadPotions = true;
                 for( int i = 1; i <= 4; i++ ) {
                     if( player.getCurrentItemOrArmor(i) == null ) {
-                        b = false;
+                        shouldRemoveBadPotions = false;
                         break;
-                    } else if( player.getCurrentItemOrArmor(i).itemID != ESPModRegistry.niobSet.get(i - 1).itemID ) {
-                        b = false;
+                    } else if( player.getCurrentItemOrArmor(i).getItem() != ESPModRegistry.niobSet.get(i - 1).getItem() ) {
+                        shouldRemoveBadPotions = false;
                         break;
                     }
                 }
-                if( b ) {
+                if( shouldRemoveBadPotions ) {
                     for( PotionEffect pEffect : badPotions ) {
                         player.removePotionEffect(pEffect.getPotionID());
                         player.inventory.damageArmor(2 + 2 * pEffect.getAmplifier());
-                        // int randArmor = player.getRNG().nextInt(4)+1;
-                        // if (!player.capabilities.isCreativeMode
-                        // &&
-                        // player.getCurrentItemOrArmor(randArmor).attemptDamageItem(2
-                        // + 2*pEffect.getAmplifier(), player.getRNG()))
-                        // player.setCurrentItemOrArmor(randArmor, null);
                     }
                 }
             }
         }
-    }
-
-    @Override
-    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return par2ItemStack.itemID == ItemRegistry.endIngot.itemID ? true : super.getIsRepairable(par1ItemStack,
-                                                                                                   par2ItemStack);
     }
 }

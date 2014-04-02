@@ -2,7 +2,6 @@ package sanandreasp.mods.EnderStuffPlus.block;
 
 import java.util.Random;
 
-import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityAvisEgg;
 
 import net.minecraft.block.BlockDragonEgg;
@@ -25,9 +24,6 @@ public class BlockAvisEgg
     public BlockAvisEgg(int id) {
         super(id);
         this.isBlockContainer = true;
-        this.setUnlocalizedName("esp:avisEgg");
-        this.setCreativeTab(ESPModRegistry.espTab);
-        this.setHardness(1F);
     }
 
     @Override

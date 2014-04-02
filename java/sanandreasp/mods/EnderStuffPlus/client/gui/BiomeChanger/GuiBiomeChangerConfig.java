@@ -18,7 +18,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiBiomeChangerConfig
     extends GuiBiomeChangerBase
-    implements Textures
 {
     private GuiButton circularButton;
     private GuiButton squareButton;
@@ -56,7 +55,7 @@ public class GuiBiomeChangerConfig
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        this.mc.getTextureManager().bindTexture(GUI_BIOMECHANGER_III);
+        this.mc.getTextureManager().bindTexture(Textures.GUI_BIOMECHANGER_III);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 

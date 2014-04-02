@@ -23,7 +23,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiDuplicator
     extends GuiContainer
-    implements Textures
 {
     private GuiButton insertXP;
     private TileEntityDuplicator teDuplicator;
@@ -32,7 +31,7 @@ public class GuiDuplicator
         super(container);
 
         this.allowUserInput = true;
-        this.teDuplicator = container.duplicator;
+        this.teDuplicator = container.getDuplicator();
     }
 
     @Override
@@ -46,7 +45,7 @@ public class GuiDuplicator
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partTicks, int mouseX, int mouseY) {
-        this.mc.getTextureManager().bindTexture(GUI_DUPLICATOR);
+        this.mc.getTextureManager().bindTexture(Textures.GUI_DUPLICATOR);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
         RenderHelper.disableStandardItemLighting();
@@ -69,7 +68,7 @@ public class GuiDuplicator
         s = Integer.toString(RegistryDuplicator.getNeededExp(this.teDuplicator.getStackInSlot(0)));
         this.drawStringWithFrame(this.fontRenderer, s, this.xSize - 8 - this.fontRenderer.getStringWidth(s), 65, 0x80ff20, 0x000000);
 
-        this.mc.getTextureManager().bindTexture(GUI_DUPLICATOR);
+        this.mc.getTextureManager().bindTexture(Textures.GUI_DUPLICATOR);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -90,7 +89,7 @@ public class GuiDuplicator
             this.drawTexturedModalRect(125, 49, 176, 26, 9, 9);
         }
 
-        this.mc.getTextureManager().bindTexture(GUI_DUPLICATOR);
+        this.mc.getTextureManager().bindTexture(Textures.GUI_DUPLICATOR);
 
         if( mouseX > this.guiLeft + 124 && mouseX <= this.guiLeft + this.xSize - 7 && mouseY > this.guiTop + 61
                 && mouseY <= this.guiTop + 75 ) {
@@ -106,7 +105,7 @@ public class GuiDuplicator
             this.drawTexturedModalRect(125, 62, 185, 26, 11, 12);
         }
 
-        this.mc.getTextureManager().bindTexture(GUI_DUPLICATOR);
+        this.mc.getTextureManager().bindTexture(Textures.GUI_DUPLICATOR);
 
         RenderHelper.enableGUIStandardItemLighting();
     }
@@ -126,7 +125,7 @@ public class GuiDuplicator
 
         this.insertXP = new GuiItemTab(0, this.guiLeft + this.xSize - 3, this.guiTop + 49,
                                        CommonUsedStuff.getTranslated("enderstuffplus.duplicator.insertXP"),
-                                       Item.blazeRod.getIconFromDamage(0), true, true, GUI_BUTTONS);
+                                       Item.blazeRod.getIconFromDamage(0), true, true, Textures.GUI_BUTTONS);
         this.buttonList.add(this.insertXP);
     }
 }

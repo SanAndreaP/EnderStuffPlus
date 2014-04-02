@@ -1,7 +1,6 @@
 package sanandreasp.mods.EnderStuffPlus.block;
 
 import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
-import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -16,11 +15,6 @@ public class BlockEnderWood
 {
     public BlockEnderWood(int id) {
         super(id, Material.wood);
-        this.setUnlocalizedName("esp:enderWood");
-        this.setCreativeTab(ESPModRegistry.espTab);
-        this.setHardness(2.0F);
-        this.setResistance(5.0F);
-        this.setStepSound(Block.soundWoodFootstep);
     }
 
     @Override

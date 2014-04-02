@@ -2,7 +2,7 @@ package sanandreasp.mods.EnderStuffPlus.world;
 
 import java.util.Random;
 
-import sanandreasp.mods.EnderStuffPlus.registry.BlockRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ModBlockRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
@@ -16,7 +16,7 @@ public class WorldGenUndergroundEnd extends WorldGenerator {
 		//Begins the recursive generation
 		boolean b = this.recursiveGenerateSpheres(world,random,i,j,k,16);
 
-		world.setBlock(i, j, k, BlockRegistry.avisEgg.blockID);
+		world.setBlock(i, j, k, ModBlockRegistry.avisEgg.blockID);
 		return b;
 	}
 

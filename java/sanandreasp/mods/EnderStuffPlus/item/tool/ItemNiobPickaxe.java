@@ -1,7 +1,8 @@
 package sanandreasp.mods.EnderStuffPlus.item.tool;
 
 import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
-import sanandreasp.mods.EnderStuffPlus.registry.ItemRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ModItemRegistry;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,39 +14,42 @@ import net.minecraft.util.Icon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemNiobPickaxe extends ItemPickaxe {
+public class ItemNiobPickaxe
+    extends ItemPickaxe
+{
+    @SideOnly(Side.CLIENT)
+    private Icon glowMap;
 
-	private Icon glowMap;
+    public ItemNiobPickaxe(int id, EnumToolMaterial toolMaterial) {
+        super(id, toolMaterial);
+    }
 
-	public ItemNiobPickaxe(int par1, EnumToolMaterial par2EnumToolMaterial) {
-		super(par1, par2EnumToolMaterial);
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Icon getIcon(ItemStack stack, int pass) {
+        return pass == 1 ? this.glowMap : super.getIcon(stack, pass);
+    }
 
-	@Override
-	public boolean onBlockStartBreak(ItemStack itemstack, int X, int Y, int Z, EntityPlayer player) {
-		return NiobToolHelper.onBlockStartBreak(itemstack, X, Y, Z, player, true);
-	}
+    @Override
+    public boolean getIsRepairable(ItemStack brokenItem, ItemStack repairItem) {
+        return repairItem.itemID == ModItemRegistry.endIngot.itemID ? true : super.getIsRepairable(brokenItem, repairItem);
+    }
 
-	@Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-		return par2ItemStack.itemID == ItemRegistry.endIngot.itemID ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-	}
+    @Override
+    public boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player) {
+        return NiobToolHelper.onBlockStartBreak(stack, x, y, z, player, true);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister) {
-		super.registerIcons(par1IconRegister);
-		this.glowMap = par1IconRegister.registerIcon("enderstuffp:niobPickGlow" + (ConfigRegistry.useNiobHDGlow ? "HD" : ""));
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IconRegister iconRegister) {
+        super.registerIcons(iconRegister);
+        this.glowMap = iconRegister.registerIcon(ESPModRegistry.MOD_ID + ":niobPickGlow" + (ConfigRegistry.useNiobHDGlow ? "HD" : ""));
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean requiresMultipleRenderPasses() {
-		return true;
-	}
-
-	@Override
-	public Icon getIcon(ItemStack stack, int pass) {
-		return pass == 1 ? this.glowMap : super.getIcon(stack, pass);
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean requiresMultipleRenderPasses() {
+        return true;
+    }
 }

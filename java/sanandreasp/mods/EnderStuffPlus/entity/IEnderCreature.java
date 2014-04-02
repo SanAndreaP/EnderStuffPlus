@@ -1,5 +1,6 @@
 package sanandreasp.mods.EnderStuffPlus.entity;
 
-public interface IEnderCreature {
+public interface IEnderCreature
+{
 
 }

@@ -1,7 +1,7 @@
 package sanandreasp.mods.EnderStuffPlus.world;
 import java.util.Random;
 
-import sanandreasp.mods.EnderStuffPlus.registry.BlockRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ModBlockRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
 
 import net.minecraft.block.Block;
@@ -75,7 +75,7 @@ public class EnderStuffWorldGenerator implements IWorldGenerator {
 
 	public boolean generateOre(World world, Random rand, int posX, int posY, int posZ) {
 		if( world.getBlockId(posX, posY, posZ) == Block.whiteStone.blockID && !world.canBlockSeeTheSky(posX, posY, posZ) ) {
-			world.setBlock(posX, posY, posZ, BlockRegistry.endOre.blockID);
+			world.setBlock(posX, posY, posZ, ModBlockRegistry.endOre.blockID);
 			return true;
 		}
 		return false;

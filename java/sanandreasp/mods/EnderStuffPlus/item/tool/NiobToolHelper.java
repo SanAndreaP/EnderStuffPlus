@@ -5,7 +5,7 @@ import java.util.Random;
 
 import sanandreasp.core.manpack.helpers.CommonUsedStuff;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
-import sanandreasp.mods.EnderStuffPlus.registry.ItemRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ModItemRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -14,107 +14,105 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.stats.StatList;
 
-public final class NiobToolHelper {
-	private static final Random rand = new Random();
+public final class NiobToolHelper
+{
+    private static final Random rand = new Random();
 
-	public static final boolean onBlockStartBreak(ItemStack itemstack, int X, int Y, int Z, EntityPlayer player, boolean shouldDropNugget) {
-		if( itemstack == null || !(itemstack.getItem() instanceof ItemTool) ) {
+    public static final boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player,
+                                                  Block[] toolEffectives, boolean shouldDropNugget) {
+        if( stack == null || player.worldObj.isRemote || player.capabilities.isCreativeMode ) {
             return false;
         }
 
-		return onBlockStartBreak(itemstack, X, Y, Z, player, CommonUsedStuff.getToolBlocks((ItemTool)itemstack.getItem()), shouldDropNugget);
-	}
+        int blockID = player.worldObj.getBlockId(x, y, z);
+        int blockMeta = player.worldObj.getBlockMetadata(x, y, z);
+        Block block = Block.blocksList[blockID];
 
-	public static final boolean onBlockStartBreak(ItemStack itemstack, int X, int Y, int Z, EntityPlayer player, Block[] toolEffectives, boolean shouldDropNugget) {
-		if( itemstack == null || player.worldObj.isRemote || player.capabilities.isCreativeMode ) {
+        if( !CommonUsedStuff.isToolEffective(toolEffectives, block) && !stack.getItem().canHarvestBlock(block) ) {
             return false;
         }
 
-		int blockID = player.worldObj.getBlockId(X, Y, Z);
-		int blockMeta = player.worldObj.getBlockMetadata(X, Y, Z);
-		Block block = Block.blocksList[blockID];
-
-		if( !CommonUsedStuff.isToolEffective(toolEffectives, block) && !itemstack.getItem().canHarvestBlock(block) ) {
-            return false;
-        }
-
-		player.addStat(StatList.mineBlockStatArray[blockID], 1);
-		player.addExhaustion(0.025F);
+        player.addStat(StatList.mineBlockStatArray[blockID], 1);
+        player.addExhaustion(0.025F);
 
         int fortune = EnchantmentHelper.getFortuneModifier(player);
 
         if( shouldDropNugget && rand.nextInt(50) == 0 ) {
-        	ItemStack nugget = new ItemStack(ItemRegistry.endNugget, rand.nextInt(EnchantmentHelper.getFortuneModifier(player)+1)+1);
-        	nugget = EnchantmentHelper.getEnchantmentLevel(ESPModRegistry.enderChestTel.effectId, itemstack) > 0
-        				? CommonUsedStuff.addItemStackToInventory(nugget, player.getInventoryEnderChest())
-        				: nugget;
-			if( nugget != null ) {
-				nugget = CommonUsedStuff.addItemStackToInventory(nugget, player.inventory);
-        		if( nugget != null ) {
-        			CommonUsedStuff.dropBlockAsItem(block, player.worldObj, X, Y, Z, nugget);
-        		}
-			}
+            ItemStack nugget = new ItemStack(ModItemRegistry.endNugget,
+                                             rand.nextInt(EnchantmentHelper.getFortuneModifier(player) + 1) + 1);
+            nugget = EnchantmentHelper.getEnchantmentLevel(ESPModRegistry.enderChestTel.effectId, stack) > 0
+                        ? CommonUsedStuff.addItemStackToInventory(nugget, player.getInventoryEnderChest())
+                        : nugget;
+            if( nugget != null ) {
+                nugget = CommonUsedStuff.addItemStackToInventory(nugget, player.inventory);
+                if( nugget != null ) {
+                    CommonUsedStuff.dropBlockAsItem(block, player.worldObj, x, y, z, nugget);
+                }
+            }
         }
 
-        if( block.canSilkHarvest(player.worldObj, player, X, Y, Z, blockMeta) && EnchantmentHelper.getSilkTouchModifier(player) ) {
-            ItemStack itemstack1 = CommonUsedStuff.getSilkBlock(block, blockMeta);
+        if( block.canSilkHarvest(player.worldObj, player, x, y, z, blockMeta) && EnchantmentHelper.getSilkTouchModifier(player) ) {
+            ItemStack silkedStack = CommonUsedStuff.getSilkBlock(block, blockMeta);
 
-            if( itemstack1 != null ) {
-            	ItemStack newStack = EnchantmentHelper.getEnchantmentLevel(ESPModRegistry.enderChestTel.effectId, itemstack) > 0
-            			? CommonUsedStuff.addItemStackToInventory(itemstack1.copy(), player.getInventoryEnderChest())
-            			: itemstack1.copy();
-            	if( newStack != null ) {
-            		newStack = CommonUsedStuff.addItemStackToInventory(newStack.copy(), player.inventory);
-            		if( newStack != null ) {
-            			CommonUsedStuff.dropBlockAsItem(block, player.worldObj, X, Y, Z, newStack);
-            		} else {
-                    	ESPModRegistry.sendPacketAllRng("fxPortal", X, Y, Z, 128.0D, player.dimension,
-                    			X+0.5F, Y+0.5F, Z+0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F
-                    	);
-            		}
-            	} else {
-                	ESPModRegistry.sendPacketAllRng("fxPortal", X, Y, Z, 128.0D, player.dimension,
-                			X+0.5F, Y+0.5F, Z+0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F
-                	);
-            	}
+            if( silkedStack != null ) {
+                ItemStack newStack = EnchantmentHelper.getEnchantmentLevel(ESPModRegistry.enderChestTel.effectId, stack) > 0
+                                        ? CommonUsedStuff.addItemStackToInventory(silkedStack.copy(), player.getInventoryEnderChest())
+                                        : silkedStack.copy();
+                if( newStack != null ) {
+                    newStack = CommonUsedStuff.addItemStackToInventory(newStack.copy(), player.inventory);
+                    if( newStack != null ) {
+                        CommonUsedStuff.dropBlockAsItem(block, player.worldObj, x, y, z, newStack);
+                    } else {
+                        ESPModRegistry.sendPacketAllRng("fxPortal", x, y, z, 128.0D, player.dimension, x + 0.5F,
+                                                        y + 0.5F, z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
+                    }
+                } else {
+                    ESPModRegistry.sendPacketAllRng("fxPortal", x, y, z, 128.0D, player.dimension, x + 0.5F, y + 0.5F,
+                                                    z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
+                }
             }
         } else {
-            ArrayList<ItemStack> items = block.getBlockDropped(player.worldObj, X, Y, Z, blockMeta, fortune);
+            ArrayList<ItemStack> items = block.getBlockDropped(player.worldObj, x, y, z, blockMeta, fortune);
 
             for( ItemStack item : items ) {
-            	ItemStack newStack = EnchantmentHelper.getEnchantmentLevel(ESPModRegistry.enderChestTel.effectId, itemstack) > 0
-            			? CommonUsedStuff.addItemStackToInventory(item.copy(), player.getInventoryEnderChest())
-            			: item.copy();
-            	if( newStack != null ) {
-            		newStack = CommonUsedStuff.addItemStackToInventory(newStack.copy(), player.inventory);
-            		if( newStack != null ) {
-            			CommonUsedStuff.dropBlockAsItem(block, player.worldObj, X, Y, Z, newStack);
-            		} else {
-                    	ESPModRegistry.sendPacketAllRng("fxPortal", X, Y, Z, 128.0D, player.dimension,
-                    			X+0.5F, Y+0.5F, Z+0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F
-                    	);
-            		}
-            	} else {
-                	ESPModRegistry.sendPacketAllRng("fxPortal", X, Y, Z, 128.0D, player.dimension,  X+0.5F, Y+0.5F, Z+0.5F,
-                			0.5F, 0.0F, 1.0F, 1.0F, 1.0F
-                	);
-            	}
+                ItemStack newStack = EnchantmentHelper.getEnchantmentLevel(ESPModRegistry.enderChestTel.effectId, stack) > 0
+                                        ? CommonUsedStuff.addItemStackToInventory(item.copy(), player.getInventoryEnderChest())
+                                        : item.copy();
+                if( newStack != null ) {
+                    newStack = CommonUsedStuff.addItemStackToInventory(newStack.copy(), player.inventory);
+                    if( newStack != null ) {
+                        CommonUsedStuff.dropBlockAsItem(block, player.worldObj, x, y, z, newStack);
+                    } else {
+                        ESPModRegistry.sendPacketAllRng("fxPortal", x, y, z, 128.0D, player.dimension, x + 0.5F,
+                                                        y + 0.5F, z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
+                    }
+                } else {
+                    ESPModRegistry.sendPacketAllRng("fxPortal", x, y, z, 128.0D, player.dimension, x + 0.5F, y + 0.5F,
+                                                    z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
+                }
             }
         }
 
-        CommonUsedStuff.dropBlockXP(block, player.worldObj, X, Y, Z, blockMeta, fortune);
+        CommonUsedStuff.dropBlockXP(block, player.worldObj, x, y, z, blockMeta, fortune);
 
-        player.worldObj.setBlock(X, Y, Z, 0);
+        player.worldObj.setBlock(x, y, z, 0);
 
-        boolean nullingItem = itemstack.getItemDamage()+1 > itemstack.getMaxDamage();
-        itemstack.damageItem(1, player);
-        if( nullingItem || itemstack.stackSize == 0 ) {
-        	itemstack = null;
-        	player.destroyCurrentEquippedItem();
-        	player.inventoryContainer.detectAndSendChanges();
+        boolean shouldItemDestroy = stack.getItemDamage() + 1 > stack.getMaxDamage();
+        stack.damageItem(1, player);
+        if( shouldItemDestroy || stack.stackSize == 0 ) {
+            stack = null;
+            player.destroyCurrentEquippedItem();
+            player.inventoryContainer.detectAndSendChanges();
         }
 
+        return true;
+    }
 
-		return true;
-	}
+    public static final boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player, boolean shouldDropNugget) {
+        if( !(stack.getItem() instanceof ItemTool) ) {
+            return false;
+        }
+
+        return onBlockStartBreak(stack, x, y, z, player, CommonUsedStuff.getToolBlocks((ItemTool) stack.getItem()), shouldDropNugget);
+    }
 }

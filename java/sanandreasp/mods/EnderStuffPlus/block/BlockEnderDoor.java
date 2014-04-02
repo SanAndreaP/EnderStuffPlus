@@ -2,7 +2,7 @@ package sanandreasp.mods.EnderStuffPlus.block;
 
 import java.util.Random;
 
-import sanandreasp.mods.EnderStuffPlus.registry.ItemRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ModItemRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -28,10 +28,11 @@ public class BlockEnderDoor
 
     public BlockEnderDoor(int id, Material material) {
         super(id, material);
-        this.disableStats();
-        this.setUnlocalizedName("esp:enderDoor");
-        this.setHardness(5.0F);
-        this.setStepSound(Block.soundMetalFootstep);
+    }
+
+    @Override
+    public BlockEnderDoor disableStats() {
+        return (BlockEnderDoor) super.disableStats();
     }
 
     @Override
@@ -158,13 +159,13 @@ public class BlockEnderDoor
 
     @Override
     public int idDropped(int meta, Random random, int fortuneLevel) {
-        return ((meta & 8) != 0) ? 0 : ItemRegistry.itemNiobDoor.itemID;
+        return ((meta & 8) != 0) ? 0 : ModItemRegistry.itemNiobDoor.itemID;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public int idPicked(World world, int x, int y, int z) {
-        return ItemRegistry.itemNiobDoor.itemID;
+        return ModItemRegistry.itemNiobDoor.itemID;
     }
 
     public boolean isDoorOpen(IBlockAccess blockAccess, int x, int y, int z) {

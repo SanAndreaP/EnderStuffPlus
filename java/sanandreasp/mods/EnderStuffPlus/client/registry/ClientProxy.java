@@ -1,15 +1,20 @@
 package sanandreasp.mods.EnderStuffPlus.client.registry;
 
 import sanandreasp.core.manpack.mod.packet.PacketRegistry;
+import sanandreasp.mods.EnderStuffPlus.client.event.FOVManipulator;
+import sanandreasp.mods.EnderStuffPlus.client.event.IconRegistry;
+import sanandreasp.mods.EnderStuffPlus.client.event.RenderHUDEvent;
+import sanandreasp.mods.EnderStuffPlus.client.event.SoundRegistry;
 import sanandreasp.mods.EnderStuffPlus.client.packet.PacketChngBiome;
 import sanandreasp.mods.EnderStuffPlus.client.packet.PacketShowPetGUI;
 import sanandreasp.mods.EnderStuffPlus.client.packet.particle.PacketFXSpawnPortalFX;
+import sanandreasp.mods.EnderStuffPlus.client.packet.particle.PacketFXSpawnRayballFX;
 import sanandreasp.mods.EnderStuffPlus.client.packet.particle.PacketFXSpawnTameAccept;
+import sanandreasp.mods.EnderStuffPlus.client.packet.particle.PacketFXSpawnTameRefuse;
 import sanandreasp.mods.EnderStuffPlus.client.render.ItemRendererBiomeChanger;
 import sanandreasp.mods.EnderStuffPlus.client.render.ItemRendererGlowTools;
 import sanandreasp.mods.EnderStuffPlus.client.render.ItemRendererNiobBow;
 import sanandreasp.mods.EnderStuffPlus.client.render.ItemRendererWeatherAltar;
-import sanandreasp.mods.EnderStuffPlus.client.render.RenderHUDEvent;
 import sanandreasp.mods.EnderStuffPlus.client.render.RenderTileEntityBiomeChanger;
 import sanandreasp.mods.EnderStuffPlus.client.render.RenderTileEntityWeatherAltar;
 import sanandreasp.mods.EnderStuffPlus.client.render.RenderWeatherAltarFirework;
@@ -34,10 +39,10 @@ import sanandreasp.mods.EnderStuffPlus.entity.item.EntityBait;
 import sanandreasp.mods.EnderStuffPlus.entity.item.EntityPearlIgnis;
 import sanandreasp.mods.EnderStuffPlus.entity.item.EntityPearlMiss;
 import sanandreasp.mods.EnderStuffPlus.entity.item.EntityPearlNivis;
-import sanandreasp.mods.EnderStuffPlus.registry.BlockRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.CommonProxy;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
-import sanandreasp.mods.EnderStuffPlus.registry.ItemRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ModBlockRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ModItemRegistry;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityBiomeChanger;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityWeatherAltar;
 
@@ -54,73 +59,72 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ClientProxy extends CommonProxy
-{asdasdasdas
-	@Override
-	public void registerClientStuff() {
-		RenderingRegistry.registerEntityRenderingHandler(EntityEnderNivis.class, new RenderEnderNivis());
-		RenderingRegistry.registerEntityRenderingHandler(EntityEnderIgnis.class, new RenderEnderIgnis());
-		RenderingRegistry.registerEntityRenderingHandler(EntityEnderMiss.class, new RenderEnderMiss());
-		RenderingRegistry.registerEntityRenderingHandler(EntityEnderRay.class, new RenderEnderRay());
-		RenderingRegistry.registerEntityRenderingHandler(EntityEnderAvis.class, new RenderEnderAvis());
-		RenderingRegistry.registerEntityRenderingHandler(EntityRayball.class, new RenderRayball(1F));
-		RenderingRegistry.registerEntityRenderingHandler(EntityAvisArrow.class, new RenderAvisArrow());
-		RenderingRegistry.registerEntityRenderingHandler(EntityWeatherAltarFirework.class, new RenderWeatherAltarFirework());
-		RenderingRegistry.registerEntityRenderingHandler(EntityEnderNemesis.class, new RenderEnderNemesis());
-        RenderingRegistry.registerEntityRenderingHandler(EntityPearlNivis.class, new RenderSnowball(ItemRegistry.espPearls, 0));
-        RenderingRegistry.registerEntityRenderingHandler(EntityPearlIgnis.class, new RenderSnowball(ItemRegistry.espPearls, 1));
-        RenderingRegistry.registerEntityRenderingHandler(EntityPearlMiss.class, new RenderSnowball(ItemRegistry.espPearls, 2));
-        RenderingRegistry.registerEntityRenderingHandler(EntityBait.class, new RenderSnowball(ItemRegistry.espPearls, 2));
+public class ClientProxy
+    extends CommonProxy
+{
+    @Override
+    public int addArmor(String prefix) {
+        return RenderingRegistry.addNewArmourRendererPrefix(prefix);
+    }
+
+    @Override
+    public void registerClientStuff() {
+        RenderingRegistry.registerEntityRenderingHandler(EntityEnderNivis.class, new RenderEnderNivis());
+        RenderingRegistry.registerEntityRenderingHandler(EntityEnderIgnis.class, new RenderEnderIgnis());
+        RenderingRegistry.registerEntityRenderingHandler(EntityEnderMiss.class, new RenderEnderMiss());
+        RenderingRegistry.registerEntityRenderingHandler(EntityEnderRay.class, new RenderEnderRay());
+        RenderingRegistry.registerEntityRenderingHandler(EntityEnderAvis.class, new RenderEnderAvis());
+        RenderingRegistry.registerEntityRenderingHandler(EntityRayball.class, new RenderRayball(1F));
+        RenderingRegistry.registerEntityRenderingHandler(EntityAvisArrow.class, new RenderAvisArrow());
+        RenderingRegistry.registerEntityRenderingHandler(EntityWeatherAltarFirework.class, new RenderWeatherAltarFirework());
+        RenderingRegistry.registerEntityRenderingHandler(EntityEnderNemesis.class, new RenderEnderNemesis());
+        RenderingRegistry.registerEntityRenderingHandler(EntityPearlNivis.class, new RenderSnowball(ModItemRegistry.espPearls, 0));
+        RenderingRegistry.registerEntityRenderingHandler(EntityPearlIgnis.class, new RenderSnowball(ModItemRegistry.espPearls, 1));
+        RenderingRegistry.registerEntityRenderingHandler(EntityPearlMiss.class, new RenderSnowball(ModItemRegistry.espPearls, 2));
+        RenderingRegistry.registerEntityRenderingHandler(EntityBait.class, new RenderSnowball(ModItemRegistry.espPearls, 2));
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBiomeChanger.class, new RenderTileEntityBiomeChanger());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWeatherAltar.class, new RenderTileEntityWeatherAltar());
 
-        MinecraftForgeClient.registerItemRenderer(BlockRegistry.biomeChanger.blockID, new ItemRendererBiomeChanger());
-        MinecraftForgeClient.registerItemRenderer(BlockRegistry.weatherAltar.blockID, new ItemRendererWeatherAltar());
+        MinecraftForgeClient.registerItemRenderer(ModBlockRegistry.biomeChanger.blockID, new ItemRendererBiomeChanger());
+        MinecraftForgeClient.registerItemRenderer(ModBlockRegistry.weatherAltar.blockID, new ItemRendererWeatherAltar());
+        MinecraftForgeClient.registerItemRenderer(ModItemRegistry.niobBow.itemID, new ItemRendererNiobBow());
+        MinecraftForgeClient.registerItemRenderer(ModItemRegistry.niobSword.itemID, new ItemRendererGlowTools());
+        MinecraftForgeClient.registerItemRenderer(ModItemRegistry.niobPick.itemID, new ItemRendererGlowTools());
+        MinecraftForgeClient.registerItemRenderer(ModItemRegistry.niobAxe.itemID, new ItemRendererGlowTools());
+        MinecraftForgeClient.registerItemRenderer(ModItemRegistry.niobHoe.itemID, new ItemRendererGlowTools());
+        MinecraftForgeClient.registerItemRenderer(ModItemRegistry.niobShovel.itemID, new ItemRendererGlowTools());
+        MinecraftForgeClient.registerItemRenderer(ModItemRegistry.niobShears.itemID, new ItemRendererGlowTools());
+    }
 
-        MinecraftForgeClient.registerItemRenderer(ItemRegistry.niobBow.itemID, new ItemRendererNiobBow());
-        MinecraftForgeClient.registerItemRenderer(ItemRegistry.niobSword.itemID, new ItemRendererGlowTools());
-        MinecraftForgeClient.registerItemRenderer(ItemRegistry.niobPick.itemID, new ItemRendererGlowTools());
-        MinecraftForgeClient.registerItemRenderer(ItemRegistry.niobAxe.itemID, new ItemRendererGlowTools());
-        MinecraftForgeClient.registerItemRenderer(ItemRegistry.niobHoe.itemID, new ItemRendererGlowTools());
-        MinecraftForgeClient.registerItemRenderer(ItemRegistry.niobShovel.itemID, new ItemRendererGlowTools());
-        MinecraftForgeClient.registerItemRenderer(ItemRegistry.niobShears.itemID, new ItemRendererGlowTools());
-	}
+    @Override
+    public void registerHandlers() {
+        MinecraftForge.EVENT_BUS.register(new SoundRegistry());
+        MinecraftForge.EVENT_BUS.register(new RenderHUDEvent());
+        MinecraftForge.EVENT_BUS.register(new FOVManipulator());
+        MinecraftForge.EVENT_BUS.register(new IconRegistry());
 
-	@Override
-	public void registerHandlers() {
-		MinecraftForge.EVENT_BUS.register(new SoundRegistry());
-		MinecraftForge.EVENT_BUS.register(new RenderHUDEvent());
-		MinecraftForge.EVENT_BUS.register(new FOVManipulator());
-		MinecraftForge.EVENT_BUS.register(new IconRegistry());
+        TickRegistry.registerTickHandler(new TickHandlerPlayerClt(), Side.CLIENT);
 
-		TickRegistry.registerTickHandler(new TickHandlerPlayerClt(), Side.CLIENT);
-        TickRegistry.registerTickHandler(new TickHandlerClient(), Side.CLIENT);
+        super.registerHandlers();
+    }
 
-		super.registerHandlers();
-	}
+    @Override
+    public void registerPackets() {
+        super.registerPackets();
 
-	@Override
-	public void registerPackets() {
-		super.registerPackets();
+        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "changeBiome", new PacketChngBiome());
+        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "showPetGui", new PacketShowPetGUI());
+        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "fxPortal", new PacketFXSpawnPortalFX());
+        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "fxTameAcc", new PacketFXSpawnTameAccept());
+        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "fxTameRef", new PacketFXSpawnTameRefuse());
+        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "fxRayball", new PacketFXSpawnRayballFX());
+    }
 
-		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "changeBiome", new PacketChngBiome());
-		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "showPetGui", new PacketShowPetGUI());
-		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "fxPortal", new PacketFXSpawnPortalFX());
-		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "fxTameAcc", new PacketFXSpawnTameAccept());
-		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "fxTameRef", new PacketFXSpawnTameAccept());
-		PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "fxRayball", new PacketFXSpawnTameAccept());
-	}
-
-	@Override
-	public int addArmor(String string) {
-		return RenderingRegistry.addNewArmourRendererPrefix(string);
-	}
-
-	@Override
-	public void setJumping(boolean jump, EntityLiving entity) {
-		if( jump ) {
-			PacketRegistry.sendPacketToServer(ESPModRegistry.MOD_ID, "riddenJump", entity.entityId);
-		}
-	}
+    @Override
+    public void setJumping(boolean jump, EntityLiving entity) {
+        if( jump ) {
+            PacketRegistry.sendPacketToServer(ESPModRegistry.MOD_ID, "riddenJump", entity.entityId);
+        }
+    }
 }

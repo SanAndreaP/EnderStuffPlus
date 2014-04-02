@@ -42,11 +42,11 @@ public class ServerEvents {
 
 	@ForgeSubscribe
 	public void onArrowLoose(ArrowLooseEvent evt) {
-		if( evt.bow != null && evt.bow.getItem().itemID == ItemRegistry.niobBow.itemID ) {
+		if( evt.bow != null && evt.bow.getItem().itemID == ModItemRegistry.niobBow.itemID ) {
 			evt.charge *= 2;
 		}
 
-		if( evt.entityPlayer.inventory.hasItem(ItemRegistry.avisArrow.itemID) )
+		if( evt.entityPlayer.inventory.hasItem(ModItemRegistry.avisArrow.itemID) )
 		{
 			boolean var5 = EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, evt.bow) > 0;
 
@@ -96,7 +96,7 @@ public class ServerEvents {
 
 			if( !var5 && !evt.entityPlayer.capabilities.isCreativeMode )
 			{
-				evt.entityPlayer.inventory.consumeInventoryItem(ItemRegistry.avisArrow.itemID);
+				evt.entityPlayer.inventory.consumeInventoryItem(ModItemRegistry.avisArrow.itemID);
 			}
 			else
 			{
@@ -114,7 +114,7 @@ public class ServerEvents {
 
 	@ForgeSubscribe
 	public void onArrowNock(ArrowNockEvent evt) {
-		 if( evt.entityPlayer.inventory.hasItem(ItemRegistry.avisArrow.itemID) && !evt.entityPlayer.capabilities.isCreativeMode )
+		 if( evt.entityPlayer.inventory.hasItem(ModItemRegistry.avisArrow.itemID) && !evt.entityPlayer.capabilities.isCreativeMode )
 		 {
 			 evt.entityPlayer.setItemInUse(evt.result, Item.bow.getMaxItemUseDuration(evt.result));
 		 }
@@ -126,14 +126,14 @@ public class ServerEvents {
 			evt.entityLiving.addPotionEffect(new PotionEffect(Potion.poison.id, 100, ((EntityAvisArrow)evt.source.getSourceOfDamage()).getIsCritical() ? 1 : 0));
 		} else if( evt.source.equals(DamageSource.fall) && evt.entityLiving instanceof EntityPlayer ) {
 			EntityPlayer player = (EntityPlayer) evt.entityLiving;
-			if( player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().isItemEqual(new ItemStack(ItemRegistry.avisFeather)) ) {
+			if( player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().isItemEqual(new ItemStack(ModItemRegistry.avisFeather)) ) {
                 evt.ammount = 0F;
             }
 		} else if( evt.source.getSourceOfDamage() != null
 				&& evt.source.getSourceOfDamage() instanceof EntityPlayer
 				&& evt.source.getSourceOfDamage().ridingEntity != null
 				&& evt.source.getSourceOfDamage().ridingEntity instanceof IEnderPet
-				&& ((IEnderPet)evt.source.getSourceOfDamage().ridingEntity).getCoatBaseColor() == 2 ) {
+				&& ((IEnderPet)evt.source.getSourceOfDamage().ridingEntity).getCoatBase().equals(ESPModRegistry.MOD_ID + "_002") ) {
 			evt.ammount *= 1.5F;
 		}
 	}
@@ -142,12 +142,12 @@ public class ServerEvents {
 	public void onEntityDrop(LivingDropsEvent evt) {
 		EntityLivingBase entity = evt.entityLiving;
 		if( (entity instanceof EntityEnderman || entity instanceof IEnderCreature) && this.rand.nextInt(Math.max(1, 30 - (2 << evt.lootingLevel))) == 0 ) {
-			evt.drops.add(new EntityItem(entity.worldObj, entity.posX, entity.posY+0.5F, entity.posZ, new ItemStack(ItemRegistry.enderFlesh.itemID, this.rand.nextInt(2+evt.lootingLevel)+1, 0)));
+			evt.drops.add(new EntityItem(entity.worldObj, entity.posX, entity.posY+0.5F, entity.posZ, new ItemStack(ModItemRegistry.enderFlesh.itemID, this.rand.nextInt(2+evt.lootingLevel)+1, 0)));
 		}
 
 		EntityPlayer player = evt.source.getEntity() instanceof EntityPlayer ? ((EntityPlayer)evt.source.getEntity()) : null;
 		ItemStack itemstack = player != null ? player.getHeldItem() : null;
-		if( itemstack != null && itemstack.itemID == ItemRegistry.niobSword.itemID ) {
+		if( itemstack != null && itemstack.itemID == ModItemRegistry.niobSword.itemID ) {
 			boolean spawnParticles = false;
 			ArrayList<EntityItem> dropsCopy = new ArrayList<EntityItem>(evt.drops);
 			for( EntityItem item : dropsCopy ) {
@@ -193,7 +193,7 @@ public class ServerEvents {
 	public void onEntityInteract(EntityInteractEvent event) {
 		Entity entity = event.target;
 		ItemStack itemstack = event.entityPlayer.getCurrentEquippedItem();
-		if( entity.worldObj.isRemote || itemstack == null || itemstack.getItem().itemID != ItemRegistry.niobShears.itemID ) {
+		if( entity.worldObj.isRemote || itemstack == null || itemstack.getItem().itemID != ModItemRegistry.niobShears.itemID ) {
 			;
 		} else if( entity instanceof IShearable && entity instanceof EntityLiving ) {
 			IShearable target = (IShearable)entity;
@@ -239,9 +239,9 @@ public class ServerEvents {
 
 	@ForgeSubscribe
 	public void onBonemeal(BonemealEvent event) {
-		if(event.ID == BlockRegistry.sapEndTree.blockID) {
+		if(event.ID == ModBlockRegistry.sapEndTree.blockID) {
 			if( !event.world.isRemote && event.world.rand.nextFloat() < 0.45D ) {
-				((BlockSaplingEndTree)BlockRegistry.sapEndTree).markOrGrowMarked(event.world, event.X, event.Y, event.Z, event.world.rand);
+				((BlockSaplingEndTree)ModBlockRegistry.sapEndTree).markOrGrowMarked(event.world, event.X, event.Y, event.Z, event.world.rand);
 			}
 			event.setResult(Result.ALLOW);
 		}

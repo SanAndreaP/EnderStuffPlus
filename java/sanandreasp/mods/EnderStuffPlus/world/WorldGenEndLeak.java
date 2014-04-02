@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderNemesis;
-import sanandreasp.mods.EnderStuffPlus.registry.BlockRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ModBlockRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.RegistryDungeonLoot;
 
 import net.minecraft.block.Block;
@@ -80,11 +80,11 @@ public class WorldGenEndLeak extends WorldGenerator {
 					double rad5 = Math.pow(radius-7, 2);
 					double rad6 = Math.pow(radius-9, 2);
 
-					Block baseBlock = random.nextInt(10) == 0 ? Block.whiteStone : BlockRegistry.corruptES;
+					Block baseBlock = random.nextInt(10) == 0 ? Block.whiteStone : ModBlockRegistry.corruptES;
 
 					if( radVec <= rad6 ) {
 						if( !this.replace(world, x+i, y+j, z+k, 0) ) {
-							if( this.isInEnd && world.getBlockId(x+i, y+j, z+k) == BlockRegistry.corruptES.blockID ) {
+							if( this.isInEnd && world.getBlockId(x+i, y+j, z+k) == ModBlockRegistry.corruptES.blockID ) {
                                 ;
 //								world.setBlockToAir(x+i, y+j, z+k);
                             } else {
@@ -93,7 +93,7 @@ public class WorldGenEndLeak extends WorldGenerator {
 						}
 					} else if( radVec > rad6 && radVec <= rad5 ) {
 						if( random.nextInt(3) > 0 && !this.replace(world, x+i, y+j, z+k, 0) ) {
-							if( this.isInEnd && world.getBlockId(x+i, y+j, z+k) == BlockRegistry.corruptES.blockID ) {
+							if( this.isInEnd && world.getBlockId(x+i, y+j, z+k) == ModBlockRegistry.corruptES.blockID ) {
                                 ;
 //								world.setBlockToAir(x+i, y+j, z+k);
                             } else {
@@ -105,7 +105,7 @@ public class WorldGenEndLeak extends WorldGenerator {
                             this.replace(world, x+i, y+j, z+k, baseBlock.blockID);
                         } else if( random.nextInt(3) == 0 ) {
 							if( !this.replace(world, x+i, y+j, z+k, 0) && world.getBlockId(x+i, y+j, z+k) != Block.obsidian.blockID ) {
-								if( this.isInEnd && world.getBlockId(x+i, y+j, z+k) == BlockRegistry.corruptES.blockID ) {
+								if( this.isInEnd && world.getBlockId(x+i, y+j, z+k) == ModBlockRegistry.corruptES.blockID ) {
                                     ;
 //									world.setBlockToAir(x+i, y+j, z+k);;
                                 } else {
@@ -140,7 +140,7 @@ public class WorldGenEndLeak extends WorldGenerator {
 		for( int i = -3; i <= 3; i++ ) {
 			for( int k = -3; k <= 3; k++ ) {
 				for( int j = 0; j <= maxHgt+radius; j++ ) {
-				Block baseBlock = random.nextInt(10) == 0 ? Block.whiteStone : BlockRegistry.corruptES;
+				Block baseBlock = random.nextInt(10) == 0 ? Block.whiteStone : ModBlockRegistry.corruptES;
 				int radVec = Math.abs(i) + Math.abs(j-radius) + Math.abs(k);
 					if( j > radius || radVec <= radius ) {
 						radVec = Math.abs(i) + Math.round((Math.abs(j)/((float)maxHgt+(float)radius))*3F) + Math.abs(k);

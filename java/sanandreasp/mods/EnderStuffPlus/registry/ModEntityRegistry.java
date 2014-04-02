@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderAvis;
+import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderIgnis;
+import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderMiss;
+import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderNivis;
+import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderRay;
+
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterators;
 
@@ -11,28 +17,25 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.SpawnListEntry;
+
 import net.minecraftforge.common.BiomeDictionary;
-import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderAvis;
-import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderIgnis;
-import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderMiss;
-import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderNivis;
-import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderRay;
+
 import cpw.mods.fml.common.registry.EntityRegistry;
 
-public final class EntityRegistryESP
+public final class ModEntityRegistry
 {
 	public static final void initiate() {
 		registerSpawnings();
 	}
-	
+
 	private static final void registerSpawnings() {
-		EntityRegistry.addSpawn(EntityEnderNivis.class, 
+		EntityRegistry.addSpawn(EntityEnderNivis.class,
 				ConfigRegistry.spawnConditions.get("EnderNivis")[0].intValue(),
 				ConfigRegistry.spawnConditions.get("EnderNivis")[1].intValue(),
 				ConfigRegistry.spawnConditions.get("EnderNivis")[2].intValue(),
 				EnumCreatureType.monster, getEnderNivisBiomes()
 		);
-		EntityRegistry.addSpawn(EntityEnderIgnis.class, 
+		EntityRegistry.addSpawn(EntityEnderIgnis.class,
 				ConfigRegistry.spawnConditions.get("EnderIgnis")[0].intValue(),
 				ConfigRegistry.spawnConditions.get("EnderIgnis")[1].intValue(),
 				ConfigRegistry.spawnConditions.get("EnderIgnis")[2].intValue(),
@@ -42,7 +45,7 @@ public final class EntityRegistryESP
 						BiomeGenBase.hell, BiomeGenBase.desertHills
 				}
 		);
-		EntityRegistry.addSpawn(EntityEnderRay.class, 
+		EntityRegistry.addSpawn(EntityEnderRay.class,
 				ConfigRegistry.spawnConditions.get("EnderRay")[0].intValue(),
 				ConfigRegistry.spawnConditions.get("EnderRay")[1].intValue(),
 				ConfigRegistry.spawnConditions.get("EnderRay")[2].intValue(),
@@ -51,12 +54,12 @@ public final class EntityRegistryESP
 						BiomeGenBase.sky
 				}
 		);
-		EntityRegistry.addSpawn(EntityEnderMiss.class, 
+		EntityRegistry.addSpawn(EntityEnderMiss.class,
 				ConfigRegistry.spawnConditions.get("EnderMiss")[0].intValue(),
 				ConfigRegistry.spawnConditions.get("EnderMiss")[1].intValue(),
 				ConfigRegistry.spawnConditions.get("EnderMiss")[2].intValue(),
 				EnumCreatureType.monster, getEnderManBiomes());
-		EntityRegistry.addSpawn(EntityEnderAvis.class, 
+		EntityRegistry.addSpawn(EntityEnderAvis.class,
 				ConfigRegistry.spawnConditions.get("EnderAvis")[0].intValue(),
 				ConfigRegistry.spawnConditions.get("EnderAvis")[1].intValue(),
 				ConfigRegistry.spawnConditions.get("EnderAvis")[2].intValue(),
@@ -95,7 +98,7 @@ public final class EntityRegistryESP
 
 		return biomes.toArray(new BiomeGenBase[0]);
 	}
-	
+
 	private static final BiomeGenBase[] getEnderNivisBiomes() {
 		List<BiomeGenBase> biomes = new ArrayList<BiomeGenBase>();
 		biomes.add(BiomeGenBase.sky);
@@ -108,7 +111,7 @@ public final class EntityRegistryESP
 				biomes.add(currBiome);
 			}
 		}
-		
+
 		return biomes.toArray(new BiomeGenBase[0]);
 	}
 }

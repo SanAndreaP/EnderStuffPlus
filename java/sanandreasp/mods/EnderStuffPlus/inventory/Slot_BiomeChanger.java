@@ -1,19 +1,22 @@
 package sanandreasp.mods.EnderStuffPlus.inventory;
 
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityBiomeChanger;
 
-public class Slot_BiomeChanger extends Slot {
-	private TileEntityBiomeChanger bcte;
-	
-	public Slot_BiomeChanger(TileEntityBiomeChanger par1iInventory, int par2, int par3, int par4) {
-		super(par1iInventory, par2, par3, par4);
-		this.bcte = par1iInventory;
-	}
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
-	@Override
-	public boolean isItemValid(ItemStack par1ItemStack) {
-		return this.bcte.isFuelValid(par1ItemStack) && !this.bcte.isActive();
-	}
+public class Slot_BiomeChanger
+    extends Slot
+{
+    private TileEntityBiomeChanger teBiomeChanger;
+
+    public Slot_BiomeChanger(TileEntityBiomeChanger biomeChanger, int id, int x, int y) {
+        super(biomeChanger, id, x, y);
+        this.teBiomeChanger = biomeChanger;
+    }
+
+    @Override
+    public boolean isItemValid(ItemStack stack) {
+        return this.teBiomeChanger.isFuelValid(stack) && !this.teBiomeChanger.isActive();
+    }
 }

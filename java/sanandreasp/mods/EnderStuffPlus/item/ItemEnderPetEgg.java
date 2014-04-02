@@ -3,9 +3,10 @@ package sanandreasp.mods.EnderStuffPlus.item;
 import java.util.HashMap;
 import java.util.List;
 
-import sanandreasp.core.manpack.helpers.CUS;
+import sanandreasp.core.manpack.helpers.CommonUsedStuff;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderAvis;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderMiss;
+import sanandreasp.mods.EnderStuffPlus.entity.IEnderPet;
 
 import com.google.common.collect.Maps;
 
@@ -30,22 +31,79 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemEnderPetEgg
     extends Item
 {
-    private static HashMap<Integer, Object[]> pets = Maps.newHashMap();
+    private static final HashMap<Integer, Object[]> PETS = Maps.newHashMap();
 
-    public ItemEnderPetEgg(int i) {
-        super(i);
+    public ItemEnderPetEgg(int id) {
+        super(id);
         this.setHasSubtypes(true);
         this.setMaxStackSize(1);
     }
 
     public static void addPet(int petID, String petName, int frgColor, int bkgColor) {
-        pets.put(petID, new Object[] { petName, frgColor, bkgColor });
+        PETS.put(petID, new Object[] { petName, frgColor, bkgColor });
+    }
+
+    public static boolean spawnEnderPet(World world, ItemStack stack, String entityName, double posX, double posY, double posZ,
+                                        String playerName) {
+        if( !PETS.containsKey(stack.getItemDamage()) ) {
+            return false;
+        } else {
+            Entity entity = EntityList.createEntityByName(entityName, world);
+            NBTTagCompound nbt = stack.getTagCompound();
+
+            if( entity instanceof IEnderPet && nbt != null && nbt.hasKey("petID") ) {
+                IEnderPet pet = (IEnderPet) entity;
+
+                entity.setLocationAndAngles(posX, posY, posZ, world.rand.nextFloat() * 360.0F, 0.0F);
+                pet.readPetFromNBT(nbt);
+                pet.setTamed(true);
+                pet.setOwnerName(playerName);
+                world.spawnEntityInWorld(entity);
+                ((EntityLiving) pet).playLivingSound();
+
+            }
+
+            return entity != null;
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public void addInformation(ItemStack stack, EntityPlayer player, List infos, boolean isAdvancedInfo) {
+        if( stack.getItemDamage() == 0 ) {
+            EntityEnderMiss.getEggInfo(stack, player, infos, isAdvancedInfo);
+        } else if( stack.getItemDamage() == 1 ) {
+            EntityEnderAvis.getEggInfo(stack, player, infos, isAdvancedInfo);
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getColorFromItemStack(ItemStack par1ItemStack, int par2) {
+        int par1 = par1ItemStack.getItemDamage();
+        return (Integer) (PETS.containsKey(par1) ? (par2 == 0 ? PETS.get(par1)[1] : PETS.get(par1)[2]) : 0xFFFFFF);
+    }
+
+    private String getEnderPetName(ItemStack par1ItemStack) {
+        int petID = par1ItemStack.getItemDamage();
+        if( !PETS.containsKey(petID) ) {
+            petID = 0;
+        }
+
+        return (String) PETS.get(petID)[0];
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Icon getIconFromDamageForRenderPass(int par1, int par2) {
+        return Item.monsterPlacer.getIconFromDamageForRenderPass(par1, par2);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public String getItemDisplayName(ItemStack par1ItemStack) {
-        String var2 = ("" + CUS.getTranslated(this.getUnlocalizedName() + ".name")).trim();
+        String var2 = ("" + CommonUsedStuff.getTranslated(this.getUnlocalizedName() + ".name")).trim();
         String var3 = this.getEnderPetName(par1ItemStack);
 
         if( var3 != null ) {
@@ -55,13 +113,39 @@ public class ItemEnderPetEgg
         return var2;
     }
 
-    private String getEnderPetName(ItemStack par1ItemStack) {
-        int petID = par1ItemStack.getItemDamage();
-        if( !pets.containsKey(petID) ) {
-            petID = 0;
-        }
+    @Override
+    public boolean getShareTag() {
+        return true;
+    }
 
-        return (String) pets.get(petID)[0];
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+        ItemStack pet = new ItemStack(this, 1, 0);
+        NBTTagCompound nbt = new NBTTagCompound("enderPetEgg");
+        nbt.setByte("petID", (byte) 0);
+        nbt.setFloat("health", 40.0F);
+        nbt.setBoolean("fallDmg", false);
+        nbt.setBoolean("special", false);
+        pet.setTagCompound(nbt);
+        par3List.add(pet.copy());
+        nbt.setBoolean("special", true);
+        pet.setTagCompound(nbt);
+        par3List.add(pet.copy());
+        pet = new ItemStack(this, 1, 1);
+        nbt = new NBTTagCompound("enderPetEgg");
+        nbt.setByte("petID", (byte) 1);
+        nbt.setFloat("health", 40.0F);
+        nbt.setFloat("condition", 10.0F);
+        nbt.setBoolean("saddled", false);
+        pet.setTagCompound(nbt);
+        par3List.add(pet.copy());
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean hasEffect(ItemStack par1ItemStack) {
+        return par1ItemStack.hasTagCompound();
     }
 
     @Override
@@ -89,158 +173,13 @@ public class ItemEnderPetEgg
         }
     }
 
-    public static boolean spawnEnderPet(World par0World, ItemStack par1ItemStack, String par2EntityName,
-                                        double par3PosX, double par4PosY, double par6PosZ, String par7PlayerName) {
-        if( !pets.containsKey(par1ItemStack.getItemDamage()) ) {
-            return false;
-        } else {
-            Entity var8 = EntityList.createEntityByName(par2EntityName, par0World);
-            NBTTagCompound nbt = par1ItemStack.hasTagCompound() ? par1ItemStack.getTagCompound() : null;
-
-            if( var8 != null && nbt != null && nbt.hasKey("petID") ) {
-                var8.setLocationAndAngles(par3PosX, par4PosY, par6PosZ, par0World.rand.nextFloat() * 360.0F, 0.0F);
-
-                if( var8 instanceof EntityEnderMiss ) {
-                    EntityEnderMiss var9 = (EntityEnderMiss) var8;
-                    var9.setTamed(true);
-                    var9.ownerName = par7PlayerName;
-                    var9.setHealth(nbt.getFloat("missHealth"));
-                    if( nbt.hasKey("missCoatColor") && nbt.hasKey("missCoatBase") ) {
-                        var9.setCoat(nbt.getInteger("missCoatBase"), nbt.getInteger("missCoatColor"));
-                    } else {
-                        var9.setCoat(0, nbt.getBoolean("missWaterImmune") ? 16 : -1);
-                    }
-                    var9.setCanGetFallDmg(nbt.getBoolean("missNoFallDmg"));
-                    if( nbt.hasKey("missColor") ) {
-                        var9.setColor(nbt.getInteger("missColor"));
-                    } else {
-                        var9.setColor(par0World.rand.nextInt(ItemRaincoat.colorList.size() - 3));
-                    }
-                    var9.setSpecial(nbt.getBoolean("missSpecial"));
-                    par0World.spawnEntityInWorld(var9);
-                    return true;
-                } else if( var8 instanceof EntityEnderAvis ) {
-                    EntityEnderAvis var9 = (EntityEnderAvis) var8;
-                    var9.setTamed(true);
-                    var9.setOwner(par7PlayerName);
-                    var9.setHealth(nbt.getFloat("avisHealth"));
-                    var9.setCondition(nbt.getFloat("avisCondition"));
-                    if( nbt.hasKey("avisCoatColor") && nbt.hasKey("avisCoatBase") ) {
-                        var9.setCoat(nbt.getInteger("avisCoatBase"), nbt.getInteger("avisCoatColor"));
-                    } else {
-                        var9.setCoat(0, nbt.getBoolean("avisWaterImmune") ? 16 : -1);
-                    }
-                    if( nbt.hasKey("avisColor") ) {
-                        var9.setColor(nbt.getInteger("avisColor"));
-                    } else {
-                        var9.setColor(par0World.rand.nextInt(ItemRaincoat.colorList.size() - 3));
-                    }
-                    var9.setSaddled(nbt.getBoolean("avisSaddle"));
-                    par0World.spawnEntityInWorld(var9);
-                    return true;
-                }
-
-                par0World.spawnEntityInWorld(var8);
-                ((EntityLiving) var8).playLivingSound();
-            }
-
-            return var8 != null;
-        }
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    @Override
-    public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
-        ItemStack pet = new ItemStack(this, 1, 0);
-        NBTTagCompound nbt = new NBTTagCompound("enderPetEgg");
-        nbt.setByte("petID", (byte) 0);
-        nbt.setFloat("missHealth", 40.0F);
-        nbt.setBoolean("missNoFallDmg", false);
-        nbt.setBoolean("missSpecial", false);
-        pet.setTagCompound(nbt);
-        par3List.add(pet.copy());
-        nbt.setBoolean("missSpecial", true);
-        pet.setTagCompound(nbt);
-        par3List.add(pet.copy());
-        pet = new ItemStack(this, 1, 1);
-        nbt = new NBTTagCompound("enderPetEgg");
-        nbt.setByte("petID", (byte) 1);
-        nbt.setFloat("avisHealth", 40.0F);
-        nbt.setFloat("avisCondition", 10.0F);
-        nbt.setBoolean("avisSaddle", false);
-        pet.setTagCompound(nbt);
-        par3List.add(pet.copy());
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
-    public int getColorFromItemStack(ItemStack par1ItemStack, int par2) {
-        int par1 = par1ItemStack.getItemDamage();
-        return (Integer) (pets.containsKey(par1) ? (par2 == 0 ? pets.get(par1)[1] : pets.get(par1)[2]) : 0xFFFFFF);
-    }
+    public void registerIcons(IconRegister par1IconRegister) {}
 
     @Override
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
         return true;
     }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public Icon getIconFromDamageForRenderPass(int par1, int par2) {
-        return Item.monsterPlacer.getIconFromDamageForRenderPass(par1, par2);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack par1ItemStack) {
-        return par1ItemStack.hasTagCompound();
-    }
-
-    @Override
-    public boolean getShareTag() {
-        return true;
-    }
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b) {
-        if( par1ItemStack.hasTagCompound() ) {
-            NBTTagCompound nbt = par1ItemStack.getTagCompound();
-            if( par1ItemStack.getItemDamage() == 0 ) {
-                par2List.add(String.format("%s: \2473%s", CUS.getTranslated("enderstuffplus.petegg.health"),
-                                           (int) (nbt.getFloat("missHealth") / 40F * 100F) + "%"));
-                par2List.add(String.format("%s: \2473%s",
-                                           CUS.getTranslated("enderstuffplus.petegg.hasSpecSkin"),
-                                           nbt.getBoolean("missSpecial") ? CUS.getTranslated("enderstuffplus.petegg.true")
-                                                                        : CUS.getTranslated("enderstuffplus.petegg.false")));
-                par2List.add(String.format("%s: \2473%s",
-                                           CUS.getTranslated("enderstuffplus.petegg.immuneToH2O"),
-                                           nbt.hasKey("missCoatColor") && nbt.hasKey("missCoatBase") ? CUS.getTranslated("enderstuffplus.petegg.true")
-                                                                                                    : CUS.getTranslated("enderstuffplus.petegg.false")));
-                par2List.add(String.format("%s: \2473%s",
-                                           CUS.getTranslated("enderstuffplus.petegg.fallDmg"),
-                                           nbt.getBoolean("missNoFallDmg") ? CUS.getTranslated("enderstuffplus.petegg.true")
-                                                                          : CUS.getTranslated("enderstuffplus.petegg.false")));
-            } else if( par1ItemStack.getItemDamage() == 1 ) {
-                par2List.add(String.format("%s: \2473%s", CUS.getTranslated("enderstuffplus.petegg.health"),
-                                           (int) (nbt.getFloat("avisHealth") / 40F * 100F) + "%"));
-                par2List.add(String.format("%s: \2473%s", CUS.getTranslated("enderstuffplus.petegg.condition"),
-                                           (int) (nbt.getFloat("avisCondition") * 10F) + "%"));
-                par2List.add(String.format("%s: \2473%s",
-                                           CUS.getTranslated("enderstuffplus.petegg.saddle"),
-                                           nbt.getBoolean("avisSaddle") ? CUS.getTranslated("enderstuffplus.petegg.true")
-                                                                       : CUS.getTranslated("enderstuffplus.petegg.false")));
-                par2List.add(String.format("%s: \2473%s",
-                                           CUS.getTranslated("enderstuffplus.petegg.immuneToH2O"),
-                                           nbt.hasKey("avisCoatColor") && nbt.hasKey("avisCoatBase") ? CUS.getTranslated("enderstuffplus.petegg.true")
-                                                                                                    : CUS.getTranslated("enderstuffplus.petegg.false")));
-            }
-        }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister) {}
 }

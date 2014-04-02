@@ -23,7 +23,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiBiomeChangerFuel
     extends GuiBiomeChangerBase
-    implements Textures
 {
     private int entryPosition = 0;
     private float currentScrollPosition = 0F;
@@ -33,13 +32,13 @@ public class GuiBiomeChangerFuel
     public GuiBiomeChangerFuel(ContainerBiomeChanger container) {
         super(container);
 
-        this.teBiomeChanger = container.biomeChanger;
+        this.teBiomeChanger = container.getBiomeChanger();
         this.fuelEntries = RegistryBiomeChanger.getFuelList();
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        this.mc.getTextureManager().bindTexture(GUI_BIOMECHANGER_I);
+        this.mc.getTextureManager().bindTexture(Textures.GUI_BIOMECHANGER_I);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
@@ -63,14 +62,14 @@ public class GuiBiomeChangerFuel
         RenderHelper.disableStandardItemLighting();
         this.fontRenderer.drawString(CommonUsedStuff.getTranslated("tile.enderstuffp:biomeChanger.name"), 8, 8, 0x404040);
         String rangeText = CommonUsedStuff.getTranslated("enderstuffplus.biomeChanger.gui1.range") + " "
-                           + ((ContainerBiomeChanger) this.inventorySlots).biomeChanger.getMaxRange();
+                           + ((ContainerBiomeChanger) this.inventorySlots).getBiomeChanger().getMaxRange();
         this.fontRenderer.drawString(rangeText, this.xSize - 8 - this.fontRenderer.getStringWidth(rangeText), 96, 0x808080);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 0x404040);
 
         for( int i = this.entryPosition; i < 4 + this.entryPosition && i < this.fuelEntries.size(); i++ ) {
             int multi = this.fuelEntries.get(i).getValue()
-                                * (((ContainerBiomeChanger) this.inventorySlots).biomeChanger.isReplacingBlocks ? 4 : 1);
-            int needed = ((ContainerBiomeChanger) this.inventorySlots).biomeChanger.getMaxRange() * multi;
+                                * (((ContainerBiomeChanger) this.inventorySlots).getBiomeChanger().isReplacingBlocks ? 4 : 1);
+            int needed = ((ContainerBiomeChanger) this.inventorySlots).getBiomeChanger().getMaxRange() * multi;
             boolean isAvailable = needed <= 9 * 64;
             ItemStack stack = this.fuelEntries.get(i).getKey();
 

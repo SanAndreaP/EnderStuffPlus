@@ -4,6 +4,8 @@ import org.lwjgl.opengl.GL11;
 
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderAvis;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderAvis;
+import sanandreasp.mods.EnderStuffPlus.item.ItemRaincoat;
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -17,121 +19,127 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderEnderAvis extends RenderLiving implements Textures
+public class RenderEnderAvis
+    extends RenderLiving
 {
-	private ModelEnderAvis avisModel, coatModel;
+    private ModelEnderAvis avisModel;
+    private ModelEnderAvis coatModel;
 
-	public RenderEnderAvis() {
-		super(new ModelEnderAvis(), 0.5F);
-		this.avisModel = (ModelEnderAvis) super.mainModel;
-		this.coatModel = new ModelEnderAvis();
-		this.setRenderPassModel(this.avisModel);
-	}
+    public RenderEnderAvis() {
+        super(new ModelEnderAvis(), 0.5F);
+        this.avisModel = (ModelEnderAvis) super.mainModel;
+        this.coatModel = new ModelEnderAvis();
+        this.setRenderPassModel(this.avisModel);
+    }
 
-	@Override
-	public void doRender(Entity entity, double x, double y, double z, float yaw, float partTicks) {
-		EntityEnderAvis avis = (EntityEnderAvis)entity;
+    private void applyStats(EntityEnderAvis avis) {
+        this.coatModel.setFlying(!avis.onGround);
+        this.avisModel.setFlying(!avis.onGround);
 
-		this.applyStatsToModel(avis);
-		this.doRenderLiving(avis, x, y, z, yaw, partTicks);
-	}
+        this.coatModel.setSitting(avis.isSitting());
+        this.avisModel.setSitting(avis.isSitting());
 
-	public void applyStatsToModel(EntityEnderAvis avis) {
-		this.coatModel.setFlying(!avis.onGround);
-		this.avisModel.setFlying(!avis.onGround);
-		
-		this.coatModel.setSitting(avis.isSitting());
-		this.avisModel.setSitting(avis.isSitting());
-		
-		this.avisModel.setTicksFlying(avis.ticksFlying);
-		this.avisModel.setTamed(avis.isTamed());
-		this.avisModel.setCollarColor(avis.getCollarColor(avis.getColor()));
-	}
+        this.avisModel.setTicksFlying(avis.getTicksFlying());
+        this.avisModel.setTamed(avis.isTamed());
+        this.avisModel.setCollarColor(avis.getCollarColorArr());
+    }
 
-	@Override
-	protected void preRenderCallback(EntityLivingBase livingBase, float partTicks) {
-		if( livingBase.isChild()) {
-			GL11.glScalef(0.5F, 0.5F, 0.5F );
-		}
-		super.preRenderCallback(livingBase, partTicks);
-	}
+    @Override
+    public void doRender(Entity entity, double x, double y, double z, float yaw, float partTicks) {
+        EntityEnderAvis avis = (EntityEnderAvis) entity;
 
-	protected float getWingRotation(EntityEnderAvis avis, float partTicks) {
-		float var3 = avis.field_756_e + (avis.field_752_b - avis.field_756_e) * partTicks;
-		float var4 = avis.field_757_d + (avis.destPos - avis.field_757_d) * partTicks;
-		return (MathHelper.sin(var3) + 1.0F) * var4;
-	}
+        this.applyStats(avis);
+        this.doRenderLiving(avis, x, y, z, yaw, partTicks);
+    }
 
-	@Override
-	protected float handleRotationFloat(EntityLivingBase livingBase, float partTicks) {
-		return this.getWingRotation((EntityEnderAvis) livingBase, partTicks);
-	}
+    @Override
+    protected ResourceLocation getEntityTexture(Entity entity) {
+        return Textures.ENDERAVIS_TEXTURE;
+    }
 
-	protected int renderPassSpecial(EntityEnderAvis avis, int pass, float partTicks) {
-		if( pass == 0 ) {
-			this.setRenderPassModel(this.avisModel);
-			this.bindTexture(ENDERAVIS_GLOW_TEXTURE);
+    private float getWingRotation(EntityEnderAvis avis, float partTicks) {
+        float wingRot = avis.getPrevWingRot() + (avis.getWingRot() - avis.getPrevWingRot()) * partTicks;
+        float destPos = avis.getPrevDestPos() + (avis.getDestPos() - avis.getPrevDestPos()) * partTicks;
+        return (MathHelper.sin(wingRot) + 1.0F) * destPos;
+    }
 
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glDisable(GL11.GL_ALPHA_TEST);
-			GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+    @Override
+    protected float handleRotationFloat(EntityLivingBase livingBase, float partTicks) {
+        return this.getWingRotation((EntityEnderAvis) livingBase, partTicks);
+    }
 
-			int bright = 0xF0;
-			int brightX = bright % 65536;
-			int brightY = bright / 65536;
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX / 1.0F, brightY / 1.0F);
+    @Override
+    protected void preRenderCallback(EntityLivingBase livingBase, float partTicks) {
+        if( livingBase.isChild() ) {
+            GL11.glScalef(0.5F, 0.5F, 0.5F);
+        }
+        super.preRenderCallback(livingBase, partTicks);
+    }
 
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glDepthMask(false);
+    private int renderPassSpecial(EntityEnderAvis avis, int pass, float partTicks) {
+        if( pass == 0 ) {
+            this.setRenderPassModel(this.avisModel);
+            this.bindTexture(Textures.ENDERAVIS_GLOW_TEXTURE);
 
-			return 1;
-		} else if( pass == 1 ) {
-			GL11.glDepthMask(true);
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glDisable(GL11.GL_ALPHA_TEST);
+            GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 
-			int bright = avis.getBrightnessForRender(partTicks);
-			int brightX = bright % 65536;
-			int brightY = bright / 65536;
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX / 1.0F, brightY / 1.0F);
+            int bright = 0xF0;
+            int brightX = bright % 65536;
+            int brightY = bright / 65536;
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX / 1.0F, brightY / 1.0F);
 
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GL11.glDepthMask(false);
 
-			this.setRenderPassModel(this.coatModel);
+            return 1;
+        } else if( pass == 1 ) {
+            GL11.glDepthMask(true);
 
-			if( avis.isImmuneToWater() ) {
-		        if( (avis.getCoat() & 31) == 18 ) {
-			        GL11.glColor4f(1F, 1F, 1F, 0.5F);
-		        	GL11.glEnable(GL11.GL_BLEND);
-		        	GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		        }
+            int bright = avis.getBrightnessForRender(partTicks);
+            int brightX = bright % 65536;
+            int brightY = bright / 65536;
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX / 1.0F, brightY / 1.0F);
 
-				this.bindTexture(ENDERAVIS_CAPES_CLR[avis.getCoatColor()]);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-				return 1;
-			}
-		} else if( pass == 2 && avis.isImmuneToWater() ) {
-	        if( (avis.getCoat() & 31) == 18 ) {
-	        	GL11.glDisable(GL11.GL_BLEND);
-	        }
+            this.setRenderPassModel(this.coatModel);
 
-			this.bindTexture(ENDERAVIS_CAPES_STR[avis.getCoatBaseColor()]);
+            if( avis.isImmuneToWater() ) {
+                if( avis.getCoatColor().equals(ESPModRegistry.MOD_ID + "_018") ) {
+                    GL11.glColor4f(1F, 1F, 1F, 0.5F);
+                    GL11.glEnable(GL11.GL_BLEND);
+                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                }
 
-			return 1;
-		} else if( pass == 3 && avis.isSaddled() ) {
-			this.bindTexture(ENDERAVIS_TEXTURE_SADDLE);
+                if( ItemRaincoat.COLOR_LIST.containsKey(avis.getCoatColor()) ) {
+                    this.bindTexture(ItemRaincoat.COLOR_LIST.get(avis.getCoatColor()).avisTexture);
+                }
 
-			return 1;
-		}
+                return 1;
+            }
+        } else if( pass == 2 && avis.isImmuneToWater() ) {
+            if( avis.getCoatColor().equals(ESPModRegistry.MOD_ID + "_018") ) {
+                GL11.glDisable(GL11.GL_BLEND);
+            }
 
-		return 0;
-	}
+            if( ItemRaincoat.BASE_LIST.containsKey(avis.getCoatBase()) ) {
+                this.bindTexture(ItemRaincoat.BASE_LIST.get(avis.getCoatBase()).avisTexture);
+            }
 
-	@Override
-	protected int shouldRenderPass(EntityLivingBase livingBase, int pass, float partTicks) {
-		return this.renderPassSpecial((EntityEnderAvis) livingBase, pass, partTicks);
-	}
+            return 1;
+        } else if( pass == 3 && avis.isSaddled() ) {
+            this.bindTexture(Textures.ENDERAVIS_TEXTURE_SADDLE);
 
-	@Override
-	protected ResourceLocation getEntityTexture(Entity entity) {
-		return ENDERAVIS_TEXTURE;
-	}
+            return 1;
+        }
+
+        return 0;
+    }
+
+    @Override
+    protected int shouldRenderPass(EntityLivingBase livingBase, int pass, float partTicks) {
+        return this.renderPassSpecial((EntityEnderAvis) livingBase, pass, partTicks);
+    }
 }

@@ -2,7 +2,8 @@ package sanandreasp.mods.EnderStuffPlus.registry;
 
 import sanandreasp.core.manpack.helpers.CommonUsedStuff;
 import sanandreasp.mods.EnderStuffPlus.item.ItemAvisCompass;
-import sanandreasp.mods.EnderStuffPlus.item.ItemESPPearls;
+import sanandreasp.mods.EnderStuffPlus.item.ItemCustomEnderPearl;
+import sanandreasp.mods.EnderStuffPlus.item.ItemEndHorseArmor;
 import sanandreasp.mods.EnderStuffPlus.item.ItemEnderFlesh;
 import sanandreasp.mods.EnderStuffPlus.item.ItemEnderPetEgg;
 import sanandreasp.mods.EnderStuffPlus.item.ItemNiobArmor;
@@ -24,7 +25,7 @@ import net.minecraftforge.common.EnumHelper;
 
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 
-public class ItemRegistry
+public class ModItemRegistry
 {
 	public static EnumToolMaterial TOOL_NIOBIUM;
 
@@ -53,6 +54,7 @@ public class ItemRegistry
 	public static Item itemNiobDoor;
 	public static Item enderStick;
 	public static ItemEnderPetEgg enderPetEgg;
+	public static Item endHorseArmor;
 
 	public static final void init() {
 		initMaterials();
@@ -86,21 +88,10 @@ public class ItemRegistry
 	}
 
 	private static final void initItems() {
-		espPearls		= new ItemESPPearls(ConfigRegistry.itemIDs.get("ESP Pearls").intValue() - 256)
-								.setUnlocalizedName("esp:espPearls")
-								.setCreativeTab(ESPModRegistry.espTab);
-		enderFlesh		= new ItemEnderFlesh(ConfigRegistry.itemIDs.get("Ender Flesh").intValue() - 256)
-								.setUnlocalizedName("esp:enderFlesh")
-								.setTextureName("enderstuffp:enderFlesh")
-								.setCreativeTab(ESPModRegistry.espTab);
-		avisFeather		= new Item(ConfigRegistry.itemIDs.get("Avis Feather").intValue() - 256)
-								.setUnlocalizedName("esp:avisFeather")
-								.setTextureName("enderstuffp:avisFeather")
-								.setCreativeTab(ESPModRegistry.espTab);
-		avisArrow		= new Item(ConfigRegistry.itemIDs.get("Avis Arrow").intValue() - 256)
-								.setUnlocalizedName("esp:avisArrow")
-								.setTextureName("enderstuffp:avisArrow")
-								.setCreativeTab(ESPModRegistry.espTab);
+		espPearls		= new ItemCustomEnderPearl(ConfigRegistry.itemIDs.get("ESP Pearls").intValue() - 256).setUnlocalizedName("esp:espPearls").setCreativeTab(ESPModRegistry.espTab);
+		enderFlesh		= new ItemEnderFlesh(ConfigRegistry.itemIDs.get("Ender Flesh").intValue() - 256).setUnlocalizedName("esp:enderFlesh").setTextureName("enderstuffp:enderFlesh").setCreativeTab(ESPModRegistry.espTab);
+		avisFeather		= new Item(ConfigRegistry.itemIDs.get("Avis Feather").intValue() - 256).setUnlocalizedName("esp:avisFeather").setTextureName("enderstuffp:avisFeather").setCreativeTab(ESPModRegistry.espTab);
+		avisArrow		= new Item(ConfigRegistry.itemIDs.get("Avis Arrow").intValue() - 256).setUnlocalizedName("esp:avisArrow").setTextureName("enderstuffp:avisArrow").setCreativeTab(ESPModRegistry.espTab);
 		avisCompass		= new ItemAvisCompass(ConfigRegistry.itemIDs.get("Avis Compass").intValue() - 256)
 								.setUnlocalizedName("esp:avisCompass")
 								.setTextureName("enderstuffp:avisCompass")
@@ -177,6 +168,10 @@ public class ItemRegistry
 								.setUnlocalizedName("esp:enderStick")
 								.setTextureName("enderstuffp:enderStick")
 								.setCreativeTab(ESPModRegistry.espTab);
+        endHorseArmor   = new ItemEndHorseArmor(10240)
+                                .setUnlocalizedName("esp:enderHorseArmor")
+                                .setTextureName("enderstuffp:enderStick")
+                                .setCreativeTab(ESPModRegistry.espTab);
 	}
 
 	private static final void registerItems() {
@@ -186,7 +181,7 @@ public class ItemRegistry
 				niobHelmet,		niobPlate,		niobLegs,		niobBoots,
 				niobPick,		niobShovel,		niobAxe,		niobHoe,
 				niobSword,		niobShears,		enderFlesh,		rainCoat,
-				itemNiobDoor,	endNugget,		enderStick
+				itemNiobDoor,	endNugget,		enderStick,     endHorseArmor
 		);
 	}
 }

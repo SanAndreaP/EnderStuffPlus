@@ -2,7 +2,7 @@ package sanandreasp.mods.EnderStuffPlus.world;
 
 import java.util.Random;
 
-import sanandreasp.mods.EnderStuffPlus.registry.BlockRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ModBlockRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
@@ -30,7 +30,7 @@ public class WorldGenEndTree extends WorldGenerator {
 		}
 
 		for( int y1 = 0; y1 < height; y1++ ) {
-			this.setBlock(world, x, y+y1, z, BlockRegistry.enderLog.blockID);
+			this.setBlock(world, x, y+y1, z, ModBlockRegistry.enderLog.blockID);
 		}
 
 
@@ -44,7 +44,7 @@ public class WorldGenEndTree extends WorldGenerator {
 
 					Block block = Block.blocksList[world.getBlockId(x+x1, y+y1, z+z1)];
 					if( block == null || block.isAirBlock(world, x+x1, y+y1, z+z1) || block.canBeReplacedByLeaves(world, x+x1, y+y1, z+z1) ) {
-                        this.setBlock(world, x+x1, y+y1, z+z1, BlockRegistry.enderLeaves.blockID);
+                        this.setBlock(world, x+x1, y+y1, z+z1, ModBlockRegistry.enderLeaves.blockID);
                     }
 				}
 			}
@@ -60,7 +60,7 @@ public class WorldGenEndTree extends WorldGenerator {
 
 					Block block = Block.blocksList[world.getBlockId(x+x1, y+y1, z+z1)];
 					if( block == null || block.isAirBlock(world, x+x1, y+y1, z+z1) || block.canBeReplacedByLeaves(world, x+x1, y+y1, z+z1) ) {
-                        this.setBlock(world, x+x1, y+y1, z+z1, BlockRegistry.enderLeaves.blockID);
+                        this.setBlock(world, x+x1, y+y1, z+z1, ModBlockRegistry.enderLeaves.blockID);
                     }
 				}
 			}

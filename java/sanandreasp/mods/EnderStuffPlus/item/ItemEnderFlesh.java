@@ -1,7 +1,13 @@
 package sanandreasp.mods.EnderStuffPlus.item;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -12,105 +18,100 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-//import net.minecraft.src.forge.ITextureProvider;
+public class ItemEnderFlesh
+    extends ItemFood
+{
+    private static final Multimap<Boolean, Potion> POTION_EFFECTS = ArrayListMultimap.create();
 
-public class ItemEnderFlesh extends ItemFood {
+    static {
+        POTION_EFFECTS.put(true, Potion.digSlowdown);
+        POTION_EFFECTS.put(true, Potion.confusion);
+        POTION_EFFECTS.put(true, Potion.harm);
+        POTION_EFFECTS.put(true, Potion.hunger);
+        POTION_EFFECTS.put(true, Potion.moveSlowdown);
+        POTION_EFFECTS.put(true, Potion.poison);
+        POTION_EFFECTS.put(true, Potion.weakness);
 
-	public ItemEnderFlesh(int par1) {
-		super(par1, 2, 0.6F, false);
-		this.setAlwaysEdible();
-		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int getColorFromItemStack(ItemStack par1ItemStack, int par2) {
-		int par1 = par1ItemStack.getItemDamage();
-		return par1 == 2 ? 0xFF6666 : 0xFFFFFF;
-	}
+        POTION_EFFECTS.put(false, Potion.digSpeed);
+        POTION_EFFECTS.put(false, Potion.damageBoost);
+        POTION_EFFECTS.put(false, Potion.fireResistance);
+        POTION_EFFECTS.put(false, Potion.heal);
+        POTION_EFFECTS.put(false, Potion.jump);
+        POTION_EFFECTS.put(false, Potion.moveSpeed);
+        POTION_EFFECTS.put(false, Potion.regeneration);
+        POTION_EFFECTS.put(false, Potion.resistance);
+        POTION_EFFECTS.put(false, Potion.waterBreathing);
+    }
 
-	@Override
-	public void onFoodEaten(ItemStack par1ItemStack, World par2World,
-			EntityPlayer par3EntityPlayer) {
-		for( int i = 0; i < 3; i++ )
-			par3EntityPlayer.addPotionEffect(this.getRandomPotionEffect(
-					par1ItemStack, par2World.rand));
-	}
+    public ItemEnderFlesh(int par1) {
+        super(par1, 2, 0.6F, false);
+        this.setAlwaysEdible();
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
+    }
 
-	private PotionEffect getRandomPotionEffect(ItemStack is, Random rand) {
-		List<PotionEffect> potionEffects = new ArrayList<PotionEffect>();
+    @Override
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public void addInformation(ItemStack stack, EntityPlayer player, List infos, boolean isAdvancedInfo) {
+        if( stack.getItemDamage() > 0 ) {
+            infos.add("positive effects only");
+        }
+        if( stack.getItemDamage() == 2 ) {
+            infos.add("4x duration");
+        }
+    }
 
-		int duration = 600 * (is.getItemDamage() == 2 ? 4 : 1);
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getColorFromItemStack(ItemStack stack, int pass) {
+        int damage = stack.getItemDamage();
+        return damage == 2 ? 0xFF6666 : 0xFFFFFF;
+    }
 
-		boolean isOnlyPositive = is.getItemDamage() > 0;
+    private PotionEffect getRandomPotionEffect(ItemStack stack, Random random) {
+        int duration = 600 * (stack.getItemDamage() == 2 ? 4 : 1);
+        boolean isPositive = stack.getItemDamage() > 0;
+        List<Potion> potions = new ArrayList<Potion>(isPositive ? POTION_EFFECTS.get(false) : POTION_EFFECTS.values());
 
-		if( !isOnlyPositive ) {
-			potionEffects.add(new PotionEffect(Potion.digSlowdown.id, duration,
-					0));
-			potionEffects
-					.add(new PotionEffect(Potion.confusion.id, duration, 0));
-			potionEffects.add(new PotionEffect(Potion.harm.id, 1, 0));
-			potionEffects.add(new PotionEffect(Potion.hunger.id, duration, 0));
-			potionEffects.add(new PotionEffect(Potion.moveSlowdown.id,
-					duration, 0));
-			potionEffects.add(new PotionEffect(Potion.poison.id, duration, 0));
-			potionEffects
-					.add(new PotionEffect(Potion.weakness.id, duration, 0));
-		}
+        return new PotionEffect(potions.get(random.nextInt(potions.size())).id, duration, 0);
+    }
 
-		potionEffects.add(new PotionEffect(Potion.digSpeed.id, duration, 0));
-		potionEffects.add(new PotionEffect(Potion.damageBoost.id, duration, 0));
-		potionEffects.add(new PotionEffect(Potion.fireResistance.id, duration,
-				0));
-		potionEffects.add(new PotionEffect(Potion.heal.id, 1, 0));
-		potionEffects.add(new PotionEffect(Potion.jump.id, duration, 0));
-		potionEffects.add(new PotionEffect(Potion.moveSpeed.id, duration, 0));
-		potionEffects
-				.add(new PotionEffect(Potion.regeneration.id, duration, 0));
-		potionEffects.add(new PotionEffect(Potion.resistance.id, duration, 0));
-		potionEffects.add(new PotionEffect(Potion.waterBreathing.id, duration,
-				0));
+    @Override
+    public EnumRarity getRarity(ItemStack stack) {
+        return stack.getItemDamage() == 2 ? EnumRarity.rare
+                                                  : (stack.getItemDamage() == 1 ? EnumRarity.uncommon : EnumRarity.common);
+    }
 
-		return potionEffects.get(rand.nextInt(potionEffects.size()));
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public void getSubItems(int itemId, CreativeTabs tab, List stacks) {
+        stacks.add(new ItemStack(this, 1, 0));
+        stacks.add(new ItemStack(this, 1, 1));
+        stacks.add(new ItemStack(this, 1, 2));
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister) {
-		this.itemIcon = par1IconRegister.registerIcon("enderstuffp:enderFlesh");
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean hasEffect(ItemStack stack, int pass) {
+        return stack.getItemDamage() > 0;
+    }
 
-	@Override
-	public boolean hasEffect(ItemStack par1ItemStack) {
-		return par1ItemStack.getItemDamage() > 0;
-	}
+    @Override
+    public void onFoodEaten(ItemStack stack, World world, EntityPlayer player) {
+        for( int i = 0; i < 3; i++ ) {
+            player.addPotionEffect(this.getRandomPotionEffect(stack, world.rand));
+        }
+    }
 
-	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
-		return par1ItemStack.getItemDamage() == 2 ? EnumRarity.rare
-				: (par1ItemStack.getItemDamage() == 1 ? EnumRarity.uncommon
-						: EnumRarity.common);
-	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
-		par3List.add(new ItemStack(this, 1, 0));
-		par3List.add(new ItemStack(this, 1, 1));
-		par3List.add(new ItemStack(this, 1, 2));
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List par2List, boolean b) {
-		if( par1ItemStack.getItemDamage() > 0 )
-			par2List.add("positive effects only");
-		if( par1ItemStack.getItemDamage() == 2 )
-			par2List.add("4x duration");
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IconRegister iconRegister) {
+        this.itemIcon = iconRegister.registerIcon(ESPModRegistry.MOD_ID + ":enderFlesh");
+    }
 }

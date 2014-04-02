@@ -1,6 +1,7 @@
 package sanandreasp.mods.EnderStuffPlus.item.tool;
 
-import sanandreasp.mods.EnderStuffPlus.registry.ItemRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ModItemRegistry;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,24 +12,27 @@ import net.minecraft.util.Icon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemNiobBow extends ItemBow {
+public class ItemNiobBow
+    extends ItemBow
+{
+    @SideOnly(Side.CLIENT)
+    private Icon normalBow;
+    @SideOnly(Side.CLIENT)
+    private Icon bowPowI;
+    @SideOnly(Side.CLIENT)
+    private Icon bowPowII;
+    @SideOnly(Side.CLIENT)
+    private Icon bowPowIII;
 
-	private Icon normalBow, bowPowI, bowPowII, bowPowIII;
-
-	public ItemNiobBow(int par1) {
-		super(par1);
+    public ItemNiobBow(int id) {
+        super(id);
         this.setMaxDamage(768);
-	}
+    }
 
-	@Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
-		return 72000;
-	}
-
-	@Override
-	public Icon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-        if( usingItem != null && usingItem.getItem().itemID == ItemRegistry.niobBow.itemID )
-        {
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Icon getIcon(ItemStack stack, int pass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
+        if( usingItem != null && usingItem.getItem().itemID == ModItemRegistry.niobBow.itemID ) {
             int k = usingItem.getMaxItemUseDuration() - useRemaining;
             if( k >= 9 ) {
                 return this.bowPowIII;
@@ -40,20 +44,25 @@ public class ItemNiobBow extends ItemBow {
                 return this.bowPowI;
             }
         }
-		return this.normalBow;
-	}
+        return this.normalBow;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister) {
-		this.itemIcon = this.normalBow = par1IconRegister.registerIcon("enderstuffp:niobBowI");
-		this.bowPowI = par1IconRegister.registerIcon("enderstuffp:niobBowII");
-		this.bowPowII = par1IconRegister.registerIcon("enderstuffp:niobBowIII");
-		this.bowPowIII = par1IconRegister.registerIcon("enderstuffp:niobBowIV");
-	}
+    @Override
+    public boolean getIsRepairable(ItemStack brokenItem, ItemStack repairItem) {
+        return repairItem.itemID == ModItemRegistry.endIngot.itemID ? true : super.getIsRepairable(brokenItem, repairItem);
+    }
 
-	@Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-		return par2ItemStack.itemID == ItemRegistry.endIngot.itemID ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-	}
+    @Override
+    public int getMaxItemUseDuration(ItemStack stack) {
+        return 72000;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IconRegister iconRegister) {
+        this.itemIcon = this.normalBow = iconRegister.registerIcon(ESPModRegistry.MOD_ID + ":niobBowI");
+        this.bowPowI = iconRegister.registerIcon(ESPModRegistry.MOD_ID + ":niobBowII");
+        this.bowPowII = iconRegister.registerIcon(ESPModRegistry.MOD_ID + ":niobBowIII");
+        this.bowPowIII = iconRegister.registerIcon(ESPModRegistry.MOD_ID + ":niobBowIV");
+    }
 }

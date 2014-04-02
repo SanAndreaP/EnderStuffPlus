@@ -1,7 +1,6 @@
 package sanandreasp.mods.EnderStuffPlus.block;
 
 import sanandreasp.core.manpack.helpers.client.IconFlippedFixed;
-import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -20,11 +19,6 @@ public class BlockCorruptEndStone
 
     public BlockCorruptEndStone(int id) {
         super(id, Block.whiteStone.blockMaterial);
-        this.setUnlocalizedName("esp:corruptEndstone");
-        this.setCreativeTab(ESPModRegistry.espTab);
-        this.setHardness(Block.whiteStone.blockHardness);
-        this.setResistance(Block.whiteStone.blockResistance);
-        this.setStepSound(Block.soundStoneFootstep);
     }
 
     @Override

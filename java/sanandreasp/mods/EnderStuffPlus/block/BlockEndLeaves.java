@@ -4,9 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 import sanandreasp.mods.EnderStuffPlus.client.particle.ParticleFXFuncCollection;
-import sanandreasp.mods.EnderStuffPlus.registry.BlockRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ModBlockRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
-import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
@@ -29,11 +28,6 @@ public class BlockEndLeaves
     public BlockEndLeaves(int id) {
         super(id);
         this.graphicsLevel = false;
-        this.setUnlocalizedName("esp:enderLeaves");
-        this.setCreativeTab(ESPModRegistry.espTab);
-        this.setHardness(0.2F);
-        this.setStepSound(Block.soundGrassFootstep);
-        this.setLightOpacity(1);
     }
 
     @Override
@@ -60,7 +54,7 @@ public class BlockEndLeaves
             }
 
             if( world.rand.nextInt(randomChance) == 0 ) {
-                this.dropBlockAsItem_do(world, x, y, z, new ItemStack(BlockRegistry.sapEndTree.blockID, 1, 0));
+                this.dropBlockAsItem_do(world, x, y, z, new ItemStack(ModBlockRegistry.sapEndTree.blockID, 1, 0));
             }
         }
     }

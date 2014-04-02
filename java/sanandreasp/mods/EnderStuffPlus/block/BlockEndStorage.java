@@ -4,7 +4,6 @@ import java.util.List;
 
 import sanandreasp.core.manpack.helpers.IGlowBlockOverlay;
 import sanandreasp.core.manpack.helpers.client.RenderBlockGlowOverlay;
-import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockOreStorage;
@@ -33,11 +32,6 @@ public class BlockEndStorage
 
     public BlockEndStorage(int id) {
         super(id);
-        this.setUnlocalizedName("esp:blockEndOre");
-        this.setCreativeTab(ESPModRegistry.espTab);
-        this.setHardness(5.0F);
-        this.setResistance(10.0F);
-        this.setStepSound(Block.soundMetalFootstep);
     }
 
     @Override

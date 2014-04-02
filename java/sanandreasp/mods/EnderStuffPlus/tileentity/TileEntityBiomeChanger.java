@@ -3,7 +3,7 @@ package sanandreasp.mods.EnderStuffPlus.tileentity;
 import java.util.Random;
 
 import sanandreasp.core.manpack.mod.packet.PacketRegistry;
-import sanandreasp.mods.EnderStuffPlus.registry.BlockRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ModBlockRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.RegistryBiomeChanger;
 
@@ -475,7 +475,7 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
 
 			if( this.ticksExisted % (30 * (this.isReplacingBlocks ? 2 : 1)) == 0 && !this.worldObj.isRemote ) {
 				this.changeBiome(this.getCurrRange(), false);
-				this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, BlockRegistry.biomeChanger.blockID, 1, this.getCurrRange());
+				this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ModBlockRegistry.biomeChanger.blockID, 1, this.getCurrRange());
 				PacketRegistry.sendPacketToAllAround(ESPModRegistry.MOD_ID, "setWeather", this.xCoord, this.yCoord, this.zCoord, 256, this.worldObj.provider.dimensionId, this, this.getCurrRange());
 				this.setCurrRange(this.getCurrRange()+1);
 
@@ -485,7 +485,7 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
 					this.prevActiveState = false;
 					this.prevFuelItem = null;
 					this.onInventoryChanged();
-					this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, BlockRegistry.biomeChanger.blockID, 2, 0);
+					this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ModBlockRegistry.biomeChanger.blockID, 2, 0);
 					this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 					return;
 				}

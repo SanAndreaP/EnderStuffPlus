@@ -92,51 +92,59 @@ public class ModelEnderMiss
 
             tessellator.startDrawingQuads();            // right side
             tessellator.setNormal(-1F, 0F, 0F);
-            tessellator.addVertexWithUV(0.3D,   0.5D,    0.45 * skirtStretch, 64.0 / 256.0, 80.0 / 128.0); // minU, maxV
-            tessellator.addVertexWithUV(0.3D,   0.5D,   -0.45 * skirtStretch, 72.0 / 256.0, 80.0 / 128.0); // maxU, maxV
-            tessellator.addVertexWithUV(0.25D, -0.125D, -0.125,               72.0 / 256.0, 64.0 / 128.0); // maxU, minV
-            tessellator.addVertexWithUV(0.25D, -0.125D,  0.125,               64.0 / 256.0, 64.0 / 128.0); // minU, minV
+            tessellator.addVertexWithUV(0.3D,   0.5D,   -0.45 * skirtStretch, 64.0 / 256.0, 80.0 / 128.0); // minU, maxV
+            tessellator.addVertexWithUV(0.3D,   0.5D,    0.45 * skirtStretch, 72.0 / 256.0, 80.0 / 128.0); // maxU, maxV
+            tessellator.addVertexWithUV(0.25D, -0.125D,  0.125,               72.0 / 256.0, 64.0 / 128.0); // maxU, minV
+            tessellator.addVertexWithUV(0.25D, -0.125D, -0.125,               64.0 / 256.0, 64.0 / 128.0); // minU, minV
             tessellator.draw();
 
             tessellator.startDrawingQuads();            // back side
             tessellator.setNormal(0F, 0F, -1F);
-            tessellator.addVertexWithUV(-0.3D,   0.5D,   0.45 * skirtStretch, 96.0 / 256.0,  80.0 / 128.0); // minU, maxV
-            tessellator.addVertexWithUV(0.3D,    0.5D,   0.45 * skirtStretch, 112.0 / 256.0, 80.0 / 128.0); // maxU, maxV
-            tessellator.addVertexWithUV(0.25D,  -0.125D, 0.125,               112.0 / 256.0, 64.0 / 128.0); // maxU, minV
-            tessellator.addVertexWithUV(-0.25D, -0.125D, 0.125,               96.0 / 256.0,  64.0 / 128.0); // minU, minV
+            tessellator.addVertexWithUV(0.3D,   0.5D,   0.45 * skirtStretch, 96.0 / 256.0,  80.0 / 128.0); // minU, maxV
+            tessellator.addVertexWithUV(-0.3D,    0.5D,   0.45 * skirtStretch, 112.0 / 256.0, 80.0 / 128.0); // maxU, maxV
+            tessellator.addVertexWithUV(-0.25D,  -0.125D, 0.125,               112.0 / 256.0, 64.0 / 128.0); // maxU, minV
+            tessellator.addVertexWithUV(0.25D, -0.125D, 0.125,               96.0 / 256.0,  64.0 / 128.0); // minU, minV
             tessellator.draw();
             GL11.glPopMatrix();
         } else {
             tessellator.startDrawingQuads();            // left side
             tessellator.setNormal(1F, 0F, 0F);
-            tessellator.addVertexWithUV(-0.3D,   0.5D,    0.45,  64.0 / 256.0, 80.0 / 128.0); // minU, maxV
-            tessellator.addVertexWithUV(-0.3D,   0.5D,   -0.45,  72.0 / 256.0, 80.0 / 128.0); // maxU, maxV
-            tessellator.addVertexWithUV(-0.25D, -0.125D, -0.125, 72.0 / 256.0, 64.0 / 128.0); // maxU, minV
-            tessellator.addVertexWithUV(-0.25D, -0.125D,  0.125, 64.0 / 256.0, 64.0 / 128.0); // minU, minV
+            tessellator.addVertexWithUV(-0.251D,   1.45D,    -0.4,  64.0 / 256.0, 80.0 / 128.0); // minU, maxV
+            tessellator.addVertexWithUV(-0.251D,   1.25D,   -0.7,  72.0 / 256.0, 80.0 / 128.0); // maxU, maxV
+            tessellator.addVertexWithUV(-0.251D,  1.25D, 0.125, 72.0 / 256.0, 64.0 / 128.0); // maxU, minV
+            tessellator.addVertexWithUV(-0.251D,  1.45D,  0.125, 64.0 / 256.0, 64.0 / 128.0); // minU, minV
             tessellator.draw();
 
-            tessellator.startDrawingQuads();            // front side
-            tessellator.setNormal(0F, 0F, 1F);
-            tessellator.addVertexWithUV(-0.3D,  1.25D, -0.7D,   72.0D / 256.0D, 80.0D / 128.0D); // maxU, maxV
-            tessellator.addVertexWithUV(0.3D,   1.25D, -0.7D,   88.0D / 256.0D, 80.0D / 128.0D); // minU, maxV
-            tessellator.addVertexWithUV(0.25D,  1.25D, -0.125D, 88.0D / 256.0D, 64.0D / 128.0D); // minU, minV
-            tessellator.addVertexWithUV(-0.25D, 1.25D, -0.125D, 72.0D / 256.0D, 64.0D / 128.0D); // maxU, minV
+            tessellator.startDrawingQuads();            // top side
+            tessellator.setNormal(0F, -1F, 0F);
+            tessellator.addVertexWithUV(-0.251D,  1.25D, -0.7D,   72.0D / 256.0D, 80.0D / 128.0D); // maxU, maxV
+            tessellator.addVertexWithUV(0.251D,   1.25D, -0.7D,   88.0D / 256.0D, 80.0D / 128.0D); // minU, maxV
+            tessellator.addVertexWithUV(0.251D,  1.25D, -0.125D, 88.0D / 256.0D, 64.0D / 128.0D); // minU, minV
+            tessellator.addVertexWithUV(-0.251D, 1.25D, -0.125D, 72.0D / 256.0D, 64.0D / 128.0D); // maxU, minV
             tessellator.draw();
 
             tessellator.startDrawingQuads();            // right side
             tessellator.setNormal(-1F, 0F, 0F);
-            tessellator.addVertexWithUV(0.3D,   0.5D,    0.45,  64.0 / 256.0, 80.0 / 128.0); // minU, maxV
-            tessellator.addVertexWithUV(0.3D,   0.5D,   -0.45,  72.0 / 256.0, 80.0 / 128.0); // maxU, maxV
-            tessellator.addVertexWithUV(0.25D, -0.125D, -0.125, 72.0 / 256.0, 64.0 / 128.0); // maxU, minV
-            tessellator.addVertexWithUV(0.25D, -0.125D,  0.125, 64.0 / 256.0, 64.0 / 128.0); // minU, minV
+            tessellator.addVertexWithUV(0.251D,   1.45D,    -0.4,  64.0 / 256.0, 80.0 / 128.0); // minU, maxV
+            tessellator.addVertexWithUV(0.251D,   1.25D,   -0.7,  72.0 / 256.0, 80.0 / 128.0); // maxU, maxV
+            tessellator.addVertexWithUV(0.251D, 1.25D, 0.125, 72.0 / 256.0, 64.0 / 128.0); // maxU, minV
+            tessellator.addVertexWithUV(0.251D, 1.45D,  0.125, 64.0 / 256.0, 64.0 / 128.0); // minU, minV
             tessellator.draw();
 
             tessellator.startDrawingQuads();            // back side
             tessellator.setNormal(0F, 0F, -1F);
-            tessellator.addVertexWithUV(-0.3D,   0.5D,   0.45,  96.0 / 256.0,  80.0 / 128.0); // minU, maxV
-            tessellator.addVertexWithUV(0.3D,    0.5D,   0.45,  112.0 / 256.0, 80.0 / 128.0); // maxU, maxV
-            tessellator.addVertexWithUV(0.25D,  -0.125D, 0.125, 112.0 / 256.0, 64.0 / 128.0); // maxU, minV
-            tessellator.addVertexWithUV(-0.25D, -0.125D, 0.125, 96.0 / 256.0,  64.0 / 128.0); // minU, minV
+            tessellator.addVertexWithUV(0.251D,   1.45D,   0.125D,  96.0D / 256.0D,  66.0 / 128.0); // minU, maxV
+            tessellator.addVertexWithUV(-0.251D,    1.45D,   0.125D,  112.0D / 256.0D, 66.0 / 128.0); // maxU, maxV
+            tessellator.addVertexWithUV(-0.251D,   1.375D, 0.125D, 112.0D / 256.0D, 64.0 / 128.0); // maxU, minV
+            tessellator.addVertexWithUV(0.251D,  1.375D, 0.125D, 96.0D / 256.0D,  64.0 / 128.0); // minU, minV
+            tessellator.draw();
+
+            tessellator.startDrawingQuads();            // bottom side
+            tessellator.setNormal(0F, 1F, 0F);
+            tessellator.addVertexWithUV(0.251D,   1.45D,   -0.4D,  96.0 / 256.0,  80.0 / 128.0); // minU, maxV
+            tessellator.addVertexWithUV(-0.251D,    1.45D,   -0.4D,  112.0 / 256.0, 80.0 / 128.0); // maxU, maxV
+            tessellator.addVertexWithUV(-0.251D,   1.45D, 0.125D, 112.0 / 256.0, 66.0 / 128.0); // maxU, minV
+            tessellator.addVertexWithUV(0.251D,  1.45D, 0.125D, 96.0 / 256.0,  66.0 / 128.0); // minU, minV
             tessellator.draw();
         }
     }
@@ -248,7 +256,7 @@ public class ModelEnderMiss
         this.bipedRightLeg.rotateAngleX = (float) (this.bipedRightLeg.rotateAngleX * 0.5D);
         this.bipedLeftLeg.rotateAngleX = (float) (this.bipedLeftLeg.rotateAngleX * 0.5D);
 
-        if( ((EntityEnderMiss) entity).getCoat() >= 0 ) {
+        if( ((EntityEnderMiss) entity).hasCoat() ) {
             this.bipedLeftArm.rotateAngleZ -= 0.08;
             this.bipedRightArm.rotateAngleZ += 0.08;
         }
@@ -352,11 +360,11 @@ public class ModelEnderMiss
             this.bipedLeftLeg.rotationPointY = 10.0F + var1;
         }
     }
-    
+
     public void setCarrying(boolean isCarrying) {
         this.isCarrying = isCarrying;
     }
-    
+
     public void setAttacking(boolean isAttacking) {
         this.isAttacking = isAttacking;
     }
@@ -364,7 +372,7 @@ public class ModelEnderMiss
     public void setRidden(boolean isRidden) {
         this.isRidden = isRidden;
     }
-    
+
     public void setSitting(boolean isSitting) {
         this.isSitting = isSitting;
     }

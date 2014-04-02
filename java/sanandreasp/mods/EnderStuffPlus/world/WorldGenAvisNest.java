@@ -2,7 +2,7 @@ package sanandreasp.mods.EnderStuffPlus.world;
 
 import java.util.Random;
 
-import sanandreasp.mods.EnderStuffPlus.registry.BlockRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ModBlockRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.RegistryDungeonLoot;
 
 import net.minecraft.block.Block;
@@ -62,7 +62,7 @@ public class WorldGenAvisNest extends WorldGenerator {
 		}
 
 		// place avis egg
-		world.setBlock(posX, posY-3, posZ, BlockRegistry.avisEgg.blockID);
+		world.setBlock(posX, posY-3, posZ, ModBlockRegistry.avisEgg.blockID);
 
 		// place chest in corner
 		int chestX = posX + 2*(rand.nextBoolean() ? -1 : 1);

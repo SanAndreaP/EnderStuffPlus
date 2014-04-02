@@ -25,7 +25,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiBiomeChangerBiomes
     extends GuiBiomeChangerBase
-    implements Textures
 {
     private HashMap<Integer, BiomeGenBase> biomeList = Maps.newHashMap();
     private int entryPosition = 0;
@@ -55,7 +54,7 @@ public class GuiBiomeChangerBiomes
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        this.mc.getTextureManager().bindTexture(GUI_BIOMECHANGER_II);
+        this.mc.getTextureManager().bindTexture(Textures.GUI_BIOMECHANGER_II);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
@@ -72,7 +71,7 @@ public class GuiBiomeChangerBiomes
 
           GL11.glTranslated(this.guiLeft, this.guiTop, 0F);
           this.fontRenderer.drawString(CommonUsedStuff.getTranslated("tile.enderstuffp:biomeChanger.name"), 8, 8, 0x404040);
-          this.mc.getTextureManager().bindTexture(GUI_BIOMECHANGER_II);
+          this.mc.getTextureManager().bindTexture(Textures.GUI_BIOMECHANGER_II);
 
           for( int i = this.entryPosition; i < 14 + this.entryPosition; i++ ) {
               int x = 8;
@@ -84,18 +83,18 @@ public class GuiBiomeChangerBiomes
 
                   if( this.biomeList.get(i).biomeID == this.teBiomeChanger.getBiomeID() ) {
                       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                      this.mc.getTextureManager().bindTexture(GUI_BIOMECHANGER_II);
+                      this.mc.getTextureManager().bindTexture(Textures.GUI_BIOMECHANGER_II);
                       this.drawTexturedModalRect(x, y, 176, 25, 11, 11);
                   } else if( mouseX < this.guiLeft + x + 11 && mouseX >= this.guiLeft + x
                              && mouseY < this.guiTop + y + 11 && mouseY >= this.guiTop + y
                              && !this.teBiomeChanger.isActive() ) {
                       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                      this.mc.getTextureManager().bindTexture(GUI_BIOMECHANGER_II);
+                      this.mc.getTextureManager().bindTexture(Textures.GUI_BIOMECHANGER_II);
                       this.drawTexturedModalRect(x, y, 176, 14, 11, 11);
                   }
               } else {
                   GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                  this.mc.getTextureManager().bindTexture(GUI_BIOMECHANGER_II);
+                  this.mc.getTextureManager().bindTexture(Textures.GUI_BIOMECHANGER_II);
                   this.drawTexturedModalRect(x, y, 148, 192, 11, 11);
               }
           }

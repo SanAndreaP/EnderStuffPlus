@@ -6,10 +6,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
 import sanandreasp.core.manpack.mod.packet.ISAPPacketHandler;
-import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderAvis;
-import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderMiss;
 import sanandreasp.mods.EnderStuffPlus.entity.IEnderPet;
-import sanandreasp.mods.EnderStuffPlus.registry.ItemRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ModItemRegistry;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -60,30 +58,9 @@ public class PacketEnderPetGUIAction implements ISAPPacketHandler
 					pet.setFollowing(!pet.isFollowing());
 				} break;
 				case 3: {
-					ItemStack is = new ItemStack(ItemRegistry.enderPetEgg, 1, pet.getEggDmg());
+					ItemStack is = new ItemStack(ModItemRegistry.enderPetEgg, 1, pet.getEggDmg());
 					NBTTagCompound nbt = new NBTTagCompound("enderPetEgg");
-					switch(pet.getEggDmg()) {
-						case 0: {
-							EntityEnderMiss miss = ((EntityEnderMiss)entity);
-		                	nbt.setByte("petID", (byte)0);
-		                	nbt.setFloat("missHealth", miss.getHealth());
-		                	nbt.setInteger("missColor", miss.getColor());
-		                	nbt.setInteger("missCoatColor", miss.getCoat() & 31);
-		                	nbt.setInteger("missCoatBase", miss.getCoat() >> 5);
-		                	nbt.setBoolean("missNoFallDmg", miss.canGetFallDmg());
-		                	nbt.setBoolean("missSpecial", miss.isSpecial());
-						} break;
-						case 1: {
-							EntityEnderAvis avis = ((EntityEnderAvis)entity);
-		                	nbt.setByte("petID", (byte)1);
-		                	nbt.setFloat("avisHealth", avis.getHealth());
-		                	nbt.setFloat("avisCondition", avis.currFlightCondition);
-		                	nbt.setInteger("avisColor", avis.getColor());
-		                	nbt.setInteger("avisCoatColor", avis.getCoat() & 31);
-		                	nbt.setInteger("avisCoatBase", avis.getCoat() >> 5);
-		                	nbt.setBoolean("avisSaddle", avis.isImmuneToWater());
-						} break;
-					}
+					pet.writePetToNBT(nbt);
 	                is.setTagCompound(nbt);
                 	if( !((EntityPlayerMP)player).inventory.addItemStackToInventory(is) ) {
                         entity.entityDropItem(is, 0.0F);

@@ -17,7 +17,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiWeatherAltar
     extends GuiScreen
-    implements Textures
 {
     private TileEntityWeatherAltar teWeatherAltar;
     private GuiButton btnSun;
@@ -63,7 +62,7 @@ public class GuiWeatherAltar
     @Override
     public void drawScreen(int mouseX, int mouseY, float partTicks) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(GUI_WEATHERALTAR);
+        this.mc.getTextureManager().bindTexture(Textures.GUI_WEATHERALTAR);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
         this.fontRenderer.drawString(CommonUsedStuff.getTranslated("tile.enderstuffp:weatherAltar.name"),

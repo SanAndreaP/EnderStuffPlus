@@ -3,9 +3,8 @@ package sanandreasp.mods.EnderStuffPlus.block;
 import java.util.List;
 import java.util.Random;
 
-import sanandreasp.mods.EnderStuffPlus.registry.BlockRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ModBlockRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
-import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -26,11 +25,6 @@ public class BlockEndLog
 
     public BlockEndLog(int id) {
         super(id, Material.wood);
-        this.setUnlocalizedName("esp:enderLog");
-        this.setCreativeTab(ESPModRegistry.espTab);
-        this.setHardness(2.0F);
-        this.setStepSound(Block.soundWoodFootstep);
-        this.setLightValue(4.1F / 15F);
     }
 
     @Override
@@ -104,7 +98,7 @@ public class BlockEndLog
 
     @Override
     public int idDropped(int meta, Random random, int fortuneLevel) {
-        return BlockRegistry.enderLog.blockID;
+        return ModBlockRegistry.enderLog.blockID;
     }
 
     @Override

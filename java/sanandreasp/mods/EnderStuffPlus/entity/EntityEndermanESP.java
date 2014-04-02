@@ -25,46 +25,48 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 
-public class EntityEndermanESP extends EntityMob {
-    private static final AttributeModifier attackingSpeedBoostModifier = (new AttributeModifier(UUID.fromString("020E0DFB-87AE-4653-9556-831010E291A0"), "Attacking speed boost", 6.199999809265137D, 0)).setSaved(false);
-    public static boolean[] carriableBlocks = new boolean[Block.blocksList.length];
+public class EntityEndermanESP
+    extends EntityMob
+{
+    private static final AttributeModifier SPEED_ATTACK =
+            (new AttributeModifier(UUID.fromString("020E0DFB-87AE-4653-9556-831010E291A0"),
+                                   "Attacking speed boost", 6.199999809265137D, 0)).setSaved(false);
 
-	public boolean isImmuneToWater = false;
-	public boolean canSpawn = false;
-    /**
-     * Counter to delay the teleportation of an enderman towards the currently attacked target
-     */
-    protected int teleportDelay;
-    protected int jarOpeningCounter;
-    protected Entity prevTarget;
+    protected static boolean[] carriableBlocks = new boolean[Block.blocksList.length];
+
+    protected static final int TP_ATTACK = 0;
+    protected static final int TP_DAYTIME = 2;
+    protected static final int TP_LIQUID = 1;
+    protected static final int TP_PROJECTILE = 3;
+    protected boolean calmInDaylight = true;
+    protected boolean canSpawn = false;
+
     protected boolean hasTarget;
 
-    public boolean calmInDaylight = true;
+    protected boolean isImmuneToWater = false;
+    protected int jarOpeningCounter;
+    protected Entity prevTarget;
+    protected int teleportDelay;
 
-    public static final int TP_ATTACK = 0;
-    public static final int TP_LIQUID = 1;
-    public static final int TP_DAYTIME = 2;
-    public static final int TP_PROJECTILE = 3;
+    static {
+        carriableBlocks[Block.grass.blockID] = true;
+        carriableBlocks[Block.dirt.blockID] = true;
+        carriableBlocks[Block.sand.blockID] = true;
+        carriableBlocks[Block.gravel.blockID] = true;
+        carriableBlocks[Block.plantYellow.blockID] = true;
+        carriableBlocks[Block.plantRed.blockID] = true;
+        carriableBlocks[Block.mushroomBrown.blockID] = true;
+        carriableBlocks[Block.mushroomRed.blockID] = true;
+        carriableBlocks[Block.tnt.blockID] = true;
+        carriableBlocks[Block.cactus.blockID] = true;
+        carriableBlocks[Block.blockClay.blockID] = true;
+        carriableBlocks[Block.pumpkin.blockID] = true;
+        carriableBlocks[Block.melon.blockID] = true;
+        carriableBlocks[Block.mycelium.blockID] = true;
+    }
 
-	static {
-		carriableBlocks[Block.grass.blockID] = true;
-		carriableBlocks[Block.dirt.blockID] = true;
-		carriableBlocks[Block.sand.blockID] = true;
-		carriableBlocks[Block.gravel.blockID] = true;
-		carriableBlocks[Block.plantYellow.blockID] = true;
-		carriableBlocks[Block.plantRed.blockID] = true;
-		carriableBlocks[Block.mushroomBrown.blockID] = true;
-		carriableBlocks[Block.mushroomRed.blockID] = true;
-		carriableBlocks[Block.tnt.blockID] = true;
-		carriableBlocks[Block.cactus.blockID] = true;
-		carriableBlocks[Block.blockClay.blockID] = true;
-		carriableBlocks[Block.pumpkin.blockID] = true;
-		carriableBlocks[Block.melon.blockID] = true;
-		carriableBlocks[Block.mycelium.blockID] = true;
-	}
-
-    public EntityEndermanESP(World par1World) {
-        super(par1World);
+    public EntityEndermanESP(World world) {
+        super(world);
         this.setSize(0.6F, 2.9F);
         this.stepHeight = 1.0F;
     }
@@ -78,43 +80,73 @@ public class EntityEndermanESP extends EntityMob {
     }
 
     @Override
+    public boolean attackEntityFrom(DamageSource dmgSource, float attackPts) {
+        if( dmgSource.equals(DamageSource.drown) && this.isImmuneToWater ) {
+            return false;
+        }
+
+        if( this.isEntityInvulnerable() ) {
+            return false;
+        } else {
+            this.setScreaming(true);
+
+            if( dmgSource instanceof EntityDamageSource && dmgSource.getEntity() instanceof EntityPlayer ) {
+                this.hasTarget = true;
+            }
+
+            if( dmgSource instanceof EntityDamageSourceIndirect ) {
+                this.hasTarget = false;
+
+                for( int i = 0; i < 64; ++i ) {
+                    if( this.teleportRandomly(TP_PROJECTILE) ) {
+                        return true;
+                    }
+                }
+
+                return super.attackEntityFrom(dmgSource, attackPts);
+            } else {
+                return super.attackEntityFrom(dmgSource, attackPts);
+            }
+        }
+    }
+
+    @Override
+    protected void dropFewItems(boolean recentlyHit, int fortuneLvl) {
+        int itemId = this.getDropItemId();
+
+        if( itemId > 0 ) {
+            int k = this.rand.nextInt(2 + fortuneLvl);
+
+            for( int l = 0; l < k; ++l ) {
+                this.entityDropItem(new ItemStack(itemId, 1, this.getDamageDropped()), 0.0F);
+            }
+        }
+    }
+
+    @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.addObject(16, new Byte((byte)0));
-        this.dataWatcher.addObject(17, new Byte((byte)0));
-        this.dataWatcher.addObject(18, new Byte((byte)0));
-    }
-
-    @Override
-    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeEntityToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setShort("carried", (short)this.getCarried());
-        par1NBTTagCompound.setShort("carriedData", (short)this.getCarryingData());
-    }
-
-    @Override
-    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readEntityFromNBT(par1NBTTagCompound);
-        this.setCarried(par1NBTTagCompound.getShort("carried"));
-        this.setCarryingData(par1NBTTagCompound.getShort("carriedData"));
+        this.dataWatcher.addObject(16, new Byte((byte) 0));
+        this.dataWatcher.addObject(17, new Byte((byte) 0));
+        this.dataWatcher.addObject(18, new Byte((byte) 0));
     }
 
     @Override
     protected Entity findPlayerToAttack() {
-        EntityPlayer entityplayer = this.worldObj.getClosestVulnerablePlayerToEntity(this, 64.0D);
+        EntityPlayer player = this.worldObj.getClosestVulnerablePlayerToEntity(this, 64.0D);
 
-        if( entityplayer != null ) {
-            if( this.shouldAttackPlayer(entityplayer) ) {
+        if( player != null ) {
+            if( this.shouldAttackPlayer(player) ) {
                 this.hasTarget = true;
 
                 if( this.jarOpeningCounter == 0 ) {
-                    this.worldObj.playSoundAtEntity(entityplayer, this.getScreamSound(), 1.0F, 1.0F);
+                    this.worldObj.playSoundAtEntity(player, this.getScreamSound(), 1.0F, 1.0F);
                 }
 
                 if( this.jarOpeningCounter++ == 5 ) {
                     this.jarOpeningCounter = 0;
                     this.setScreaming(true);
-                    return entityplayer;
+                    return player;
                 }
             } else {
                 this.jarOpeningCounter = 0;
@@ -124,29 +156,53 @@ public class EntityEndermanESP extends EntityMob {
         return null;
     }
 
-    protected boolean shouldAttackPlayer(EntityPlayer par1EntityPlayer) {
-    	if( ESPModRegistry.hasPlayerFullNiob(par1EntityPlayer) ) {
-            return false;
-        }
-
-        ItemStack itemstack = par1EntityPlayer.inventory.armorInventory[3];
-
-        if( itemstack != null && itemstack.itemID == Block.pumpkin.blockID ) {
-            return false;
-        } else {
-            Vec3 vec3 = par1EntityPlayer.getLook(1.0F).normalize();
-            Vec3 vec31 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX - par1EntityPlayer.posX, this.boundingBox.minY + this.height / 2.0F - (par1EntityPlayer.posY + par1EntityPlayer.getEyeHeight()), this.posZ - par1EntityPlayer.posZ);
-            double d0 = vec31.lengthVector();
-            vec31 = vec31.normalize();
-            double d1 = vec3.dotProduct(vec31);
-            return d1 > 1.0D - 0.025D / d0 ? par1EntityPlayer.canEntityBeSeen(this) : false;
-        }
+    @Override
+    public boolean getCanSpawnHere() {
+        return super.getCanSpawnHere() || this.canSpawn;
     }
 
-    public void spawnParticle(String type, double X, double Y, double Z, float dataI, float dataII, float dataIII) {
-		ESPModRegistry.sendPacketAllRng(
-				"fxPortal", this.posX, this.posY, this.posZ, 128.0D, this.dimension, this.posX, this.posY,
-				this.posZ, dataI, dataII, dataIII, this.width, this.height);
+    public int getCarried() {
+        return this.dataWatcher.getWatchableObjectByte(16);
+    }
+
+    public int getCarryingData() {
+        return this.dataWatcher.getWatchableObjectByte(17);
+    }
+
+    protected int getDamageDropped() {
+        return 0;
+    }
+
+    @Override
+    protected String getDeathSound() {
+        return "mob.endermen.death";
+    }
+
+    @Override
+    protected int getDropItemId() {
+        return Item.enderPearl.itemID;
+    }
+
+    @Override
+    protected String getHurtSound() {
+        return "mob.endermen.hit";
+    }
+
+    @Override
+    protected String getLivingSound() {
+        return this.isScreaming() ? "mob.endermen.scream" : "mob.endermen.idle";
+    }
+
+    protected String getPortalSound() {
+        return "mob.endermen.portal";
+    }
+
+    protected String getScreamSound() {
+        return "mob.endermen.stare";
+    }
+
+    public boolean isScreaming() {
+        return this.dataWatcher.getWatchableObjectByte(18) > 0;
     }
 
     @Override
@@ -157,43 +213,43 @@ public class EntityEndermanESP extends EntityMob {
 
         if( this.prevTarget != this.entityToAttack ) {
             AttributeInstance attributeinstance = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
-            attributeinstance.removeModifier(attackingSpeedBoostModifier);
+            attributeinstance.removeModifier(SPEED_ATTACK);
 
             if( this.entityToAttack != null ) {
-                attributeinstance.applyModifier(attackingSpeedBoostModifier);
+                attributeinstance.applyModifier(SPEED_ATTACK);
             }
         }
 
         this.prevTarget = this.entityToAttack;
-        int i;
 
         if( !this.worldObj.isRemote && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && ConfigRegistry.griefing ) {
-            int j;
-            int k;
-            int l;
+            int x;
+            int y;
+            int z;
+            int blockId;
 
             if( this.getCarried() == 0 ) {
                 if( this.rand.nextInt(20) == 0 ) {
-                    i = MathHelper.floor_double(this.posX - 2.0D + this.rand.nextDouble() * 4.0D);
-                    j = MathHelper.floor_double(this.posY + this.rand.nextDouble() * 3.0D);
-                    k = MathHelper.floor_double(this.posZ - 2.0D + this.rand.nextDouble() * 4.0D);
-                    l = this.worldObj.getBlockId(i, j, k);
+                    x = MathHelper.floor_double(this.posX - 2.0D + this.rand.nextDouble() * 4.0D);
+                    y = MathHelper.floor_double(this.posY + this.rand.nextDouble() * 3.0D);
+                    z = MathHelper.floor_double(this.posZ - 2.0D + this.rand.nextDouble() * 4.0D);
+                    blockId = this.worldObj.getBlockId(x, y, z);
 
-                    if( carriableBlocks[l] ) {
-                        this.setCarried(this.worldObj.getBlockId(i, j, k));
-                        this.setCarryingData(this.worldObj.getBlockMetadata(i, j, k));
-                        this.worldObj.setBlock(i, j, k, 0);
+                    if( carriableBlocks[blockId] ) {
+                        this.setCarried(this.worldObj.getBlockId(x, y, z));
+                        this.setCarryingData(this.worldObj.getBlockMetadata(x, y, z));
+                        this.worldObj.setBlock(x, y, z, 0);
                     }
                 }
             } else if( this.rand.nextInt(2000) == 0 ) {
-                i = MathHelper.floor_double(this.posX - 1.0D + this.rand.nextDouble() * 2.0D);
-                j = MathHelper.floor_double(this.posY + this.rand.nextDouble() * 2.0D);
-                k = MathHelper.floor_double(this.posZ - 1.0D + this.rand.nextDouble() * 2.0D);
-                l = this.worldObj.getBlockId(i, j, k);
-                int i1 = this.worldObj.getBlockId(i, j - 1, k);
+                x = MathHelper.floor_double(this.posX - 1.0D + this.rand.nextDouble() * 2.0D);
+                y = MathHelper.floor_double(this.posY + this.rand.nextDouble() * 2.0D);
+                z = MathHelper.floor_double(this.posZ - 1.0D + this.rand.nextDouble() * 2.0D);
+                blockId = this.worldObj.getBlockId(x, y, z);
+                int i1 = this.worldObj.getBlockId(x, y - 1, z);
 
-                if( l == 0 && i1 > 0 && Block.blocksList[i1].renderAsNormalBlock() ) {
-                    this.worldObj.setBlock(i, j, k, this.getCarried(), this.getCarryingData(), 3);
+                if( blockId == 0 && i1 > 0 && Block.blocksList[i1].renderAsNormalBlock() ) {
+                    this.worldObj.setBlock(x, y, z, this.getCarried(), this.getCarryingData(), 3);
                     this.setCarried(0);
                 }
             }
@@ -202,9 +258,12 @@ public class EntityEndermanESP extends EntityMob {
         this.spawnParticle("livingUpd", this.posX, this.posY, this.posZ, 0.0F, 0.0F, 0.0F);
 
         if( this.worldObj.isDaytime() && !this.worldObj.isRemote && this.calmInDaylight ) {
-            float f = this.getBrightness(1.0F);
+            float bright = this.getBrightness(1.0F);
 
-            if( f > 0.5F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F ) {
+            if( bright > 0.5F
+                && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY),
+                                                   MathHelper.floor_double(this.posZ))
+                && this.rand.nextFloat() * 30.0F < (bright - 0.4F) * 2.0F ) {
                 this.entityToAttack = null;
                 this.setScreaming(false);
                 this.hasTarget = false;
@@ -231,13 +290,15 @@ public class EntityEndermanESP extends EntityMob {
 
         if( !this.worldObj.isRemote && this.isEntityAlive() ) {
             if( this.entityToAttack != null ) {
-                if( this.entityToAttack instanceof EntityPlayer && this.shouldAttackPlayer((EntityPlayer)this.entityToAttack) ) {
+                if( this.entityToAttack instanceof EntityPlayer && this.shouldAttackPlayer((EntityPlayer) this.entityToAttack) ) {
                     if( this.entityToAttack.getDistanceSqToEntity(this) < 16.0D ) {
                         this.teleportRandomly(EntityEndermanESP.TP_ATTACK);
                     }
 
                     this.teleportDelay = 0;
-                } else if( this.entityToAttack.getDistanceSqToEntity(this) > 256.0D && this.teleportDelay++ >= 30 && this.teleportToEntity(EntityEndermanESP.TP_ATTACK, this.entityToAttack) ) {
+                } else if( this.entityToAttack.getDistanceSqToEntity(this) > 256.0D && this.teleportDelay++ >= 30
+                           && this.teleportToEntity(EntityEndermanESP.TP_ATTACK, this.entityToAttack) )
+                {
                     this.teleportDelay = 0;
                 }
             } else {
@@ -249,21 +310,57 @@ public class EntityEndermanESP extends EntityMob {
         super.onLivingUpdate();
     }
 
+    @Override
+    public void readEntityFromNBT(NBTTagCompound nbt) {
+        super.readEntityFromNBT(nbt);
+        this.setCarried(nbt.getShort("carried"));
+        this.setCarryingData(nbt.getShort("carriedData"));
+    }
+
+    public void setCarried(int blockId) {
+        this.dataWatcher.updateObject(16, Byte.valueOf((byte) (blockId & 255)));
+    }
+
+    public void setCarryingData(int meta) {
+        this.dataWatcher.updateObject(17, Byte.valueOf((byte) (meta & 255)));
+    }
+
+    public void setScreaming(boolean isScream) {
+        this.dataWatcher.updateObject(18, Byte.valueOf((byte) (isScream ? 1 : 0)));
+    }
+
+    protected boolean shouldAttackPlayer(EntityPlayer player) {
+        if( ESPModRegistry.hasPlayerFullNiob(player) ) {
+            return false;
+        }
+
+        ItemStack stack = player.inventory.armorInventory[3];
+
+        if( stack != null && stack.itemID == Block.pumpkin.blockID ) {
+            return false;
+        } else {
+            Vec3 lookVec = player.getLook(1.0F).normalize();
+            Vec3 vector = this.worldObj.getWorldVec3Pool()
+                                      .getVecFromPool(this.posX - player.posX, this.boundingBox.minY  + this.height / 2.0F
+                                                                               - (player.posY + player.getEyeHeight()),
+                                                      this.posZ - player.posZ);
+            double lengthVec = vector.lengthVector();
+            vector = vector.normalize();
+            double dotProd = lookVec.dotProduct(vector);
+            return dotProd > 1.0D - 0.025D / lengthVec ? player.canEntityBeSeen(this) : false;
+        }
+    }
+
+    public void spawnParticle(String type, double X, double Y, double Z, float dataI, float dataII, float dataIII) {
+        ESPModRegistry.sendPacketAllRng("fxPortal", this.posX, this.posY, this.posZ, 128.0D, this.dimension, this.posX,
+                                        this.posY, this.posZ, dataI, dataII, dataIII, this.width, this.height);
+    }
+
     protected boolean teleportRandomly(int cause) {
         double d0 = this.posX + (this.rand.nextDouble() - 0.5D) * 64.0D;
         double d1 = this.posY + (this.rand.nextInt(64) - 32);
         double d2 = this.posZ + (this.rand.nextDouble() - 0.5D) * 64.0D;
         return this.teleportTo(cause, d0, d1, d2);
-    }
-
-    protected boolean teleportToEntity(int cause, Entity par1Entity) {
-        Vec3 vec3 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX - par1Entity.posX, this.boundingBox.minY + this.height / 2.0F - par1Entity.posY + par1Entity.getEyeHeight(), this.posZ - par1Entity.posZ);
-        vec3 = vec3.normalize();
-        double d0 = 16.0D;
-        double d1 = this.posX + (this.rand.nextDouble() - 0.5D) * 8.0D - vec3.xCoord * d0;
-        double d2 = this.posY + (this.rand.nextInt(16) - 8) - vec3.yCoord * d0;
-        double d3 = this.posZ + (this.rand.nextDouble() - 0.5D) * 8.0D - vec3.zCoord * d0;
-        return this.teleportTo(cause, d1, d2, d3);
     }
 
     protected boolean teleportTo(int cause, double par1, double par3, double par5) {
@@ -284,7 +381,7 @@ public class EntityEndermanESP extends EntityMob {
         int k = MathHelper.floor_double(this.posZ);
         int l;
 
-        if( this.worldObj.blockExists(i, j, k)) {
+        if( this.worldObj.blockExists(i, j, k) ) {
             boolean flag1 = false;
 
             while( !flag1 && j > 0 ) {
@@ -301,7 +398,8 @@ public class EntityEndermanESP extends EntityMob {
             if( flag1 ) {
                 this.setPosition(this.posX, this.posY, this.posZ);
 
-                if( this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty() && (!this.worldObj.isAnyLiquid(this.boundingBox) || this.isImmuneToWater) ) {
+                if( this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty()
+                    && (!this.worldObj.isAnyLiquid(this.boundingBox) || this.isImmuneToWater) ) {
                     flag = true;
                 }
             }
@@ -327,108 +425,24 @@ public class EntityEndermanESP extends EntityMob {
         }
     }
 
-    protected String getPortalSound() {
-    	return "mob.endermen.portal";
-    }
-
-    protected String getScreamSound() {
-    	return "mob.endermen.stare";
-    }
-
-    @Override
-    protected String getLivingSound() {
-        return this.isScreaming() ? "mob.endermen.scream" : "mob.endermen.idle";
-    }
-
-    @Override
-    protected String getHurtSound() {
-        return "mob.endermen.hit";
+    protected boolean teleportToEntity(int cause, Entity par1Entity) {
+        Vec3 vec3 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX - par1Entity.posX,
+                                                                    this.boundingBox.minY + this.height / 2.0F
+                                                                            - par1Entity.posY
+                                                                            + par1Entity.getEyeHeight(),
+                                                                    this.posZ - par1Entity.posZ);
+        vec3 = vec3.normalize();
+        double d0 = 16.0D;
+        double d1 = this.posX + (this.rand.nextDouble() - 0.5D) * 8.0D - vec3.xCoord * d0;
+        double d2 = this.posY + (this.rand.nextInt(16) - 8) - vec3.yCoord * d0;
+        double d3 = this.posZ + (this.rand.nextDouble() - 0.5D) * 8.0D - vec3.zCoord * d0;
+        return this.teleportTo(cause, d1, d2, d3);
     }
 
     @Override
-    protected String getDeathSound() {
-        return "mob.endermen.death";
-    }
-
-    @Override
-    protected int getDropItemId() {
-        return Item.enderPearl.itemID;
-    }
-
-    protected int getDamageDropped() {
-    	return 0;
-    }
-
-    @Override
-    protected void dropFewItems(boolean par1, int par2) {
-        int j = this.getDropItemId();
-
-        if( j > 0 ) {
-            int k = this.rand.nextInt(2 + par2);
-
-            for( int l = 0; l < k; ++l ) {
-            	this.entityDropItem(new ItemStack(j, 1, this.getDamageDropped()), 0.0F);
-            }
-        }
-    }
-
-    public void setCarried(int par1) {
-        this.dataWatcher.updateObject(16, Byte.valueOf((byte)(par1 & 255)));
-    }
-
-    public int getCarried() {
-        return this.dataWatcher.getWatchableObjectByte(16);
-    }
-
-    public void setCarryingData(int par1) {
-        this.dataWatcher.updateObject(17, Byte.valueOf((byte)(par1 & 255)));
-    }
-
-    public int getCarryingData() {
-        return this.dataWatcher.getWatchableObjectByte(17);
-    }
-
-    @Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-    	if( par1DamageSource.equals(DamageSource.drown) && this.isImmuneToWater ) {
-            return false;
-        }
-
-        if( this.isEntityInvulnerable() ) {
-            return false;
-        } else {
-            this.setScreaming(true);
-
-            if( par1DamageSource instanceof EntityDamageSource && par1DamageSource.getEntity() instanceof EntityPlayer ) {
-                this.hasTarget = true;
-            }
-
-            if( par1DamageSource instanceof EntityDamageSourceIndirect ) {
-                this.hasTarget = false;
-
-                for( int i = 0; i < 64; ++i ) {
-                    if( this.teleportRandomly(TP_PROJECTILE) ) {
-                        return true;
-                    }
-                }
-
-                return super.attackEntityFrom(par1DamageSource, par2);
-            } else {
-                return super.attackEntityFrom(par1DamageSource, par2);
-            }
-        }
-    }
-
-    public boolean isScreaming() {
-        return this.dataWatcher.getWatchableObjectByte(18) > 0;
-    }
-
-    public void setScreaming(boolean par1) {
-        this.dataWatcher.updateObject(18, Byte.valueOf((byte)(par1 ? 1 : 0)));
-    }
-
-    @Override
-    public boolean getCanSpawnHere() {
-    	return super.getCanSpawnHere() || this.canSpawn;
+    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
+        super.writeEntityToNBT(par1NBTTagCompound);
+        par1NBTTagCompound.setShort("carried", (short) this.getCarried());
+        par1NBTTagCompound.setShort("carriedData", (short) this.getCarryingData());
     }
 }

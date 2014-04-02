@@ -62,7 +62,7 @@ public class RegistryBiomeChanger {
 
 	static {
 		addNewFuel(new ItemStack(Item.diamond), 1);
-		addNewFuel(new ItemStack(ItemRegistry.endIngot), 2);
+		addNewFuel(new ItemStack(ModItemRegistry.endIngot), 2);
 		addNewFuel(new ItemStack(Item.ingotGold), 2);
 		addNewFuel(new ItemStack(Item.emerald), 4);
 		addNewFuel(new ItemStack(Item.ingotIron), 8);
