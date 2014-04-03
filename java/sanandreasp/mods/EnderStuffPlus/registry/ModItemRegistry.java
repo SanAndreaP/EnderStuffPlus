@@ -16,6 +16,7 @@ import sanandreasp.mods.EnderStuffPlus.item.tool.ItemNiobPickaxe;
 import sanandreasp.mods.EnderStuffPlus.item.tool.ItemNiobShears;
 import sanandreasp.mods.EnderStuffPlus.item.tool.ItemNiobShovel;
 import sanandreasp.mods.EnderStuffPlus.item.tool.ItemNiobSword;
+import sanandreasp.mods.EnderStuffPlus.item.tool.ItemTantalPickaxe;
 
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.EnumToolMaterial;
@@ -55,6 +56,7 @@ public class ModItemRegistry
 	public static Item enderStick;
 	public static ItemEnderPetEgg enderPetEgg;
 	public static Item endHorseArmor;
+    public static Item tantalPick;
 
 	public static final void init() {
 		initMaterials();
@@ -171,6 +173,10 @@ public class ModItemRegistry
         endHorseArmor   = new ItemEndHorseArmor(10240)
                                 .setUnlocalizedName("esp:enderHorseArmor")
                                 .setTextureName("enderstuffp:enderStick")
+                                .setCreativeTab(ESPModRegistry.espTab);
+        tantalPick   = new ItemTantalPickaxe(10241, TOOL_NIOBIUM)
+                                .setUnlocalizedName("esp:tantalPick")
+                                .setTextureName("enderstuffp:tantalPick")
                                 .setCreativeTab(ESPModRegistry.espTab);
 	}
 

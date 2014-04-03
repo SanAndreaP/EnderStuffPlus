@@ -9,6 +9,7 @@ import sanandreasp.mods.EnderStuffPlus.entity.EntityAvisArrow;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderAvis;
 import sanandreasp.mods.EnderStuffPlus.entity.IEnderCreature;
 import sanandreasp.mods.EnderStuffPlus.entity.IEnderPet;
+import sanandreasp.mods.EnderStuffPlus.entity.item.EntityItemTantal;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -28,6 +29,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -38,7 +41,7 @@ import net.minecraftforge.event.entity.player.EntityInteractEvent;
 
 public class ServerEvents {
 
-	private Random rand = new Random();
+	private final Random rand = new Random();
 
 	@ForgeSubscribe
 	public void onArrowLoose(ArrowLooseEvent evt) {
@@ -136,6 +139,11 @@ public class ServerEvents {
 				&& ((IEnderPet)evt.source.getSourceOfDamage().ridingEntity).getCoatBase().equals(ESPModRegistry.MOD_ID + "_002") ) {
 			evt.ammount *= 1.5F;
 		}
+	}
+
+    @ForgeSubscribe
+	public void onItemHurt(ItemExpireEvent evt) {
+	    System.out.println("lillli");
 	}
 
 	@ForgeSubscribe
@@ -245,5 +253,17 @@ public class ServerEvents {
 			}
 			event.setResult(Result.ALLOW);
 		}
+	}
+
+    @ForgeSubscribe
+	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
+	    if( event.entity instanceof EntityItem && !(event.entity instanceof EntityItemTantal) && !event.world.isRemote ) {
+	        EntityItem eItem = (EntityItem) event.entity;
+	        if( eItem.getEntityItem() != null && eItem.getEntityItem().getItem() == ModItemRegistry.tantalPick ) {
+	            EntityItemTantal tantalItem = new EntityItemTantal(event.world, eItem, eItem.getEntityItem());
+	            event.world.spawnEntityInWorld(tantalItem);
+	            eItem.setDead();
+	        }
+	    }
 	}
 }

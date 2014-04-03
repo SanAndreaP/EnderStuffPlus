@@ -2,7 +2,7 @@ package sanandreasp.mods.EnderStuffPlus.registry;
 
 import java.util.HashMap;
 
-import sanandreasp.core.manpack.helpers.CUS;
+import sanandreasp.core.manpack.helpers.CommonUsedStuff;
 import sanandreasp.core.manpack.managers.SAPConfigManager;
 import sanandreasp.core.manpack.managers.SAPUpdateManager;
 import sanandreasp.core.manpack.mod.packet.PacketRegistry;
@@ -18,6 +18,7 @@ import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderRay;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityRayball;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityWeatherAltarFirework;
 import sanandreasp.mods.EnderStuffPlus.entity.item.EntityBait;
+import sanandreasp.mods.EnderStuffPlus.entity.item.EntityItemTantal;
 import sanandreasp.mods.EnderStuffPlus.entity.item.EntityPearlIgnis;
 import sanandreasp.mods.EnderStuffPlus.entity.item.EntityPearlMiss;
 import sanandreasp.mods.EnderStuffPlus.entity.item.EntityPearlNivis;
@@ -137,7 +138,7 @@ public class ESPModRegistry
             return;
         }
 
-		endAcid = CUS.getNewDmgSrc("enderstuffp:endAcid");
+		endAcid = CommonUsedStuff.getNewDmgSrc("enderstuffp:endAcid");
 
 		RegistryDuplicator.registerFuel(new ItemStack(ModItemRegistry.endIngot, 1, 0), 100);
 		RegistryDuplicator.registerFuel(new ItemStack(Item.diamond), 160);
@@ -176,6 +177,7 @@ public class ESPModRegistry
         proxy.registerEntity(EntityPearlIgnis.class, "EnderIgnisPearl", entityID++, this, 64, 10, true);
         proxy.registerEntity(EntityPearlMiss.class, "EnderMissPearl", entityID++, this, 64, 10, true);
         proxy.registerEntity(EntityBait.class, "EnderMissBait", entityID++, this, 64, 4, false);
+        proxy.registerEntity(EntityItemTantal.class, "ItemTantal", entityID++, this, 64, 20, true);
 
 		ItemEnderPetEgg.addPet(0, "EnderMiss", 0xffbbdd, 0x303030);
 		ItemEnderPetEgg.addPet(1, "EnderAvis", 0x606060, 0xFF00FF);
