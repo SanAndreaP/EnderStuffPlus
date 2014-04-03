@@ -64,32 +64,32 @@ public class ItemRaincoat
     private Icon iconOver;
 
     static {
-        addRaincoatBase(ESPModRegistry.MOD_ID, 0, "item.esp:rainCoat.base.gold",     "item.esp:rainCoat.base.gold.desc",     0xFFC545, "textures/entities/enderMiss_cape/stripes_gold.png", "textures/entities/enderAvis_cape/stripes_gold.png");
-        addRaincoatBase(ESPModRegistry.MOD_ID, 1, "item.esp:rainCoat.base.niobium",  "item.esp:rainCoat.base.niobium.desc",  0x3C408B, "textures/entities/enderMiss_cape/stripes_niob.png", "textures/entities/enderAvis_cape/stripes_niob.png");
-        addRaincoatBase(ESPModRegistry.MOD_ID, 2, "item.esp:rainCoat.base.iron",     "item.esp:rainCoat.base.iron.desc",     0xA9A9A9, "textures/entities/enderMiss_cape/stripes_iron.png", "textures/entities/enderAvis_cape/stripes_iron.png");
-        addRaincoatBase(ESPModRegistry.MOD_ID, 3, "item.esp:rainCoat.base.redstone", "item.esp:rainCoat.base.redstone.desc", 0xC62127, "textures/entities/enderMiss_cape/stripes_reds.png", "textures/entities/enderAvis_cape/stripes_reds.png");
-        addRaincoatBase(ESPModRegistry.MOD_ID, 4, "item.esp:rainCoat.base.obsidian", "item.esp:rainCoat.base.obsidian.desc", 0x1C1C22, "textures/entities/enderMiss_cape/stripes_obsd.png", "textures/entities/enderAvis_cape/stripes_obsd.png");
-        addRaincoatBase(ESPModRegistry.MOD_ID, 5, "item.esp:rainCoat.base.tantalum", "item.esp:rainCoat.base.tantalum.desc", 0xFF81E8, "textures/entities/enderMiss_cape/stripes_tant.png", "textures/entities/enderAvis_cape/stripes_tant.png");
+        addRaincoatBase(ESPModRegistry.MOD_ID, 0, "item.esp:rainCoat.base.gold",     "item.esp:rainCoat.base.gold.desc",     0xFFC545, "textures/entity/enderMiss_cape/stripes_gold.png", "textures/entity/enderAvis_cape/stripes_gold.png");
+        addRaincoatBase(ESPModRegistry.MOD_ID, 1, "item.esp:rainCoat.base.niobium",  "item.esp:rainCoat.base.niobium.desc",  0x3C408B, "textures/entity/enderMiss_cape/stripes_niob.png", "textures/entity/enderAvis_cape/stripes_niob.png");
+        addRaincoatBase(ESPModRegistry.MOD_ID, 2, "item.esp:rainCoat.base.iron",     "item.esp:rainCoat.base.iron.desc",     0xA9A9A9, "textures/entity/enderMiss_cape/stripes_iron.png", "textures/entity/enderAvis_cape/stripes_iron.png");
+        addRaincoatBase(ESPModRegistry.MOD_ID, 3, "item.esp:rainCoat.base.redstone", "item.esp:rainCoat.base.redstone.desc", 0xC62127, "textures/entity/enderMiss_cape/stripes_reds.png", "textures/entity/enderAvis_cape/stripes_reds.png");
+        addRaincoatBase(ESPModRegistry.MOD_ID, 4, "item.esp:rainCoat.base.obsidian", "item.esp:rainCoat.base.obsidian.desc", 0x1C1C22, "textures/entity/enderMiss_cape/stripes_obsd.png", "textures/entity/enderAvis_cape/stripes_obsd.png");
+        addRaincoatBase(ESPModRegistry.MOD_ID, 5, "item.esp:rainCoat.base.tantalum", "item.esp:rainCoat.base.tantalum.desc", 0xFF81E8, "textures/entity/enderMiss_cape/stripes_tant.png", "textures/entity/enderAvis_cape/stripes_tant.png");
 
-        addRaincoatColor(ESPModRegistry.MOD_ID,  0, "item.esp:rainCoat.color.black",       0x1A1515, "textures/entities/enderMiss_cape/black.png",     "textures/entities/enderAvis_cape/black.png");
-        addRaincoatColor(ESPModRegistry.MOD_ID,  1, "item.esp:rainCoat.color.red",         0xCF3B37, "textures/entities/enderMiss_cape/red.png",       "textures/entities/enderAvis_cape/red.png");
-        addRaincoatColor(ESPModRegistry.MOD_ID,  2, "item.esp:rainCoat.color.green",       0x3D591B, "textures/entities/enderMiss_cape/green.png",     "textures/entities/enderAvis_cape/green.png");
-        addRaincoatColor(ESPModRegistry.MOD_ID,  3, "item.esp:rainCoat.color.brown",       0x663A20, "textures/entities/enderMiss_cape/brown.png",     "textures/entities/enderAvis_cape/brown.png");
-        addRaincoatColor(ESPModRegistry.MOD_ID,  4, "item.esp:rainCoat.color.blue",        0x3343C6, "textures/entities/enderMiss_cape/blue.png",      "textures/entities/enderAvis_cape/blue.png");
-        addRaincoatColor(ESPModRegistry.MOD_ID,  5, "item.esp:rainCoat.color.purple",      0xB54AE7, "textures/entities/enderMiss_cape/purple.png",    "textures/entities/enderAvis_cape/purple.png");
-        addRaincoatColor(ESPModRegistry.MOD_ID,  6, "item.esp:rainCoat.color.cyan",        0x349EC1, "textures/entities/enderMiss_cape/cyan.png",      "textures/entities/enderAvis_cape/cyan.png");
-        addRaincoatColor(ESPModRegistry.MOD_ID,  7, "item.esp:rainCoat.color.silver",      0xD3D8D8, "textures/entities/enderMiss_cape/lightgray.png", "textures/entities/enderAvis_cape/lightgray.png");
-        addRaincoatColor(ESPModRegistry.MOD_ID,  8, "item.esp:rainCoat.color.gray",        0x4D4D4D, "textures/entities/enderMiss_cape/gray.png",      "textures/entities/enderAvis_cape/gray.png");
-        addRaincoatColor(ESPModRegistry.MOD_ID,  9, "item.esp:rainCoat.color.pink",        0xF4BBD1, "textures/entities/enderMiss_cape/pink.png",      "textures/entities/enderAvis_cape/pink.png");
-        addRaincoatColor(ESPModRegistry.MOD_ID, 10, "item.esp:rainCoat.color.lime",        0x50E243, "textures/entities/enderMiss_cape/lime.png",      "textures/entities/enderAvis_cape/lime.png");
-        addRaincoatColor(ESPModRegistry.MOD_ID, 11, "item.esp:rainCoat.color.yellow",      0xE4DC2A, "textures/entities/enderMiss_cape/yellow.png",    "textures/entities/enderAvis_cape/yellow.png");
-        addRaincoatColor(ESPModRegistry.MOD_ID, 12, "item.esp:rainCoat.color.lightBlue",   0x98C2F1, "textures/entities/enderMiss_cape/lightblue.png", "textures/entities/enderAvis_cape/lightblue.png");
-        addRaincoatColor(ESPModRegistry.MOD_ID, 13, "item.esp:rainCoat.color.magenta",     0xE66AEB, "textures/entities/enderMiss_cape/magenta.png",   "textures/entities/enderAvis_cape/magenta.png");
-        addRaincoatColor(ESPModRegistry.MOD_ID, 14, "item.esp:rainCoat.color.orange",      0xF7B24C, "textures/entities/enderMiss_cape/orange.png",    "textures/entities/enderAvis_cape/orange.png");
-        addRaincoatColor(ESPModRegistry.MOD_ID, 15, "item.esp:rainCoat.color.white",       0xF8F8F8, "textures/entities/enderMiss_cape/white.png",     "textures/entities/enderAvis_cape/white.png");
-        addRaincoatColor(ESPModRegistry.MOD_ID, 16, "item.esp:rainCoat.color.gold",        0xC5B600, "textures/entities/enderMiss_cape/gold.png",      "textures/entities/enderAvis_cape/gold.png");
-        addRaincoatColor(ESPModRegistry.MOD_ID, 17, "item.esp:rainCoat.color.niobium",     0x141E61, "textures/entities/enderMiss_cape/niob.png",      "textures/entities/enderAvis_cape/niob.png");
-        addRaincoatColor(ESPModRegistry.MOD_ID, 18, "item.esp:rainCoat.color.transparent", 0xCDCDCD, "textures/entities/enderMiss_cape/transp.png",    "textures/entities/enderAvis_cape/transp.png");
+        addRaincoatColor(ESPModRegistry.MOD_ID,  0, "item.esp:rainCoat.color.black",       0x1A1515, "textures/entity/enderMiss_cape/black.png",     "textures/entity/enderAvis_cape/black.png");
+        addRaincoatColor(ESPModRegistry.MOD_ID,  1, "item.esp:rainCoat.color.red",         0xCF3B37, "textures/entity/enderMiss_cape/red.png",       "textures/entity/enderAvis_cape/red.png");
+        addRaincoatColor(ESPModRegistry.MOD_ID,  2, "item.esp:rainCoat.color.green",       0x3D591B, "textures/entity/enderMiss_cape/green.png",     "textures/entity/enderAvis_cape/green.png");
+        addRaincoatColor(ESPModRegistry.MOD_ID,  3, "item.esp:rainCoat.color.brown",       0x663A20, "textures/entity/enderMiss_cape/brown.png",     "textures/entity/enderAvis_cape/brown.png");
+        addRaincoatColor(ESPModRegistry.MOD_ID,  4, "item.esp:rainCoat.color.blue",        0x3343C6, "textures/entity/enderMiss_cape/blue.png",      "textures/entity/enderAvis_cape/blue.png");
+        addRaincoatColor(ESPModRegistry.MOD_ID,  5, "item.esp:rainCoat.color.purple",      0xB54AE7, "textures/entity/enderMiss_cape/purple.png",    "textures/entity/enderAvis_cape/purple.png");
+        addRaincoatColor(ESPModRegistry.MOD_ID,  6, "item.esp:rainCoat.color.cyan",        0x349EC1, "textures/entity/enderMiss_cape/cyan.png",      "textures/entity/enderAvis_cape/cyan.png");
+        addRaincoatColor(ESPModRegistry.MOD_ID,  7, "item.esp:rainCoat.color.silver",      0xD3D8D8, "textures/entity/enderMiss_cape/lightgray.png", "textures/entity/enderAvis_cape/lightgray.png");
+        addRaincoatColor(ESPModRegistry.MOD_ID,  8, "item.esp:rainCoat.color.gray",        0x4D4D4D, "textures/entity/enderMiss_cape/gray.png",      "textures/entity/enderAvis_cape/gray.png");
+        addRaincoatColor(ESPModRegistry.MOD_ID,  9, "item.esp:rainCoat.color.pink",        0xF4BBD1, "textures/entity/enderMiss_cape/pink.png",      "textures/entity/enderAvis_cape/pink.png");
+        addRaincoatColor(ESPModRegistry.MOD_ID, 10, "item.esp:rainCoat.color.lime",        0x50E243, "textures/entity/enderMiss_cape/lime.png",      "textures/entity/enderAvis_cape/lime.png");
+        addRaincoatColor(ESPModRegistry.MOD_ID, 11, "item.esp:rainCoat.color.yellow",      0xE4DC2A, "textures/entity/enderMiss_cape/yellow.png",    "textures/entity/enderAvis_cape/yellow.png");
+        addRaincoatColor(ESPModRegistry.MOD_ID, 12, "item.esp:rainCoat.color.lightBlue",   0x98C2F1, "textures/entity/enderMiss_cape/lightblue.png", "textures/entity/enderAvis_cape/lightblue.png");
+        addRaincoatColor(ESPModRegistry.MOD_ID, 13, "item.esp:rainCoat.color.magenta",     0xE66AEB, "textures/entity/enderMiss_cape/magenta.png",   "textures/entity/enderAvis_cape/magenta.png");
+        addRaincoatColor(ESPModRegistry.MOD_ID, 14, "item.esp:rainCoat.color.orange",      0xF7B24C, "textures/entity/enderMiss_cape/orange.png",    "textures/entity/enderAvis_cape/orange.png");
+        addRaincoatColor(ESPModRegistry.MOD_ID, 15, "item.esp:rainCoat.color.white",       0xF8F8F8, "textures/entity/enderMiss_cape/white.png",     "textures/entity/enderAvis_cape/white.png");
+        addRaincoatColor(ESPModRegistry.MOD_ID, 16, "item.esp:rainCoat.color.gold",        0xC5B600, "textures/entity/enderMiss_cape/gold.png",      "textures/entity/enderAvis_cape/gold.png");
+        addRaincoatColor(ESPModRegistry.MOD_ID, 17, "item.esp:rainCoat.color.niobium",     0x141E61, "textures/entity/enderMiss_cape/niob.png",      "textures/entity/enderAvis_cape/niob.png");
+        addRaincoatColor(ESPModRegistry.MOD_ID, 18, "item.esp:rainCoat.color.transparent", 0xCDCDCD, "textures/entity/enderMiss_cape/transp.png",    "textures/entity/enderAvis_cape/transp.png");
     }
 
     public ItemRaincoat(int id) {
