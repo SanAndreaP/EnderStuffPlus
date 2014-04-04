@@ -1,15 +1,16 @@
 package sanandreasp.mods.EnderStuffPlus.world;
 import java.util.Random;
 
-import sanandreasp.mods.EnderStuffPlus.registry.ModBlockRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ModBlockRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderEnd;
-import net.minecraft.world.gen.ChunkProviderGenerate;
-import net.minecraft.world.gen.ChunkProviderHell;
+
+import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 
 import cpw.mods.fml.common.IWorldGenerator;
 
@@ -20,13 +21,22 @@ public class EnderStuffWorldGenerator implements IWorldGenerator {
             return;
         }
 
-		if( chunkGenerator instanceof ChunkProviderHell ) {
-			this.generateNether(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-		} else if( chunkGenerator instanceof ChunkProviderEnd ) {
+		if( chunkGenerator instanceof ChunkProviderEnd ) {
 			this.generateEnd(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-		} else if( chunkGenerator instanceof ChunkProviderGenerate ) {
-			this.generateSurface(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
 		}
+	}
+
+	@ForgeSubscribe
+	public void onPopulateChunk(PopulateChunkEvent.Pre event) {
+	    if( !event.world.getWorldInfo().isMapFeaturesEnabled() ) {
+            return;
+        }
+
+	    switch( event.world.provider.dimensionId ) {
+	        case 0:
+	            this.populateSurface(event.rand, event.chunkX, event.chunkZ, event.world, event.chunkProvider);
+	            break;
+	    }
 	}
 
 	public void generateEnd(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
@@ -50,7 +60,7 @@ public class EnderStuffWorldGenerator implements IWorldGenerator {
 		}
 	}
 
-	public void generateSurface(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+	public void populateSurface(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkProvider) {
 		int x, y, z;
 		if( random.nextInt(10) == 0 && ConfigRegistry.genAvisNest ) {
 			x = chunkX * 16 + random.nextInt(16);
@@ -60,17 +70,15 @@ public class EnderStuffWorldGenerator implements IWorldGenerator {
 			(new WorldGenAvisNest()).generate(world, random, x, y, z);
 		}
 
-		if( random.nextInt(256) == 0 && ConfigRegistry.genLeak ) {
-			x = chunkX * 16 + random.nextInt(16);
-			z = chunkZ * 16 + random.nextInt(16);
-			y = world.getTopSolidOrLiquidBlock(x, z);
+		for(int i = 0; i < 3; i++) {
+            if( random.nextInt(256) == 0 && ConfigRegistry.genLeak ) {
+            	x = chunkX * 16 + random.nextInt(16);
+            	z = chunkZ * 16 + random.nextInt(16);
+            	y = world.getTopSolidOrLiquidBlock(x, z);
 
-			(new WorldGenEndLeak()).generate(world, random, x, y, z);
-		}
-	}
-
-	public void generateNether(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-
+            	(new WorldGenEndLeak()).generate(world, random, x, y, z);
+            }
+        }
 	}
 
 	public boolean generateOre(World world, Random rand, int posX, int posY, int posZ) {

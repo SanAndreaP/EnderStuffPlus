@@ -12,8 +12,10 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityList;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class WorldGenEndLeak
@@ -97,16 +99,22 @@ public class WorldGenEndLeak
             return false;
         }
 
+        System.out.println("GENERATE @x=" + x + " @y=" + y + " @z=" + z);
+
         int chunkX = x >> 4;
         int chunkY = y >> 4;
 
-        if( !world.doChunksNearChunkExist(x, y, z, radius) ) {
-            for( int i = -(radius >> 4); i <= (radius >> 4); i++ ) {
-                for( int j = -(radius >> 4); j <= (radius >> 4); j++ ) {
-                    world.getChunkProvider().loadChunk(chunkX + i, chunkY + j);
+//        if( !world.doChunksNearChunkExist(x, y, z, radius) ) {
+            IChunkProvider chunkProvider = world.getChunkProvider();
+            int radChunk = MathHelper.ceiling_double_int(radius / 16D);
+            for( int i = -radChunk; i <= radChunk; i++ ) {
+                for( int j = -radChunk; j <= radChunk; j++ ) {
+                    if( !chunkProvider.chunkExists(chunkX + i, chunkY + j) ) {
+                        chunkProvider.loadChunk(chunkX + i, chunkY + j);
+                    }
                 }
             }
-        }
+//        }
 
         for( int i = -radius; i <= radius; i++ ) {
             for( int k = -radius; k <= radius; k++ ) {
