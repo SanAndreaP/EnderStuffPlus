@@ -7,39 +7,45 @@ import sanandreasp.mods.EnderStuffPlus.registry.ModBlockRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.ChunkProviderEnd;
 
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 
-import cpw.mods.fml.common.IWorldGenerator;
-
-public class EnderStuffWorldGenerator implements IWorldGenerator {
-	@Override
-	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-		if( !world.getWorldInfo().isMapFeaturesEnabled() ) {
-            return;
-        }
-
-		if( chunkGenerator instanceof ChunkProviderEnd ) {
-			this.generateEnd(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-		}
-	}
+public class EnderStuffWorldGenerator {
+//	@Override
+//	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+////		if( !world.getWorldInfo().isMapFeaturesEnabled() ) {
+////            return;
+////        }
+////
+////		if( chunkGenerator instanceof ChunkProviderEnd ) {
+////			this.generateEnd(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+////		}
+//	}
 
 	@ForgeSubscribe
-	public void onPopulateChunk(PopulateChunkEvent.Pre event) {
+	public void onPopulateChunkPost(PopulateChunkEvent.Post event) {
 	    if( !event.world.getWorldInfo().isMapFeaturesEnabled() ) {
             return;
         }
 
+//        System.out.println("gen");
 	    switch( event.world.provider.dimensionId ) {
 	        case 0:
-	            this.populateSurface(event.rand, event.chunkX, event.chunkZ, event.world, event.chunkProvider);
+	            this.populateSurfacePost(event.rand, event.chunkX, event.chunkZ, event.world, event.chunkProvider);
 	            break;
 	    }
 	}
 
-	public void generateEnd(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+    @ForgeSubscribe
+	public void onPoopulateChunkPre(PopulateChunkEvent.Pre event) {
+        switch( event.world.provider.dimensionId ) {
+            case 1:
+                this.populateEndPre(event.rand, event.chunkX, event.chunkZ, event.world, event.chunkProvider);
+        }
+	}
+
+	public void populateEndPre(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkProvider) {
 		int x, y, z;
 
 		if( random.nextInt(128) == 0 && ConfigRegistry.genEndlessEnd && (Math.abs(chunkX) > 10 || Math.abs(chunkZ) > 10) ) {
@@ -60,7 +66,7 @@ public class EnderStuffWorldGenerator implements IWorldGenerator {
 		}
 	}
 
-	public void populateSurface(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkProvider) {
+	public void populateSurfacePost(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkProvider) {
 		int x, y, z;
 		if( random.nextInt(10) == 0 && ConfigRegistry.genAvisNest ) {
 			x = chunkX * 16 + random.nextInt(16);
@@ -70,18 +76,16 @@ public class EnderStuffWorldGenerator implements IWorldGenerator {
 			(new WorldGenAvisNest()).generate(world, random, x, y, z);
 		}
 
-		for(int i = 0; i < 3; i++) {
-            if( random.nextInt(256) == 0 && ConfigRegistry.genLeak ) {
-            	x = chunkX * 16 + random.nextInt(16);
-            	z = chunkZ * 16 + random.nextInt(16);
-            	y = world.getTopSolidOrLiquidBlock(x, z);
+        if( random.nextInt(256) == 0 && ConfigRegistry.genLeak ) {
+        	x = chunkX * 16 + random.nextInt(16);
+        	z = chunkZ * 16 + random.nextInt(16);
+        	y = world.getTopSolidOrLiquidBlock(x, z);
 
-            	(new WorldGenEndLeak()).generate(world, random, x, y, z);
-            }
+        	(new WorldGenEndLeak()).generate(world, random, x, y, z);
         }
 	}
 
-	public boolean generateOre(World world, Random rand, int posX, int posY, int posZ) {
+	private boolean generateOre(World world, Random rand, int posX, int posY, int posZ) {
 		if( world.getBlockId(posX, posY, posZ) == Block.whiteStone.blockID && !world.canBlockSeeTheSky(posX, posY, posZ) ) {
 			world.setBlock(posX, posY, posZ, ModBlockRegistry.endOre.blockID);
 			return true;

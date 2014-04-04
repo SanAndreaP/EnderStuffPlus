@@ -16,9 +16,7 @@ import net.minecraft.entity.EntityLiving;
 
 import net.minecraftforge.common.MinecraftForge;
 
-import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class CommonProxy
 {
@@ -41,9 +39,9 @@ public class CommonProxy
 
 	public void registerHandlers() {
 		MinecraftForge.EVENT_BUS.register(new ServerEvents());
-		IWorldGenerator espWorldGen = new EnderStuffWorldGenerator();
-		MinecraftForge.TERRAIN_GEN_BUS.register(espWorldGen);
-		GameRegistry.registerWorldGenerator(espWorldGen);
+//		IWorldGenerator espWorldGen = new EnderStuffWorldGenerator();
+		MinecraftForge.EVENT_BUS.register(new EnderStuffWorldGenerator());
+//		GameRegistry.registerWorldGenerator(espWorldGen);
 	}
 
 	public void registerPackets() {
