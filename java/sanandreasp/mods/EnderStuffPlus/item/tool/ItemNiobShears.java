@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import sanandreasp.core.manpack.helpers.CommonUsedStuff;
+import sanandreasp.core.manpack.helpers.SAPUtils;
 import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ModItemRegistry;
@@ -34,8 +34,8 @@ public class ItemNiobShears
     @SideOnly(Side.CLIENT)
     private Icon glowMap;
 
-    public ItemNiobShears(int par1) {
-        super(par1);
+    public ItemNiobShears(int id) {
+        super(id);
         this.setMaxDamage(476);
     }
 
@@ -97,10 +97,10 @@ public class ItemNiobShears
             boolean hasTransported = false;
             for( ItemStack item : drops ) {
                 ItemStack newStack = EnchantmentHelper.getEnchantmentLevel(ESPModRegistry.enderChestTel.effectId, stack) > 0
-                                        ? CommonUsedStuff.addItemStackToInventory(item.copy(), player.getInventoryEnderChest())
+                                        ? SAPUtils.addItemStackToInventory(item.copy(), player.getInventoryEnderChest())
                                         : item.copy();
                 if( newStack != null ) {
-                    newStack = CommonUsedStuff.addItemStackToInventory(newStack.copy(), player.inventory);
+                    newStack = SAPUtils.addItemStackToInventory(newStack.copy(), player.inventory);
                     if( newStack == null ) {
                         hasTransported = true;
                     } else {
@@ -120,7 +120,7 @@ public class ItemNiobShears
             player.addStat(StatList.mineBlockStatArray[id], 1);
             if( hasTransported ) {
                 ESPModRegistry.sendPacketAllRng("fxPortal", x, y, z, 128.0D, player.dimension, x + 0.5F, y + 0.5F,
-                                                z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
+                                                z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 10);
                 player.inventoryContainer.detectAndSendChanges();
                 if( player.openContainer != null ) {
                     player.openContainer.detectAndSendChanges();

@@ -38,10 +38,8 @@ public class EntityPearlNivis
             movingObjPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0.0F);
         }
 
-        for( int i = 0; i < 8; i++ ) {
-            ESPModRegistry.sendPacketAllRng("fxPortal", this.posX, this.posY, this.posZ, 128D, this.dimension,
-                                            this.posX, this.posY, this.posZ, 0.2F, 0.5F, 1.0F, this.width, this.height);
-        }
+        ESPModRegistry.sendPacketAllRng("fxPortal", this.posX, this.posY, this.posZ, 128D, this.dimension,
+                                        this.posX, this.posY, this.posZ, 0.2F, 0.5F, 1.0F, this.width, this.height, 8);
 
         if( !this.worldObj.isRemote ) {
             if( movingObjPos.typeOfHit == EnumMovingObjectType.TILE && this.getThrower() instanceof EntityPlayer ) {

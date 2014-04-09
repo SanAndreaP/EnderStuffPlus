@@ -2,7 +2,7 @@ package sanandreasp.mods.EnderStuffPlus.client.gui;
 
 import org.lwjgl.opengl.GL11;
 
-import sanandreasp.core.manpack.helpers.CommonUsedStuff;
+import sanandreasp.core.manpack.helpers.SAPUtils;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderAvis;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderMiss;
 import sanandreasp.mods.EnderStuffPlus.entity.IEnderPet;
@@ -62,10 +62,10 @@ public class GuiEnderPet
         this.drawDefaultBackground();
 
         if( this.enderPet.getEntity() instanceof EntityEnderMiss ) {
-            title = CommonUsedStuff.getTranslated("enderstuffplus.guipet.title.miss", petName);
+            title = SAPUtils.getTranslated("enderstuffplus.guipet.title.miss", petName);
             color = 0xFF9090;
         } else if( this.enderPet.getEntity() instanceof EntityEnderAvis ) {
-            title = CommonUsedStuff.getTranslated("enderstuffplus.guipet.title.avis", petName);
+            title = SAPUtils.getTranslated("enderstuffplus.guipet.title.avis", petName);
             color = 0xFF00FF;
         }
 
@@ -81,7 +81,7 @@ public class GuiEnderPet
                               0xFF000000 + color, 0x00000000 + color);
         GL11.glColor4f(1F, 1F, 1F, 0F);
 
-        this.fontRenderer.drawString(CommonUsedStuff.getTranslated("enderstuffplus.guipet.name"),
+        this.fontRenderer.drawString(SAPUtils.getTranslated("enderstuffplus.guipet.name"),
                                      (this.width - 200) / 2, 20 + this.yPos, 0xFFFFFF);
 
         this.nameTxt.drawTextBox();
@@ -106,7 +106,7 @@ public class GuiEnderPet
         this.yPos = (this.height - 156) / 2;
         this.nameTxt = new GuiTextField(this.fontRenderer, (this.width - 198) / 2, this.yPos + 30, 198, 15);
 
-        this.nameTxt.setText(name.isEmpty() ? CommonUsedStuff.getTranslated("enderstuffplus.guipet.rename") : name);
+        this.nameTxt.setText(name.isEmpty() ? SAPUtils.getTranslated("enderstuffplus.guipet.rename") : name);
 
         if( this.enderPet.getEntity() instanceof EntityEnderMiss ) {
             color = 0xFF9090;
@@ -115,7 +115,7 @@ public class GuiEnderPet
         }
 
         GuiButton mountBtn = new GuiButtonPetGUI(0, (this.width - 200) / 2, this.yPos + 55, 200, 15,
-                                                 CommonUsedStuff.getTranslated("mount"), color).setBGAlpha(128);
+                                                 SAPUtils.getTranslated("mount"), color).setBGAlpha(128);
 
         if( this.enderPet.isSitting() ) {
             canMount = false;
@@ -129,14 +129,14 @@ public class GuiEnderPet
         this.buttonList.add(mountBtn);
 
         GuiButton sitStandBtn = new GuiButtonPetGUI(1, (this.width - 200) / 2, this.yPos + 71, 200, 15,
-                                             this.enderPet.isSitting() ? CommonUsedStuff.getTranslated("enderstuffplus.guipet.standUp")
-                                                                       : CommonUsedStuff.getTranslated("enderstuffplus.guipet.sit"),
+                                             this.enderPet.isSitting() ? SAPUtils.getTranslated("enderstuffplus.guipet.standUp")
+                                                                       : SAPUtils.getTranslated("enderstuffplus.guipet.sit"),
                                              color).setBGAlpha(128);
         this.buttonList.add(sitStandBtn);
 
         GuiButton stayFollowBtn = new GuiButtonPetGUI(2, (this.width - 200) / 2, this.yPos + 87, 200, 15,
-                                             this.enderPet.isFollowing() ? CommonUsedStuff.getTranslated("enderstuffplus.guipet.stay")
-                                                                         : CommonUsedStuff.getTranslated("enderstuffplus.guipet.follow"),
+                                             this.enderPet.isFollowing() ? SAPUtils.getTranslated("enderstuffplus.guipet.stay")
+                                                                         : SAPUtils.getTranslated("enderstuffplus.guipet.follow"),
                                              color).setBGAlpha(128);
 
         stayFollowBtn.enabled = !this.enderPet.isSitting();
@@ -144,12 +144,12 @@ public class GuiEnderPet
         this.buttonList.add(stayFollowBtn);
 
         GuiButton eggBtn = new GuiButtonPetGUI(3, (this.width - 200) / 2, this.yPos + 103, 200, 15,
-                                               CommonUsedStuff.getTranslated("enderstuffplus.guipet.putIntoEgg"), color).setBGAlpha(128);
+                                               SAPUtils.getTranslated("enderstuffplus.guipet.putIntoEgg"), color).setBGAlpha(128);
         eggBtn.enabled = this.owner.inventory.hasItemStack(new ItemStack(Item.egg)) || this.owner.capabilities.isCreativeMode;
         this.buttonList.add(eggBtn);
 
         GuiButton closeBtn = new GuiButtonPetGUI(4, (this.width - 200) / 2, this.yPos + 139, 200, 15,
-                                                 CommonUsedStuff.getTranslated("enderstuffplus.guipet.close"), 0xA0A0A0).setBGAlpha(128);
+                                                 SAPUtils.getTranslated("enderstuffplus.guipet.close"), 0xA0A0A0).setBGAlpha(128);
         this.buttonList.add(closeBtn);
     }
 
@@ -162,7 +162,7 @@ public class GuiEnderPet
             this.writeEntityName();
 
             if( this.nameTxt.getText().isEmpty() ) {
-                this.nameTxt.setText(CommonUsedStuff.getTranslated("enderstuffplus.guipet.rename"));
+                this.nameTxt.setText(SAPUtils.getTranslated("enderstuffplus.guipet.rename"));
             }
         } else if( (keyCode == 1 || keyCode == this.mc.gameSettings.keyBindInventory.keyCode)
                    && !this.nameTxt.isFocused() ) {
@@ -183,14 +183,14 @@ public class GuiEnderPet
         this.nameTxt.updateCursorCounter();
 
         if( this.nameTxt.isFocused()
-                && this.nameTxt.getText().equals(CommonUsedStuff.getTranslated("enderstuffplus.guipet.rename")) ) {
+                && this.nameTxt.getText().equals(SAPUtils.getTranslated("enderstuffplus.guipet.rename")) ) {
             this.nameTxt.setText("");
         }
     }
 
     private void writeEntityName() {
         if( this.nameTxt.getText().isEmpty()
-                || this.nameTxt.getText().equals(CommonUsedStuff.getTranslated("enderstuffplus.guipet.rename")) ) {
+                || this.nameTxt.getText().equals(SAPUtils.getTranslated("enderstuffplus.guipet.rename")) ) {
             return;
         }
 

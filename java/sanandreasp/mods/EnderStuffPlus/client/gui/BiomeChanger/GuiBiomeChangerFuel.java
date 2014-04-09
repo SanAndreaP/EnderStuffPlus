@@ -7,7 +7,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import sanandreasp.core.manpack.helpers.CommonUsedStuff;
+import sanandreasp.core.manpack.helpers.SAPUtils;
 import sanandreasp.mods.EnderStuffPlus.inventory.ContainerBiomeChanger;
 import sanandreasp.mods.EnderStuffPlus.registry.RegistryBiomeChanger;
 import sanandreasp.mods.EnderStuffPlus.registry.Textures;
@@ -38,7 +38,7 @@ public class GuiBiomeChangerFuel
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        this.mc.getTextureManager().bindTexture(Textures.GUI_BIOMECHANGER_I);
+        this.mc.getTextureManager().bindTexture(Textures.GUI_BIOMECHANGER_I.getResource());
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
@@ -60,8 +60,8 @@ public class GuiBiomeChangerFuel
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         RenderHelper.disableStandardItemLighting();
-        this.fontRenderer.drawString(CommonUsedStuff.getTranslated("tile.enderstuffp:biomeChanger.name"), 8, 8, 0x404040);
-        String rangeText = CommonUsedStuff.getTranslated("enderstuffplus.biomeChanger.gui1.range") + " "
+        this.fontRenderer.drawString(SAPUtils.getTranslated("tile.enderstuffp:biomeChanger.name"), 8, 8, 0x404040);
+        String rangeText = SAPUtils.getTranslated("enderstuffplus.biomeChanger.gui1.range") + " "
                            + ((ContainerBiomeChanger) this.inventorySlots).getBiomeChanger().getMaxRange();
         this.fontRenderer.drawString(rangeText, this.xSize - 8 - this.fontRenderer.getStringWidth(rangeText), 96, 0x808080);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 0x404040);

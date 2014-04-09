@@ -2,103 +2,49 @@ package sanandreasp.mods.EnderStuffPlus.registry;
 
 import net.minecraft.util.ResourceLocation;
 
-public interface Textures
-{
-	public static final ResourceLocation BIOMECHANGER_TEXTURE			= new ResourceLocation("enderstuffp", "textures/blocks/biomeChanger.png");
-	public static final ResourceLocation WEATHERALTAR_TEXTURE			= new ResourceLocation("enderstuffp", "textures/blocks/weatherAltar.png");
+public enum Textures {
+    ARROW_AVIS                  ("textures/entity/avisArrow.png"),
+    BIOMECHANGER_TEXTURE        ("textures/blocks/biomeChanger.png"),
+    ENDERAVIS_GLOW_TEXTURE      ("textures/entity/enderAvisGlow.png"),
+    ENDERAVIS_TEXTURE           ("textures/entity/enderAvis.png"),
+    ENDERAVIS_TEXTURE_SADDLE    ("textures/entity/enderAvisSaddle.png"),
+    ENDERIGNIS_GLOW_TEXTURE     ("textures/entity/enderIgnisGlow.png"),
+    ENDERIGNIS_TEXTURE          ("textures/entity/enderIgnis.png"),
+    ENDERMISS_GLOW_TEXTURE      ("textures/entity/enderMissGlow.png"),
+    ENDERMISS_GLOW_TEXTURE_SPEC ("textures/entity/enderMissSpecGlow.png"),
+    ENDERMISS_TEXTURE           ("textures/entity/enderMiss.png"),
+    ENDERMISS_TEXTURE_SPEC      ("textures/entity/enderMissSpec.png"),
+    ENDERNEMESIS_GLOW_TEXTURE   ("textures/entity/enderNemesisGlow.png"),
+    ENDERNEMESIS_TEXTURE        ("textures/entity/enderNemesis.png"),
+    ENDERNIVIS_GLOW_TEXTURE     ("textures/entity/enderNivisGlow.png"),
+    ENDERNIVIS_TEXTURE          ("textures/entity/enderNivis.png"),
+    ENDERRAY_GLOW_TEXTURE       ("textures/entity/enderRayGlow.png"),
+    ENDERRAY_GLOW_TEXTURE_SPEC  ("textures/entity/enderRayScarsGlow.png"),
+    ENDERRAY_TEXTURE            ("textures/entity/enderRay.png"),
+    ENDERRAY_TEXTURE_SPEC       ("textures/entity/enderRayScars.png"),
+    GUI_BIOMECHANGER_I          ("textures/guis/BiomeChangerGUI/biomeChanger_fuel.png"),
+    GUI_BIOMECHANGER_II         ("textures/guis/BiomeChangerGUI/biomeChanger_biomes.png"),
+    GUI_BIOMECHANGER_III        ("textures/guis/BiomeChangerGUI/biomeChanger_config.png"),
+    GUI_BIOMECHANGER_TABS       ("textures/guis/BiomeChangerGUI/biomeChanger_tabs.png"),
+    GUI_BUTTONS                 ("textures/guis/buttons.png"),
+    GUI_DUPLICATOR              ("textures/guis/duplicatorGui.png"),
+    GUI_INGAMEICONS             ("textures/guis/hudIcons.png"),
+    GUI_WEATHERALTAR            ("textures/guis/weatherAltar.png"),
+    TEX_ARMOR_NIOBIUM_1         ("textures/models/armor/niob_1.png"),
+    TEX_ARMOR_NIOBIUM_2         ("textures/models/armor/niob_2.png"),
+    WEATHERALTAR_TEXTURE        ("textures/blocks/weatherAltar.png");
 
-	public static final ResourceLocation ENDERMISS_TEXTURE				= new ResourceLocation("enderstuffp", "textures/entity/enderMiss.png");
-	public static final ResourceLocation ENDERMISS_TEXTURE_SPEC			= new ResourceLocation("enderstuffp", "textures/entity/enderMissSpec.png");
-	public static final ResourceLocation ENDERMISS_GLOW_TEXTURE			= new ResourceLocation("enderstuffp", "textures/entity/enderMissGlow.png");
-	public static final ResourceLocation ENDERMISS_GLOW_TEXTURE_SPEC	= new ResourceLocation("enderstuffp", "textures/entity/enderMissSpecGlow.png");
-	public static final ResourceLocation ENDERAVIS_TEXTURE				= new ResourceLocation("enderstuffp", "textures/entity/enderAvis.png");
-	public static final ResourceLocation ENDERAVIS_TEXTURE_SADDLE		= new ResourceLocation("enderstuffp", "textures/entity/enderAvisSaddle.png");
-	public static final ResourceLocation ENDERAVIS_GLOW_TEXTURE			= new ResourceLocation("enderstuffp", "textures/entity/enderAvisGlow.png");
-	public static final ResourceLocation ENDERIGNIS_TEXTURE				= new ResourceLocation("enderstuffp", "textures/entity/enderIgnis.png");
-	public static final ResourceLocation ENDERIGNIS_GLOW_TEXTURE		= new ResourceLocation("enderstuffp", "textures/entity/enderIgnisGlow.png");
-	public static final ResourceLocation ENDERNIVIS_TEXTURE				= new ResourceLocation("enderstuffp", "textures/entity/enderNivis.png");
-	public static final ResourceLocation ENDERNIVIS_GLOW_TEXTURE		= new ResourceLocation("enderstuffp", "textures/entity/enderNivisGlow.png");
-	public static final ResourceLocation ENDERRAY_TEXTURE				= new ResourceLocation("enderstuffp", "textures/entity/enderRay.png");
-	public static final ResourceLocation ENDERRAY_TEXTURE_SPEC			= new ResourceLocation("enderstuffp", "textures/entity/enderRayScars.png");
-	public static final ResourceLocation ENDERRAY_GLOW_TEXTURE			= new ResourceLocation("enderstuffp", "textures/entity/enderRayGlow.png");
-	public static final ResourceLocation ENDERRAY_GLOW_TEXTURE_SPEC		= new ResourceLocation("enderstuffp", "textures/entity/enderRayScarsGlow.png");
-	public static final ResourceLocation ENDERNEMESIS_TEXTURE			= new ResourceLocation("enderstuffp", "textures/entity/enderNemesis.png");
-	public static final ResourceLocation ENDERNEMESIS_GLOW_TEXTURE		= new ResourceLocation("enderstuffp", "textures/entity/enderNemesisGlow.png");
+    private final ResourceLocation tex;
 
-	public static final ResourceLocation GUI_INGAMEICONS				= new ResourceLocation("enderstuffp", "textures/guis/hudIcons.png");
-	public static final ResourceLocation GUI_BUTTONS					= new ResourceLocation("enderstuffp", "textures/guis/buttons.png");
+    private Textures(String texture) {
+        this.tex = new ResourceLocation("enderstuffp", texture);
+    }
 
-	public static final ResourceLocation GUI_BIOMECHANGER_I				= new ResourceLocation("enderstuffp", "textures/guis/BiomeChangerGUI/biomeChanger_fuel.png");
-	public static final ResourceLocation GUI_BIOMECHANGER_II			= new ResourceLocation("enderstuffp", "textures/guis/BiomeChangerGUI/biomeChanger_biomes.png");
-	public static final ResourceLocation GUI_BIOMECHANGER_III			= new ResourceLocation("enderstuffp", "textures/guis/BiomeChangerGUI/biomeChanger_config.png");
-	public static final ResourceLocation GUI_BIOMECHANGER_TABS			= new ResourceLocation("enderstuffp", "textures/guis/BiomeChangerGUI/biomeChanger_tabs.png");
-	public static final ResourceLocation GUI_DUPLICATOR					= new ResourceLocation("enderstuffp", "textures/guis/duplicatorGui.png");
-	public static final ResourceLocation GUI_WEATHERALTAR				= new ResourceLocation("enderstuffp", "textures/guis/weatherAltar.png");
+    public ResourceLocation getResource() {
+        return this.tex;
+    }
 
-	public static final ResourceLocation ARROW_AVIS						= new ResourceLocation("enderstuffp", "textures/entity/avisArrow.png");
-
-	public static final String TEX_ARMOR_NIOBIUM_1			= "enderstuffp:textures/models/armor/niob_1.png";
-	public static final String TEX_ARMOR_NIOBIUM_2			= "enderstuffp:textures/models/armor/niob_2.png";
-
-//	public static final ResourceLocation ENDERMISS_CAPES_CLR[] = new ResourceLocation[] {
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/black.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/red.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/green.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/brown.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/blue.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/purple.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/cyan.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/lightgray.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/gray.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/pink.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/lime.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/yellow.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/lightblue.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/magenta.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/orange.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/white.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/gold.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/niob.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/transp.png")
-//	};
-
-//	public static final ResourceLocation ENDERMISS_CAPES_STR[] = new ResourceLocation[] {
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/stripes_gold.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/stripes_niob.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/stripes_iron.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/stripes_reds.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/stripes_obsd.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/stripes_tant.png")
-//	};
-
-//	public static final ResourceLocation ENDERAVIS_CAPES_CLR[] = new ResourceLocation[] {
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/black.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/red.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/green.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/brown.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/blue.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/purple.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/cyan.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/lightgray.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/gray.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/pink.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/lime.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/yellow.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/lightblue.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/magenta.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/orange.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/white.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/gold.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/niob.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/white.png")
-//	};
-//
-//	public static final ResourceLocation ENDERAVIS_CAPES_STR[] = new ResourceLocation[] {
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/stripes_gold.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/stripes_niob.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/stripes_iron.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/stripes_reds.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/stripes_obsd.png"),
-//		new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/stripes_tant.png")
-//	};
+    public String getTexture() {
+        return this.tex.toString();
+    }
 }

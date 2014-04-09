@@ -72,19 +72,19 @@ public abstract class GuiBiomeChangerBase
         super.initGui();
         this.tabActivate = new GuiItemTab(this.buttonList.size(), this.guiLeft + this.xSize - 3,
                                           this.guiTop + this.ySize - 35, "Activate", IconRegistry.guiActiveOn, true,
-                                          false, Textures.GUI_BUTTONS);
+                                          false, Textures.GUI_BUTTONS.getResource());
         this.buttonList.add(this.tabActivate);
 
         this.tabFuel = new GuiItemTab(this.buttonList.size(), this.guiLeft + this.xSize - 3, this.guiTop + 10, "Fuel",
-                                      Item.blazePowder.getIconFromDamage(0), true, false, Textures.GUI_BUTTONS);
+                                      Item.blazePowder.getIconFromDamage(0), true, false, Textures.GUI_BUTTONS.getResource());
         this.buttonList.add(this.tabFuel);
 
         this.tabBiomes = new GuiItemTab(this.buttonList.size(), this.guiLeft + this.xSize - 3, this.guiTop + 36,
-                                        "Biome", Block.sapling.getIcon(0, 0), true, false, Textures.GUI_BUTTONS);
+                                        "Biome", Block.sapling.getIcon(0, 0), true, false, Textures.GUI_BUTTONS.getResource());
         this.buttonList.add(this.tabBiomes);
 
         this.tabCofig = new GuiItemTab(this.buttonList.size(), this.guiLeft + this.xSize - 3, this.guiTop + 62,
-                                       "Settings", IconRegistry.guiSpanner, true, false, Textures.GUI_BUTTONS);
+                                       "Settings", IconRegistry.guiSpanner, true, false, Textures.GUI_BUTTONS.getResource());
         this.buttonList.add(this.tabCofig);
 
         this.tabActivate.textureBaseX = 52;

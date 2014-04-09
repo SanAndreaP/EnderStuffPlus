@@ -26,7 +26,8 @@ public class RenderEnderRay
 
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-        return ((EntityEnderRay) entity).hasSpecialTexture() ? Textures.ENDERRAY_TEXTURE_SPEC : Textures.ENDERRAY_TEXTURE;
+        return ((EntityEnderRay) entity).hasSpecialTexture() ? Textures.ENDERRAY_TEXTURE_SPEC.getResource()
+                                                             : Textures.ENDERRAY_TEXTURE.getResource();
     }
 
     @Override
@@ -38,9 +39,9 @@ public class RenderEnderRay
     private int renderGlowStuff(EntityEnderRay ray, int pass, float partTicks) {
         if( pass == 0 ) {
             if( ray.hasSpecialTexture() ) {
-                this.bindTexture(Textures.ENDERRAY_GLOW_TEXTURE_SPEC);
+                this.bindTexture(Textures.ENDERRAY_GLOW_TEXTURE_SPEC.getResource());
             } else {
-                this.bindTexture(Textures.ENDERRAY_GLOW_TEXTURE);
+                this.bindTexture(Textures.ENDERRAY_GLOW_TEXTURE.getResource());
             }
 
             GL11.glEnable(GL11.GL_BLEND);

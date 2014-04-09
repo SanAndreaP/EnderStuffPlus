@@ -3,7 +3,7 @@ package sanandreasp.mods.EnderStuffPlus.item;
 import java.util.HashMap;
 import java.util.List;
 
-import sanandreasp.core.manpack.helpers.CommonUsedStuff;
+import sanandreasp.core.manpack.helpers.SAPUtils;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderAvis;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderMiss;
 import sanandreasp.mods.EnderStuffPlus.entity.IEnderPet;
@@ -80,13 +80,13 @@ public class ItemEnderPetEgg
 
     @Override
     @SideOnly(Side.CLIENT)
-    public int getColorFromItemStack(ItemStack par1ItemStack, int par2) {
-        int par1 = par1ItemStack.getItemDamage();
-        return (Integer) (PETS.containsKey(par1) ? (par2 == 0 ? PETS.get(par1)[1] : PETS.get(par1)[2]) : 0xFFFFFF);
+    public int getColorFromItemStack(ItemStack stack, int pass) {
+        int par1 = stack.getItemDamage();
+        return (Integer) (PETS.containsKey(par1) ? (pass == 0 ? PETS.get(par1)[1] : PETS.get(par1)[2]) : 0xFFFFFF);
     }
 
-    private String getEnderPetName(ItemStack par1ItemStack) {
-        int petID = par1ItemStack.getItemDamage();
+    private String getEnderPetName(ItemStack stack) {
+        int petID = stack.getItemDamage();
         if( !PETS.containsKey(petID) ) {
             petID = 0;
         }
@@ -96,21 +96,21 @@ public class ItemEnderPetEgg
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Icon getIconFromDamageForRenderPass(int par1, int par2) {
-        return Item.monsterPlacer.getIconFromDamageForRenderPass(par1, par2);
+    public Icon getIconFromDamageForRenderPass(int dmg, int pass) {
+        return Item.monsterPlacer.getIconFromDamageForRenderPass(dmg, pass);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public String getItemDisplayName(ItemStack par1ItemStack) {
-        String var2 = ("" + CommonUsedStuff.getTranslated(this.getUnlocalizedName() + ".name")).trim();
-        String var3 = this.getEnderPetName(par1ItemStack);
+    public String getItemDisplayName(ItemStack stack) {
+        String itemName = ("" + SAPUtils.getTranslated(this.getUnlocalizedName() + ".name")).trim();
+        String petName = this.getEnderPetName(stack);
 
-        if( var3 != null ) {
-            var2 = var2 + " " + StatCollector.translateToLocal("entity." + var3 + ".name");
+        if( petName != null ) {
+            itemName = itemName + " " + StatCollector.translateToLocal("entity." + petName + ".name");
         }
 
-        return var2;
+        return itemName;
     }
 
     @Override
@@ -118,9 +118,9 @@ public class ItemEnderPetEgg
         return true;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public void getSubItems(int itemId, CreativeTabs tab, List stacks) {
         ItemStack pet = new ItemStack(this, 1, 0);
         NBTTagCompound nbt = new NBTTagCompound("enderPetEgg");
         nbt.setByte("petID", (byte) 0);
@@ -128,10 +128,10 @@ public class ItemEnderPetEgg
         nbt.setBoolean("fallDmg", false);
         nbt.setBoolean("special", false);
         pet.setTagCompound(nbt);
-        par3List.add(pet.copy());
+        stacks.add(pet.copy());
         nbt.setBoolean("special", true);
         pet.setTagCompound(nbt);
-        par3List.add(pet.copy());
+        stacks.add(pet.copy());
         pet = new ItemStack(this, 1, 1);
         nbt = new NBTTagCompound("enderPetEgg");
         nbt.setByte("petID", (byte) 1);
@@ -139,34 +139,33 @@ public class ItemEnderPetEgg
         nbt.setFloat("condition", 10.0F);
         nbt.setBoolean("saddled", false);
         pet.setTagCompound(nbt);
-        par3List.add(pet.copy());
+        stacks.add(pet.copy());
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack par1ItemStack) {
-        return par1ItemStack.hasTagCompound();
+    public boolean hasEffect(ItemStack stack) {
+        return stack.hasTagCompound();
     }
 
     @Override
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4,
-                             int par5, int par6, int par7, float par8, float par9, float par10) {
-        if( par3World.isRemote ) {
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float offX, float offY,
+                             float offZ) {
+        if( world.isRemote ) {
             return true;
         } else {
-            int var11 = par3World.getBlockId(par4, par5, par6);
-            par4 += Facing.offsetsXForSide[par7];
-            par5 += Facing.offsetsYForSide[par7];
-            par6 += Facing.offsetsZForSide[par7];
-            double var12 = 0.0D;
+            int blockId = world.getBlockId(x, y, z);
+            x += Facing.offsetsXForSide[side];
+            y += Facing.offsetsYForSide[side];
+            z += Facing.offsetsZForSide[side];
+            double yOffset = 0.0D;
 
-            if( par7 == 1 && var11 == Block.fence.blockID || var11 == Block.netherFence.blockID ) {
-                var12 = 0.5D;
+            if( side == 1 && blockId == Block.fence.blockID || blockId == Block.netherFence.blockID ) {
+                yOffset = 0.5D;
             }
 
-            if( spawnEnderPet(par3World, par1ItemStack, this.getEnderPetName(par1ItemStack), par4 + 0.5D, par5 + var12,
-                              par6 + 0.5D, par2EntityPlayer.username) ) {
-                --par1ItemStack.stackSize;
+            if( spawnEnderPet(world, stack, this.getEnderPetName(stack), x + 0.5D, y + yOffset, z + 0.5D, player.username) ) {
+                --stack.stackSize;
             }
 
             return true;
@@ -175,7 +174,7 @@ public class ItemEnderPetEgg
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister) {}
+    public void registerIcons(IconRegister iconRegister) {}
 
     @Override
     @SideOnly(Side.CLIENT)

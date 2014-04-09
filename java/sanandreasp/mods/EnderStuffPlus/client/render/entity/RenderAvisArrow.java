@@ -15,6 +15,6 @@ public class RenderAvisArrow
 {
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-        return Textures.ARROW_AVIS;
+        return Textures.ARROW_AVIS.getResource();
     }
 }

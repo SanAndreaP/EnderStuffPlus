@@ -2,7 +2,7 @@ package sanandreasp.mods.EnderStuffPlus.client.gui;
 
 import org.lwjgl.opengl.GL11;
 
-import sanandreasp.core.manpack.helpers.CommonUsedStuff;
+import sanandreasp.core.manpack.helpers.SAPUtils;
 import sanandreasp.core.manpack.helpers.client.GuiItemTab;
 import sanandreasp.mods.EnderStuffPlus.inventory.ContainerDuplicator;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
@@ -45,7 +45,7 @@ public class GuiDuplicator
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partTicks, int mouseX, int mouseY) {
-        this.mc.getTextureManager().bindTexture(Textures.GUI_DUPLICATOR);
+        this.mc.getTextureManager().bindTexture(Textures.GUI_DUPLICATOR.getResource());
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
         RenderHelper.disableStandardItemLighting();
@@ -58,17 +58,17 @@ public class GuiDuplicator
         String s = Integer.toString(this.teDuplicator.getStoredLvl());
 
         RenderHelper.disableStandardItemLighting();
-        this.fontRenderer.drawString(CommonUsedStuff.getTranslated("tile.enderstuffp:duplicator.name"), this.ySize
-                                     - this.fontRenderer.getStringWidth(CommonUsedStuff.getTranslated("tile.duplicator.name"))
+        this.fontRenderer.drawString(SAPUtils.getTranslated("tile.enderstuffp:duplicator.name"), this.ySize
+                                     - this.fontRenderer.getStringWidth(SAPUtils.getTranslated("tile.duplicator.name"))
                                      - 8, 8, 0x404040);
-        this.fontRenderer.drawString(CommonUsedStuff.getTranslated("container.inventory"), 8, this.ySize - 96 + 2, 0x404040);
+        this.fontRenderer.drawString(SAPUtils.getTranslated("container.inventory"), 8, this.ySize - 96 + 2, 0x404040);
 
         this.drawStringWithFrame(this.fontRenderer, s, this.xSize - 8 - this.fontRenderer.getStringWidth(s), 50, 0x80ff20, 0x000000);
 
         s = Integer.toString(RegistryDuplicator.getNeededExp(this.teDuplicator.getStackInSlot(0)));
         this.drawStringWithFrame(this.fontRenderer, s, this.xSize - 8 - this.fontRenderer.getStringWidth(s), 65, 0x80ff20, 0x000000);
 
-        this.mc.getTextureManager().bindTexture(Textures.GUI_DUPLICATOR);
+        this.mc.getTextureManager().bindTexture(Textures.GUI_DUPLICATOR.getResource());
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -80,7 +80,7 @@ public class GuiDuplicator
             drawRect(124, 48, this.xSize - 7, 59, 0x40FFFFFF);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.drawTexturedModalRect(125, 49, 176, 26, 9, 9);
-            this.drawCreativeTabHoveringText(CommonUsedStuff.getTranslated("enderstuffplus.duplicator.storedXP"),
+            this.drawCreativeTabHoveringText(SAPUtils.getTranslated("enderstuffplus.duplicator.storedXP"),
                                              mouseX - this.guiLeft, mouseY - this.guiTop);
             RenderHelper.disableStandardItemLighting();
         } else {
@@ -89,14 +89,14 @@ public class GuiDuplicator
             this.drawTexturedModalRect(125, 49, 176, 26, 9, 9);
         }
 
-        this.mc.getTextureManager().bindTexture(Textures.GUI_DUPLICATOR);
+        this.mc.getTextureManager().bindTexture(Textures.GUI_DUPLICATOR.getResource());
 
         if( mouseX > this.guiLeft + 124 && mouseX <= this.guiLeft + this.xSize - 7 && mouseY > this.guiTop + 61
                 && mouseY <= this.guiTop + 75 ) {
             drawRect(124, 61, this.xSize - 7, 75, 0x40FFFFFF);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.drawTexturedModalRect(125, 62, 185, 26, 11, 12);
-            this.drawCreativeTabHoveringText(CommonUsedStuff.getTranslated("enderstuffplus.duplicator.neededXP"),
+            this.drawCreativeTabHoveringText(SAPUtils.getTranslated("enderstuffplus.duplicator.neededXP"),
                                              mouseX - this.guiLeft, mouseY - this.guiTop);
             RenderHelper.disableStandardItemLighting();
         } else {
@@ -105,7 +105,7 @@ public class GuiDuplicator
             this.drawTexturedModalRect(125, 62, 185, 26, 11, 12);
         }
 
-        this.mc.getTextureManager().bindTexture(Textures.GUI_DUPLICATOR);
+        this.mc.getTextureManager().bindTexture(Textures.GUI_DUPLICATOR.getResource());
 
         RenderHelper.enableGUIStandardItemLighting();
     }
@@ -124,8 +124,8 @@ public class GuiDuplicator
         super.initGui();
 
         this.insertXP = new GuiItemTab(0, this.guiLeft + this.xSize - 3, this.guiTop + 49,
-                                       CommonUsedStuff.getTranslated("enderstuffplus.duplicator.insertXP"),
-                                       Item.blazeRod.getIconFromDamage(0), true, true, Textures.GUI_BUTTONS);
+                                       SAPUtils.getTranslated("enderstuffplus.duplicator.insertXP"),
+                                       Item.blazeRod.getIconFromDamage(0), true, true, Textures.GUI_BUTTONS.getResource());
         this.buttonList.add(this.insertXP);
     }
 }

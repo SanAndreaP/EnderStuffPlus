@@ -2,7 +2,7 @@ package sanandreasp.mods.EnderStuffPlus.client.gui.BiomeChanger;
 
 import org.lwjgl.opengl.GL11;
 
-import sanandreasp.core.manpack.helpers.CommonUsedStuff;
+import sanandreasp.core.manpack.helpers.SAPUtils;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityBiomeChanger;
@@ -55,7 +55,7 @@ public class GuiBiomeChangerConfig
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        this.mc.getTextureManager().bindTexture(Textures.GUI_BIOMECHANGER_III);
+        this.mc.getTextureManager().bindTexture(Textures.GUI_BIOMECHANGER_III.getResource());
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
@@ -74,14 +74,14 @@ public class GuiBiomeChangerConfig
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         RenderHelper.disableStandardItemLighting();
 
-        this.fontRenderer.drawString(CommonUsedStuff.getTranslated("tile.enderstuffp:biomeChanger.name"), 8, 8, 0x404040);
-        this.fontRenderer.drawString(CommonUsedStuff.getTranslated("enderstuffplus.biomeChanger.gui3.periform"), 8, 61, 0x404040);
-        this.fontRenderer.drawString(CommonUsedStuff.getTranslated("enderstuffplus.biomeChanger.gui3.stats"), 8, 130, 0x404040);
-        this.fontRenderer.drawString(CommonUsedStuff.getTranslated("enderstuffplus.biomeChanger.gui3.remain",
+        this.fontRenderer.drawString(SAPUtils.getTranslated("tile.enderstuffp:biomeChanger.name"), 8, 8, 0x404040);
+        this.fontRenderer.drawString(SAPUtils.getTranslated("enderstuffplus.biomeChanger.gui3.periform"), 8, 61, 0x404040);
+        this.fontRenderer.drawString(SAPUtils.getTranslated("enderstuffplus.biomeChanger.gui3.stats"), 8, 130, 0x404040);
+        this.fontRenderer.drawString(SAPUtils.getTranslated("enderstuffplus.biomeChanger.gui3.remain",
                                                                    this.teBiomeChanger.getMaxRange()
                                                                    - this.teBiomeChanger.getCurrRange()),
                                      20, 155, 0x404040);
-        this.fontRenderer.drawString(CommonUsedStuff.getTranslated("enderstuffplus.biomeChanger.gui3.processed",
+        this.fontRenderer.drawString(SAPUtils.getTranslated("enderstuffplus.biomeChanger.gui3.processed",
                                                                    this.teBiomeChanger.getCurrRange()),
                                      20, 165, 0x404040);
 
@@ -95,9 +95,9 @@ public class GuiBiomeChangerConfig
         this.rhombicButton.enabled = this.teBiomeChanger.getRadForm() != 2 && !this.teBiomeChanger.isActive();
         this.rangeSlider.enabled = this.changeBlocksButton.enabled = !this.teBiomeChanger.isActive();
 
-        String onOffText = CommonUsedStuff.getTranslated(this.teBiomeChanger.isReplacingBlocks ? "options.on"
+        String onOffText = SAPUtils.getTranslated(this.teBiomeChanger.isReplacingBlocks ? "options.on"
                                                                                                : "options.off");
-        this.changeBlocksButton.displayString = CommonUsedStuff.getTranslated("enderstuffplus.biomeChanger.gui3.blocks")
+        this.changeBlocksButton.displayString = SAPUtils.getTranslated("enderstuffplus.biomeChanger.gui3.blocks")
                                                 + ": " + onOffText;
 
         super.drawScreen(mouseX, mouseY, partTicks);
@@ -110,24 +110,24 @@ public class GuiBiomeChangerConfig
 
         this.tabCofig.enabled = false;
         this.rangeSlider = new GuiBiomeChangerSlider(4, this.guiLeft + 13, this.guiTop + 30, this.teBiomeChanger,
-                                                     CommonUsedStuff.getTranslated("enderstuffplus.biomeChanger.gui1.range"),
+                                                     SAPUtils.getTranslated("enderstuffplus.biomeChanger.gui1.range"),
                                                      this.teBiomeChanger.getMaxRange(), 128F);
         this.buttonList.add(this.rangeSlider);
 
         this.circularButton = new GuiButton(this.buttonList.size(), this.guiLeft + 13, this.guiTop + 70, 50, 20,
-                                            CommonUsedStuff.getTranslated("enderstuffplus.biomeChanger.gui3.form1"));
+                                            SAPUtils.getTranslated("enderstuffplus.biomeChanger.gui3.form1"));
         this.buttonList.add(this.circularButton);
 
         this.squareButton = new GuiButton(this.buttonList.size(), this.guiLeft + 13 + 50, this.guiTop + 70, 50, 20,
-                                          CommonUsedStuff.getTranslated("enderstuffplus.biomeChanger.gui3.form2"));
+                                          SAPUtils.getTranslated("enderstuffplus.biomeChanger.gui3.form2"));
         this.buttonList.add(this.squareButton);
 
         this.rhombicButton = new GuiButton(this.buttonList.size(), this.guiLeft + 13 + 100, this.guiTop + 70, 50, 20,
-                                           CommonUsedStuff.getTranslated("enderstuffplus.biomeChanger.gui3.form3"));
+                                           SAPUtils.getTranslated("enderstuffplus.biomeChanger.gui3.form3"));
         this.buttonList.add(this.rhombicButton);
 
         this.changeBlocksButton = new GuiButton(this.buttonList.size(), this.guiLeft + 13, this.guiTop + 100, 150, 20,
-                                                CommonUsedStuff.getTranslated("enderstuffplus.biomeChanger.gui3.blocks"));
+                                                SAPUtils.getTranslated("enderstuffplus.biomeChanger.gui3.blocks"));
         this.buttonList.add(this.changeBlocksButton);
     }
 
@@ -144,9 +144,9 @@ public class GuiBiomeChangerConfig
     protected void mouseMovedOrUp(int mouseX, int mouseY, int buttonIndex) {
         super.mouseMovedOrUp(mouseX, mouseY, buttonIndex);
 
-        if( (CommonUsedStuff.getSelectedBtn(this) != null) && (buttonIndex == 0) ) {
-            CommonUsedStuff.getSelectedBtn(this).mouseReleased(mouseX, mouseY);
-            CommonUsedStuff.setSelectedBtn(this, null);
+        if( (SAPUtils.getSelectedBtn(this) != null) && (buttonIndex == 0) ) {
+            SAPUtils.getSelectedBtn(this).mouseReleased(mouseX, mouseY);
+            SAPUtils.setSelectedBtn(this, null);
         }
     }
 }

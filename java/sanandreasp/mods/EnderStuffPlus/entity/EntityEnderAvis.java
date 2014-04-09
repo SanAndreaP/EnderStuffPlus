@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import sanandreasp.core.manpack.helpers.CommonUsedStuff;
+import sanandreasp.core.manpack.helpers.SAPUtils;
 import sanandreasp.core.manpack.mod.packet.PacketRegistry;
 import sanandreasp.mods.EnderStuffPlus.item.ItemRaincoat;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
@@ -807,19 +807,19 @@ public class EntityEnderAvis
         if( stack.hasTagCompound() ) {
             NBTTagCompound nbt = stack.getTagCompound();
             infos.add(String.format("%s: \2473%s",
-                                    CommonUsedStuff.getTranslated("enderstuffplus.petegg.health"),
+                                    SAPUtils.getTranslated("enderstuffplus.petegg.health"),
                                     (int) (nbt.getFloat("health") / 40F * 100F) + "%"));
             infos.add(String.format("%s: \2473%s",
-                                    CommonUsedStuff.getTranslated("enderstuffplus.petegg.condition"),
+                                    SAPUtils.getTranslated("enderstuffplus.petegg.condition"),
                                     (int) (nbt.getFloat("condition") * 10F) + "%"));
             infos.add(String.format("%s: \2473%s",
-                                    CommonUsedStuff.getTranslated("enderstuffplus.petegg.saddle"),
-                                    nbt.getBoolean("saddled") ? CommonUsedStuff.getTranslated("enderstuffplus.petegg.true")
-                                                              : CommonUsedStuff.getTranslated("enderstuffplus.petegg.false")));
+                                    SAPUtils.getTranslated("enderstuffplus.petegg.saddle"),
+                                    nbt.getBoolean("saddled") ? SAPUtils.getTranslated("enderstuffplus.petegg.true")
+                                                              : SAPUtils.getTranslated("enderstuffplus.petegg.false")));
             infos.add(String.format("%s: \2473%s",
-                                    CommonUsedStuff.getTranslated("enderstuffplus.petegg.immuneToH2O"),
-                                    nbt.hasKey("coat") ? CommonUsedStuff.getTranslated("enderstuffplus.petegg.true")
-                                                       : CommonUsedStuff.getTranslated("enderstuffplus.petegg.false")));
+                                    SAPUtils.getTranslated("enderstuffplus.petegg.immuneToH2O"),
+                                    nbt.hasKey("coat") ? SAPUtils.getTranslated("enderstuffplus.petegg.true")
+                                                       : SAPUtils.getTranslated("enderstuffplus.petegg.false")));
         }
     }
 }

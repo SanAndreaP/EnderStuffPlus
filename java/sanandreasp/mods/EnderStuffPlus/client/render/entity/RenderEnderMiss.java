@@ -61,7 +61,8 @@ public class RenderEnderMiss
 
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-        return ((EntityEnderMiss) entity).isSpecial() ? Textures.ENDERMISS_TEXTURE_SPEC : Textures.ENDERMISS_TEXTURE;
+        return ((EntityEnderMiss) entity).isSpecial() ? Textures.ENDERMISS_TEXTURE_SPEC.getResource()
+                                                      : Textures.ENDERMISS_TEXTURE.getResource();
     }
 
     private void renderCarrying(EntityEnderMiss miss, float partTicks) {
@@ -344,7 +345,8 @@ public class RenderEnderMiss
     private int renderPassSpecial(EntityEnderMiss miss, int pass, float partTicks) {
         if( pass == 0 && miss.hurtTime <= 0 ) {
             this.setRenderPassModel(this.missModel);
-            this.bindTexture(miss.isSpecial() ? Textures.ENDERMISS_GLOW_TEXTURE_SPEC : Textures.ENDERMISS_GLOW_TEXTURE);
+            this.bindTexture(miss.isSpecial() ? Textures.ENDERMISS_GLOW_TEXTURE_SPEC.getResource()
+                                              : Textures.ENDERMISS_GLOW_TEXTURE.getResource());
 
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_ALPHA_TEST);

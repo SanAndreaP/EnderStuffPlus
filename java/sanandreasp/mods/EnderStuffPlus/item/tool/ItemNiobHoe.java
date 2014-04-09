@@ -3,7 +3,7 @@ package sanandreasp.mods.EnderStuffPlus.item.tool;
 import java.util.ArrayList;
 import java.util.List;
 
-import sanandreasp.core.manpack.helpers.CommonUsedStuff;
+import sanandreasp.core.manpack.helpers.SAPUtils;
 import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ModItemRegistry;
@@ -50,7 +50,7 @@ public class ItemNiobHoe
 
     private Block[] getPlants() {
         if( this.effectiveBlocks.size() > 0 ) {
-            return this.effectiveBlocks.toArray(CommonUsedStuff.getArrayFromList(this.effectiveBlocks, Block.class));
+            return this.effectiveBlocks.toArray(SAPUtils.getArrayFromList(this.effectiveBlocks, Block.class));
         }
         List<Block> blocks = new ArrayList<Block>();
         for( Block block : Block.blocksList ) {
@@ -59,7 +59,7 @@ public class ItemNiobHoe
             }
         }
         this.effectiveBlocks = new ArrayList<Block>(blocks);
-        return blocks.toArray(CommonUsedStuff.getArrayFromList(blocks, Block.class));
+        return blocks.toArray(SAPUtils.getArrayFromList(blocks, Block.class));
     }
 
     @Override

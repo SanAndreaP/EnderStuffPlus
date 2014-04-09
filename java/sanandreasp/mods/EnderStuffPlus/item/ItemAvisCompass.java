@@ -59,7 +59,7 @@ public class ItemAvisCompass
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Icon getIconFromDamage(int damage) {
+    public Icon getIconFromDamage(int dmg) {
         return IconRegistry.compass;
     }
 }

@@ -35,8 +35,8 @@ public class ItemCustomEnderPearl
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Icon getIconFromDamage(int damage) {
-        return this.icons[damage];
+    public Icon getIconFromDamage(int dmg) {
+        return this.icons[dmg];
     }
 
     @Override

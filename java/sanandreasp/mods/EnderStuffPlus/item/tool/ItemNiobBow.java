@@ -60,7 +60,8 @@ public class ItemNiobBow
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister iconRegister) {
-        this.itemIcon = this.normalBow = iconRegister.registerIcon(ESPModRegistry.MOD_ID + ":niobBowI");
+        this.itemIcon = iconRegister.registerIcon(ESPModRegistry.MOD_ID + ":niobBowI");
+        this.normalBow = this.itemIcon;
         this.bowPowI = iconRegister.registerIcon(ESPModRegistry.MOD_ID + ":niobBowII");
         this.bowPowII = iconRegister.registerIcon(ESPModRegistry.MOD_ID + ":niobBowIII");
         this.bowPowIII = iconRegister.registerIcon(ESPModRegistry.MOD_ID + ":niobBowIV");

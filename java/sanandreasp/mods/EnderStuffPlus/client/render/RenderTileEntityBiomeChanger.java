@@ -69,7 +69,7 @@ public class RenderTileEntityBiomeChanger
             te.renderCurrHeight = 0F;
         }
 
-        this.bindTexture(Textures.BIOMECHANGER_TEXTURE);
+        this.bindTexture(Textures.BIOMECHANGER_TEXTURE.getResource());
 
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);

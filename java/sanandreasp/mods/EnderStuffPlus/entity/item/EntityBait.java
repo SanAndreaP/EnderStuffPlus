@@ -31,8 +31,10 @@ public class EntityBait
             this.setDead();
         }
 
-        ESPModRegistry.sendPacketAllRng("fxPortal", this.posX, this.posY, this.posZ, 128.0D, this.dimension, this.posX,
-                                        this.posY, this.posZ, 1.0F, 0.5F, 0.7F, this.width, this.height);
+        if( this.ticksExisted % 10 == 0 ) {
+            ESPModRegistry.sendPacketAllRng("fxPortal", this.posX, this.posY, this.posZ, 128.0D, this.dimension, this.posX,
+                                            this.posY, this.posZ, 1.0F, 0.5F, 0.7F, this.width, this.height, 10);
+        }
 
         if( !this.worldObj.isRemote ) {
             AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(this.posX - 32.0D, this.posY - 32.0D, this.posZ - 32.0D,

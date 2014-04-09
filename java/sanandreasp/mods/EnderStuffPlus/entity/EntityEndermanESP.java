@@ -353,7 +353,7 @@ public class EntityEndermanESP
 
     public void spawnParticle(String type, double X, double Y, double Z, float dataI, float dataII, float dataIII) {
         ESPModRegistry.sendPacketAllRng("fxPortal", this.posX, this.posY, this.posZ, 128.0D, this.dimension, this.posX,
-                                        this.posY, this.posZ, dataI, dataII, dataIII, this.width, this.height);
+                                        this.posY, this.posZ, dataI, dataII, dataIII, this.width, this.height, 1);
     }
 
     protected boolean teleportRandomly(int cause) {

@@ -1,0 +1,5 @@
+TODO-LIST
+
+- make Ender Miss wear swords and let them attack (intelligently, e.g. run away if creeper charges up) other mobs
+- make custom loot chests which require a key and a minigame (like in "Dust: An Elysian Tail") to open it
+  * keys are dropped from Ender Nemesis

@@ -2,44 +2,24 @@ package sanandreasp.mods.EnderStuffPlus.registry;
 
 import java.util.HashMap;
 
-import sanandreasp.core.manpack.helpers.CommonUsedStuff;
+import sanandreasp.core.manpack.helpers.SAPUtils;
 import sanandreasp.core.manpack.managers.SAPConfigManager;
 import sanandreasp.core.manpack.managers.SAPUpdateManager;
 import sanandreasp.core.manpack.mod.packet.PacketRegistry;
 import sanandreasp.mods.ManagerPackHelper;
 import sanandreasp.mods.EnderStuffPlus.enchantment.EnchantmentEnderChestTeleport;
-import sanandreasp.mods.EnderStuffPlus.entity.EntityAvisArrow;
-import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderAvis;
-import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderIgnis;
-import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderMiss;
-import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderNemesis;
-import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderNivis;
-import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderRay;
-import sanandreasp.mods.EnderStuffPlus.entity.EntityRayball;
-import sanandreasp.mods.EnderStuffPlus.entity.EntityWeatherAltarFirework;
-import sanandreasp.mods.EnderStuffPlus.entity.item.EntityBait;
-import sanandreasp.mods.EnderStuffPlus.entity.item.EntityItemTantal;
-import sanandreasp.mods.EnderStuffPlus.entity.item.EntityPearlIgnis;
-import sanandreasp.mods.EnderStuffPlus.entity.item.EntityPearlMiss;
-import sanandreasp.mods.EnderStuffPlus.entity.item.EntityPearlNivis;
 import sanandreasp.mods.EnderStuffPlus.item.ItemEnderPetEgg;
 
 import com.google.common.collect.Maps;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.DamageSource;
 
-import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -55,199 +35,146 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.Player;
 
-@Mod(modid=ESPModRegistry.MOD_ID, name="EnderStuff+", version=ESPModRegistry.VERSION, dependencies="required-after:sapmanpack")
-@NetworkMod(clientSideRequired=true, serverSideRequired=false)
+@Mod(modid = ESPModRegistry.MOD_ID, name = ESPModRegistry.MOD_NAME, version = ESPModRegistry.VERSION, dependencies = "required-after:sapmanpack")
+@NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class ESPModRegistry
 {
-	public static final String MOD_ID = "enderstuffp";
-	public static final String PROXY_COMMON = "sanandreasp.mods.EnderStuffPlus.registry.CommonProxy";
-	public static final String PROXY_CLIENT = "sanandreasp.mods.EnderStuffPlus.client.registry.ClientProxy";
-	public static final String VERSION = "1.6.4-1.1.0";
 
-	public static ConfigRegistry conf;
+    public static final String MOD_ID = "enderstuffp";
+    public static final String MOD_NAME = "EnderStuff+";
+    public static final String PROXY_CLIENT = "sanandreasp.mods.EnderStuffPlus.client.registry.ClientProxy";
+    public static final String PROXY_COMMON = "sanandreasp.mods.EnderStuffPlus.registry.CommonProxy";
+    public static final String VERSION = "1.6.4-1.1.0";
 
-	private static final Class<?>[][] paramTypes = new Class[][] {{EnumCreatureType.class, Class.class, int.class, Material.class, boolean.class, boolean.class}};
-	public static final EnumCreatureType ambientWater = EnumHelper.addEnum(paramTypes, EnumCreatureType.class, "ambientWaterFish", EntitySlime.class, 40, Material.water, false, true);
+    @Instance(MOD_ID)
+    public static ESPModRegistry instance;
+    @SidedProxy(clientSide = ESPModRegistry.PROXY_CLIENT, serverSide = ESPModRegistry.PROXY_COMMON)
+    public static CommonProxy proxy;
 
-	@Instance(MOD_ID)
-	public static ESPModRegistry instance;
+    public static ConfigRegistry conf;
+    public static DamageSource endAcid;
+    public static Enchantment enderChestTel;
+    public static CreativeTabs espTab;
+    public static CreativeTabs espTabCoats;
+    public static ManagerPackHelper manHelper = new ManagerPackHelper();
+    public static HashMap<Integer, ItemStack> niobSet = Maps.newHashMap();
 
-	@SidedProxy(clientSide=ESPModRegistry.PROXY_CLIENT, serverSide=ESPModRegistry.PROXY_COMMON)
-	public static CommonProxy proxy;
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        manHelper.checkManPack(event.getModMetadata().name);
 
-	public static Enchantment enderChestTel;
-
-	public static HashMap<Integer, ItemStack> niobSet = Maps.newHashMap();
-
-	public static CreativeTabs espTab, espTabCoats;
-
-	public static ManagerPackHelper manHelper = new ManagerPackHelper();
-
-	public static DamageSource endAcid;
-
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent evt) {
-		manHelper.checkManPack(evt.getModMetadata().name);
-
-		if( !manHelper.loading ) {
+        if( !manHelper.loading ) {
             return;
         }
 
-		manHelper.initMan(
-				new SAPConfigManager("EnderStuffPlus", "EnderStuffPlus.txt", "/sanandreasp/"),
-				new SAPUpdateManager("EnderStuffPlus", 1, 1, 0, "http://dl.dropbox.com/u/56920617/EnderStuffPMod_latest.txt", "http://www.minecraftforum.net/topic/936911-")
-		);
+        manHelper.initMan(new SAPConfigManager("EnderStuffPlus", "EnderStuffPlus.txt", "/sanandreasp/"),
+                          new SAPUpdateManager("EnderStuffPlus", 1, 1, 0,
+                                               "http://dl.dropbox.com/u/56920617/EnderStuffPMod_latest.txt",
+                                               "http://www.minecraftforum.net/topic/936911-"));
 
-		ConfigRegistry.setConfig(ESPModRegistry.manHelper);
+        ConfigRegistry.setConfig(ESPModRegistry.manHelper);
 
-		ESPModRegistry.espTab = new CreativeTabs("ESPTab") {
-			@Override
-			public ItemStack getIconItemStack() {
-				return new ItemStack(ModBlockRegistry.biomeChanger);
-			}
-		};
-		ESPModRegistry.espTabCoats = new CreativeTabs("ESPTabCoats") {
-			@Override
-			public ItemStack getIconItemStack() {
-				return new ItemStack(ModItemRegistry.rainCoat, 1, 16 | 32);
-			}
-		};
+        ESPModRegistry.espTab = new CreativeTabs("ESPTab") {
+            @Override
+            public ItemStack getIconItemStack() {
+                return new ItemStack(ModBlockRegistry.biomeChanger);
+            }
+        };
+        ESPModRegistry.espTabCoats = new CreativeTabs("ESPTabCoats") {
+            @Override
+            public ItemStack getIconItemStack() {
+                return new ItemStack(ModItemRegistry.rainCoat, 1, 16 | 32);
+            }
+        };
 
-		ModBlockRegistry.init();
-		ModItemRegistry.init();
+        ModBlockRegistry.initiate();
+        ModItemRegistry.initiate();
+        ModEntityRegistry.initiate();
 
-	// Enchantments
-		ESPModRegistry.enderChestTel = new EnchantmentEnderChestTeleport(ConfigRegistry.enchID, 5);
-		Enchantment.addToBookList(ESPModRegistry.enderChestTel);
+        ESPModRegistry.enderChestTel = new EnchantmentEnderChestTeleport(ConfigRegistry.enchID, 5);
+        Enchantment.addToBookList(ESPModRegistry.enderChestTel);
 
-	// Armor Set
-		niobSet.put(0, new ItemStack(ModItemRegistry.niobBoots));
-		niobSet.put(1, new ItemStack(ModItemRegistry.niobLegs));
-		niobSet.put(2, new ItemStack(ModItemRegistry.niobPlate));
-		niobSet.put(3, new ItemStack(ModItemRegistry.niobHelmet));
+        niobSet.put(0, new ItemStack(ModItemRegistry.niobBoots));
+        niobSet.put(1, new ItemStack(ModItemRegistry.niobLegs));
+        niobSet.put(2, new ItemStack(ModItemRegistry.niobPlate));
+        niobSet.put(3, new ItemStack(ModItemRegistry.niobHelmet));
 
-	// Misc registering
-		proxy.registerHandlers();
-		proxy.registerPackets();
-		RegistryDungeonLoot.init();
-	}
+        proxy.registerHandlers();
+        proxy.registerPackets();
+        RegistryDungeonLoot.init();
 
-	@EventHandler
-	public void init(FMLInitializationEvent evt) {
-		if( !manHelper.loading ) {
+        endAcid = SAPUtils.getNewDmgSrc("enderstuffp:endAcid");
+
+        ItemEnderPetEgg.addPet(0, "EnderMiss", 0xffbbdd, 0x303030);
+        ItemEnderPetEgg.addPet(1, "EnderAvis", 0x606060, 0xFF00FF);
+
+        NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
+
+        OreDictionary.registerOre("ingotNiob", new ItemStack(ModItemRegistry.endIngot));
+        OreDictionary.registerOre("oreNiob", new ItemStack(ModBlockRegistry.endOre));
+        OreDictionary.registerOre("blockNiob", new ItemStack(ModBlockRegistry.endBlock));
+        OreDictionary.registerOre("logWood", new ItemStack(ModBlockRegistry.enderLog, 1, OreDictionary.WILDCARD_VALUE));
+        OreDictionary.registerOre("plankWood", ModBlockRegistry.enderPlanks);
+        OreDictionary.registerOre("treeSapling", new ItemStack(ModBlockRegistry.sapEndTree, 1, OreDictionary.WILDCARD_VALUE));
+
+        MinecraftForge.setBlockHarvestLevel(ModBlockRegistry.endOre, 0, "pickaxe", 2);
+
+        proxy.registerClientStuff();
+    }
+
+    @EventHandler
+    public void init(FMLInitializationEvent evt) {
+        if( !manHelper.loading ) {
             return;
         }
 
-		endAcid = CommonUsedStuff.getNewDmgSrc("enderstuffp:endAcid");
+        FurnaceRecipes.smelting().addSmelting(ModBlockRegistry.endOre.blockID, 0, new ItemStack(ModItemRegistry.endIngot, 1, 0), 0.85F);
+        CraftingRegistry.initCraftings();
+    }
 
-		RegistryDuplicator.registerFuel(new ItemStack(ModItemRegistry.endIngot, 1, 0), 100);
-		RegistryDuplicator.registerFuel(new ItemStack(Item.diamond), 160);
-		RegistryDuplicator.registerFuel(new ItemStack(Item.ingotGold), 60);
-		RegistryDuplicator.registerFuel(new ItemStack(Item.emerald), 40);
-		RegistryDuplicator.registerFuel(new ItemStack(Item.ingotIron), 20);
-
-		RegistryDuplicator.registerDupableItem(new ItemStack(Block.cobblestoneMossy), 0);
-		RegistryDuplicator.registerDupableItem(new ItemStack(Block.stoneBrick, 1, 1), 0);
-		RegistryDuplicator.registerDupableItem(new ItemStack(Block.stoneBrick, 1, 2), 0);
-		RegistryDuplicator.registerDupableItem(new ItemStack(Block.stoneBrick, 1, 3), 0);
-		RegistryDuplicator.registerDupableItem(new ItemStack(Block.blockClay), 0);
-		RegistryDuplicator.registerDupableItem(new ItemStack(Block.sand), 0);
-		RegistryDuplicator.registerDupableItem(new ItemStack(Block.whiteStone), 2);
-		RegistryDuplicator.registerDupableItem(new ItemStack(Block.oreLapis), 5);
-		RegistryDuplicator.registerDupableItem(new ItemStack(Block.oreIron), 10);
-		RegistryDuplicator.registerDupableItem(new ItemStack(Block.oreRedstone), 15);
-		RegistryDuplicator.registerDupableItem(new ItemStack(Block.oreGold), 15);
-		RegistryDuplicator.registerDupableItem(new ItemStack(ModBlockRegistry.endOre, 1, 0), 20);
-		RegistryDuplicator.registerDupableItem(new ItemStack(Block.oreEmerald), 25);
-		RegistryDuplicator.registerDupableItem(new ItemStack(Block.oreDiamond), 30);
-
-	// Entities
-		short entityID = 0;
-
-		proxy.registerEntity(EntityAvisArrow.class, "EnderAvisArrow", entityID++, this, 64, 20, true);
-		proxy.registerEntityWithEgg(EntityEnderNivis.class, "EnderNivis", entityID++, this, 80, 3, true, 0xFFFFFF, 0x66FFFF);
-		proxy.registerEntityWithEgg(EntityEnderIgnis.class, "EnderIgnis", entityID++, this, 80, 3, true, 0xFF0000, 0xFFFF00);
-		proxy.registerEntityWithEgg(EntityEnderRay.class, "EnderRay", entityID++, this, 80, 3, true, 0x222222, 0x8800AA);
-		proxy.registerEntityWithEgg(EntityEnderMiss.class, "EnderMiss", entityID++, this, 80, 3, true, 0xffbbdd, 0x303030);
-		proxy.registerEntityWithEgg(EntityEnderAvis.class, "EnderAvis", entityID++, this, 80, 3, true, 0x606060, 0xFF00FF);
-		proxy.registerEntity(EntityRayball.class, "EnderRayBall", entityID++, this, 64, 10, false);
-		proxy.registerEntity(EntityWeatherAltarFirework.class, "WAltarFirework", entityID++, this, 64, 10, true);
-		proxy.registerEntityWithEgg(EntityEnderNemesis.class, "EnderNemesis", entityID++, this, 80, 3, true, 0x606060, 0x3A3AAE);
-        proxy.registerEntity(EntityPearlNivis.class, "EnderNivisPearl", entityID++, this, 64, 10, true);
-        proxy.registerEntity(EntityPearlIgnis.class, "EnderIgnisPearl", entityID++, this, 64, 10, true);
-        proxy.registerEntity(EntityPearlMiss.class, "EnderMissPearl", entityID++, this, 64, 10, true);
-        proxy.registerEntity(EntityBait.class, "EnderMissBait", entityID++, this, 64, 4, false);
-        proxy.registerEntity(EntityItemTantal.class, "ItemTantal", entityID++, this, 64, 20, true);
-
-		ItemEnderPetEgg.addPet(0, "EnderMiss", 0xffbbdd, 0x303030);
-		ItemEnderPetEgg.addPet(1, "EnderAvis", 0x606060, 0xFF00FF);
-
-	// Registry
-		NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
-
-		OreDictionary.registerOre("ingotNiob", new ItemStack(ModItemRegistry.endIngot));
-		OreDictionary.registerOre("oreNiob", new ItemStack(ModBlockRegistry.endOre));
-		OreDictionary.registerOre("blockNiob", new ItemStack(ModBlockRegistry.endBlock));
-		OreDictionary.registerOre("logWood", new ItemStack(ModBlockRegistry.enderLog, 1, OreDictionary.WILDCARD_VALUE));
-		OreDictionary.registerOre("plankWood", ModBlockRegistry.enderPlanks);
-		OreDictionary.registerOre("treeSapling", new ItemStack(ModBlockRegistry.sapEndTree, 1, OreDictionary.WILDCARD_VALUE));
-
-		MinecraftForge.setBlockHarvestLevel(ModBlockRegistry.endOre, 0, "pickaxe", 2);
-
-		proxy.registerClientStuff();
-	}
-
-	@EventHandler
-	public void postInit(FMLPostInitializationEvent evt) {
-		if( !ESPModRegistry.manHelper.loading ) {
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent evt) {
+        if( !ESPModRegistry.manHelper.loading ) {
             return;
         }
+    }
 
-	// Craftings & Smeltings
-		FurnaceRecipes.smelting().addSmelting(ModBlockRegistry.endOre.blockID, 0, new ItemStack(ModItemRegistry.endIngot, 1, 0), 0.85F);
+    public static boolean hasPlayerFullNiob(EntityPlayer player) {
+        boolean b = true;
+        for( int i = 0; i < 4; i++ ) {
+            if( player.getCurrentArmor(i) == null || (player.getCurrentArmor(i).getItem() != niobSet.get(i).getItem()) ) {
+                b = false;
+                break;
+            }
+        }
+        return b;
+    }
 
-		CraftingRegistry.initCraftings();
+    public static boolean isJumping(EntityPlayer thePlayer) {
+        return ObfuscationReflectionHelper.getPrivateValue(EntityLivingBase.class, thePlayer, "isJumping", "field_70703_bu");
+    }
 
-	// Spawnings
-		ModEntityRegistry.initiate();
-	}
+    public static boolean isShiftPressed(EntityPlayer ep) {
+        return ep != null ? ep.isSneaking() : false;
+    }
 
-	public static boolean isJumping(EntityPlayer thePlayer) {
-		return ObfuscationReflectionHelper.getPrivateValue(EntityLivingBase.class, thePlayer, "isJumping", "field_70703_bu");
-	}
+    public static boolean isSprintActivated(EntityPlayer ep) {
+        return ep != null ? ep.isSprinting() : false;
+    }
 
-	public static boolean isShiftPressed(EntityPlayer ep) {
-		return ep != null ? ep.isSneaking() : false;
-	}
+    public static void sendPacketAllPlyr(String name, Object... data) {
+        PacketRegistry.sendPacketToAllPlayers(MOD_ID, name, data);
+    }
 
-	public static boolean isSprintActivated(EntityPlayer ep) {
-		return ep != null ? ep.isSprinting() : false;
-	}
+    public static void sendPacketAllRng(String name, double x, double y, double z, double rng, int dimID, Object... data) {
+        PacketRegistry.sendPacketToAllAround(MOD_ID, name, x, y, z, rng, dimID, data);
+    }
 
-	public static boolean hasPlayerFullNiob(EntityPlayer player) {
-		boolean b = true;
-		for( int i = 0; i < 4; i++ ) {
-			if( player.getCurrentArmor(i) == null || (player.getCurrentArmor(i).getItem() != niobSet.get(i).getItem()) ) {
-				b = false;
-				break;
-			}
-		}
-		return b;
-	}
+    public static void sendPacketPlyr(String name, EntityPlayer player, Object... data) {
+        PacketRegistry.sendPacketToPlayer(MOD_ID, name, (Player) player, data);
+    }
 
-	public static void sendPacketSrv(String name, Object...data) {
-		PacketRegistry.sendPacketToServer(MOD_ID, name, data);
-	}
-
-	public static void sendPacketAllRng(String name, double x, double y, double z, double rng, int dimID, Object...data) {
-		PacketRegistry.sendPacketToAllAround(MOD_ID, name, x, y, z, rng, dimID, data);
-	}
-
-	public static void sendPacketAllPlyr(String name, Object...data) {
-		PacketRegistry.sendPacketToAllPlayers(MOD_ID, name, data);
-	}
-
-	public static void sendPacketPlyr(String name, EntityPlayer player, Object...data) {
-		PacketRegistry.sendPacketToPlayer(MOD_ID, name, (Player)player, data);
-	}
+    public static void sendPacketSrv(String name, Object... data) {
+        PacketRegistry.sendPacketToServer(MOD_ID, name, data);
+    }
 }

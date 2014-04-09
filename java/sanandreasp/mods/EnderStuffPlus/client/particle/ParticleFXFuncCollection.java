@@ -51,7 +51,7 @@ public final class ParticleFXFuncCollection
         }
 
         EntityFX particle = new EntityAuraFX(world, partX, partY, partZ, 0.0D, 0.0D, 0.0D);
-        
+
         particle.setParticleTextureIndex(66);
         particle.setRBGColorF(0.25F + rand.nextFloat() * 0.25F, 0.0F, 1.0F);
         Minecraft.getMinecraft().effectRenderer.addEffect(particle);
@@ -65,18 +65,18 @@ public final class ParticleFXFuncCollection
             double partY = y - 0.05D;
             double partZ = (z + blkRand.nextFloat());
             EntityReddustFX fx = new EntityReddustFX(world, partX, partY, partZ, 0.26F, 0.0F, 0.35F);
-            
+
             fx.motionY = -0.2D;
             Minecraft.getMinecraft().effectRenderer.addEffect(fx);
         }
     }
 
-    public static void spawnPortalFX(World world, double x, double y, double z, float clrRed, float clrGreen, float clrBlue, float width, float height) {
-        for( int i = 0; i < 2; i++ ) {
+    public static void spawnPortalFX(World world, double x, double y, double z, float clrRed, float clrGreen, float clrBlue, float width, float height, int loop) {
+        for( int i = 0; i < loop * 2; i++ ) {
             EntityFX part = new EntityEnderMobFX(world, x + (rand.nextDouble() - 0.5D) * width, (y + rand.nextDouble() * height) - 0.25D,
                                                  z + (rand.nextDouble() - 0.5D) * width, (rand.nextDouble() - 0.5D) * 2D, -rand.nextDouble(),
                                                  (rand.nextDouble() - 0.5D) * 2D, clrRed, clrGreen, clrBlue);
-            
+
             Minecraft.getMinecraft().effectRenderer.addEffect(part);
         }
     }
@@ -96,12 +96,12 @@ public final class ParticleFXFuncCollection
     public static void spawnWeatherAltarFX(World world, int x, int y, int z, Random rand) {
         TileEntityWeatherAltar altar = (TileEntityWeatherAltar) world.getBlockTileEntity(x, y, z);
         List<Integer[]> blockCoords = altar.getSurroundingPillars();
-        
+
         for( Integer[] coords : blockCoords ) {
             if( rand.nextInt(8) == 0 ) {
                 EntityFX particle = new EntityWeatherAltarFX(world, x + 0.5D, y + 2.0D, z + 0.5D, coords[0] - x + rand.nextFloat() - 0.5D,
                                                              coords[1] - y - rand.nextFloat() - 1.0F, coords[2] - z + rand.nextFloat() - 0.5D);
-                
+
                 particle.setParticleTextureIndex(66);
                 particle.setRBGColorF(0.25F + rand.nextFloat() * 0.25F, 0.0F, 1.0F);
                 Minecraft.getMinecraft().effectRenderer.addEffect(particle);

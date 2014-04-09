@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import sanandreasp.core.manpack.helpers.CommonUsedStuff;
+import sanandreasp.core.manpack.helpers.SAPUtils;
 import sanandreasp.core.manpack.mod.packet.PacketRegistry;
 import sanandreasp.mods.EnderStuffPlus.item.ItemRaincoat;
 import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
@@ -367,7 +367,7 @@ public class EntityEnderMiss
         if( player.getCurrentEquippedItem() != null ) {
             ItemStack playerItem = player.getCurrentEquippedItem();
 
-            if( CommonUsedStuff.areItemInstEqual(playerItem, Block.plantYellow) && !this.worldObj.isRemote
+            if( SAPUtils.areItemInstEqual(playerItem, Block.plantYellow) && !this.worldObj.isRemote
                 && (!this.isTamed() || this.ownerName.isEmpty()) )
             {
                 if( this.rand.nextInt(10) == 0 ) {
@@ -402,11 +402,11 @@ public class EntityEnderMiss
                     this.setCoat(coatItem);
                     playerItem.stackSize--;
                     return true;
-                } else if( CommonUsedStuff.areItemInstEqual(playerItem, ModItemRegistry.avisFeather) && this.canGetFallDmg() ) {
+                } else if( SAPUtils.areItemInstEqual(playerItem, ModItemRegistry.avisFeather) && this.canGetFallDmg() ) {
                     this.setCanGetFallDmg(false);
                     playerItem.stackSize--;
                     return true;
-                } else if( CommonUsedStuff.areItemInstEqual(playerItem, Item.dyePowder)
+                } else if( SAPUtils.areItemInstEqual(playerItem, Item.dyePowder)
                         && playerItem.getItemDamage() != this.getBowColor() )
                 {
                     this.setBowColor(playerItem.getItemDamage());
@@ -431,16 +431,16 @@ public class EntityEnderMiss
         }
 
         if( this.isTamed() && !this.worldObj.isRemote ) {
-            String s1 = "\247d[%s]\247f " + CommonUsedStuff.getTranslated("enderstuffplus.chat.name");
+            String s1 = "\247d[%s]\247f " + SAPUtils.getTranslated("enderstuffplus.chat.name");
             String s2 = this.getName().isEmpty() ? EnumChatFormatting.OBFUSCATED + "RANDOM" + EnumChatFormatting.RESET : this.getName();
-            player.addChatMessage(CommonUsedStuff.getTranslated(s1, CommonUsedStuff.getTranslated("entity.EnderMiss.name"), s2));
+            player.addChatMessage(SAPUtils.getTranslated(s1, SAPUtils.getTranslated("entity.EnderMiss.name"), s2));
 
             if( this.ownerName.equals(player.username) ) {
                 int percHealth = (int) (this.getHealth() / this.getMaxHealth() * 100F);
 
-                player.addChatMessage("  " + CommonUsedStuff.getTranslated("enderstuffplus.chat.missFriend", percHealth));
+                player.addChatMessage("  " + SAPUtils.getTranslated("enderstuffplus.chat.missFriend", percHealth));
             } else {
-                player.addChatMessage("  " + CommonUsedStuff.getTranslated("enderstuffplus.chat.stranger", this.ownerName));
+                player.addChatMessage("  " + SAPUtils.getTranslated("enderstuffplus.chat.stranger", this.ownerName));
             }
 
             return true;
@@ -819,7 +819,7 @@ public class EntityEnderMiss
 
     public void spawnParticle(String type, double X, double Y, double Z) {
         ESPModRegistry.sendPacketAllRng("fxPortal", this.posX, this.posY, this.posZ, 128.0D, this.dimension, this.posX,
-                                        this.posY, this.posZ, 1.0F, 0.5F, 0.7F, this.width, this.height);
+                                        this.posY, this.posZ, 1.0F, 0.5F, 0.7F, this.width, this.height, 1);
     }
 
     protected boolean teleportRandomly() {
@@ -993,20 +993,20 @@ public class EntityEnderMiss
         if( stack.hasTagCompound() ) {
             NBTTagCompound nbt = stack.getTagCompound();
             infos.add(String.format("%s: \2473%s",
-                                       CommonUsedStuff.getTranslated("enderstuffplus.petegg.health"),
+                                       SAPUtils.getTranslated("enderstuffplus.petegg.health"),
                                        (int) (nbt.getFloat("health") / 40F * 100F) + "%"));
             infos.add(String.format("%s: \2473%s",
-                                       CommonUsedStuff.getTranslated("enderstuffplus.petegg.hasSpecSkin"),
-                                       nbt.getBoolean("special") ? CommonUsedStuff.getTranslated("enderstuffplus.petegg.true")
-                                                                 : CommonUsedStuff.getTranslated("enderstuffplus.petegg.false")));
+                                       SAPUtils.getTranslated("enderstuffplus.petegg.hasSpecSkin"),
+                                       nbt.getBoolean("special") ? SAPUtils.getTranslated("enderstuffplus.petegg.true")
+                                                                 : SAPUtils.getTranslated("enderstuffplus.petegg.false")));
             infos.add(String.format("%s: \2473%s",
-                                       CommonUsedStuff.getTranslated("enderstuffplus.petegg.immuneToH2O"),
-                                       nbt.hasKey("coat") ? CommonUsedStuff.getTranslated("enderstuffplus.petegg.true")
-                                                          : CommonUsedStuff.getTranslated("enderstuffplus.petegg.false")));
+                                       SAPUtils.getTranslated("enderstuffplus.petegg.immuneToH2O"),
+                                       nbt.hasKey("coat") ? SAPUtils.getTranslated("enderstuffplus.petegg.true")
+                                                          : SAPUtils.getTranslated("enderstuffplus.petegg.false")));
             infos.add(String.format("%s: \2473%s",
-                                       CommonUsedStuff.getTranslated("enderstuffplus.petegg.fallDmg"),
-                                       nbt.getBoolean("fallDmg") ? CommonUsedStuff.getTranslated("enderstuffplus.petegg.true")
-                                                                 : CommonUsedStuff.getTranslated("enderstuffplus.petegg.false")));
+                                       SAPUtils.getTranslated("enderstuffplus.petegg.fallDmg"),
+                                       nbt.getBoolean("fallDmg") ? SAPUtils.getTranslated("enderstuffplus.petegg.true")
+                                                                 : SAPUtils.getTranslated("enderstuffplus.petegg.false")));
         }
     }
 }

@@ -2,7 +2,7 @@ package sanandreasp.mods.EnderStuffPlus.client.gui;
 
 import org.lwjgl.opengl.GL11;
 
-import sanandreasp.core.manpack.helpers.CommonUsedStuff;
+import sanandreasp.core.manpack.helpers.SAPUtils;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityWeatherAltar;
@@ -62,12 +62,12 @@ public class GuiWeatherAltar
     @Override
     public void drawScreen(int mouseX, int mouseY, float partTicks) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(Textures.GUI_WEATHERALTAR);
+        this.mc.getTextureManager().bindTexture(Textures.GUI_WEATHERALTAR.getResource());
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-        this.fontRenderer.drawString(CommonUsedStuff.getTranslated("tile.enderstuffp:weatherAltar.name"),
+        this.fontRenderer.drawString(SAPUtils.getTranslated("tile.enderstuffp:weatherAltar.name"),
                                      this.guiLeft + 6, this.guiTop + 6, 0x808080);
-        this.fontRenderer.drawString(CommonUsedStuff.getTranslated("enderstuffplus.weatherAltar.duration"),
+        this.fontRenderer.drawString(SAPUtils.getTranslated("enderstuffplus.weatherAltar.duration"),
                                      this.guiLeft + 12, this.guiTop + 35, 0x808080);
 
         this.txtDuration.drawTextBox();
@@ -99,15 +99,15 @@ public class GuiWeatherAltar
         this.guiTop = (this.height - this.ySize) / 2;
 
         this.btnSun = new GuiButton(this.buttonList.size(), this.guiLeft + 10, this.guiTop + 75, 66, 20,
-                                    CommonUsedStuff.getTranslated("enderstuffplus.weatherAltar.sun"));
+                                    SAPUtils.getTranslated("enderstuffplus.weatherAltar.sun"));
         this.buttonList.add(this.btnSun);
 
         this.btnRain = new GuiButton(this.buttonList.size(), this.guiLeft + 10 + 67, this.guiTop + 75, 66, 20,
-                                     CommonUsedStuff.getTranslated("enderstuffplus.weatherAltar.rain"));
+                                     SAPUtils.getTranslated("enderstuffplus.weatherAltar.rain"));
         this.buttonList.add(this.btnRain);
 
         this.btnStorm = new GuiButton(this.buttonList.size(), this.guiLeft + 10 + 134, this.guiTop + 75, 66, 20,
-                                      CommonUsedStuff.getTranslated("enderstuffplus.weatherAltar.thunder"));
+                                      SAPUtils.getTranslated("enderstuffplus.weatherAltar.thunder"));
         this.buttonList.add(this.btnStorm);
 
         this.txtDuration = new GuiTextField(this.fontRenderer, this.guiLeft + 10, this.guiTop + 45, 200, 15);

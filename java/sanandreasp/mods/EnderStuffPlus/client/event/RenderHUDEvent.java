@@ -39,7 +39,7 @@ public class RenderHUDEvent
 
                 GL11.glColor4f(1F, 1F, 1F, 1F);
 
-                this.mc.getTextureManager().bindTexture(Textures.GUI_INGAMEICONS);
+                this.mc.getTextureManager().bindTexture(Textures.GUI_INGAMEICONS.getResource());
                 this.renderEnderStats(pet.getPetHealth(), pet.getPetMaxHealth(), scaledWdt / 2 + 91, scaledHgt - 39, 9);
 
                 if( this.mc.thePlayer.ridingEntity instanceof EntityEnderAvis ) {

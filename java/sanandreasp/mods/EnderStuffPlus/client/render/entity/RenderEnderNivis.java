@@ -58,7 +58,7 @@ public class RenderEnderNivis
 
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-        return Textures.ENDERNIVIS_TEXTURE;
+        return Textures.ENDERNIVIS_TEXTURE.getResource();
     }
 
     private void renderCarrying(EntityEnderNivis nivis, float partTicks) {
@@ -132,7 +132,7 @@ public class RenderEnderNivis
 
     private int renderEyes(EntityEnderNivis nivis, int pass, float partTicks) {
         if( pass == 0 ) {
-            this.bindTexture(Textures.ENDERNIVIS_GLOW_TEXTURE);
+            this.bindTexture(Textures.ENDERNIVIS_GLOW_TEXTURE.getResource());
 
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_ALPHA_TEST);

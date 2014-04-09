@@ -3,7 +3,7 @@ package sanandreasp.mods.EnderStuffPlus.item.tool;
 import java.util.ArrayList;
 import java.util.Random;
 
-import sanandreasp.core.manpack.helpers.CommonUsedStuff;
+import sanandreasp.core.manpack.helpers.SAPUtils;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ModItemRegistry;
 
@@ -18,8 +18,8 @@ public final class NiobToolHelper
 {
     private static final Random rand = new Random();
 
-    public static final boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player,
-                                                  Block[] toolEffectives, boolean shouldDropNugget) {
+    public static final boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player, Block[] toolEffectives,
+                                                  boolean shouldDropNugget) {
         if( stack == null || player.worldObj.isRemote || player.capabilities.isCreativeMode ) {
             return false;
         }
@@ -28,7 +28,7 @@ public final class NiobToolHelper
         int blockMeta = player.worldObj.getBlockMetadata(x, y, z);
         Block block = Block.blocksList[blockID];
 
-        if( !CommonUsedStuff.isToolEffective(toolEffectives, block) && !stack.getItem().canHarvestBlock(block) ) {
+        if( !SAPUtils.isToolEffective(toolEffectives, block) && !stack.getItem().canHarvestBlock(block) ) {
             return false;
         }
 
@@ -41,34 +41,34 @@ public final class NiobToolHelper
             ItemStack nugget = new ItemStack(ModItemRegistry.endNugget,
                                              rand.nextInt(EnchantmentHelper.getFortuneModifier(player) + 1) + 1);
             nugget = EnchantmentHelper.getEnchantmentLevel(ESPModRegistry.enderChestTel.effectId, stack) > 0
-                        ? CommonUsedStuff.addItemStackToInventory(nugget, player.getInventoryEnderChest())
+                        ? SAPUtils.addItemStackToInventory(nugget, player.getInventoryEnderChest())
                         : nugget;
             if( nugget != null ) {
-                nugget = CommonUsedStuff.addItemStackToInventory(nugget, player.inventory);
+                nugget = SAPUtils.addItemStackToInventory(nugget, player.inventory);
                 if( nugget != null ) {
-                    CommonUsedStuff.dropBlockAsItem(block, player.worldObj, x, y, z, nugget);
+                    SAPUtils.dropBlockAsItem(block, player.worldObj, x, y, z, nugget);
                 }
             }
         }
 
         if( block.canSilkHarvest(player.worldObj, player, x, y, z, blockMeta) && EnchantmentHelper.getSilkTouchModifier(player) ) {
-            ItemStack silkedStack = CommonUsedStuff.getSilkBlock(block, blockMeta);
+            ItemStack silkedStack = SAPUtils.getSilkBlock(block, blockMeta);
 
             if( silkedStack != null ) {
                 ItemStack newStack = EnchantmentHelper.getEnchantmentLevel(ESPModRegistry.enderChestTel.effectId, stack) > 0
-                                        ? CommonUsedStuff.addItemStackToInventory(silkedStack.copy(), player.getInventoryEnderChest())
+                                        ? SAPUtils.addItemStackToInventory(silkedStack.copy(), player.getInventoryEnderChest())
                                         : silkedStack.copy();
                 if( newStack != null ) {
-                    newStack = CommonUsedStuff.addItemStackToInventory(newStack.copy(), player.inventory);
+                    newStack = SAPUtils.addItemStackToInventory(newStack.copy(), player.inventory);
                     if( newStack != null ) {
-                        CommonUsedStuff.dropBlockAsItem(block, player.worldObj, x, y, z, newStack);
+                        SAPUtils.dropBlockAsItem(block, player.worldObj, x, y, z, newStack);
                     } else {
                         ESPModRegistry.sendPacketAllRng("fxPortal", x, y, z, 128.0D, player.dimension, x + 0.5F,
-                                                        y + 0.5F, z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
+                                                        y + 0.5F, z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 10);
                     }
                 } else {
                     ESPModRegistry.sendPacketAllRng("fxPortal", x, y, z, 128.0D, player.dimension, x + 0.5F, y + 0.5F,
-                                                    z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
+                                                    z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 10);
                 }
             }
         } else {
@@ -76,24 +76,24 @@ public final class NiobToolHelper
 
             for( ItemStack item : items ) {
                 ItemStack newStack = EnchantmentHelper.getEnchantmentLevel(ESPModRegistry.enderChestTel.effectId, stack) > 0
-                                        ? CommonUsedStuff.addItemStackToInventory(item.copy(), player.getInventoryEnderChest())
+                                        ? SAPUtils.addItemStackToInventory(item.copy(), player.getInventoryEnderChest())
                                         : item.copy();
                 if( newStack != null ) {
-                    newStack = CommonUsedStuff.addItemStackToInventory(newStack.copy(), player.inventory);
+                    newStack = SAPUtils.addItemStackToInventory(newStack.copy(), player.inventory);
                     if( newStack != null ) {
-                        CommonUsedStuff.dropBlockAsItem(block, player.worldObj, x, y, z, newStack);
+                        SAPUtils.dropBlockAsItem(block, player.worldObj, x, y, z, newStack);
                     } else {
                         ESPModRegistry.sendPacketAllRng("fxPortal", x, y, z, 128.0D, player.dimension, x + 0.5F,
-                                                        y + 0.5F, z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
+                                                        y + 0.5F, z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 10);
                     }
                 } else {
                     ESPModRegistry.sendPacketAllRng("fxPortal", x, y, z, 128.0D, player.dimension, x + 0.5F, y + 0.5F,
-                                                    z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
+                                                    z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 10);
                 }
             }
         }
 
-        CommonUsedStuff.dropBlockXP(block, player.worldObj, x, y, z, blockMeta, fortune);
+        SAPUtils.dropBlockXP(block, player.worldObj, x, y, z, blockMeta, fortune);
 
         player.worldObj.setBlock(x, y, z, 0);
 
@@ -113,6 +113,6 @@ public final class NiobToolHelper
             return false;
         }
 
-        return onBlockStartBreak(stack, x, y, z, player, CommonUsedStuff.getToolBlocks((ItemTool) stack.getItem()), shouldDropNugget);
+        return onBlockStartBreak(stack, x, y, z, player, SAPUtils.getToolBlocks((ItemTool) stack.getItem()), shouldDropNugget);
     }
 }

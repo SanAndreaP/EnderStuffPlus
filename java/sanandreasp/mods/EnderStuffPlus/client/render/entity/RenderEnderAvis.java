@@ -54,7 +54,7 @@ public class RenderEnderAvis
 
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-        return Textures.ENDERAVIS_TEXTURE;
+        return Textures.ENDERAVIS_TEXTURE.getResource();
     }
 
     private float getWingRotation(EntityEnderAvis avis, float partTicks) {
@@ -79,7 +79,7 @@ public class RenderEnderAvis
     private int renderPassSpecial(EntityEnderAvis avis, int pass, float partTicks) {
         if( pass == 0 ) {
             this.setRenderPassModel(this.avisModel);
-            this.bindTexture(Textures.ENDERAVIS_GLOW_TEXTURE);
+            this.bindTexture(Textures.ENDERAVIS_GLOW_TEXTURE.getResource());
 
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -130,7 +130,7 @@ public class RenderEnderAvis
 
             return 1;
         } else if( pass == 3 && avis.isSaddled() ) {
-            this.bindTexture(Textures.ENDERAVIS_TEXTURE_SADDLE);
+            this.bindTexture(Textures.ENDERAVIS_TEXTURE_SADDLE.getResource());
 
             return 1;
         }

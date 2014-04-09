@@ -57,7 +57,7 @@ public class RenderEnderNemesis
 
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-        return Textures.ENDERNEMESIS_TEXTURE;
+        return Textures.ENDERNEMESIS_TEXTURE.getResource();
     }
 
     private void renderCarrying(EntityEnderNemesis nemesis, float partTicks) {
@@ -132,7 +132,7 @@ public class RenderEnderNemesis
 
     private int renderEyes(EntityEnderNemesis nemesis, int pass, float partTicks) {
         if( pass == 0 ) {
-            this.bindTexture(Textures.ENDERNEMESIS_GLOW_TEXTURE);
+            this.bindTexture(Textures.ENDERNEMESIS_GLOW_TEXTURE.getResource());
 
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_ALPHA_TEST);

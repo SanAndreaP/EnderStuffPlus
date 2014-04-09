@@ -54,7 +54,7 @@ public class RenderEnderIgnis
 
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-        return Textures.ENDERIGNIS_TEXTURE;
+        return Textures.ENDERIGNIS_TEXTURE.getResource();
     }
 
     private void renderEquipped(EntityEnderIgnis ignis, float partTicks) {
@@ -98,7 +98,7 @@ public class RenderEnderIgnis
 
     private int renderEyes(EntityEnderIgnis ignis, int pass, float partTicks) {
         if( pass == 0 ) {
-            this.bindTexture(Textures.ENDERIGNIS_GLOW_TEXTURE);
+            this.bindTexture(Textures.ENDERIGNIS_GLOW_TEXTURE.getResource());
 
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_ALPHA_TEST);

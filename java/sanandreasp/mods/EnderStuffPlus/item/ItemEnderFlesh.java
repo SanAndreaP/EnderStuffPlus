@@ -47,8 +47,8 @@ public class ItemEnderFlesh
         POTION_EFFECTS.put(false, Potion.waterBreathing);
     }
 
-    public ItemEnderFlesh(int par1) {
-        super(par1, 2, 0.6F, false);
+    public ItemEnderFlesh(int id) {
+        super(id, 2, 0.6F, false);
         this.setAlwaysEdible();
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
@@ -84,7 +84,7 @@ public class ItemEnderFlesh
     @Override
     public EnumRarity getRarity(ItemStack stack) {
         return stack.getItemDamage() == 2 ? EnumRarity.rare
-                                                  : (stack.getItemDamage() == 1 ? EnumRarity.uncommon : EnumRarity.common);
+                                          : (stack.getItemDamage() == 1 ? EnumRarity.uncommon : EnumRarity.common);
     }
 
     @Override

@@ -24,7 +24,7 @@ public class PacketFXSpawnPortalFX
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(bos);
         byte[] bytes;
-        
+
         dos.writeDouble((Double) data[0]);          // posX
         dos.writeDouble((Double) data[1]);          // posY
         dos.writeDouble((Double) data[2]);          // posZ
@@ -33,6 +33,7 @@ public class PacketFXSpawnPortalFX
         dos.writeFloat((Float) data[5]);            // colorB
         dos.writeFloat((Float) data[6]);            // width
         dos.writeFloat((Float) data[7]);            // height
+        dos.writeInt((Integer) data[8]);            // FOR-counter-max
 
         bytes = bos.toByteArray();
 
@@ -48,7 +49,7 @@ public class PacketFXSpawnPortalFX
         DataInputStream dis = new DataInputStream(bis);
 
         ParticleFXFuncCollection.spawnPortalFX(Minecraft.getMinecraft().theWorld, dis.readDouble(), dis.readDouble(), dis.readDouble(), dis.readFloat(),
-                                               dis.readFloat(), dis.readFloat(), dis.readFloat(), dis.readFloat());
+                                               dis.readFloat(), dis.readFloat(), dis.readFloat(), dis.readFloat(), dis.readInt());
 
         dis.close();
         bis.close();

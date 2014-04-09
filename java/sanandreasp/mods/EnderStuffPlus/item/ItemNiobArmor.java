@@ -31,9 +31,9 @@ public class ItemNiobArmor
         if( stack.getItem() == ModItemRegistry.niobHelmet || stack.getItem() == ModItemRegistry.niobPlate
             || stack.getItem() == ModItemRegistry.niobBoots )
         {
-            return Textures.TEX_ARMOR_NIOBIUM_1;
+            return Textures.TEX_ARMOR_NIOBIUM_1.getTexture();
         } else if( stack.itemID == ModItemRegistry.niobLegs.itemID ) {
-            return Textures.TEX_ARMOR_NIOBIUM_2;
+            return Textures.TEX_ARMOR_NIOBIUM_2.getTexture();
         }
         return super.getArmorTexture(stack, entity, slot, type);
     }
