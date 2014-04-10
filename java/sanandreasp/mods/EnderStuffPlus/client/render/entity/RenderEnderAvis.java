@@ -4,8 +4,8 @@ import org.lwjgl.opengl.GL11;
 
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderAvis;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderAvis;
-import sanandreasp.mods.EnderStuffPlus.item.ItemRaincoat;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.RegistryRaincoats;
 import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -113,8 +113,8 @@ public class RenderEnderAvis
                     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 }
 
-                if( ItemRaincoat.COLOR_LIST.containsKey(avis.getCoatColor()) ) {
-                    this.bindTexture(ItemRaincoat.COLOR_LIST.get(avis.getCoatColor()).avisTexture);
+                if( RegistryRaincoats.COLOR_LIST.containsKey(avis.getCoatColor()) ) {
+                    this.bindTexture(RegistryRaincoats.COLOR_LIST.get(avis.getCoatColor()).avisTexture);
                 }
 
                 return 1;
@@ -124,8 +124,8 @@ public class RenderEnderAvis
                 GL11.glDisable(GL11.GL_BLEND);
             }
 
-            if( ItemRaincoat.BASE_LIST.containsKey(avis.getCoatBase()) ) {
-                this.bindTexture(ItemRaincoat.BASE_LIST.get(avis.getCoatBase()).avisTexture);
+            if( RegistryRaincoats.BASE_LIST.containsKey(avis.getCoatBase()) ) {
+                this.bindTexture(RegistryRaincoats.BASE_LIST.get(avis.getCoatBase()).avisTexture);
             }
 
             return 1;

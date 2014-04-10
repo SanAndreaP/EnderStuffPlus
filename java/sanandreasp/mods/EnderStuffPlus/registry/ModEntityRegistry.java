@@ -32,7 +32,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 
 public final class ModEntityRegistry
 {
-    public static final void initiate() {
+    public static final void initialize() {
         registerEntities();
         registerSpawnings();
     }

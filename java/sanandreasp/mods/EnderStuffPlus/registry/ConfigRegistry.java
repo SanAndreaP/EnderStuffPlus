@@ -1,66 +1,74 @@
 package sanandreasp.mods.EnderStuffPlus.registry;
 
+import java.io.File;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import sanandreasp.core.manpack.managers.SAPConfigManager;
-import sanandreasp.mods.ManagerPackHelper;
+import org.apache.commons.lang3.ArrayUtils;
 
 import com.google.common.collect.Maps;
 
+import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.Property;
+
 public final class ConfigRegistry
 {
-    public static Map<String, Integer> blockIDs = Maps.newHashMap();
+    public static Map<CfgNames, Integer> blockIDs = Maps.newEnumMap(CfgNames.class);
+    public static Map<CfgNames, Integer> itemIDs = Maps.newEnumMap(CfgNames.class);
+    public static Map<String, Integer[]> spawnConditions = Maps.newHashMap();
+
     public static int enchID = 128;
     public static boolean genAvisNest = true;
-
     public static boolean genEndlessEnd = true;
-
     public static boolean genLeak = true;
     public static boolean genNiob = true;
     public static boolean griefing = true;
-    public static Map<String, Integer> itemIDs = Maps.newHashMap();
-    public static Map<String, Integer[]> spawnConditions = Maps.newHashMap();
     public static boolean useAnimations = true;
     public static boolean useNiobHDGlow = true;
 
-    static {
-        blockIDs.put("Avis Egg", 1000);
-        blockIDs.put("Niobium Ore", 1001);
-        blockIDs.put("Niobium Block", 1002);
-        blockIDs.put("Biome Changer", 1003);
-        blockIDs.put("Duplicator", 1004);
-        blockIDs.put("Weather Altar", 1005);
-        blockIDs.put("Ender Door", 1006);
-        blockIDs.put("Ender Leaves", 1007);
-        blockIDs.put("Ender Log", 1008);
-        blockIDs.put("Ender Planks", 1009);
-        blockIDs.put("Ender Sapling", 1010);
-        blockIDs.put("Corrupt End Stone", 1011);
-        blockIDs.put("End Fluid", 1012);
+    private static final String CATEGORY_SPAWNINGS = "spawnings";
+    private static final String CATEGORY_WORLDGEN = "worldgen";
 
-        itemIDs.put("ESP Pearls", 10000);
-        itemIDs.put("Ender Flesh", 10002);
-        itemIDs.put("Avis Feather", 10003);
-        itemIDs.put("Avis Arrow", 10004);
-        itemIDs.put("Avis Compass", 10005);
-        itemIDs.put("Enderpet Egg", 10006);
-        itemIDs.put("Enderpet Staff", 10007);
-        itemIDs.put("Niobium Ingot", 10008);
-        itemIDs.put("Niobium Bow", 10009);
-        itemIDs.put("Ender-Raincoat", 10010);
-        itemIDs.put("Niobium Helmet", 10011);
-        itemIDs.put("Niobium Chestplate", 10012);
-        itemIDs.put("Niobium Leggings", 10013);
-        itemIDs.put("Niobium Boots", 10014);
-        itemIDs.put("Niobium Pickaxe", 10015);
-        itemIDs.put("Niobium Shovel", 10016);
-        itemIDs.put("Niobium Axe", 10017);
-        itemIDs.put("Niobium Hoe", 10018);
-        itemIDs.put("Niobium Sword", 10019);
-        itemIDs.put("Niobium Shears", 10020);
-        itemIDs.put("Niobium Nugget", 10021);
-        itemIDs.put("Ender Door", 10022);
-        itemIDs.put("Ender Stick", 10023);
+    static {
+        blockIDs.put(CfgNames.AVIS_EGG, 1000);
+        blockIDs.put(CfgNames.NIOBIUM_ORE, 1001);
+        blockIDs.put(CfgNames.NIOBIUM_BLOCK, 1002);
+        blockIDs.put(CfgNames.BIOME_CHANGER, 1003);
+        blockIDs.put(CfgNames.DUPLICATOR, 1004);
+        blockIDs.put(CfgNames.WEATHER_ALTAR, 1005);
+        blockIDs.put(CfgNames.ENDER_DOOR_BLOCK, 1006);
+        blockIDs.put(CfgNames.ENDER_LEAVES, 1007);
+        blockIDs.put(CfgNames.ENDER_LOG, 1008);
+        blockIDs.put(CfgNames.ENDER_PLANKS, 1009);
+        blockIDs.put(CfgNames.ENDER_SAPLING, 1010);
+        blockIDs.put(CfgNames.CORRUPT_END_STONE, 1011);
+        blockIDs.put(CfgNames.END_FLUID, 1012);
+
+        itemIDs.put(CfgNames.ESP_PEARLS, 10000);
+        itemIDs.put(CfgNames.ENDER_FLESH, 10002);
+        itemIDs.put(CfgNames.AVIS_FEATHER, 10003);
+        itemIDs.put(CfgNames.AVIS_ARROW, 10004);
+        itemIDs.put(CfgNames.AVIS_COMPASS, 10005);
+        itemIDs.put(CfgNames.ENDERPET_EGG, 10006);
+        itemIDs.put(CfgNames.ENDERPET_STAFF, 10007);
+        itemIDs.put(CfgNames.NIOBIUM_INGOT, 10008);
+        itemIDs.put(CfgNames.NIOBIUM_BOW, 10009);
+        itemIDs.put(CfgNames.ENDER_RAINCOAT, 10010);
+        itemIDs.put(CfgNames.NIOBIUM_HELMET, 10011);
+        itemIDs.put(CfgNames.NIOBIUM_CHESTPLATE, 10012);
+        itemIDs.put(CfgNames.NIOBIUM_LEGGINGS, 10013);
+        itemIDs.put(CfgNames.NIOBIUM_BOOTS, 10014);
+        itemIDs.put(CfgNames.NIOBIUM_PICKAXE, 10015);
+        itemIDs.put(CfgNames.NIOBIUM_SHOVEL, 10016);
+        itemIDs.put(CfgNames.NIOBIUM_AXE, 10017);
+        itemIDs.put(CfgNames.NIOBIUM_HOE, 10018);
+        itemIDs.put(CfgNames.NIOBIUM_SWORD, 10019);
+        itemIDs.put(CfgNames.NIOBIUM_SHEARS, 10020);
+        itemIDs.put(CfgNames.NIOBIUM_NUGGET, 10021);
+        itemIDs.put(CfgNames.ENDER_DOOR_ITEM, 10022);
+        itemIDs.put(CfgNames.ENDER_STICK, 10023);
 
         spawnConditions.put("EnderNivis", new Integer[] { 1, 1, 4 });
         spawnConditions.put("EnderIgnis", new Integer[] { 1, 1, 4 });
@@ -69,56 +77,98 @@ public final class ConfigRegistry
         spawnConditions.put("EnderMiss", new Integer[] { 1, 1, 4 });
     }
 
-    public static void setConfig(ManagerPackHelper manHelper) {
-        SAPConfigManager cfgMan = manHelper.getCfgMan();
-        cfgMan.addStaticBlockIDs(blockIDs.keySet().toArray(new String[blockIDs.size()]),
-                                 blockIDs.values().toArray(new Integer[blockIDs.size()]));
-        cfgMan.addStaticItemIDs(itemIDs.keySet().toArray(new String[itemIDs.size()]),
-                                itemIDs.values().toArray(new Integer[itemIDs.size()]));
+    public static void setConfig(File modCfgDir) {
+        Configuration config = new Configuration(new File(modCfgDir, "sanandreasp/" + ESPModRegistry.MOD_ID + ".cfg"));
 
-        cfgMan.addProperty("Ender Chest Teleport", "Enchantment IDs", enchID);
+        config.load();
 
-        cfgMan.addGroup("Spawn Settings");
-        for( String propName : spawnConditions.keySet() ) {
-            cfgMan.addProperty(propName + "_Weighted", "Spawn Settings", spawnConditions.get(propName)[0].intValue());
-            cfgMan.addProperty(propName + "_Minimum", "Spawn Settings", spawnConditions.get(propName)[1].intValue());
-            cfgMan.addProperty(propName + "_Maximum", "Spawn Settings", spawnConditions.get(propName)[2].intValue());
+        for( Entry<CfgNames, Integer> block : blockIDs.entrySet() ) {
+            blockIDs.put(block.getKey(), config.getBlock(block.getKey().toString(), block.getValue()).getInt());
         }
 
-        cfgMan.addGroup("Other Settings");
-        cfgMan.addProperty("generate Niobium", "Other Settings", genNiob);
-        cfgMan.addProperty("generate End Leak", "Other Settings", genLeak);
-        cfgMan.addProperty("generate endless End", "Other Settings", genEndlessEnd);
-        cfgMan.addProperty("generate Avis Nest", "Other Settings", genAvisNest);
-        cfgMan.addProperty("griefing Ender Mobs", "Other Settings", griefing);
-        cfgMan.addProperty("use HD Niobium-Tool glow", "Other Settings", useNiobHDGlow);
-        cfgMan.addProperty("use animated textures", "Other Settings", useAnimations);
-
-        cfgMan.loadConfig();
-
-        for( String propName : itemIDs.keySet() ) {
-            itemIDs.put(propName, cfgMan.getItemID(propName));
-        }
-        for( String propName : blockIDs.keySet() ) {
-            blockIDs.put(propName, cfgMan.getBlockID(propName));
-        }
-        enchID = cfgMan.getSAPProperty("Ender Chest Teleport", "Enchantment IDs").getInt();
-
-        for( String propName : spawnConditions.keySet() ) {
-            spawnConditions.put(propName,
-                                new Integer[] {
-                                               cfgMan.getSAPProperty(propName + "_Weighted", "Spawn Settings").getInt(),
-                                               cfgMan.getSAPProperty(propName + "_Minimum", "Spawn Settings").getInt(),
-                                               cfgMan.getSAPProperty(propName + "_Maximum", "Spawn Settings").getInt() });
+        for( Entry<CfgNames, Integer> item : itemIDs.entrySet() ) {
+            itemIDs.put(item.getKey(), config.getItem(item.getKey().toString(), item.getValue()).getInt());
         }
 
-        genNiob = cfgMan.getSAPProperty("generate Niobium", "Other Settings").getBool();
-        genLeak = cfgMan.getSAPProperty("generate End Leak", "Other Settings").getBool();
-        genEndlessEnd = cfgMan.getSAPProperty("generate endless End", "Other Settings").getBool();
-        genAvisNest = cfgMan.getSAPProperty("generate Avis Nest", "Other Settings").getBool();
-        griefing = cfgMan.getSAPProperty("griefing Ender Mobs", "Other Settings").getBool();
-        useNiobHDGlow = cfgMan.getSAPProperty("use HD Niobium-Tool glow", "Other Settings").getBool();
-        useAnimations = cfgMan.getSAPProperty("use animated textures", "Other Settings").getBool();
+        config.addCustomCategoryComment(CATEGORY_SPAWNINGS, "The values in this category are arrays. They represent following pattern:"
+                                                            + "\n  value #1 is the minimum spawn count per spawn loop"
+                                                            + "\n  value #2 is the maximum spawn count per spawn loop"
+                                                            + "\n  value #3 is the spawn rate weight"
+                                                            + "\n  >>The Entity can spawn #1 to #2 times per loop with"
+                                                            + " a weighted probability of #3<<");
+        for( Entry<String, Integer[]> spawns : spawnConditions.entrySet() ) {
+            Property prop = config.get(CATEGORY_SPAWNINGS, spawns.getKey(), ArrayUtils.toPrimitive(spawns.getValue()));
+            spawnConditions.put(spawns.getKey(), ArrayUtils.toObject(prop.getIntList()));
+        }
+
+        config.addCustomCategoryComment(CATEGORY_WORLDGEN, "Several settings regarding world generation");
+        genNiob = config.get(CATEGORY_WORLDGEN, "Generate Niobium Ore", true).getBoolean(true);
+        genLeak = config.get(CATEGORY_WORLDGEN, "Generate Ender Leaks", true).getBoolean(true);
+        genEndlessEnd = config.get(CATEGORY_WORLDGEN, "Generate End Islands", true).getBoolean(true);
+        genAvisNest = config.get(CATEGORY_WORLDGEN, "Generate Avis Nests", true).getBoolean(true);
+
+        enchID = config.get(Configuration.CATEGORY_GENERAL, "EC-Teleport Enchantment-ID", enchID).getInt();
+        griefing = config.get(Configuration.CATEGORY_GENERAL, "Can Mod-Ender-Mobs grief", true).getBoolean(true);
+        useNiobHDGlow = config.get(Configuration.CATEGORY_GENERAL, "Use HD Tool glow effect", true).getBoolean(true);
+        useAnimations = config.get(Configuration.CATEGORY_GENERAL, "Use animated textures", true).getBoolean(true);
+
+        config.save();
+    }
+
+    public static enum CfgNames {
+        AVIS_EGG,
+        NIOBIUM_ORE,
+        NIOBIUM_BLOCK,
+        BIOME_CHANGER,
+        DUPLICATOR,
+        WEATHER_ALTAR,
+        ENDER_DOOR_BLOCK,
+        ENDER_LEAVES,
+        ENDER_LOG,
+        ENDER_PLANKS,
+        ENDER_SAPLING,
+        CORRUPT_END_STONE,
+        END_FLUID,
+        ESP_PEARLS,
+        ENDER_FLESH,
+        AVIS_FEATHER,
+        AVIS_ARROW,
+        AVIS_COMPASS,
+        ENDERPET_EGG,
+        ENDERPET_STAFF,
+        NIOBIUM_INGOT,
+        NIOBIUM_BOW,
+        ENDER_RAINCOAT,
+        NIOBIUM_HELMET,
+        NIOBIUM_CHESTPLATE,
+        NIOBIUM_LEGGINGS,
+        NIOBIUM_BOOTS,
+        NIOBIUM_PICKAXE,
+        NIOBIUM_SHOVEL,
+        NIOBIUM_AXE,
+        NIOBIUM_HOE,
+        NIOBIUM_SWORD,
+        NIOBIUM_SHEARS,
+        NIOBIUM_NUGGET,
+        ENDER_DOOR_ITEM,
+        ENDER_STICK;
+
+        @Override
+        public String toString() {
+            String name = "";
+            Pattern pattern = Pattern.compile("(\\w+?)(_|$)");
+            Matcher matcher = pattern.matcher(super.toString());
+
+            if( !matcher.find() ) {
+                return super.toString();
+            }
+
+            do {
+                name += matcher.group(1).substring(0, 1).toUpperCase() + matcher.group(1).substring(1).toLowerCase();
+            } while ( matcher.find() );
+
+            return name;
+        }
     }
 
 }

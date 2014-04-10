@@ -21,7 +21,7 @@ public final class RegistryDungeonLoot
     public static final String AVIS_CHEST = "AvisChest";
     public static final String ENDLEAK_CHEST = "EndLeakChest";
 
-    public static void init() {
+    public static void initialize() {
         {
             ChestGenHooks leakLoot = ChestGenHooks.getInfo(ENDLEAK_CHEST);
             addLoot(leakLoot, new ItemStack(Block.blockDiamond), 1, 2, 1);
@@ -86,10 +86,10 @@ public final class RegistryDungeonLoot
                 for( ItemStack item : stacks ) {
                     if( item.getItem() instanceof ItemRaincoat ) {
                         NBTTagCompound nbt = new NBTTagCompound();
-                        nbt.setString("base", ItemRaincoat.BASE_LIST.keySet()
-                                                  .toArray(new String[0])[rand.nextInt(ItemRaincoat.BASE_LIST.size())]);
-                        nbt.setString("color", ItemRaincoat.COLOR_LIST.keySet()
-                                                   .toArray(new String[0])[rand.nextInt(ItemRaincoat.COLOR_LIST.size())]);
+                        nbt.setString("base", RegistryRaincoats.BASE_LIST.keySet()
+                                                  .toArray(new String[0])[rand.nextInt(RegistryRaincoats.BASE_LIST.size())]);
+                        nbt.setString("color", RegistryRaincoats.COLOR_LIST.keySet()
+                                                   .toArray(new String[0])[rand.nextInt(RegistryRaincoats.COLOR_LIST.size())]);
                         item.setTagCompound(nbt);
                     }
 

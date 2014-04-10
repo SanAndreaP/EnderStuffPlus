@@ -48,7 +48,7 @@ public final class ModBlockRegistry
     public static BlockEnderDoor blockEndDoor;
     public static BlockSaplingEndTree sapEndTree;
 
-    public static final void initiate() {
+    public static final void initialize() {
         initRegisterFluids();
         initBlocks();
         registerBlocks();

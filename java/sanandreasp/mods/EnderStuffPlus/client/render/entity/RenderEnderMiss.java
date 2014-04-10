@@ -7,9 +7,9 @@ import org.lwjgl.opengl.GL12;
 
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderMiss;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderMiss;
-import sanandreasp.mods.EnderStuffPlus.item.ItemRaincoat;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ModItemRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.RegistryRaincoats;
 import sanandreasp.mods.EnderStuffPlus.registry.Textures;
 
 import net.minecraft.block.Block;
@@ -377,8 +377,8 @@ public class RenderEnderMiss
                     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 }
 
-                if( ItemRaincoat.COLOR_LIST.containsKey(miss.getCoatColor()) ) {
-                    this.bindTexture(ItemRaincoat.COLOR_LIST.get(miss.getCoatColor()).missTexture);
+                if( RegistryRaincoats.COLOR_LIST.containsKey(miss.getCoatColor()) ) {
+                    this.bindTexture(RegistryRaincoats.COLOR_LIST.get(miss.getCoatColor()).missTexture);
                 }
                 this.setRenderPassModel(this.coatModel);
 
@@ -391,8 +391,8 @@ public class RenderEnderMiss
                 GL11.glDisable(GL11.GL_BLEND);
             }
 
-            if( ItemRaincoat.BASE_LIST.containsKey(miss.getCoatBase()) ) {
-                this.bindTexture(ItemRaincoat.BASE_LIST.get(miss.getCoatBase()).missTexture);
+            if( RegistryRaincoats.BASE_LIST.containsKey(miss.getCoatBase()) ) {
+                this.bindTexture(RegistryRaincoats.BASE_LIST.get(miss.getCoatBase()).missTexture);
             }
 
             return 1;

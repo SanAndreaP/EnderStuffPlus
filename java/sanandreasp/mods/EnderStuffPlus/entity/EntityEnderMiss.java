@@ -10,6 +10,7 @@ import sanandreasp.mods.EnderStuffPlus.item.ItemRaincoat;
 import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ModItemRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.RegistryRaincoats;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -183,10 +184,11 @@ public class EntityEnderMiss
 
         if( this.rand.nextInt(2) == 0 ) {
             NBTTagCompound nbt = new NBTTagCompound();
-            nbt.setString("base",
-                          ItemRaincoat.BASE_LIST.keySet().toArray()[this.rand.nextInt(ItemRaincoat.BASE_LIST.size())].toString());
-            nbt.setString("color",
-                          ItemRaincoat.COLOR_LIST.keySet().toArray()[this.rand.nextInt(ItemRaincoat.COLOR_LIST.size())].toString());
+            int rndBase = this.rand.nextInt(RegistryRaincoats.BASE_LIST.size());
+            int rndColor = this.rand.nextInt(RegistryRaincoats.COLOR_LIST.size());
+
+            nbt.setString("base", RegistryRaincoats.BASE_LIST.keySet().toArray(new String[0])[rndBase]);
+            nbt.setString("color", RegistryRaincoats.COLOR_LIST.keySet().toArray(new String[0])[rndColor]);
             ItemStack stack = new ItemStack(ModItemRegistry.rainCoat, 1, 0);
             stack.setTagCompound(nbt);
             this.setCoat(stack);

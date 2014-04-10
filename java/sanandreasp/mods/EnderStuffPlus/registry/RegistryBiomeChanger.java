@@ -18,7 +18,7 @@ public class RegistryBiomeChanger
     private static final List<Integer> disabledBiomesList = new ArrayList<Integer>();
     private static final HashMap<Integer, Entry<ItemStack, Integer>> fuelList = Maps.newHashMap();
 
-    static {
+    public static void initialize() {
         addNewFuel(new ItemStack(Item.diamond), 1);
         addNewFuel(new ItemStack(ModItemRegistry.endIngot), 2);
         addNewFuel(new ItemStack(Item.ingotGold), 2);

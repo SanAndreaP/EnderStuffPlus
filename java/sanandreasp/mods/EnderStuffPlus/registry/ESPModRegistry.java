@@ -67,12 +67,12 @@ public class ESPModRegistry
             return;
         }
 
+        ConfigRegistry.setConfig(event.getModConfigurationDirectory());
+
         manHelper.initMan(new SAPConfigManager("EnderStuffPlus", "EnderStuffPlus.txt", "/sanandreasp/"),
                           new SAPUpdateManager("EnderStuffPlus", 1, 1, 0,
                                                "http://dl.dropbox.com/u/56920617/EnderStuffPMod_latest.txt",
                                                "http://www.minecraftforum.net/topic/936911-"));
-
-        ConfigRegistry.setConfig(ESPModRegistry.manHelper);
 
         ESPModRegistry.espTab = new CreativeTabs("ESPTab") {
             @Override
@@ -87,9 +87,9 @@ public class ESPModRegistry
             }
         };
 
-        ModBlockRegistry.initiate();
-        ModItemRegistry.initiate();
-        ModEntityRegistry.initiate();
+        ModBlockRegistry.initialize();
+        ModItemRegistry.initialize();
+        ModEntityRegistry.initialize();
 
         ESPModRegistry.enderChestTel = new EnchantmentEnderChestTeleport(ConfigRegistry.enchID, 5);
         Enchantment.addToBookList(ESPModRegistry.enderChestTel);
@@ -101,9 +101,11 @@ public class ESPModRegistry
 
         proxy.registerHandlers();
         proxy.registerPackets();
-        RegistryDungeonLoot.init();
+        RegistryDungeonLoot.initialize();
+        RegistryRaincoats.initialize();
+        RegistryDuplicator.initialize();
 
-        endAcid = SAPUtils.getNewDmgSrc("enderstuffp:endAcid");
+        endAcid = SAPUtils.getNewDamageSource("enderstuffp:endAcid");
 
         ItemEnderPetEgg.addPet(0, "EnderMiss", 0xffbbdd, 0x303030);
         ItemEnderPetEgg.addPet(1, "EnderAvis", 0x606060, 0xFF00FF);
@@ -120,6 +122,7 @@ public class ESPModRegistry
         MinecraftForge.setBlockHarvestLevel(ModBlockRegistry.endOre, 0, "pickaxe", 2);
 
         proxy.registerClientStuff();
+
     }
 
     @EventHandler
@@ -129,7 +132,7 @@ public class ESPModRegistry
         }
 
         FurnaceRecipes.smelting().addSmelting(ModBlockRegistry.endOre.blockID, 0, new ItemStack(ModItemRegistry.endIngot, 1, 0), 0.85F);
-        CraftingRegistry.initCraftings();
+        CraftingRegistry.initialize();
     }
 
     @EventHandler

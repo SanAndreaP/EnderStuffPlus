@@ -55,7 +55,7 @@ public class ModItemRegistry
     public static Item rainCoat;
     public static Item tantalPick;
 
-    public static final void initiate() {
+    public static final void initialize() {
         initMaterials();
         initItems();
         registerItems();
@@ -125,12 +125,10 @@ public class ModItemRegistry
 
         ARMOR_NIOBIUM = EnumHelper.addArmorMaterial("NIOBIUM",
                                                     SAPUtils.getMaxDmgFactorETM(),
-                                                    new int[] {
-                                                            EnumArmorMaterial.IRON.getDamageReductionAmount(0),
-                                                            EnumArmorMaterial.IRON.getDamageReductionAmount(1),
-                                                            EnumArmorMaterial.IRON.getDamageReductionAmount(2),
-                                                            EnumArmorMaterial.IRON.getDamageReductionAmount(3)
-                                                    },
+                                                    new int[] { EnumArmorMaterial.IRON.getDamageReductionAmount(0),
+                                                                EnumArmorMaterial.IRON.getDamageReductionAmount(1),
+                                                                EnumArmorMaterial.IRON.getDamageReductionAmount(2),
+                                                                EnumArmorMaterial.IRON.getDamageReductionAmount(3) },
                                                     EnumArmorMaterial.GOLD.getEnchantability());
     }
 

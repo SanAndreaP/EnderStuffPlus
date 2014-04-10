@@ -17,7 +17,7 @@ public class RegistryDuplicator
     private static final Map<ItemStack, Integer> dupableItems = Maps.newHashMap();
     private static final Map<ItemStack, Integer> fuelItems = Maps.newHashMap();
 
-    static {
+    public static void initialize() {
         registerFuel(new ItemStack(ModItemRegistry.endIngot, 1, 0), 100);
         registerFuel(new ItemStack(Item.diamond), 160);
         registerFuel(new ItemStack(Item.ingotGold), 60);
