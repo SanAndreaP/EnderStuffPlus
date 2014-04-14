@@ -29,16 +29,6 @@ public class WorldGenEndIsland
     public boolean generate(World world, Random random, int x, int y, int z) {
 
         int rad = 16 + random.nextInt(16);
-        //
-        // for( int i = -rad; i < rad; i++ ) {
-        // for( int k = -rad; k < rad; k++ ) {
-        // for( int j = 0; j < 128; j++ ) {
-        // Block block = Block.blocksList[world.getBlockId(i+x, j, k+z)];
-        // if( block != null && !block.isAirBlock(world, i+x, j, k+z) )
-        // return false;
-        // }
-        // }
-        // }
 
         int y1 = 0, x1, z1;
         for( int i = 0; i < rad * 2; i++ ) {

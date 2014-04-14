@@ -12,8 +12,8 @@ public class WorldGenEndTree
     extends WorldGenerator
 {
 
-    public WorldGenEndTree(boolean b) {
-        super(b);
+    public WorldGenEndTree(boolean doBlockNotify) {
+        super(doBlockNotify);
     }
 
     @Override
@@ -38,7 +38,6 @@ public class WorldGenEndTree
         for( int x1 = -5; x1 < 5; x1++ ) {
             for( int z1 = -5; z1 < 5; z1++ ) {
                 for( int y1 = height; y1 > height - 5; y1-- ) {
-                    // i*i+k*k > (rad-Math.abs(j))*(rad-Math.abs(j))
                     if( Math.abs(x1) + Math.abs(z1) + (5 - (height - y1)) > 5 ) {
                         continue;
                     }
@@ -55,7 +54,6 @@ public class WorldGenEndTree
         for( int x1 = -3; x1 < 3; x1++ ) {
             for( int z1 = -3; z1 < 3; z1++ ) {
                 for( int y1 = height - 5; y1 > height - 8; y1-- ) {
-                    // i*i+k*k > (rad-Math.abs(j))*(rad-Math.abs(j))
                     if( Math.abs(x1) + Math.abs(z1) + (8 - (height - y1)) > 3 ) {
                         continue;
                     }

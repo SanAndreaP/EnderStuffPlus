@@ -19,7 +19,7 @@ public class PacketChngBiome
     implements ISAPPacketHandler
 {
     @Override
-    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Exception {
+    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Throwable {
         doStream.writeInt(((TileEntity) data[0]).xCoord);
         doStream.writeInt(((TileEntity) data[0]).yCoord);
         doStream.writeInt(((TileEntity) data[0]).zCoord);
@@ -27,7 +27,7 @@ public class PacketChngBiome
     }
 
     @Override
-    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Exception {
+    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Throwable {
         TileEntity tile = (((EntityPlayer) player).worldObj).getBlockTileEntity(diStream.readInt(), diStream.readInt(), diStream.readInt());
         if( tile instanceof TileEntityBiomeChanger ) {
             int range = diStream.readInt();

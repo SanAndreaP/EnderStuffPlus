@@ -15,7 +15,7 @@ public class SoundRegistry
 {
     SoundPool endBgMusic;
 
-    private void addSound(SoundLoadEvent event, String path, String fileName, int qty) throws Exception {
+    private void addSound(SoundLoadEvent event, String path, String fileName, int qty) throws Throwable {
         if( qty < 2 ) {
             event.manager.addSound("enderstuffp:" + path + fileName + ".ogg");
         } else {
@@ -55,7 +55,7 @@ public class SoundRegistry
 
             this.endBgMusic.addSound("enderstuffp:weird_ambiance1.ogg");
             this.endBgMusic.addSound("enderstuffp:weird_ambiance2.ogg");
-        } catch( Exception e ) {
+        } catch( Throwable e ) {
             System.err.println("Failed to register one or more sounds:");
             e.printStackTrace();
         }

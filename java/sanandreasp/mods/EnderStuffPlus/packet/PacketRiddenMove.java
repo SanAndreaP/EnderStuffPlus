@@ -15,13 +15,13 @@ public class PacketRiddenMove
     implements ISAPPacketHandler
 {
     @Override
-    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Exception {
+    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Throwable {
         doStream.writeFloat((Float) data[0]); // moveForward
         doStream.writeFloat((Float) data[1]); // moveStrafing
     }
 
     @Override
-    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Exception {
+    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Throwable {
         EntityPlayer eplayer = (EntityPlayer) player;
         IEnderPet entity = (IEnderPet) (eplayer.ridingEntity instanceof IEnderPet ? eplayer.ridingEntity : null);
 

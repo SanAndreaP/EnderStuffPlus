@@ -17,12 +17,12 @@ public class PacketRiddenJump
     implements ISAPPacketHandler
 {
     @Override
-    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Exception {
+    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Throwable {
         doStream.writeInt((Integer) data[0]); // entityId
     }
 
     @Override
-    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Exception {
+    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Throwable {
         WorldServer serverWorld = (WorldServer) ((EntityPlayerMP) player).worldObj;
         EntityLivingBase entity = (EntityLivingBase) serverWorld.getEntityByID(diStream.readInt());
 

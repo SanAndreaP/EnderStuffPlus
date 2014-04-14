@@ -17,13 +17,13 @@ public class PacketSetEnderName
     implements ISAPPacketHandler
 {
     @Override
-    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Exception {
+    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Throwable {
         doStream.writeInt((Integer) data[0]); // entityId
         doStream.writeUTF((String) data[1]);  // name
     }
 
     @Override
-    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Exception {
+    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Throwable {
         WorldServer serverWorld = (WorldServer) ((EntityPlayerMP) player).worldObj;
         EntityLiving entity = (EntityLiving) serverWorld.getEntityByID(diStream.readInt());
 

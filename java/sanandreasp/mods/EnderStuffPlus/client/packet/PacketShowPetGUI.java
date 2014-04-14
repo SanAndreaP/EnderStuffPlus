@@ -20,12 +20,12 @@ public class PacketShowPetGUI
     implements ISAPPacketHandler
 {
     @Override
-    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Exception {
+    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Throwable {
         doStream.writeInt(((Entity) data[0]).entityId);
     }
 
     @Override
-    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Exception {
+    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Throwable {
         EntityPlayer entityPlayer = (EntityPlayer) player;
         Entity entity = entityPlayer.worldObj.getEntityByID(diStream.readInt());
 

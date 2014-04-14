@@ -14,16 +14,6 @@ import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 
 public class EnderStuffWorldGenerator
 {
-
-    private boolean generateOre(World world, Random rand, int posX, int posY, int posZ) {
-        if( world.getBlockId(posX, posY, posZ) == Block.whiteStone.blockID
-            && !world.canBlockSeeTheSky(posX, posY, posZ) ) {
-            world.setBlock(posX, posY, posZ, ModBlockRegistry.endOre.blockID);
-            return true;
-        }
-        return false;
-    }
-
     @ForgeSubscribe
     public void onPoopulateChunkPre(PopulateChunkEvent.Pre event) {
         switch( event.world.provider.dimensionId ){
@@ -84,5 +74,14 @@ public class EnderStuffWorldGenerator
 
             (new WorldGenEndLeak()).generate(world, random, x, y, z);
         }
+    }
+
+    private boolean generateOre(World world, Random rand, int posX, int posY, int posZ) {
+        if( world.getBlockId(posX, posY, posZ) == Block.whiteStone.blockID
+            && !world.canBlockSeeTheSky(posX, posY, posZ) ) {
+            world.setBlock(posX, posY, posZ, ModBlockRegistry.endOre.blockID);
+            return true;
+        }
+        return false;
     }
 }

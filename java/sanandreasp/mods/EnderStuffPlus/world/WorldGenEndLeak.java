@@ -201,21 +201,16 @@ public class WorldGenEndLeak
                     Block baseBlock = random.nextInt(10) == 0 ? Block.whiteStone : ModBlockRegistry.corruptES;
                     int radVec = Math.abs(i) + Math.abs(j - radius) + Math.abs(k);
                     if( j > radius || radVec <= radius ) {
-                        radVec = Math.abs(i) + Math.round((Math.abs(j) / ((float) maxHgt + (float) radius)) * 3F)
-                                 + Math.abs(k);
+                        radVec = Math.abs(i) + Math.round((Math.abs(j) / ((float) maxHgt + (float) radius)) * 3F) + Math.abs(k);
                         if( radVec <= 3 ) {
                             if( i == 0 && k == 0 && radVec == 2 && !spawnerSet ) {
                                 this.placeMobSpawner(random, world, x + i, y + j - radius - 1, z + k);
                                 world.setBlock(x + i, y + j - radius, z + k, baseBlock.blockID);
                                 spawnerSet = true;
                             } else if( i == 0 && k == 0 && j == maxHgt + radius ) {
-                                RegistryDungeonLoot.placeLootChest(world, x + i, y + j - radius, z + k,
-                                                                   RegistryDungeonLoot.ENDLEAK_CHEST, random, 8);
+                                RegistryDungeonLoot.placeLootChest(world, x + i, y + j - radius, z + k, RegistryDungeonLoot.ENDLEAK_CHEST,
+                                                                   random, 8);
                             } else {
-                                // if( random.nextInt(256) == 0 )
-                                // world.setBlock(x+i, y+j-radius, z+k,
-                                // ESPModRegistry.niobOre.blockID);
-                                // else
                                 world.setBlock(x + i, y + j - radius, z + k, baseBlock.blockID);
                             }
                         }

@@ -17,14 +17,14 @@ public class PacketDupeInsertLevels
     implements ISAPPacketHandler
 {
     @Override
-    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Exception {
+    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Throwable {
         doStream.writeInt(((TileEntity) data[0]).xCoord);
         doStream.writeInt(((TileEntity) data[0]).yCoord);
         doStream.writeInt(((TileEntity) data[0]).zCoord);
     }
 
     @Override
-    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Exception {
+    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Throwable {
         EntityPlayerMP playerMP = (EntityPlayerMP) player;
 
         WorldServer serverWorld = (WorldServer) playerMP.worldObj;

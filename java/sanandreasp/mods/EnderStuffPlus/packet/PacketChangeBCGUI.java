@@ -15,7 +15,7 @@ public class PacketChangeBCGUI
     implements ISAPPacketHandler
 {
     @Override
-    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Exception {
+    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Throwable {
         int id = (Integer) data[0];
         int x = (Integer) data[1];
         int y = (Integer) data[2];
@@ -33,7 +33,7 @@ public class PacketChangeBCGUI
     }
 
     @Override
-    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Exception {
+    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Throwable {
         int id = diStream.readInt();
         int x = diStream.readInt();
         int y = diStream.readInt();

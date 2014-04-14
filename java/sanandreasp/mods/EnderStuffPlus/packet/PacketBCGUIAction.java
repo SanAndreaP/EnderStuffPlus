@@ -17,7 +17,7 @@ public class PacketBCGUIAction
     implements ISAPPacketHandler
 {
     @Override
-    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Exception {
+    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Throwable {
         doStream.writeInt(((TileEntity) data[0]).xCoord);
         doStream.writeInt(((TileEntity) data[0]).yCoord);
         doStream.writeInt(((TileEntity) data[0]).zCoord);
@@ -26,7 +26,7 @@ public class PacketBCGUIAction
     }
 
     @Override
-    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Exception {
+    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Throwable {
         WorldServer serverWorld = (WorldServer) ((EntityPlayerMP) player).worldObj;
         int posX = diStream.readInt();
         int posY = diStream.readInt();

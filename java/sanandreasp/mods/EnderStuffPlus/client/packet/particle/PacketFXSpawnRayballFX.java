@@ -18,7 +18,7 @@ public class PacketFXSpawnRayballFX
     implements ISAPPacketHandler
 {
     @Override
-    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Exception {
+    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Throwable {
         doStream.writeDouble((Double) data[0]);          // posX
         doStream.writeDouble((Double) data[1]);          // posY
         doStream.writeDouble((Double) data[2]);          // posZ
@@ -30,7 +30,7 @@ public class PacketFXSpawnRayballFX
     }
 
     @Override
-    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Exception {
+    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Throwable {
         ParticleFXFuncCollection.spawnRayballFX(Minecraft.getMinecraft().theWorld, diStream.readDouble(), diStream.readDouble(),
                                                 diStream.readDouble());
     }
