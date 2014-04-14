@@ -1,7 +1,5 @@
 package sanandreasp.mods.EnderStuffPlus.client.packet.particle;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
@@ -20,39 +18,22 @@ public class PacketFXSpawnPortalFX
     implements ISAPPacketHandler
 {
     @Override
-    public byte[] getDataForPacket(Object... data) throws Exception {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        DataOutputStream dos = new DataOutputStream(bos);
-        byte[] bytes;
-
-        dos.writeDouble((Double) data[0]);          // posX
-        dos.writeDouble((Double) data[1]);          // posY
-        dos.writeDouble((Double) data[2]);          // posZ
-        dos.writeFloat((Float) data[3]);            // colorR
-        dos.writeFloat((Float) data[4]);            // colorG
-        dos.writeFloat((Float) data[5]);            // colorB
-        dos.writeFloat((Float) data[6]);            // width
-        dos.writeFloat((Float) data[7]);            // height
-        dos.writeInt((Integer) data[8]);            // FOR-counter-max
-
-        bytes = bos.toByteArray();
-
-        dos.close();
-        bos.close();
-
-        return bytes;
+    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Exception {
+        doStream.writeDouble((Double) data[0]);          // posX
+        doStream.writeDouble((Double) data[1]);          // posY
+        doStream.writeDouble((Double) data[2]);          // posZ
+        doStream.writeFloat((Float) data[3]);            // colorR
+        doStream.writeFloat((Float) data[4]);            // colorG
+        doStream.writeFloat((Float) data[5]);            // colorB
+        doStream.writeFloat((Float) data[6]);            // width
+        doStream.writeFloat((Float) data[7]);            // height
+        doStream.writeInt((Integer) data[8]);            // FOR-counter-max
     }
 
     @Override
-    public void processData(INetworkManager manager, Player player, byte[] data) throws Exception {
-        ByteArrayInputStream bis = new ByteArrayInputStream(data);
-        DataInputStream dis = new DataInputStream(bis);
-
-        ParticleFXFuncCollection.spawnPortalFX(Minecraft.getMinecraft().theWorld, dis.readDouble(), dis.readDouble(), dis.readDouble(), dis.readFloat(),
-                                               dis.readFloat(), dis.readFloat(), dis.readFloat(), dis.readFloat(), dis.readInt());
-
-        dis.close();
-        bis.close();
+    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Exception {
+        ParticleFXFuncCollection.spawnPortalFX(Minecraft.getMinecraft().theWorld, diStream.readDouble(), diStream.readDouble(),
+                                               diStream.readDouble(), diStream.readFloat(), diStream.readFloat(), diStream.readFloat(),
+                                               diStream.readFloat(), diStream.readFloat(), diStream.readInt());
     }
-
 }

@@ -1,7 +1,5 @@
 package sanandreasp.mods.EnderStuffPlus.packet;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
@@ -19,33 +17,20 @@ public class PacketDupeInsertLevels
     implements ISAPPacketHandler
 {
     @Override
-    public byte[] getDataForPacket(Object... data) throws Exception {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        DataOutputStream dos = new DataOutputStream(bos);
-
-        dos.writeInt(((TileEntity) data[0]).xCoord);
-        dos.writeInt(((TileEntity) data[0]).yCoord);
-        dos.writeInt(((TileEntity) data[0]).zCoord);
-
-        byte[] bytes = bos.toByteArray();
-
-        dos.close();
-        bos.close();
-
-        return bytes;
+    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Exception {
+        doStream.writeInt(((TileEntity) data[0]).xCoord);
+        doStream.writeInt(((TileEntity) data[0]).yCoord);
+        doStream.writeInt(((TileEntity) data[0]).zCoord);
     }
 
     @Override
-    public void processData(INetworkManager manager, Player player, byte[] data) throws Exception {
-        ByteArrayInputStream bis = new ByteArrayInputStream(data);
-        DataInputStream dis = new DataInputStream(bis);
-
+    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Exception {
         EntityPlayerMP playerMP = (EntityPlayerMP) player;
 
         WorldServer serverWorld = (WorldServer) playerMP.worldObj;
-        int posX = dis.readInt();
-        int posY = dis.readInt();
-        int posZ = dis.readInt();
+        int posX = diStream.readInt();
+        int posY = diStream.readInt();
+        int posZ = diStream.readInt();
         TileEntityDuplicator dupe = (TileEntityDuplicator) serverWorld.getBlockTileEntity(posX, posY, posZ);
 
         if( playerMP.capabilities.isCreativeMode ) {
@@ -57,8 +42,5 @@ public class PacketDupeInsertLevels
 
         dupe.onInventoryChanged();
         serverWorld.markBlockForUpdate(posX, posY, posZ);
-
-        dis.close();
-        bis.close();
     }
 }

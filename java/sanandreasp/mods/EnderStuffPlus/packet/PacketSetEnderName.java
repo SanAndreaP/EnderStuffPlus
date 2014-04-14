@@ -1,7 +1,5 @@
 package sanandreasp.mods.EnderStuffPlus.packet;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
@@ -19,34 +17,18 @@ public class PacketSetEnderName
     implements ISAPPacketHandler
 {
     @Override
-    public byte[] getDataForPacket(Object... data) throws Exception {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        DataOutputStream dos = new DataOutputStream(bos);
-
-        dos.writeInt((Integer) data[0]); // entityId
-        dos.writeUTF((String) data[1]);  // name
-
-        byte[] bytes = bos.toByteArray();
-
-        dos.close();
-        bos.close();
-
-        return bytes;
+    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Exception {
+        doStream.writeInt((Integer) data[0]); // entityId
+        doStream.writeUTF((String) data[1]);  // name
     }
 
     @Override
-    public void processData(INetworkManager manager, Player player, byte[] data) throws Exception {
-        ByteArrayInputStream bis = new ByteArrayInputStream(data);
-        DataInputStream dis = new DataInputStream(bis);
-
+    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Exception {
         WorldServer serverWorld = (WorldServer) ((EntityPlayerMP) player).worldObj;
-        EntityLiving entity = (EntityLiving) serverWorld.getEntityByID(dis.readInt());
+        EntityLiving entity = (EntityLiving) serverWorld.getEntityByID(diStream.readInt());
 
         if( entity instanceof IEnderPet ) {
-            ((IEnderPet) entity).setName(dis.readUTF());
+            ((IEnderPet) entity).setName(diStream.readUTF());
         }
-
-        dis.close();
-        bis.close();
     }
 }

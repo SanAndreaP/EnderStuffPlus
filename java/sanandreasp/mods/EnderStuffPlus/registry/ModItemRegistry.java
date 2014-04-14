@@ -17,6 +17,7 @@ import sanandreasp.mods.EnderStuffPlus.item.tool.ItemNiobShears;
 import sanandreasp.mods.EnderStuffPlus.item.tool.ItemNiobShovel;
 import sanandreasp.mods.EnderStuffPlus.item.tool.ItemNiobSword;
 import sanandreasp.mods.EnderStuffPlus.item.tool.ItemTantalPickaxe;
+import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry.CfgNames;
 
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.EnumToolMaterial;
@@ -62,29 +63,29 @@ public class ModItemRegistry
     }
 
     private static final void initItems() {
-        espPearls     = new ItemCustomEnderPearl(ConfigRegistry.itemIDs.get("ESP Pearls").intValue() - 256);
-        enderFlesh    = new ItemEnderFlesh(ConfigRegistry.itemIDs.get("Ender Flesh").intValue() - 256);
-        avisFeather   = new Item(ConfigRegistry.itemIDs.get("Avis Feather").intValue() - 256);
-        avisArrow     = new Item(ConfigRegistry.itemIDs.get("Avis Arrow").intValue() - 256);
-        avisCompass   = new ItemAvisCompass(ConfigRegistry.itemIDs.get("Avis Compass").intValue() - 256);
-        enderPetEgg   = new ItemEnderPetEgg(ConfigRegistry.itemIDs.get("Enderpet Egg").intValue() - 256);
-        enderPetStaff = new Item(ConfigRegistry.itemIDs.get("Enderpet Staff").intValue() - 256);
-        endIngot      = new Item(ConfigRegistry.itemIDs.get("Niobium Ingot").intValue() - 256);
-        niobBow       = new ItemNiobBow(ConfigRegistry.itemIDs.get("Niobium Bow").intValue() - 256);
-        rainCoat      = new ItemRaincoat(ConfigRegistry.itemIDs.get("Ender-Raincoat").intValue() - 256);
-        niobHelmet    = new ItemNiobArmor(ConfigRegistry.itemIDs.get("Niobium Helmet").intValue() - 256, ARMOR_NIOBIUM, 0);
-        niobPlate     = new ItemNiobArmor(ConfigRegistry.itemIDs.get("Niobium Chestplate").intValue() - 256, ARMOR_NIOBIUM, 1);
-        niobLegs      = new ItemNiobArmor(ConfigRegistry.itemIDs.get("Niobium Leggings").intValue() - 256, ARMOR_NIOBIUM, 2);
-        niobBoots     = new ItemNiobArmor(ConfigRegistry.itemIDs.get("Niobium Boots").intValue() - 256, ARMOR_NIOBIUM, 3);
-        niobPick      = new ItemNiobPickaxe(ConfigRegistry.itemIDs.get("Niobium Pickaxe").intValue() - 256, TOOL_NIOBIUM);
-        niobShovel    = new ItemNiobShovel(ConfigRegistry.itemIDs.get("Niobium Shovel").intValue() - 256, TOOL_NIOBIUM);
-        niobAxe       = new ItemNiobAxe(ConfigRegistry.itemIDs.get("Niobium Axe").intValue() - 256, TOOL_NIOBIUM);
-        niobHoe       = new ItemNiobHoe(ConfigRegistry.itemIDs.get("Niobium Hoe").intValue() - 256, TOOL_NIOBIUM);
-        niobSword     = new ItemNiobSword(ConfigRegistry.itemIDs.get("Niobium Sword").intValue() - 256, TOOL_NIOBIUM);
-        niobShears    = new ItemNiobShears(ConfigRegistry.itemIDs.get("Niobium Shears").intValue() - 256);
-        endNugget     = new Item(ConfigRegistry.itemIDs.get("Niobium Nugget").intValue() - 256);
-        itemNiobDoor  = new ItemNiobDoor(ConfigRegistry.itemIDs.get("Ender Door").intValue() - 256);
-        enderStick    = new Item(ConfigRegistry.itemIDs.get("Ender Stick").intValue() - 256);
+        espPearls     = new ItemCustomEnderPearl(ConfigRegistry.itemIDs.get(CfgNames.ESP_PEARLS).intValue() - 256);
+        enderFlesh    = new ItemEnderFlesh(ConfigRegistry.itemIDs.get(CfgNames.ENDER_FLESH).intValue() - 256);
+        avisFeather   = new Item(ConfigRegistry.itemIDs.get(CfgNames.AVIS_FEATHER).intValue() - 256);
+        avisArrow     = new Item(ConfigRegistry.itemIDs.get(CfgNames.AVIS_ARROW).intValue() - 256);
+        avisCompass   = new ItemAvisCompass(ConfigRegistry.itemIDs.get(CfgNames.AVIS_COMPASS).intValue() - 256);
+        enderPetEgg   = new ItemEnderPetEgg(ConfigRegistry.itemIDs.get(CfgNames.ENDERPET_EGG).intValue() - 256);
+        enderPetStaff = new Item(ConfigRegistry.itemIDs.get(CfgNames.ENDERPET_STAFF).intValue() - 256);
+        endIngot      = new Item(ConfigRegistry.itemIDs.get(CfgNames.NIOBIUM_INGOT).intValue() - 256);
+        niobBow       = new ItemNiobBow(ConfigRegistry.itemIDs.get(CfgNames.NIOBIUM_BOW).intValue() - 256);
+        rainCoat      = new ItemRaincoat(ConfigRegistry.itemIDs.get(CfgNames.ENDER_RAINCOAT).intValue() - 256);
+        niobHelmet    = new ItemNiobArmor(ConfigRegistry.itemIDs.get(CfgNames.NIOBIUM_HELMET).intValue() - 256, ARMOR_NIOBIUM, 0);
+        niobPlate     = new ItemNiobArmor(ConfigRegistry.itemIDs.get(CfgNames.NIOBIUM_CHESTPLATE).intValue() - 256, ARMOR_NIOBIUM, 1);
+        niobLegs      = new ItemNiobArmor(ConfigRegistry.itemIDs.get(CfgNames.NIOBIUM_LEGGINGS).intValue() - 256, ARMOR_NIOBIUM, 2);
+        niobBoots     = new ItemNiobArmor(ConfigRegistry.itemIDs.get(CfgNames.NIOBIUM_BOOTS).intValue() - 256, ARMOR_NIOBIUM, 3);
+        niobPick      = new ItemNiobPickaxe(ConfigRegistry.itemIDs.get(CfgNames.NIOBIUM_PICKAXE).intValue() - 256, TOOL_NIOBIUM);
+        niobShovel    = new ItemNiobShovel(ConfigRegistry.itemIDs.get(CfgNames.NIOBIUM_SHOVEL).intValue() - 256, TOOL_NIOBIUM);
+        niobAxe       = new ItemNiobAxe(ConfigRegistry.itemIDs.get(CfgNames.NIOBIUM_AXE).intValue() - 256, TOOL_NIOBIUM);
+        niobHoe       = new ItemNiobHoe(ConfigRegistry.itemIDs.get(CfgNames.NIOBIUM_HOE).intValue() - 256, TOOL_NIOBIUM);
+        niobSword     = new ItemNiobSword(ConfigRegistry.itemIDs.get(CfgNames.NIOBIUM_SWORD).intValue() - 256, TOOL_NIOBIUM);
+        niobShears    = new ItemNiobShears(ConfigRegistry.itemIDs.get(CfgNames.NIOBIUM_SHEARS).intValue() - 256);
+        endNugget     = new Item(ConfigRegistry.itemIDs.get(CfgNames.NIOBIUM_NUGGET).intValue() - 256);
+        itemNiobDoor  = new ItemNiobDoor(ConfigRegistry.itemIDs.get(CfgNames.ENDER_DOOR_ITEM).intValue() - 256);
+        enderStick    = new Item(ConfigRegistry.itemIDs.get(CfgNames.ENDER_STICK).intValue() - 256);
         endHorseArmor = new ItemEndHorseArmor(10240);
         tantalPick    = new ItemTantalPickaxe(10241, TOOL_NIOBIUM);
 

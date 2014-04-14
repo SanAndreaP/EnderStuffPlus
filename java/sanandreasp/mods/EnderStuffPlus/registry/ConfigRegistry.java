@@ -116,7 +116,7 @@ public final class ConfigRegistry
     }
 
     public static enum CfgNames {
-        AVIS_EGG,
+        AVIS_EGG,               // blocks
         NIOBIUM_ORE,
         NIOBIUM_BLOCK,
         BIOME_CHANGER,
@@ -129,7 +129,7 @@ public final class ConfigRegistry
         ENDER_SAPLING,
         CORRUPT_END_STONE,
         END_FLUID,
-        ESP_PEARLS,
+        ESP_PEARLS,             // items
         ENDER_FLESH,
         AVIS_FEATHER,
         AVIS_ARROW,
@@ -153,6 +153,12 @@ public final class ConfigRegistry
         ENDER_DOOR_ITEM,
         ENDER_STICK;
 
+        /**
+         * Returns a config-friendly name of the enum value.
+         *
+         * @return the name of the enum value without underscores
+         *         and formatted in Pascal Case
+         */
         @Override
         public String toString() {
             String name = "";

@@ -1,7 +1,5 @@
 package sanandreasp.mods.EnderStuffPlus.packet;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
@@ -17,7 +15,7 @@ public class PacketChangeBCGUI
     implements ISAPPacketHandler
 {
     @Override
-    public byte[] getDataForPacket(Object... data) throws Exception {
+    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Exception {
         int id = (Integer) data[0];
         int x = (Integer) data[1];
         int y = (Integer) data[2];
@@ -28,35 +26,19 @@ public class PacketChangeBCGUI
             player.openGui(ESPModRegistry.instance, id, player.worldObj, x, y, z);
         }
 
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        DataOutputStream dos = new DataOutputStream(bos);
-
-        dos.writeInt(id);
-        dos.writeInt(x);
-        dos.writeInt(y);
-        dos.writeInt(z);
-
-        byte[] bytes = bos.toByteArray();
-
-        dos.close();
-        bos.close();
-
-        return bytes;
+        doStream.writeInt(id);
+        doStream.writeInt(x);
+        doStream.writeInt(y);
+        doStream.writeInt(z);
     }
 
     @Override
-    public void processData(INetworkManager manager, Player player, byte[] data) throws Exception {
-        ByteArrayInputStream bis = new ByteArrayInputStream(data);
-        DataInputStream dis = new DataInputStream(bis);
-
-        int id = dis.readInt();
-        int x = dis.readInt();
-        int y = dis.readInt();
-        int z = dis.readInt();
+    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Exception {
+        int id = diStream.readInt();
+        int x = diStream.readInt();
+        int y = diStream.readInt();
+        int z = diStream.readInt();
 
         ((EntityPlayer) player).openGui(ESPModRegistry.instance, id, ((EntityPlayer) player).worldObj, x, y, z);
-
-        dis.close();
-        bis.close();
     }
 }

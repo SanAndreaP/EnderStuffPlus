@@ -1,7 +1,5 @@
 package sanandreasp.mods.EnderStuffPlus.packet;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
@@ -19,58 +17,41 @@ public class PacketBCGUIAction
     implements ISAPPacketHandler
 {
     @Override
-    public byte[] getDataForPacket(Object... data) throws Exception {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        DataOutputStream dos = new DataOutputStream(bos);
-
-        dos.writeInt(((TileEntity) data[0]).xCoord);
-        dos.writeInt(((TileEntity) data[0]).yCoord);
-        dos.writeInt(((TileEntity) data[0]).zCoord);
-        dos.writeByte(((Byte) data[1]));
-        dos.writeInt(((Integer) data[2]));
-
-        byte[] bytes = bos.toByteArray();
-
-        dos.close();
-        bos.close();
-
-        return bytes;
+    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Exception {
+        doStream.writeInt(((TileEntity) data[0]).xCoord);
+        doStream.writeInt(((TileEntity) data[0]).yCoord);
+        doStream.writeInt(((TileEntity) data[0]).zCoord);
+        doStream.writeByte(((Byte) data[1]));
+        doStream.writeInt(((Integer) data[2]));
     }
 
     @Override
-    public void processData(INetworkManager manager, Player player, byte[] data) throws Exception {
-        ByteArrayInputStream bis = new ByteArrayInputStream(data);
-        DataInputStream dis = new DataInputStream(bis);
-
+    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Exception {
         WorldServer serverWorld = (WorldServer) ((EntityPlayerMP) player).worldObj;
-        int posX = dis.readInt();
-        int posY = dis.readInt();
-        int posZ = dis.readInt();
+        int posX = diStream.readInt();
+        int posY = diStream.readInt();
+        int posZ = diStream.readInt();
         TileEntityBiomeChanger bcte = (TileEntityBiomeChanger) serverWorld.getBlockTileEntity(posX, posY, posZ);
-        switch( dis.readByte() ){
+        switch( diStream.readByte() ){
             case 0 :
                 bcte.setActive(!bcte.isActive());
                 break;
             case 1 :
-                bcte.setBiomeID(dis.readInt());
+                bcte.setBiomeID(diStream.readInt());
                 bcte.setCurrRange(0);
                 break;
             case 2 :
-                bcte.setMaxRange(dis.readInt());
+                bcte.setMaxRange(diStream.readInt());
                 bcte.setCurrRange(0);
                 break;
             case 3 :
-                bcte.setRadForm((byte) (dis.readInt() & 255));
+                bcte.setRadForm((byte) (diStream.readInt() & 255));
                 break;
             case 4 :
-                bcte.isReplacingBlocks = !bcte.isReplacingBlocks;
+                bcte.setReplacingBlocks(!bcte.isReplacingBlocks());
                 break;
         }
         bcte.onInventoryChanged();
         serverWorld.markBlockForUpdate(posX, posY, posZ);
-
-        dis.close();
-        bis.close();
     }
-
 }

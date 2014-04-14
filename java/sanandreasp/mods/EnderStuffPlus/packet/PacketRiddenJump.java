@@ -1,7 +1,5 @@
 package sanandreasp.mods.EnderStuffPlus.packet;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
@@ -19,32 +17,17 @@ public class PacketRiddenJump
     implements ISAPPacketHandler
 {
     @Override
-    public byte[] getDataForPacket(Object... data) throws Exception {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        DataOutputStream dos = new DataOutputStream(bos);
-
-        dos.writeInt((Integer) data[0]); // entityId
-
-        byte[] bytes = bos.toByteArray();
-
-        dos.close();
-        bos.close();
-
-        return bytes;
+    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Exception {
+        doStream.writeInt((Integer) data[0]); // entityId
     }
 
     @Override
-    public void processData(INetworkManager manager, Player player, byte[] data) throws Exception {
-        ByteArrayInputStream bis = new ByteArrayInputStream(data);
-        DataInputStream dis = new DataInputStream(bis);
-
+    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Exception {
         WorldServer serverWorld = (WorldServer) ((EntityPlayerMP) player).worldObj;
-        EntityLivingBase entity = (EntityLivingBase) serverWorld.getEntityByID(dis.readInt());
+        EntityLivingBase entity = (EntityLivingBase) serverWorld.getEntityByID(diStream.readInt());
+
         if( entity != null ) {
             ObfuscationReflectionHelper.setPrivateValue(EntityLivingBase.class, entity, true, "isJumping", "field_70703_bu");
         }
-
-        dis.close();
-        bis.close();
     }
 }

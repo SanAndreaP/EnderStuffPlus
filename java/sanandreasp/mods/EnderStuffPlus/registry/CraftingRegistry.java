@@ -74,106 +74,93 @@ public class CraftingRegistry
                                'n', new ItemStack(ModBlockRegistry.endBlock, 1, 0),                             //   [w][w][w]
                                'd', new ItemStack(Block.blockDiamond, 1));
 
-        // Weather Altar
-        GameRegistry.addRecipe(new ItemStack(ModBlockRegistry.weatherAltar, 1),
-                               "rbr", "nnn", "qnq",
-                               'r', new ItemStack(Item.redstone, 1),
-                               'b', new ItemStack(Block.blockRedstone, 1),
+        GameRegistry.addRecipe(new ItemStack(ModBlockRegistry.weatherAltar, 1),                                 // Weather Altar
+                               "rbr", "nnn", "qnq",                                                             //   [r][b][r]
+                               'r', new ItemStack(Item.redstone, 1),                                            //   [n][n][n]
+                               'b', new ItemStack(Block.blockRedstone, 1),                                      //   [q][n][q]
                                'n', new ItemStack(ModItemRegistry.endIngot, 1, 0),
                                'q', new ItemStack(Block.blockNetherQuartz, 1, OreDictionary.WILDCARD_VALUE));
 
-        /** Deco- and Building-Blocks **/
-        // Niobium Door
-        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.itemNiobDoor, 1),
-                               "nn", "nn", "nn",
-                               'n', new ItemStack(ModItemRegistry.endIngot, 1, 0));
+        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.itemNiobDoor, 1),                                  // Niobium Door
+                               "nn", "nn", "nn",                                                                //   [n][n][ ]
+                               'n', new ItemStack(ModItemRegistry.endIngot, 1, 0));                             //   [n][n][ ]
+                                                                                                                //   [n][n][ ]
 
-        // Ender Wood
-        GameRegistry.addShapelessRecipe(new ItemStack(ModBlockRegistry.enderPlanks, 4),
+        GameRegistry.addShapelessRecipe(new ItemStack(ModBlockRegistry.enderPlanks, 4),                         // Ender Wood
                                         new ItemStack(ModBlockRegistry.enderLog, 1));
 
-        /** Tools and Weapons **/
-        // Avis Compass
-        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.avisCompass, 1),
-                               " f ", "fcf", " f ",
-                               'c', new ItemStack(Item.compass, 1),
-                               'f', new ItemStack(ModItemRegistry.avisFeather, 1));
+        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.avisCompass, 1),                                   // Avis Compass
+                               " f ", "fcf", " f ",                                                             //   [ ][f][ ]
+                               'c', new ItemStack(Item.compass, 1),                                             //   [f][c][f]
+                               'f', new ItemStack(ModItemRegistry.avisFeather, 1));                             //   [ ][f][ ]
 
-        // Niobium Bow
-        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobBow, 1),
-                               " nr", "n r", " nr",
-                               'n', new ItemStack(ModItemRegistry.endIngot, 1, 0),
-                               'r', new ItemStack(Item.silk, 1));
+        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobBow, 1),                                       // Niobium Bow
+                               " nr", "n r", " nr",                                                             //   [ ][n][r]
+                               'n', new ItemStack(ModItemRegistry.endIngot, 1, 0),                              //   [n][ ][r]
+                               'r', new ItemStack(Item.silk, 1));                                               //   [ ][n][r]
 
-        // Avis Arrow
-        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.avisArrow, 2),
-                               "e", "s", "f",
-                               'e', new ItemStack(Item.enderPearl, 1),
-                               's', new ItemStack(Item.stick, 1),
+        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.avisArrow, 2),                                     // Avis Arrow
+                               "e", "s", "f",                                                                   //   [ ][e][ ]
+                               'e', new ItemStack(Item.enderPearl, 1),                                          //   [ ][s][ ]
+                               's', new ItemStack(Item.stick, 1),                                               //   [ ][f][ ]
                                'f', new ItemStack(ModItemRegistry.avisFeather));
 
-        // Niobium Pickaxe
-        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobPick, 1),
-                               "###", " s ", " s ",
-                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0),
-                               's', new ItemStack(ModItemRegistry.enderStick, 1));
+        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobPick, 1),                                      // Niobium Pickaxe
+                               "###", " s ", " s ",                                                             //   [#][#][#]
+                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0),                              //   [ ][s][ ]
+                               's', new ItemStack(ModItemRegistry.enderStick, 1));                              //   [ ][s][ ]
 
-        // Niobium Axe
-        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobAxe, 1),
-                               "##", "#s", " s",
-                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0),
-                               's', new ItemStack(ModItemRegistry.enderStick, 1));
+        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobAxe, 1),                                       // Niobium Axe
+                               "##", "#s", " s",                                                                //   [#][#][ ]
+                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0),                              //   [#][s][ ]
+                               's', new ItemStack(ModItemRegistry.enderStick, 1));                              //   [ ][s][ ]
 
-        // Niobium Shovel
-        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobShovel, 1),
-                               "#", "s", "s",
-                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0),
-                               's', new ItemStack(ModItemRegistry.enderStick, 1));
+        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobShovel, 1),                                    // Niobium Shovel
+                               "#", "s", "s",                                                                   //   [ ][#][ ]
+                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0),                              //   [ ][s][ ]
+                               's', new ItemStack(ModItemRegistry.enderStick, 1));                              //   [ ][s][ ]
 
-        // Niobium Hoe
-        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobHoe, 1),
-                               "##", " s", " s",
-                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0),
-                               's', new ItemStack(ModItemRegistry.enderStick, 1));
+        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobHoe, 1),                                       // Niobium Hoe
+                               "##", " s", " s",                                                                //   [#][#][ ]
+                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0),                              //   [ ][s][ ]
+                               's', new ItemStack(ModItemRegistry.enderStick, 1));                              //   [ ][s][ ]
 
-        // Niobium Shears
-        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobShears, 1),
-                               " #", "# ",
-                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0));
 
-        // Niobium Sword
-        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobSword, 1),
-                               "#", "#", "s",
-                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0),
-                               's', new ItemStack(ModItemRegistry.enderStick, 1));
+        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobShears, 1),                                    // Niobium Shears
+                               " #", "# ",                                                                      //   [ ][#][ ]
+                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0));                             //   [#][ ][ ]
+                                                                                                                //   [ ][ ][ ]
 
-        /** Armor **/
-        // Niobium Helmet
-        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobHelmet, 1),
-                               "###", "# #",
-                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0));
+        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobSword, 1),                                     // Niobium Sword
+                               "#", "#", "s",                                                                   //   [ ][#][ ]
+                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0),                              //   [ ][#][ ]
+                               's', new ItemStack(ModItemRegistry.enderStick, 1));                              //   [ ][s][ ]
 
-        // Niobium Chestplate
-        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobPlate, 1),
-                               "# #", "###", "###",
-                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0));
+        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobHelmet, 1),                                    // Niobium Helmet
+                               "###", "# #",                                                                    //   [#][#][#]
+                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0));                             //   [#][ ][#]
+                                                                                                                //   [ ][ ][ ]
 
-        // Niobium Leggings
-        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobLegs, 1),
-                               "###", "# #", "# #",
-                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0));
+        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobPlate, 1),                                     // Niobium Chestplate
+                               "# #", "###", "###",                                                             //   [#][ ][#]
+                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0));                             //   [#][#][#]
+                                                                                                                //   [#][#][#]
 
-        // Niobium Boots
-        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobBoots, 1),
-                               "# #", "# #",
-                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0));
-    }
+        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobLegs, 1),                                      // Niobium Leggings
+                               "###", "# #", "# #",                                                             //   [#][#][#]
+                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0));                             //   [#][ ][#]
+                                                                                                                //   [#][ ][#]
+
+        GameRegistry.addRecipe(new ItemStack(ModItemRegistry.niobBoots, 1),                                     // Niobium Boots
+                               "# #", "# #",                                                                    //   [#][ ][#]
+                               '#', new ItemStack(ModItemRegistry.endIngot, 1, 0));                             //   [#][ ][#]
+    }                                                                                                           //   [ ][ ][ ]
 
     @SuppressWarnings("unchecked")
-    private static void addEnderStick() {
-        List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
-
-        for( int i = 0; i < recipes.size(); i++ ) {
+    private static void addEnderStick() {                                                                       // Ender Sticks
+        List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();                                  //   [ ][p][ ]
+                                                                                                                //   [ ][p][ ]
+        for( int i = 0; i < recipes.size(); i++ ) {                                                             //   [ ][ ][ ]
             IRecipe sRecipe = recipes.get(i);
             if( sRecipe instanceof ShapedOreRecipe && sRecipe.getRecipeOutput().getItem() == Item.stick ) {
                 recipes.add(i, new ShapedRecipes(1, 2, new ItemStack[] { new ItemStack(ModBlockRegistry.enderPlanks),
@@ -184,10 +171,10 @@ public class CraftingRegistry
         }
     }
 
-    public static class raincoatCraft               //   [ ][l][l]
-        implements IRecipe                          //   [l][c][l]
-    {                                               //   [l][b][l]
-        @Override
+    public static class raincoatCraft                                                                           // Ender Raincoats
+        implements IRecipe                                                                                      //   [ ][l][l]
+    {                                                                                                           //   [l][c][l]
+        @Override                                                                                               //   [l][b][l]
         public ItemStack getCraftingResult(InventoryCrafting inventorycrafting) {
             ItemStack baseItem = inventorycrafting.getStackInRowAndColumn(1, 1);
             ItemStack colorItem = inventorycrafting.getStackInRowAndColumn(0, 2);

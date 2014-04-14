@@ -95,7 +95,7 @@ public class GuiBiomeChangerConfig
         this.rhombicButton.enabled = this.teBiomeChanger.getRadForm() != 2 && !this.teBiomeChanger.isActive();
         this.rangeSlider.enabled = this.changeBlocksButton.enabled = !this.teBiomeChanger.isActive();
 
-        String onOffText = SAPUtils.getTranslated(this.teBiomeChanger.isReplacingBlocks ? "options.on"
+        String onOffText = SAPUtils.getTranslated(this.teBiomeChanger.isReplacingBlocks() ? "options.on"
                                                                                                : "options.off");
         this.changeBlocksButton.displayString = SAPUtils.getTranslated("enderstuffplus.biomeChanger.gui3.blocks")
                                                 + ": " + onOffText;

@@ -23,6 +23,8 @@ public class WorldGenEndLeak
 {
     private static final List<Short> BIOMES = new ArrayList<Short>();
     private static final List<Short> REPLACEABLE_BLOCKS = new ArrayList<Short>();
+    private final boolean isInEnd;
+
     static {
         REPLACEABLE_BLOCKS.add((short) Block.grass.blockID);
         REPLACEABLE_BLOCKS.add((short) Block.stone.blockID);
@@ -44,8 +46,6 @@ public class WorldGenEndLeak
         BIOMES.add((short) BiomeGenBase.taiga.biomeID);
         BIOMES.add((short) BiomeGenBase.sky.biomeID);
     }
-
-    private final boolean isInEnd;
 
     public WorldGenEndLeak() {
         super();
@@ -89,7 +89,8 @@ public class WorldGenEndLeak
             return false;
         }
 
-        if( !this.isInEnd && Math.abs(x - world.getSpawnPoint().posX) < 256 && Math.abs(z - world.getSpawnPoint().posZ) < 256 ) {
+        if( !this.isInEnd && Math.abs(x - world.getSpawnPoint().posX) < 256
+            && Math.abs(z - world.getSpawnPoint().posZ) < 256 ) {
             return false;
         }
 
@@ -104,17 +105,17 @@ public class WorldGenEndLeak
         int chunkX = x >> 4;
         int chunkY = y >> 4;
 
-//        if( !world.doChunksNearChunkExist(x, y, z, radius) ) {
-            IChunkProvider chunkProvider = world.getChunkProvider();
-            int radChunk = MathHelper.ceiling_double_int(radius / 16D);
-            for( int i = -radChunk; i <= radChunk; i++ ) {
-                for( int j = -radChunk; j <= radChunk; j++ ) {
-                    if( !chunkProvider.chunkExists(chunkX + i, chunkY + j) ) {
-                        chunkProvider.loadChunk(chunkX + i, chunkY + j);
-                    }
+        // if( !world.doChunksNearChunkExist(x, y, z, radius) ) {
+        IChunkProvider chunkProvider = world.getChunkProvider();
+        int radChunk = MathHelper.ceiling_double_int(radius / 16D);
+        for( int i = -radChunk; i <= radChunk; i++ ) {
+            for( int j = -radChunk; j <= radChunk; j++ ) {
+                if( !chunkProvider.chunkExists(chunkX + i, chunkY + j) ) {
+                    chunkProvider.loadChunk(chunkX + i, chunkY + j);
                 }
             }
-//        }
+        }
+        // }
 
         for( int i = -radius; i <= radius; i++ ) {
             for( int k = -radius; k <= radius; k++ ) {
@@ -140,7 +141,8 @@ public class WorldGenEndLeak
 
                     if( radVec <= rad6 ) {
                         if( !this.replace(world, x + i, y + j, z + k, 0) ) {
-                            if( this.isInEnd && world.getBlockId(x + i, y + j, z + k) == ModBlockRegistry.corruptES.blockID ) {
+                            if( this.isInEnd
+                                && world.getBlockId(x + i, y + j, z + k) == ModBlockRegistry.corruptES.blockID ) {
                                 // world.setBlockToAir(x+i, y+j, z+k);
                             } else {
                                 this.replace(world, x + i, y + j, z + k, baseBlock.blockID);
@@ -148,7 +150,8 @@ public class WorldGenEndLeak
                         }
                     } else if( radVec > rad6 && radVec <= rad5 ) {
                         if( random.nextInt(3) > 0 && !this.replace(world, x + i, y + j, z + k, 0) ) {
-                            if( this.isInEnd && world.getBlockId(x + i, y + j, z + k) == ModBlockRegistry.corruptES.blockID ) {
+                            if( this.isInEnd
+                                && world.getBlockId(x + i, y + j, z + k) == ModBlockRegistry.corruptES.blockID ) {
                                 // world.setBlockToAir(x+i, y+j, z+k);
                             } else {
                                 this.replace(world, x + i, y + j, z + k, baseBlock.blockID);
@@ -158,8 +161,10 @@ public class WorldGenEndLeak
                         if( random.nextInt(5) == 0 ) {
                             this.replace(world, x + i, y + j, z + k, baseBlock.blockID);
                         } else if( random.nextInt(3) == 0 ) {
-                            if( !this.replace(world, x + i, y + j, z + k, 0) && world.getBlockId(x + i, y + j, z + k) != Block.obsidian.blockID ) {
-                                if( this.isInEnd && world.getBlockId(x + i, y + j, z + k) == ModBlockRegistry.corruptES.blockID ) {
+                            if( !this.replace(world, x + i, y + j, z + k, 0)
+                                && world.getBlockId(x + i, y + j, z + k) != Block.obsidian.blockID ) {
+                                if( this.isInEnd
+                                    && world.getBlockId(x + i, y + j, z + k) == ModBlockRegistry.corruptES.blockID ) {
                                     // world.setBlockToAir(x+i, y+j, z+k);;
                                 } else {
                                     world.setBlock(x + i, y + j, z + k, baseBlock.blockID);
@@ -196,14 +201,16 @@ public class WorldGenEndLeak
                     Block baseBlock = random.nextInt(10) == 0 ? Block.whiteStone : ModBlockRegistry.corruptES;
                     int radVec = Math.abs(i) + Math.abs(j - radius) + Math.abs(k);
                     if( j > radius || radVec <= radius ) {
-                        radVec = Math.abs(i) + Math.round((Math.abs(j) / ((float) maxHgt + (float) radius)) * 3F) + Math.abs(k);
+                        radVec = Math.abs(i) + Math.round((Math.abs(j) / ((float) maxHgt + (float) radius)) * 3F)
+                                 + Math.abs(k);
                         if( radVec <= 3 ) {
                             if( i == 0 && k == 0 && radVec == 2 && !spawnerSet ) {
                                 this.placeMobSpawner(random, world, x + i, y + j - radius - 1, z + k);
                                 world.setBlock(x + i, y + j - radius, z + k, baseBlock.blockID);
                                 spawnerSet = true;
                             } else if( i == 0 && k == 0 && j == maxHgt + radius ) {
-                                RegistryDungeonLoot.placeLootChest(world, x + i, y + j - radius, z + k, RegistryDungeonLoot.ENDLEAK_CHEST, random, 8);
+                                RegistryDungeonLoot.placeLootChest(world, x + i, y + j - radius, z + k,
+                                                                   RegistryDungeonLoot.ENDLEAK_CHEST, random, 8);
                             } else {
                                 // if( random.nextInt(256) == 0 )
                                 // world.setBlock(x+i, y+j-radius, z+k,

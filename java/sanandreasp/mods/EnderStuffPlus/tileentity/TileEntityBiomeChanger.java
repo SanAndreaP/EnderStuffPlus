@@ -3,8 +3,8 @@ package sanandreasp.mods.EnderStuffPlus.tileentity;
 import java.util.Random;
 
 import sanandreasp.core.manpack.mod.packet.PacketRegistry;
-import sanandreasp.mods.EnderStuffPlus.registry.ModBlockRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.ModBlockRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.RegistryBiomeChanger;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,29 +24,26 @@ import net.minecraft.world.chunk.Chunk;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileEntityBiomeChanger extends TileEntity implements IInventory {
+public class TileEntityBiomeChanger
+    extends TileEntity
+    implements IInventory
+{
 
-    private boolean isActive = false;
-    private byte currRange = 0;
-    private byte maxRange = 16;
     private byte biomeID = (byte) BiomeGenBase.plains.biomeID;
-    public long ticksExisted = 0;
+    private byte currRange = 0;
+    private EnumPerimForm form = EnumPerimForm.CIRCLE; // 0: circle; 1: square; 2: rhombus
     private ItemStack invItemStacks[] = new ItemStack[9];
-    public float renderCurrAngle = 0F;
-    public float renderCurrHeight = 0F;
-    private byte form = 0; // 0: circle; 1: square; 2: rhombus
-    private Random rand = new Random();
+    private boolean isActive = false;
+    private boolean isReplacingBlocks = false;
+    private byte maxRange = 16;
     private boolean prevActiveState = false;
-    public ItemStack prevFuelItem = null;
-    public boolean isReplacingBlocks = false;
+    private ItemStack prevFuelItem = null;
+    private Random rand = new Random();
+    private float renderCurrAngle = 0F;
+    private float renderCurrHeight = 0F;
+    private long ticksExisted = 0;
 
-    public TileEntityBiomeChanger() { }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public double getMaxRenderDistanceSquared() {
-        return 16384.0D;
-    }
+    public TileEntityBiomeChanger() {}
 
     @Override
     public boolean canUpdate() {
@@ -54,24 +51,24 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
     }
 
     public void changeBiome(int radius, boolean displayPerimeter) {
-        switch(this.form) {
-            case 1: this.changeBiomeSquare(radius, displayPerimeter); break;
-            case 2: this.changeBiomeRhombus(radius, displayPerimeter); break;
-            default: this.changeBiomeCircle(radius, displayPerimeter);
+        switch( this.form ){
+            case SQUARE :
+                this.changeBiomeSquare(radius, displayPerimeter);
+                break;
+            case RHOMBUS :
+                this.changeBiomeRhombus(radius, displayPerimeter);
+                break;
+            default :
+                this.changeBiomeCircle(radius, displayPerimeter);
         }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getRenderBoundingBox() {
-        return TileEntity.INFINITE_EXTENT_AABB;
     }
 
     private void changeBiomeBlock(int x, int z, boolean displayPerimeter) {
         if( displayPerimeter ) {
             float partX = x + this.xCoord + this.rand.nextFloat();
             float partZ = z + this.zCoord + this.rand.nextFloat();
-            float partY = this.worldObj.getTopSolidOrLiquidBlock(x + this.xCoord, z + this.zCoord) + 0.2F + this.rand.nextFloat()*0.5F;
+            float partY = this.worldObj.getTopSolidOrLiquidBlock(x + this.xCoord, z + this.zCoord) + 0.2F
+                          + this.rand.nextFloat() * 0.5F;
             this.worldObj.spawnParticle("reddust", partX, partY, partZ, 0F, 0F, 1F);
         } else {
             int x1 = x + this.xCoord;
@@ -81,13 +78,15 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
             Chunk chunk = this.worldObj.getChunkFromBlockCoords(x1, z1);
             byte[] biomeArray = chunk.getBiomeArray();
 
-            if( this.isReplacingBlocks && !this.worldObj.isRemote ) {
+            if( this.isReplacingBlocks() && !this.worldObj.isRemote ) {
                 byte prevBiomeID = biomeArray[(z1 & 0xF) << 4 | (x1 & 0xF)];
-                if( this.worldObj.getBlockId(x1, y-1, z1) == BiomeGenBase.biomeList[prevBiomeID].topBlock && this.worldObj.canBlockSeeTheSky(x1, y, z1) ) {
-                    this.worldObj.setBlock(x1, y-1, z1, BiomeGenBase.biomeList[this.biomeID].topBlock, 0, 3);
+                if( this.worldObj.getBlockId(x1, y - 1, z1) == BiomeGenBase.biomeList[prevBiomeID].topBlock
+                    && this.worldObj.canBlockSeeTheSky(x1, y, z1) ) {
+                    this.worldObj.setBlock(x1, y - 1, z1, BiomeGenBase.biomeList[this.biomeID].topBlock, 0, 3);
                     for( int i = 0; i < 5 && y - 1 - i >= 0; i++ ) {
-                        if( this.worldObj.getBlockId(x1, y-1-i, z1) == BiomeGenBase.biomeList[prevBiomeID].fillerBlock ) {
-                            this.worldObj.setBlock(x1, y-1-i, z1, BiomeGenBase.biomeList[this.biomeID].fillerBlock, 0, 3);
+                        if( this.worldObj.getBlockId(x1, y - 1 - i, z1) == BiomeGenBase.biomeList[prevBiomeID].fillerBlock ) {
+                            this.worldObj.setBlock(x1, y - 1 - i, z1, BiomeGenBase.biomeList[this.biomeID].fillerBlock,
+                                                   0, 3);
                         }
                     }
                 }
@@ -97,7 +96,7 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
             for( int i = 0; i < 8; i++ ) {
                 float partX = x + this.xCoord + this.rand.nextFloat();
                 float partZ = z + this.zCoord + this.rand.nextFloat();
-                float partY = y + 0.2F + this.rand.nextFloat()*0.5F;
+                float partY = y + 0.2F + this.rand.nextFloat() * 0.5F;
                 this.worldObj.spawnParticle("reddust", partX, partY, partZ, -1F, 0F, 0F);
             }
 
@@ -113,7 +112,7 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
         }
         for( int x = -radius; x < radius; x++ ) {
             for( int z = -radius; z < radius; z++ ) {
-                if( Math.sqrt(x*x+z*z)+0.5F < radius && Math.sqrt(x*x+z*z) > radius-1.5D ) {
+                if( Math.sqrt(x * x + z * z) + 0.5F < radius && Math.sqrt(x * x + z * z) > radius - 1.5D ) {
                     this.changeBiomeBlock(x, z, displayPerimeter);
                 }
             }
@@ -147,37 +146,29 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
     }
 
     @Override
-    public void closeChest() { }
+    public void closeChest() {}
 
     @Override
-    public ItemStack decrStackSize(int par1, int par2)
-    {
-        if( this.invItemStacks[par1] != null )
-        {
+    public ItemStack decrStackSize(int par1, int par2) {
+        if( this.invItemStacks[par1] != null ) {
             ItemStack var3;
 
-            if( this.invItemStacks[par1].stackSize <= par2 )
-            {
+            if( this.invItemStacks[par1].stackSize <= par2 ) {
                 var3 = this.invItemStacks[par1];
                 this.invItemStacks[par1] = null;
                 this.onInventoryChanged();
                 return var3;
-            }
-            else
-            {
+            } else {
                 var3 = this.invItemStacks[par1].splitStack(par2);
 
-                if( this.invItemStacks[par1].stackSize == 0 )
-                {
+                if( this.invItemStacks[par1].stackSize == 0 ) {
                     this.invItemStacks[par1] = null;
                 }
 
                 this.onInventoryChanged();
                 return var3;
             }
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
@@ -199,7 +190,7 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
         nbt.setByte("RadForm", this.getRadForm());
         nbt.setBoolean("IsActive", this.isActive());
         nbt.setBoolean("PrevActiveState", this.prevActiveState);
-        nbt.setBoolean("IsReplacingBlocks", this.isReplacingBlocks);
+        nbt.setBoolean("IsReplacingBlocks", this.isReplacingBlocks());
 
         return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
     }
@@ -224,11 +215,18 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
         return (short) (this.maxRange & 255);
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared() {
+        return 16384.0D;
+    }
+
     public int getNeededFuel(int range) {
         if( this.isFuelValid(null) ) {
             for( int i = 0; i < this.invItemStacks.length; i++ ) {
                 if( this.invItemStacks[i] != null ) {
-                    return range * RegistryBiomeChanger.getMultiFromStack(this.invItemStacks[i]) * (this.isReplacingBlocks ? 4 : 1);
+                    return range * RegistryBiomeChanger.getMultiFromStack(this.invItemStacks[i])
+                           * (this.isReplacingBlocks() ? 4 : 1);
                 }
             }
         }
@@ -240,7 +238,13 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
     }
 
     public byte getRadForm() {
-        return this.form;
+        return (byte) this.form.ordinal();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox() {
+        return TileEntity.INFINITE_EXTENT_AABB;
     }
 
     @Override
@@ -267,7 +271,7 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
     public boolean isEnoughFuel(int amount) {
         int remain = amount;
 
-        for( int i = this.invItemStacks.length-1; i >= 0 && remain > 0; i-- ) {
+        for( int i = this.invItemStacks.length - 1; i >= 0 && remain > 0; i-- ) {
             ItemStack is = this.invItemStacks[i];
             if( is != null && is.stackSize > 0 ) {
                 remain -= is.stackSize;
@@ -294,9 +298,19 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
     }
 
     @Override
+    public boolean isInvNameLocalized() {
+        return false;
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+        return false;
+    }
+
+    @Override
     public boolean isUseableByPlayer(EntityPlayer var1) {
-        return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) == this &&
-                var1.getDistanceSq(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5) < 64;
+        return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) == this
+               && var1.getDistanceSq(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5) < 64;
     }
 
     @Override
@@ -313,12 +327,12 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
     }
 
     @Override
-    public void openChest() { }
+    public void openChest() {}
 
     private void readdFuel(int amount) {
         int remain = amount;
 
-        for( int i = 0; i < this.invItemStacks.length && remain > 0 && this.prevFuelItem != null; i++ ) {
+        for( int i = 0; i < this.invItemStacks.length && remain > 0 && this.getPrevFuelItem() != null; i++ ) {
             ItemStack is = this.invItemStacks[i] != null ? this.invItemStacks[i].copy() : null;
             if( is != null && is.stackSize > 0 ) {
                 if( is.stackSize + remain <= is.getMaxStackSize() ) {
@@ -329,7 +343,8 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
                     is.stackSize = is.getMaxStackSize();
                 }
             } else {
-                is = new ItemStack(this.prevFuelItem.itemID, Math.min(this.prevFuelItem.getMaxStackSize(), remain), this.prevFuelItem.getItemDamage());
+                is = new ItemStack(this.getPrevFuelItem().itemID, Math.min(this.getPrevFuelItem().getMaxStackSize(), remain),
+                                   this.getPrevFuelItem().getItemDamage());
                 remain -= Math.min(is.getMaxStackSize(), remain);
             }
             this.invItemStacks[i] = is.copy();
@@ -337,8 +352,8 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
 
         this.prevFuelItem = null;
 
-        if( amount > 0) {
-            this.onInventoryChanged( );
+        if( amount > 0 ) {
+            this.onInventoryChanged();
         }
     }
 
@@ -361,17 +376,27 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
         NBTTagList var2 = par1nbtTagCompound.getTagList("Items");
         this.invItemStacks = new ItemStack[this.getSizeInventory()];
 
-        for( int var3 = 0; var3 < var2.tagCount(); ++var3 )
-        {
-            NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
+        for( int var3 = 0; var3 < var2.tagCount(); ++var3 ) {
+            NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
 
             byte var5 = var4.getByte("Slot");
 
-            if( var5 >= 0 && var5 < this.invItemStacks.length )
-            {
+            if( var5 >= 0 && var5 < this.invItemStacks.length ) {
                 this.invItemStacks[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
         }
+    }
+
+    @Override
+    public boolean receiveClientEvent(int par1, int par2) {
+        if( par1 == 1 ) {
+            this.changeBiome(par2, false);
+            return true;
+        } else if( par1 == 2 ) {
+            this.setCurrRange(par2);
+            return true;
+        }
+        return false;
     }
 
     private boolean removeFuel(int amount) {
@@ -381,11 +406,11 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
             return false;
         }
 
-        if( this.prevFuelItem != null ) {
+        if( this.getPrevFuelItem() != null ) {
             return true;
         }
 
-        for( int i = this.invItemStacks.length-1; i >= 0 && remain > 0; i-- ) {
+        for( int i = this.invItemStacks.length - 1; i >= 0 && remain > 0; i-- ) {
             ItemStack is = this.invItemStacks[i] != null ? this.invItemStacks[i].copy() : null;
             if( is != null && is.stackSize > 0 ) {
                 this.prevFuelItem = new ItemStack(is.itemID, 1, is.getItemDamage());
@@ -412,7 +437,7 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
         if( par1BiomeID > 255 || par1BiomeID < 0 ) {
             return;
         }
-        this.biomeID = (byte)(par1BiomeID & 255);
+        this.biomeID = (byte) (par1BiomeID & 255);
     }
 
     public void setCurrRange(int par1CurrRange) {
@@ -426,8 +451,7 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
     public void setInventorySlotContents(int var1, ItemStack var2) {
         this.invItemStacks[var1] = var2;
 
-        if( var2 != null && var2.stackSize > this.getInventoryStackLimit() )
-        {
+        if( var2 != null && var2.stackSize > this.getInventoryStackLimit() ) {
             var2.stackSize = this.getInventoryStackLimit();
         }
     }
@@ -440,7 +464,7 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
     }
 
     public void setRadForm(byte par1) {
-        this.form = (byte) Math.min(Math.max(par1, 0), 2);
+        this.form = EnumPerimForm.getEnum(Math.min(Math.max(par1, 0), 2));
     }
 
     @Override
@@ -451,7 +475,8 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
             if( this.worldObj.isRemote ) {
                 this.changeBiome(this.getMaxRange(), true);
             } else {
-                this.readdFuel((this.getMaxRange() - this.getCurrRange()) * RegistryBiomeChanger.getMultiFromStack(this.prevFuelItem));
+                this.readdFuel((this.getMaxRange() - this.getCurrRange())
+                               * RegistryBiomeChanger.getMultiFromStack(this.getPrevFuelItem()));
             }
             this.prevActiveState = false;
         } else {
@@ -473,11 +498,14 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
                 }
             }
 
-            if( this.ticksExisted % (30 * (this.isReplacingBlocks ? 2 : 1)) == 0 && !this.worldObj.isRemote ) {
+            if( this.ticksExisted % (30 * (this.isReplacingBlocks() ? 2 : 1)) == 0 && !this.worldObj.isRemote ) {
                 this.changeBiome(this.getCurrRange(), false);
-                this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ModBlockRegistry.biomeChanger.blockID, 1, this.getCurrRange());
-                PacketRegistry.sendPacketToAllAround(ESPModRegistry.MOD_ID, "setWeather", this.xCoord, this.yCoord, this.zCoord, 256, this.worldObj.provider.dimensionId, this, this.getCurrRange());
-                this.setCurrRange(this.getCurrRange()+1);
+                this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord,
+                                            ModBlockRegistry.biomeChanger.blockID, 1, this.getCurrRange());
+                PacketRegistry.sendPacketToAllAround(ESPModRegistry.MOD_ID, "setWeather", this.xCoord, this.yCoord,
+                                                     this.zCoord, 256, this.worldObj.provider.dimensionId, this,
+                                                     this.getCurrRange());
+                this.setCurrRange(this.getCurrRange() + 1);
 
                 if( this.getCurrRange() >= this.getMaxRange() ) {
                     this.setActive(false);
@@ -485,7 +513,8 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
                     this.prevActiveState = false;
                     this.prevFuelItem = null;
                     this.onInventoryChanged();
-                    this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ModBlockRegistry.biomeChanger.blockID, 2, 0);
+                    this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord,
+                                                ModBlockRegistry.biomeChanger.blockID, 2, 0);
                     this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                     return;
                 }
@@ -506,21 +535,19 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
         par1nbtTagCompound.setByte("radiusForm", this.getRadForm());
         par1nbtTagCompound.setBoolean("isActive", this.isActive());
         par1nbtTagCompound.setBoolean("prevActive", this.prevActiveState);
-        par1nbtTagCompound.setBoolean("IsReplacingBlocks", this.isReplacingBlocks);
+        par1nbtTagCompound.setBoolean("IsReplacingBlocks", this.isReplacingBlocks());
 
-        if( this.prevFuelItem != null ) {
+        if( this.getPrevFuelItem() != null ) {
             NBTTagCompound var1 = new NBTTagCompound();
-            this.prevFuelItem.writeToNBT(var1);
+            this.getPrevFuelItem().writeToNBT(var1);
             par1nbtTagCompound.setTag("prevFuelItem", var1);
         }
 
         NBTTagList var2 = new NBTTagList();
-        for( int var3 = 0; var3 < this.invItemStacks.length; ++var3 )
-        {
-            if( this.invItemStacks[var3] != null )
-            {
+        for( int var3 = 0; var3 < this.invItemStacks.length; ++var3 ) {
+            if( this.invItemStacks[var3] != null ) {
                 NBTTagCompound var4 = new NBTTagCompound();
-                var4.setByte("Slot", (byte)var3);
+                var4.setByte("Slot", (byte) var3);
                 this.invItemStacks[var3].writeToNBT(var4);
                 var2.appendTag(var4);
             }
@@ -529,25 +556,45 @@ public class TileEntityBiomeChanger extends TileEntity implements IInventory {
         par1nbtTagCompound.setTag("Items", var2);
     }
 
-    @Override
-    public boolean isInvNameLocalized() {
-        return false;
+    public float getRenderCurrHeight() {
+        return this.renderCurrHeight;
     }
 
-    @Override
-    public boolean receiveClientEvent(int par1, int par2) {
-        if( par1 == 1 ) {
-            this.changeBiome(par2, false);
-            return true;
-        } else if( par1 == 2 ) {
-            this.setCurrRange(par2);
-            return true;
+    public void setRenderCurrHeight(float renderCurrHeight) {
+        this.renderCurrHeight = renderCurrHeight;
+    }
+
+    public float getRenderCurrAngle() {
+        return this.renderCurrAngle;
+    }
+
+    public void setRenderCurrAngle(float renderCurrAngle) {
+        this.renderCurrAngle = renderCurrAngle;
+    }
+
+    public boolean isReplacingBlocks() {
+        return this.isReplacingBlocks;
+    }
+
+    public void setReplacingBlocks(boolean isReplacingBlocks) {
+        this.isReplacingBlocks = isReplacingBlocks;
+    }
+
+    public ItemStack getPrevFuelItem() {
+        return this.prevFuelItem;
+    }
+
+    public static enum EnumPerimForm
+    {
+        CIRCLE, SQUARE, RHOMBUS;
+
+        private static EnumPerimForm[] valueCache = null;
+
+        public static EnumPerimForm getEnum(int index) {
+            if( valueCache == null ) {
+                valueCache = EnumPerimForm.values();
+            }
+            return valueCache[index];
         }
-        return false;
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-        return false;
     }
 }

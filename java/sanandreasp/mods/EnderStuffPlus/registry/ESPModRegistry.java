@@ -3,10 +3,8 @@ package sanandreasp.mods.EnderStuffPlus.registry;
 import java.util.HashMap;
 
 import sanandreasp.core.manpack.helpers.SAPUtils;
-import sanandreasp.core.manpack.managers.SAPConfigManager;
 import sanandreasp.core.manpack.managers.SAPUpdateManager;
 import sanandreasp.core.manpack.mod.packet.PacketRegistry;
-import sanandreasp.mods.ManagerPackHelper;
 import sanandreasp.mods.EnderStuffPlus.enchantment.EnchantmentEnderChestTeleport;
 import sanandreasp.mods.EnderStuffPlus.item.ItemEnderPetEgg;
 
@@ -56,23 +54,20 @@ public class ESPModRegistry
     public static Enchantment enderChestTel;
     public static CreativeTabs espTab;
     public static CreativeTabs espTabCoats;
-    public static ManagerPackHelper manHelper = new ManagerPackHelper();
+    public static SAPUpdateManager updMan;
     public static HashMap<Integer, ItemStack> niobSet = Maps.newHashMap();
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        manHelper.checkManPack(event.getModMetadata().name);
-
-        if( !manHelper.loading ) {
-            return;
+        try {
+            updMan =  new SAPUpdateManager("EnderStuffPlus", 1, 1, 0,
+                                           "http://dl.dropbox.com/u/56920617/EnderStuffPMod_latest.txt",
+                                           "http://www.minecraftforum.net/topic/936911-");
+        } catch( NoClassDefFoundError ex ) {
+            throw new NoManpackFoundException(ex);
         }
 
         ConfigRegistry.setConfig(event.getModConfigurationDirectory());
-
-        manHelper.initMan(new SAPConfigManager("EnderStuffPlus", "EnderStuffPlus.txt", "/sanandreasp/"),
-                          new SAPUpdateManager("EnderStuffPlus", 1, 1, 0,
-                                               "http://dl.dropbox.com/u/56920617/EnderStuffPMod_latest.txt",
-                                               "http://www.minecraftforum.net/topic/936911-"));
 
         ESPModRegistry.espTab = new CreativeTabs("ESPTab") {
             @Override
@@ -127,19 +122,13 @@ public class ESPModRegistry
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
-        if( !manHelper.loading ) {
-            return;
-        }
-
         FurnaceRecipes.smelting().addSmelting(ModBlockRegistry.endOre.blockID, 0, new ItemStack(ModItemRegistry.endIngot, 1, 0), 0.85F);
         CraftingRegistry.initialize();
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent evt) {
-        if( !ESPModRegistry.manHelper.loading ) {
-            return;
-        }
+
     }
 
     public static boolean hasPlayerFullNiob(EntityPlayer player) {
@@ -179,5 +168,15 @@ public class ESPModRegistry
 
     public static void sendPacketSrv(String name, Object... data) {
         PacketRegistry.sendPacketToServer(MOD_ID, name, data);
+    }
+
+    private static class NoManpackFoundException
+        extends RuntimeException
+    {
+        private static final long serialVersionUID = -8341920921113749378L;
+
+        public NoManpackFoundException(Throwable throwable) {
+            super(throwable);
+        }
     }
 }

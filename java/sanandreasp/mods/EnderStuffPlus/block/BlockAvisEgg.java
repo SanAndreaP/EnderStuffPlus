@@ -76,7 +76,7 @@ public class BlockAvisEgg
             TileEntityAvisEgg teAvisEgg = (TileEntityAvisEgg) world.getBlockTileEntity(x, y, z);
 
             if( teAvisEgg != null ) {
-                teAvisEgg.playerName = ((EntityPlayer) entity).username;
+                teAvisEgg.setPlayerName(((EntityPlayer) entity).username);
             }
         }
     }

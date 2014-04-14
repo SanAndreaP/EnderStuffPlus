@@ -68,7 +68,7 @@ public class GuiBiomeChangerFuel
 
         for( int i = this.entryPosition; i < 4 + this.entryPosition && i < this.fuelEntries.size(); i++ ) {
             int multi = this.fuelEntries.get(i).getValue()
-                                * (((ContainerBiomeChanger) this.inventorySlots).getBiomeChanger().isReplacingBlocks ? 4 : 1);
+                                * (((ContainerBiomeChanger) this.inventorySlots).getBiomeChanger().isReplacingBlocks() ? 4 : 1);
             int needed = ((ContainerBiomeChanger) this.inventorySlots).getBiomeChanger().getMaxRange() * multi;
             boolean isAvailable = needed <= 9 * 64;
             ItemStack stack = this.fuelEntries.get(i).getKey();

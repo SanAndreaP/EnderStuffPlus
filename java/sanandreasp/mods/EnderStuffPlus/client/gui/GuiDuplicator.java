@@ -53,7 +53,8 @@ public class GuiDuplicator
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        int height = 12 - MathHelper.ceiling_float_int((12F * ((float) this.teDuplicator.getBurnTime() / (float) this.teDuplicator.maxBurnTime)));
+        float burnTimeRatio = this.teDuplicator.getBurnTime() / (float) this.teDuplicator.getMaxBurnTime();
+        int height = 12 - MathHelper.ceiling_float_int((12F * burnTimeRatio));
         int length = (int) (19 * ((float) this.teDuplicator.getProcTime()) / 18F);
         String s = Integer.toString(this.teDuplicator.getStoredLvl());
 

@@ -1,4 +1,5 @@
 package sanandreasp.mods.EnderStuffPlus.world;
+
 import java.util.Random;
 
 import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
@@ -11,7 +12,25 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 
-public class EnderStuffWorldGenerator {
+public class EnderStuffWorldGenerator
+{
+
+    private boolean generateOre(World world, Random rand, int posX, int posY, int posZ) {
+        if( world.getBlockId(posX, posY, posZ) == Block.whiteStone.blockID
+            && !world.canBlockSeeTheSky(posX, posY, posZ) ) {
+            world.setBlock(posX, posY, posZ, ModBlockRegistry.endOre.blockID);
+            return true;
+        }
+        return false;
+    }
+
+    @ForgeSubscribe
+    public void onPoopulateChunkPre(PopulateChunkEvent.Pre event) {
+        switch( event.world.provider.dimensionId ){
+            case 1 :
+                this.populateEndPre(event.rand, event.chunkX, event.chunkZ, event.world, event.chunkProvider);
+        }
+    }
 
     @ForgeSubscribe
     public void onPopulateChunkPost(PopulateChunkEvent.Post event) {
@@ -19,25 +38,18 @@ public class EnderStuffWorldGenerator {
             return;
         }
 
-        switch( event.world.provider.dimensionId ) {
-            case 0:
+        switch( event.world.provider.dimensionId ){
+            case 0 :
                 this.populateSurfacePost(event.rand, event.chunkX, event.chunkZ, event.world, event.chunkProvider);
                 break;
-        }
-    }
-
-    @ForgeSubscribe
-    public void onPoopulateChunkPre(PopulateChunkEvent.Pre event) {
-        switch( event.world.provider.dimensionId ) {
-            case 1:
-                this.populateEndPre(event.rand, event.chunkX, event.chunkZ, event.world, event.chunkProvider);
         }
     }
 
     public void populateEndPre(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkProvider) {
         int x, y, z;
 
-        if( random.nextInt(128) == 0 && ConfigRegistry.genEndlessEnd && (Math.abs(chunkX) > 10 || Math.abs(chunkZ) > 10) ) {
+        if( random.nextInt(128) == 0 && ConfigRegistry.genEndlessEnd
+            && (Math.abs(chunkX) > 10 || Math.abs(chunkZ) > 10) ) {
             x = chunkX * 16 + random.nextInt(16);
             z = chunkZ * 16 + random.nextInt(16);
             y = random.nextInt(64) + 64;
@@ -72,13 +84,5 @@ public class EnderStuffWorldGenerator {
 
             (new WorldGenEndLeak()).generate(world, random, x, y, z);
         }
-    }
-
-    private boolean generateOre(World world, Random rand, int posX, int posY, int posZ) {
-        if( world.getBlockId(posX, posY, posZ) == Block.whiteStone.blockID && !world.canBlockSeeTheSky(posX, posY, posZ) ) {
-            world.setBlock(posX, posY, posZ, ModBlockRegistry.endOre.blockID);
-            return true;
-        }
-        return false;
     }
 }

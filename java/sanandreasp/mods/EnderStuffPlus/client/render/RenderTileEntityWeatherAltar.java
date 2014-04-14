@@ -2,6 +2,7 @@ package sanandreasp.mods.EnderStuffPlus.client.render;
 
 import org.lwjgl.opengl.GL11;
 
+import sanandreasp.core.manpack.helpers.javatuples.Pair;
 import sanandreasp.mods.EnderStuffPlus.client.event.IconRegistry;
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelWeatherAltar;
 import sanandreasp.mods.EnderStuffPlus.registry.Textures;
@@ -55,6 +56,7 @@ public class RenderTileEntityWeatherAltar
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partTicks) {
         TileEntityWeatherAltar te = ((TileEntityWeatherAltar) tile);
+        Pair<float[], float[]> itmFloat = te.getItemFloat();
 
         this.bindTexture(Textures.WEATHERALTAR_TEXTURE.getResource());
 
@@ -70,9 +72,9 @@ public class RenderTileEntityWeatherAltar
         GL11.glTranslatef(0.0F, -2.5F, 0.0F);
         GL11.glTranslatef(1.25F, 0F, 0F);
 
-        float sunFloat = 0.5F - (te.prevItemFloat[0] + (te.itemFloat[0] - te.prevItemFloat[0]) * partTicks) * 0.5F;
-        float rainFloat = 0.5F - (te.prevItemFloat[1] + (te.itemFloat[1] - te.prevItemFloat[1]) * partTicks) * 0.5F;
-        float stormFloat = 0.5F - (te.prevItemFloat[2] + (te.itemFloat[2] - te.prevItemFloat[2]) * partTicks) * 0.5F;
+        float sunFloat = 0.5F - (itmFloat.getValue0()[0] + (itmFloat.getValue1()[0] - itmFloat.getValue0()[0]) * partTicks) * 0.5F;
+        float rainFloat = 0.5F - (itmFloat.getValue0()[1] + (itmFloat.getValue1()[1] - itmFloat.getValue0()[1]) * partTicks) * 0.5F;
+        float stormFloat = 0.5F - (itmFloat.getValue0()[2] + (itmFloat.getValue1()[2] - itmFloat.getValue0()[2]) * partTicks) * 0.5F;
 
         RenderHelper.disableStandardItemLighting();
 

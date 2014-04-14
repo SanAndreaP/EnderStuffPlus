@@ -41,15 +41,15 @@ public class BlockBiomeChanger
                 }
             }
 
-            if( teBiomeChager.prevFuelItem != null ) {
+            if( teBiomeChager.getPrevFuelItem() != null ) {
                 int itemCnt = (teBiomeChager.getMaxRange() - teBiomeChager.getCurrRange())
-                             * RegistryBiomeChanger.getMultiFromStack(teBiomeChager.prevFuelItem);
+                             * RegistryBiomeChanger.getMultiFromStack(teBiomeChager.getPrevFuelItem());
 
                 while( itemCnt > 0 ) {
-                    ItemStack stack = teBiomeChager.prevFuelItem.copy();
+                    ItemStack stack = teBiomeChager.getPrevFuelItem().copy();
 
-                    if( itemCnt > teBiomeChager.prevFuelItem.getMaxStackSize() ) {
-                        itemCnt -= stack.stackSize = teBiomeChager.prevFuelItem.getMaxStackSize();
+                    if( itemCnt > teBiomeChager.getPrevFuelItem().getMaxStackSize() ) {
+                        itemCnt -= stack.stackSize = teBiomeChager.getPrevFuelItem().getMaxStackSize();
                     } else {
                         stack.stackSize = itemCnt;
                         itemCnt = 0;

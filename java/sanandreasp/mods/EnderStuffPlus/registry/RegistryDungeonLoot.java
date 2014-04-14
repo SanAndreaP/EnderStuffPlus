@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.util.WeightedRandomItem;
 import net.minecraft.world.World;
 
 import net.minecraftforge.common.ChestGenHooks;
@@ -77,19 +78,20 @@ public final class RegistryDungeonLoot
         if( chest != null ) {
             ChestGenHooks info = ChestGenHooks.getInfo(lootID);
             for( int j = 0; j < attempts; ++j ) {
-                WeightedRandomChestContent weightedItem =
-                        (WeightedRandomChestContent) WeightedRandom.getRandomItem(rand, info.getItems(rand));
-                ItemStack[] stacks = ChestGenHooks.generateStacks(rand, weightedItem.theItemId,
-                                                                  weightedItem.theMinimumChanceToGenerateItem,
-                                                                  weightedItem.theMaximumChanceToGenerateItem);
+                WeightedRandomItem weightedItem = WeightedRandom.getRandomItem(rand, info.getItems(rand));
+                WeightedRandomChestContent weightedContent = (WeightedRandomChestContent) weightedItem;
+                ItemStack[] stacks = ChestGenHooks.generateStacks(rand, weightedContent.theItemId,
+                                                                  weightedContent.theMinimumChanceToGenerateItem,
+                                                                  weightedContent.theMaximumChanceToGenerateItem);
 
                 for( ItemStack item : stacks ) {
                     if( item.getItem() instanceof ItemRaincoat ) {
                         NBTTagCompound nbt = new NBTTagCompound();
-                        nbt.setString("base", RegistryRaincoats.BASE_LIST.keySet()
-                                                  .toArray(new String[0])[rand.nextInt(RegistryRaincoats.BASE_LIST.size())]);
-                        nbt.setString("color", RegistryRaincoats.COLOR_LIST.keySet()
-                                                   .toArray(new String[0])[rand.nextInt(RegistryRaincoats.COLOR_LIST.size())]);
+                        int rndBase = rand.nextInt(RegistryRaincoats.BASE_LIST.size());
+                        int rndColor = rand.nextInt(RegistryRaincoats.COLOR_LIST.size());
+
+                        nbt.setString("base", RegistryRaincoats.BASE_LIST.keySet().toArray(new String[0])[rndBase]);
+                        nbt.setString("color", RegistryRaincoats.COLOR_LIST.keySet().toArray(new String[0])[rndColor]);
                         item.setTagCompound(nbt);
                     }
 

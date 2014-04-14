@@ -16,6 +16,7 @@ import sanandreasp.mods.EnderStuffPlus.block.BlockEnderWood;
 import sanandreasp.mods.EnderStuffPlus.block.BlockSaplingEndTree;
 import sanandreasp.mods.EnderStuffPlus.block.BlockWeatherAltar;
 import sanandreasp.mods.EnderStuffPlus.item.ItemEndLeaves;
+import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry.CfgNames;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityAvisEgg;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityBiomeChanger;
 import sanandreasp.mods.EnderStuffPlus.tileentity.TileEntityDuplicator;
@@ -58,19 +59,19 @@ public final class ModBlockRegistry
     }
 
     private static final void initBlocks() {
-        avisEgg       = new BlockAvisEgg(ConfigRegistry.blockIDs.get("Avis Egg").intValue());
-        endOre        = new BlockEndOre(ConfigRegistry.blockIDs.get("Niobium Ore").intValue());
-        endBlock      = new BlockEndStorage(ConfigRegistry.blockIDs.get("Niobium Block").intValue());
-        biomeChanger  = new BlockBiomeChanger(ConfigRegistry.blockIDs.get("Biome Changer").intValue(), Material.rock);
-        duplicator    = new BlockDuplicator(ConfigRegistry.blockIDs.get("Duplicator").intValue());
-        weatherAltar  = new BlockWeatherAltar(ConfigRegistry.blockIDs.get("Weather Altar").intValue());
-        blockEndDoor  = new BlockEnderDoor(ConfigRegistry.blockIDs.get("Ender Door").intValue(), Material.iron);
-        enderLeaves   = new BlockEndLeaves(ConfigRegistry.blockIDs.get("Ender Leaves").intValue());
-        enderLog      = new BlockEndLog(ConfigRegistry.blockIDs.get("Ender Log").intValue());
-        sapEndTree    = new BlockSaplingEndTree(ConfigRegistry.blockIDs.get("Ender Sapling").intValue());
-        enderPlanks   = new BlockEnderWood(ConfigRegistry.blockIDs.get("Ender Planks").intValue());
-        corruptES     = new BlockCorruptEndStone(ConfigRegistry.blockIDs.get("Corrupt End Stone").intValue());
-        endFluidBlock = new BlockEndFluid(ConfigRegistry.blockIDs.get("End Fluid"), endFluid, Material.water);
+        avisEgg       = new BlockAvisEgg(ConfigRegistry.blockIDs.get(CfgNames.AVIS_EGG).intValue());
+        endOre        = new BlockEndOre(ConfigRegistry.blockIDs.get(CfgNames.NIOBIUM_ORE).intValue());
+        endBlock      = new BlockEndStorage(ConfigRegistry.blockIDs.get(CfgNames.NIOBIUM_BLOCK).intValue());
+        biomeChanger  = new BlockBiomeChanger(ConfigRegistry.blockIDs.get(CfgNames.BIOME_CHANGER).intValue(), Material.rock);
+        duplicator    = new BlockDuplicator(ConfigRegistry.blockIDs.get(CfgNames.DUPLICATOR).intValue());
+        weatherAltar  = new BlockWeatherAltar(ConfigRegistry.blockIDs.get(CfgNames.WEATHER_ALTAR).intValue());
+        blockEndDoor  = new BlockEnderDoor(ConfigRegistry.blockIDs.get(CfgNames.ENDER_DOOR_BLOCK).intValue(), Material.iron);
+        enderLeaves   = new BlockEndLeaves(ConfigRegistry.blockIDs.get(CfgNames.ENDER_LEAVES).intValue());
+        enderLog      = new BlockEndLog(ConfigRegistry.blockIDs.get(CfgNames.ENDER_LOG).intValue());
+        sapEndTree    = new BlockSaplingEndTree(ConfigRegistry.blockIDs.get(CfgNames.ENDER_SAPLING).intValue());
+        enderPlanks   = new BlockEnderWood(ConfigRegistry.blockIDs.get(CfgNames.ENDER_PLANKS).intValue());
+        corruptES     = new BlockCorruptEndStone(ConfigRegistry.blockIDs.get(CfgNames.CORRUPT_END_STONE).intValue());
+        endFluidBlock = new BlockEndFluid(ConfigRegistry.blockIDs.get(CfgNames.END_FLUID), endFluid, Material.water);
 
         avisEgg     .setUnlocalizedName("esp:avisEgg").setCreativeTab(ESPModRegistry.espTab).setHardness(1F);
         endOre      .setUnlocalizedName("esp:oreNiob").setCreativeTab(ESPModRegistry.espTab).setHardness(3.0F).setResistance(5.0F).setStepSound(Block.soundStoneFootstep);
@@ -88,7 +89,7 @@ public final class ModBlockRegistry
 
     private static final void initRegisterFluids() {
         endFluid = new Fluid("enderstuffp:endfluid");
-        endFluid.setBlockID(ConfigRegistry.blockIDs.get("End Fluid")).setDensity(-500).setTemperature(150).setLuminosity(8).setViscosity(500).setRarity(EnumRarity.uncommon).setGaseous(true);
+        endFluid.setBlockID(ConfigRegistry.blockIDs.get(CfgNames.END_FLUID)).setDensity(-500).setTemperature(150).setLuminosity(8).setViscosity(500).setRarity(EnumRarity.uncommon).setGaseous(true);
 
         FluidRegistry.registerFluid(endFluid);
     }

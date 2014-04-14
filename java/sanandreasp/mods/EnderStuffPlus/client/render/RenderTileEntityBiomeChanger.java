@@ -55,18 +55,18 @@ public class RenderTileEntityBiomeChanger
         TileEntityBiomeChanger te = ((TileEntityBiomeChanger) tile);
         Tessellator tess = Tessellator.instance;
 
-        te.renderCurrAngle += te.renderCurrHeight / 16F;
-        if( te.renderCurrHeight < 16F && te.isActive() ) {
-            te.renderCurrHeight += 0.05F;
-        } else if( te.renderCurrHeight > 0F && !te.isActive() ) {
-            te.renderCurrHeight -= 0.05F;
+        te.setRenderCurrAngle(te.getRenderCurrAngle() + te.getRenderCurrHeight() / 16F);
+        if( te.getRenderCurrHeight() < 16F && te.isActive() ) {
+            te.setRenderCurrHeight(te.getRenderCurrHeight() + 0.05F);
+        } else if( te.getRenderCurrHeight() > 0F && !te.isActive() ) {
+            te.setRenderCurrHeight(te.getRenderCurrHeight() - 0.05F);
         }
 
-        if( te.renderCurrAngle > 360F ) {
-            te.renderCurrAngle = 0F;
+        if( te.getRenderCurrAngle() > 360F ) {
+            te.setRenderCurrAngle(0F);
         }
-        if( te.renderCurrHeight < 0F ) {
-            te.renderCurrHeight = 0F;
+        if( te.getRenderCurrHeight() < 0F ) {
+            te.setRenderCurrHeight(0F);
         }
 
         this.bindTexture(Textures.BIOMECHANGER_TEXTURE.getResource());
@@ -74,7 +74,7 @@ public class RenderTileEntityBiomeChanger
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
 
-        this.modelBlock.setBoxRotations(te.renderCurrAngle);
+        this.modelBlock.setBoxRotations(te.getRenderCurrAngle());
 
         this.modelBlock.renderBlock();
 
@@ -88,10 +88,10 @@ public class RenderTileEntityBiomeChanger
         int brightY = bright / 65536;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX, brightY);
 
-        this.renderRay(0F + te.renderCurrAngle, te.renderCurrHeight, tess);
-        this.renderRay(180F + te.renderCurrAngle, te.renderCurrHeight, tess);
-        this.renderRay(90F + te.renderCurrAngle, te.renderCurrHeight, tess);
-        this.renderRay(270F + te.renderCurrAngle, te.renderCurrHeight, tess);
+        this.renderRay(0F + te.getRenderCurrAngle(), te.getRenderCurrHeight(), tess);
+        this.renderRay(180F + te.getRenderCurrAngle(), te.getRenderCurrHeight(), tess);
+        this.renderRay(90F + te.getRenderCurrAngle(), te.getRenderCurrHeight(), tess);
+        this.renderRay(270F + te.getRenderCurrAngle(), te.getRenderCurrHeight(), tess);
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_LIGHTING);
