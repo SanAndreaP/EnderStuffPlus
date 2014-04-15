@@ -9,6 +9,7 @@ import sanandreasp.mods.EnderStuffPlus.item.ItemEnderPetEgg;
 import sanandreasp.mods.EnderStuffPlus.item.ItemNiobArmor;
 import sanandreasp.mods.EnderStuffPlus.item.ItemNiobDoor;
 import sanandreasp.mods.EnderStuffPlus.item.ItemRaincoat;
+import sanandreasp.mods.EnderStuffPlus.item.tool.ItemAhrahSword;
 import sanandreasp.mods.EnderStuffPlus.item.tool.ItemNiobAxe;
 import sanandreasp.mods.EnderStuffPlus.item.tool.ItemNiobBow;
 import sanandreasp.mods.EnderStuffPlus.item.tool.ItemNiobHoe;
@@ -54,7 +55,10 @@ public class ModItemRegistry
     public static Item niobShovel;
     public static Item niobSword;
     public static Item rainCoat;
+    //TODO unfinished!
     public static Item tantalPick;
+    public static Item ahrahSword;
+
 
     public static final void initialize() {
         initMaterials();
@@ -88,6 +92,7 @@ public class ModItemRegistry
         enderStick    = new Item(ConfigRegistry.itemIDs.get(CfgNames.ENDER_STICK).intValue() - 256);
         endHorseArmor = new ItemEndHorseArmor(10240);
         tantalPick    = new ItemTantalPickaxe(10241, TOOL_NIOBIUM);
+        ahrahSword    = new ItemAhrahSword(10242, TOOL_NIOBIUM);
 
         espPearls    .setUnlocalizedName("esp:espPearls").setCreativeTab(ESPModRegistry.espTab);
         enderFlesh   .setUnlocalizedName("esp:enderFlesh").setTextureName("enderstuffp:enderFlesh").setCreativeTab(ESPModRegistry.espTab);
@@ -114,6 +119,7 @@ public class ModItemRegistry
         enderStick   .setUnlocalizedName("esp:enderStick").setTextureName("enderstuffp:enderStick").setCreativeTab(ESPModRegistry.espTab);
         endHorseArmor.setUnlocalizedName("esp:enderHorseArmor").setTextureName("enderstuffp:enderStick").setCreativeTab(ESPModRegistry.espTab);
         tantalPick   .setUnlocalizedName("esp:tantalPick").setTextureName("enderstuffp:tantalPick").setCreativeTab(ESPModRegistry.espTab);
+        ahrahSword   .setUnlocalizedName("esp:ahrahSword").setTextureName("enderstuffp:ahrah").setCreativeTab(ESPModRegistry.espTab);
     }
 
     private static final void initMaterials() {

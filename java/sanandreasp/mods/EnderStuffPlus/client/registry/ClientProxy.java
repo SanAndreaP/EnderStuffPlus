@@ -11,6 +11,7 @@ import sanandreasp.mods.EnderStuffPlus.client.packet.particle.PacketFXSpawnPorta
 import sanandreasp.mods.EnderStuffPlus.client.packet.particle.PacketFXSpawnRayballFX;
 import sanandreasp.mods.EnderStuffPlus.client.packet.particle.PacketFXSpawnTameAccept;
 import sanandreasp.mods.EnderStuffPlus.client.packet.particle.PacketFXSpawnTameRefuse;
+import sanandreasp.mods.EnderStuffPlus.client.render.ItemRendererAhrahSword;
 import sanandreasp.mods.EnderStuffPlus.client.render.ItemRendererBiomeChanger;
 import sanandreasp.mods.EnderStuffPlus.client.render.ItemRendererGlowTools;
 import sanandreasp.mods.EnderStuffPlus.client.render.ItemRendererNiobBow;
@@ -95,6 +96,7 @@ public class ClientProxy
         MinecraftForgeClient.registerItemRenderer(ModItemRegistry.niobHoe.itemID, new ItemRendererGlowTools());
         MinecraftForgeClient.registerItemRenderer(ModItemRegistry.niobShovel.itemID, new ItemRendererGlowTools());
         MinecraftForgeClient.registerItemRenderer(ModItemRegistry.niobShears.itemID, new ItemRendererGlowTools());
+        MinecraftForgeClient.registerItemRenderer(ModItemRegistry.ahrahSword.itemID, new ItemRendererAhrahSword());
     }
 
     @Override
