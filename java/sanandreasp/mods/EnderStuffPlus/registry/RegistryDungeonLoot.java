@@ -3,6 +3,7 @@ package sanandreasp.mods.EnderStuffPlus.registry;
 import java.util.Random;
 
 import sanandreasp.mods.EnderStuffPlus.item.ItemRaincoat;
+import sanandreasp.mods.EnderStuffPlus.registry.raincoat.RegistryRaincoats;
 
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentData;

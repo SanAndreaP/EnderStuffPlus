@@ -9,6 +9,9 @@ import sanandreasp.core.manpack.mod.packet.PacketRegistry;
 import sanandreasp.mods.EnderStuffPlus.item.ItemRaincoat;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ModItemRegistry;
+import sanandreasp.mods.EnderStuffPlus.registry.raincoat.RegistryRaincoats;
+import sanandreasp.mods.EnderStuffPlus.registry.raincoat.RegistryRaincoats.CoatBaseEntry;
+import sanandreasp.mods.EnderStuffPlus.registry.raincoat.RegistryRaincoats.CoatColorEntry;
 
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
@@ -185,13 +188,13 @@ public class EntityEnderAvis
     }
 
     @Override
-    public String getCoatBase() {
-        return this.hasCoat() ? this.getCoat().getTagCompound().getString("base") : "";
+    public CoatBaseEntry getCoatBase() {
+        return this.hasCoat() ? RegistryRaincoats.getCoatBase(this.getCoat().getTagCompound().getString("base")) : RegistryRaincoats.NULL_BASE;
     }
 
     @Override
-    public String getCoatColor() {
-        return this.hasCoat() ? this.getCoat().getTagCompound().getString("color") : "";
+    public CoatColorEntry getCoatColor() {
+        return this.hasCoat() ? RegistryRaincoats.getCoatColor(this.getCoat().getTagCompound().getString("color")) : RegistryRaincoats.NULL_COLOR;
     }
 
     public boolean hasCoat() {
@@ -406,10 +409,6 @@ public class EntityEnderAvis
         return (this.dataWatcher.getWatchableObjectByte(15) & 128) == 128;
     }
 
-    public boolean isImmuneToWater() {
-        return this.hasCoat();
-    }
-
     @Override
     protected boolean isMovementCeased() {
         return this.isSitting() && this.isTamed();
@@ -517,7 +516,7 @@ public class EntityEnderAvis
             this.setRiddenDW(this.isRidden());
         }
 
-        if( this.isWet() && !this.isImmuneToWater() ) {
+        if( this.isWet() && !this.hasCoat() ) {
             this.attackEntityFrom(DamageSource.drown, 1);
         }
 
@@ -579,13 +578,13 @@ public class EntityEnderAvis
             && this.getDistanceToEntity(ep) > 2F && this.ownerName.equals(ep.username) ) {
             attributeinstance.applyModifier(SPEED_TAMED);
             this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 24F, false, false,
-                                                                     !this.isImmuneToWater(), !this.isImmuneToWater()));
+                                                                     !this.hasCoat(), !this.hasCoat()));
         } else if( this.isTamed() && !this.isSitting() && !this.isRidden() && ep != null
                    && ep.getCurrentEquippedItem() != null && ep.getCurrentEquippedItem().getItem() instanceof ItemFood
                    && this.getDistanceToEntity(ep) > 2F && this.getHealth() < this.getMaxHealth() ) {
             attributeinstance.applyModifier(SPEED_TAMED);
             this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 8F, false, false,
-                                                                     !this.isImmuneToWater(), !this.isImmuneToWater()));
+                                                                     !this.hasCoat(), !this.hasCoat()));
         }
 
         if( this.isRiddenDW() && this.riddenByEntity != null ) {

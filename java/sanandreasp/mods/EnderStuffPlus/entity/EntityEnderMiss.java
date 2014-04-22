@@ -10,7 +10,9 @@ import sanandreasp.mods.EnderStuffPlus.item.ItemRaincoat;
 import sanandreasp.mods.EnderStuffPlus.registry.ConfigRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ModItemRegistry;
-import sanandreasp.mods.EnderStuffPlus.registry.RegistryRaincoats;
+import sanandreasp.mods.EnderStuffPlus.registry.raincoat.RegistryRaincoats;
+import sanandreasp.mods.EnderStuffPlus.registry.raincoat.RegistryRaincoats.CoatBaseEntry;
+import sanandreasp.mods.EnderStuffPlus.registry.raincoat.RegistryRaincoats.CoatColorEntry;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -268,13 +270,13 @@ public class EntityEnderMiss
     }
 
     @Override
-    public String getCoatBase() {
-        return this.hasCoat() ? this.getCoat().getTagCompound().getString("base") : "";
+    public CoatBaseEntry getCoatBase() {
+        return this.hasCoat() ? RegistryRaincoats.getCoatBase(this.getCoat().getTagCompound().getString("base")) : RegistryRaincoats.NULL_BASE;
     }
 
     @Override
-    public String getCoatColor() {
-        return this.hasCoat() ? this.getCoat().getTagCompound().getString("color") : "";
+    public CoatColorEntry getCoatColor() {
+        return this.hasCoat() ? RegistryRaincoats.getCoatColor(this.getCoat().getTagCompound().getString("color")) : RegistryRaincoats.NULL_COLOR;
     }
 
     @Override

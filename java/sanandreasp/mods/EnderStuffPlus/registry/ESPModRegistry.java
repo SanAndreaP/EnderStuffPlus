@@ -7,6 +7,8 @@ import sanandreasp.core.manpack.managers.SAPUpdateManager;
 import sanandreasp.core.manpack.mod.packet.PacketRegistry;
 import sanandreasp.mods.EnderStuffPlus.enchantment.EnchantmentEnderChestTeleport;
 import sanandreasp.mods.EnderStuffPlus.item.ItemEnderPetEgg;
+import sanandreasp.mods.EnderStuffPlus.registry.raincoat.RegistryRaincoats;
+import sanandreasp.mods.EnderStuffPlus.world.biome.BiomeGenSurfaceEnd;
 
 import com.google.common.collect.Maps;
 
@@ -17,6 +19,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.WorldType;
+import net.minecraft.world.biome.BiomeGenBase;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
@@ -56,6 +60,7 @@ public class ESPModRegistry
     public static CreativeTabs espTabCoats;
     public static SAPUpdateManager updMan;
     public static HashMap<Integer, ItemStack> niobSet = Maps.newHashMap();
+    public static BiomeGenBase espBiome;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -85,6 +90,10 @@ public class ESPModRegistry
         ModBlockRegistry.initialize();
         ModItemRegistry.initialize();
         ModEntityRegistry.initialize();
+
+        espBiome = new BiomeGenSurfaceEnd(125);
+        WorldType.DEFAULT.addNewBiome(espBiome);
+        WorldType.LARGE_BIOMES.addNewBiome(espBiome);
 
         ESPModRegistry.enderChestTel = new EnchantmentEnderChestTeleport(ConfigRegistry.enchID, 5);
         Enchantment.addToBookList(ESPModRegistry.enderChestTel);

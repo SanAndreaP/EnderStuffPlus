@@ -3,7 +3,7 @@ package sanandreasp.mods.EnderStuffPlus.item;
 import java.util.List;
 
 import sanandreasp.core.manpack.helpers.SAPUtils;
-import sanandreasp.mods.EnderStuffPlus.registry.RegistryRaincoats;
+import sanandreasp.mods.EnderStuffPlus.registry.raincoat.RegistryRaincoats;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;

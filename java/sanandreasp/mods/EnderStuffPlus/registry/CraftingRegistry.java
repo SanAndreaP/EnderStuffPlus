@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import sanandreasp.core.manpack.helpers.SAPUtils;
+import sanandreasp.mods.EnderStuffPlus.registry.raincoat.RegistryRaincoats;
 
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;

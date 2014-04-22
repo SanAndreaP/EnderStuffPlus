@@ -4,9 +4,9 @@ import org.lwjgl.opengl.GL11;
 
 import sanandreasp.mods.EnderStuffPlus.client.model.ModelEnderAvis;
 import sanandreasp.mods.EnderStuffPlus.entity.EntityEnderAvis;
-import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
-import sanandreasp.mods.EnderStuffPlus.registry.RegistryRaincoats;
 import sanandreasp.mods.EnderStuffPlus.registry.Textures;
+import sanandreasp.mods.EnderStuffPlus.registry.raincoat.RegistryRaincoats.CoatBaseEntry;
+import sanandreasp.mods.EnderStuffPlus.registry.raincoat.RegistryRaincoats.CoatColorEntry;
 
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -96,6 +96,8 @@ public class RenderEnderAvis
             return 1;
         } else if( pass == 1 ) {
             GL11.glDepthMask(true);
+            GL11.glEnable(GL11.GL_ALPHA_TEST);
+            GL11.glDisable(GL11.GL_BLEND);
 
             int bright = avis.getBrightnessForRender(partTicks);
             int brightX = bright % 65536;
@@ -106,30 +108,34 @@ public class RenderEnderAvis
 
             this.setRenderPassModel(this.coatModel);
 
-            if( avis.isImmuneToWater() ) {
-                if( avis.getCoatColor().equals(ESPModRegistry.MOD_ID + "_018") ) {
-                    GL11.glColor4f(1F, 1F, 1F, 0.5F);
-                    GL11.glEnable(GL11.GL_BLEND);
-                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                }
-
-                if( RegistryRaincoats.COLOR_LIST.containsKey(avis.getCoatColor()) ) {
-                    this.bindTexture(RegistryRaincoats.COLOR_LIST.get(avis.getCoatColor()).avisTexture);
+            if( avis.hasCoat() ) {
+                CoatColorEntry coatClr = avis.getCoatColor();
+                if( coatClr != null ) {
+                    coatClr.preRender();
+                    this.bindTexture(coatClr.avisTexture);
                 }
 
                 return 1;
             }
-        } else if( pass == 2 && avis.isImmuneToWater() ) {
-            if( avis.getCoatColor().equals(ESPModRegistry.MOD_ID + "_018") ) {
-                GL11.glDisable(GL11.GL_BLEND);
+        } else if( pass == 2 && avis.hasCoat() ) {
+            CoatColorEntry coatClr = avis.getCoatColor();
+            if( coatClr != null ) {
+                coatClr.postRender();
             }
 
-            if( RegistryRaincoats.BASE_LIST.containsKey(avis.getCoatBase()) ) {
-                this.bindTexture(RegistryRaincoats.BASE_LIST.get(avis.getCoatBase()).avisTexture);
+            CoatBaseEntry coatBse = avis.getCoatBase();
+            if( coatBse != null ) {
+                coatBse.preRender();
+                this.bindTexture(coatBse.avisTexture);
             }
 
             return 1;
         } else if( pass == 3 && avis.isSaddled() ) {
+            CoatBaseEntry coatBse = avis.getCoatBase();
+            if( coatBse != null ) {
+                coatBse.postRender();
+            }
+
             this.bindTexture(Textures.ENDERAVIS_TEXTURE_SADDLE.getResource());
 
             return 1;

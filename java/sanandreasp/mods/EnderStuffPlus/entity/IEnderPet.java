@@ -1,5 +1,8 @@
 package sanandreasp.mods.EnderStuffPlus.entity;
 
+import sanandreasp.mods.EnderStuffPlus.registry.raincoat.RegistryRaincoats.CoatBaseEntry;
+import sanandreasp.mods.EnderStuffPlus.registry.raincoat.RegistryRaincoats.CoatColorEntry;
+
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,9 +12,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public interface IEnderPet
 {
-    public String getCoatBase();
+    public CoatBaseEntry getCoatBase();
 
-    public String getCoatColor();
+    public CoatColorEntry getCoatColor();
 
     public int getEggDmg();
 

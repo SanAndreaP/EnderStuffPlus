@@ -2,6 +2,7 @@ package sanandreasp.mods.EnderStuffPlus.world;
 
 import java.util.Random;
 
+import sanandreasp.mods.EnderStuffPlus.registry.ESPModRegistry;
 import sanandreasp.mods.EnderStuffPlus.registry.ModBlockRegistry;
 
 import net.minecraft.block.Block;
@@ -19,7 +20,9 @@ public class WorldGenEndTree
     @Override
     public boolean generate(World world, Random random, int x, int y, int z) {
         if( world.getBlockId(x, y - 1, z) != Block.whiteStone.blockID ) {
-            return false;
+            if( world.getBiomeGenForCoords(x, z) != ESPModRegistry.espBiome || world.getBlockId(x, y - 1, z) != Block.grass.blockID) {
+                return false;
+            }
         }
 
         int height = 6 + random.nextInt(10);
