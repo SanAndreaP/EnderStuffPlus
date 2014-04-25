@@ -5,18 +5,46 @@ buildscript {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.0-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
     }
 }
 
 apply plugin: 'forge'
 
+version = "1.7.2-1.1.0"
 group = "sanandreasp.mods.EnderStuffPlus"
-minecraft{version = "1.6.4-9.11.1.964"}
-version = "1.6.4-1.1.0"
 archivesBaseName = 'EnderStuffP'
+
+minecraft {
+    version = "1.7.2-10.12.1.1061"
+    assetDir = "eclipse/assetsESP"
+}
+
+processResources
+{
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+        
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
@@ -32,14 +60,3 @@ sourceSets {
         resources { srcDir 'resources' }
     }
 }
-
-//processResources {
-//    from(sourceSets.main.resources.srcDirs) {
-//        include 'mcmod.info'
-//        expand 'version':project.version, 'mcversion':project.minecraft.version
-//    }
-
-//    from(sourceSets.main.resources.srcDirs) {
-//        exclude 'mcmod.info'
-//    }
-//}

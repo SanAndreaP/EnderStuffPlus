@@ -12,13 +12,15 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 
-public class EnderStuffWorldGenerator
+import cpw.mods.fml.common.IWorldGenerator;
+
+public class EnderStuffWorldGenerator implements IWorldGenerator
 {
     @ForgeSubscribe
     public void onPoopulateChunkPre(PopulateChunkEvent.Pre event) {
         switch( event.world.provider.dimensionId ){
             case 1 :
-                this.populateEndPre(event.rand, event.chunkX, event.chunkZ, event.world, event.chunkProvider);
+                this.populateEndPre(event.world.rand, event.chunkX, event.chunkZ, event.world, event.chunkProvider);
         }
     }
 
@@ -38,14 +40,14 @@ public class EnderStuffWorldGenerator
     public void populateEndPre(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkProvider) {
         int x, y, z;
 
-        if( random.nextInt(128) == 0 && ConfigRegistry.genEndlessEnd
-            && (Math.abs(chunkX) > 10 || Math.abs(chunkZ) > 10) ) {
-            x = chunkX * 16 + random.nextInt(16);
-            z = chunkZ * 16 + random.nextInt(16);
-            y = random.nextInt(64) + 64;
-
-            (new WorldGenEndIsland()).generate(world, random, x, y, z);
-        }
+//        if( random.nextInt(64) == 0 && ConfigRegistry.genEndlessEnd
+//            && (Math.abs(chunkX) > 10 || Math.abs(chunkZ) > 10) ) {
+//            x = chunkX * 16 + random.nextInt(16);
+//            z = chunkZ * 16 + random.nextInt(16);
+//            y = random.nextInt(64) + 64;
+//
+//            (new WorldGenEndIsland()).generate(world, random, x, y, z);
+//        }
 
         for( int i = 0; i < 16 && ConfigRegistry.genNiob; i++ ) {
             x = chunkX * 16 + random.nextInt(16);
@@ -83,5 +85,22 @@ public class EnderStuffWorldGenerator
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+        int x, y, z;
+
+        switch( world.provider.dimensionId ) {
+            case 1:
+                if( random.nextInt(64) == 0 && ConfigRegistry.genEndlessEnd
+                && (Math.abs(chunkX) > 10 || Math.abs(chunkZ) > 10) ) {
+                x = chunkX * 16 + random.nextInt(16);
+                z = chunkZ * 16 + random.nextInt(16);
+                y = random.nextInt(64) + 64;
+
+                (new WorldGenEndIsland()).generate(world, random, x, y, z);
+            }
+        }
     }
 }

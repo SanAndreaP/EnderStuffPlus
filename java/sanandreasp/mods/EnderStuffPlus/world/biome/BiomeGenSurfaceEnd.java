@@ -11,7 +11,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 public class BiomeGenSurfaceEnd
     extends BiomeGenBase
 {
-    private WorldGenEndTree worldGenEndTree;
+    private final WorldGenEndTree worldGenEndTree;
 
     public BiomeGenSurfaceEnd(int par1) {
         super(par1);
@@ -22,7 +22,7 @@ public class BiomeGenSurfaceEnd
         this.theBiomeDecorator.treesPerChunk = 20;
         this.theBiomeDecorator.flowersPerChunk = 20;
 
-        this.minHeight = -2.0F;
+        this.minHeight = -1.0F;
         this.maxHeight = 10.0F;
 
         this.biomeName = "Surface End";

@@ -10,7 +10,6 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 public class WorldGenEndIsland
     extends WorldGenerator
 {
-
     private void createSpike(World world, Random random, int x, int y, int z, int minDepth) {
         int size = random.nextInt(8) + 16 + minDepth;
         for( int i = -2; i <= 2; i++ ) {
@@ -31,21 +30,20 @@ public class WorldGenEndIsland
         int rad = 16 + random.nextInt(16);
 
         int y1 = 0, x1, z1;
-        for( int i = 0; i < rad * 2; i++ ) {
+//        for( int i = 0; i < rad * 2; i++ ) {
             x1 = random.nextInt(rad * 2) - rad;
             z1 = random.nextInt(rad * 2) - rad;
-            y1 += random.nextInt(3) - 1;
+            y1 = random.nextInt(2);
 
             this.generateTable(world, random, x + x1, y + y1, z + z1, 8 + random.nextInt(8));
-        }
+//        }
 
         if( random.nextInt(32) == 0 ) {
             (new WorldGenEndLeak(true)).generate(world, random, x, world.getHeightValue(x, z), z);
         } else {
             for( int i = 0; i < 4; i++ ) {
                 (new WorldGenLakes(Block.glowStone.blockID)).generate(world, random, x + random.nextInt(8) - 4,
-                                                                      world.getHeightValue(x, z), z + random.nextInt(8)
-                                                                                                  - 4);
+                                                                      world.getHeightValue(x, z), z + random.nextInt(8) - 4);
             }
             for( int i = 0; i < 16; i++ ) {
                 x1 = x + random.nextInt(24) - 12;
@@ -67,8 +65,8 @@ public class WorldGenEndIsland
                     if( i * i + k * k > (rad - Math.abs(j)) * (rad - Math.abs(j)) ) {
                         continue;
                     } else if( j == 0 && random.nextInt(128) == 0 ) {
-                        this.createSpike(world, random, x + i, y, z + k,
-                                         rad - Math.round((float) Math.sqrt(i * i + k * k)));
+//                        this.createSpike(world, random, x + i, y, z + k,
+//                                         rad - Math.round((float) Math.sqrt(i * i + k * k)));
                     }
 
                     this.setBlock(world, x + i, y + j, z + k, Block.whiteStone.blockID);

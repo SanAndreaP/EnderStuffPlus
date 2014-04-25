@@ -24,6 +24,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraftforge.common.MinecraftForge;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class CommonProxy
 {
@@ -53,6 +54,8 @@ public class CommonProxy
         MinecraftForge.EVENT_BUS.register(new EntityInteractEventInst());
         MinecraftForge.EVENT_BUS.register(new EntityJoinWorldEventInst());
         MinecraftForge.EVENT_BUS.register(new EnderStuffWorldGenerator());
+
+        GameRegistry.registerWorldGenerator(new EnderStuffWorldGenerator());
     }
 
     public void registerPackets() {
