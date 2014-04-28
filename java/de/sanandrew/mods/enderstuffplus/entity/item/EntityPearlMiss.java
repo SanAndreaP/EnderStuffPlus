@@ -4,8 +4,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 
 public class EntityPearlMiss
@@ -34,11 +34,11 @@ public class EntityPearlMiss
         }
 
         if( !this.worldObj.isRemote ) {
-            if( movingObjPos.typeOfHit == EnumMovingObjectType.TILE && this.getThrower() instanceof EntityPlayer ) {
+            if( movingObjPos.typeOfHit == MovingObjectType.BLOCK && this.getThrower() instanceof EntityPlayer ) {
                 EntityBait bait = new EntityBait(this.worldObj);
                 bait.setPosition(this.posX, Math.floor(this.posY), this.posZ);
                 this.worldObj.spawnEntityInWorld(bait);
-            } else if( movingObjPos.typeOfHit == EnumMovingObjectType.ENTITY && movingObjPos.entityHit != null
+            } else if( movingObjPos.typeOfHit == MovingObjectType.ENTITY && movingObjPos.entityHit != null
                        && movingObjPos.entityHit instanceof EntityLivingBase ) {
                 EntityBait bait = new EntityBait(this.worldObj);
                 bait.setPosition(this.posX, Math.floor(this.posY), this.posZ);

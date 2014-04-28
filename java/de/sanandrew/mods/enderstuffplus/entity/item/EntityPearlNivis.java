@@ -4,11 +4,12 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.init.Blocks;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
@@ -42,7 +43,7 @@ public class EntityPearlNivis
                                         this.posX, this.posY, this.posZ, 0.2F, 0.5F, 1.0F, this.width, this.height, 8);
 
         if( !this.worldObj.isRemote ) {
-            if( movingObjPos.typeOfHit == EnumMovingObjectType.TILE && this.getThrower() instanceof EntityPlayer ) {
+            if( movingObjPos.typeOfHit == MovingObjectType.BLOCK && this.getThrower() instanceof EntityPlayer ) {
                 int var13 = movingObjPos.blockX;
                 int var14 = movingObjPos.blockY;
                 int var15 = movingObjPos.blockZ;
@@ -61,22 +62,23 @@ public class EntityPearlNivis
                                 continue;
                             }
 
-                            int blockID = this.worldObj.getBlockId(var13 + i, var14 + j, var15 + k);
+                            Block blockID = this.worldObj.getBlock(var13 + i, var14 + j, var15 + k);
 
-                            if( (blockID == Block.waterStill.blockID || blockID == Block.waterMoving.blockID)
+                            if( (blockID == Blocks.water || blockID == Blocks.flowing_water)
                                 && this.worldObj.getBlockMetadata(var13 + i, var14 + j, var15 + k) == 0 )
                             {
-                                this.worldObj.setBlock(var13 + i, var14 + j, var15 + k, Block.ice.blockID);
-                            } else if( (blockID == Block.lavaStill.blockID || blockID == Block.lavaMoving.blockID)
+                                this.worldObj.setBlock(var13 + i, var14 + j, var15 + k, Blocks.ice);
+                            } else if( (blockID == Blocks.lava || blockID == Blocks.flowing_lava)
                                        && this.worldObj.getBlockMetadata(var13 + i, var14 + j, var15 + k) == 0 ) {
-                                this.worldObj.setBlock(var13 + i, var14 + j, var15 + k, Block.obsidian.blockID);
-                            } else if( (blockID == Block.lavaStill.blockID || blockID == Block.lavaMoving.blockID) ) {
-                                this.worldObj.setBlock(var13 + i, var14 + j, var15 + k, Block.cobblestone.blockID);
-                            } else if( this.worldObj.isBlockNormalCube(var13 + i, var14 + j, var15 + k)
-                                       && this.worldObj.isAirBlock(var13 + i, var14 + j + 1, var15 + k) ) {
-                                this.worldObj.setBlock(var13 + i, var14 + j + 1, var15 + k, Block.snow.blockID);
-                            } else if( blockID == Block.fire.blockID ) {
-                                this.worldObj.setBlock(var13 + i, var14 + j, var15 + k, 0);
+                                this.worldObj.setBlock(var13 + i, var14 + j, var15 + k, Blocks.obsidian);
+                            } else if( (blockID == Blocks.lava || blockID == Blocks.flowing_lava) ) {
+                                this.worldObj.setBlock(var13 + i, var14 + j, var15 + k, Blocks.cobblestone);
+                            } else if( this.worldObj.isBlockNormalCubeDefault(var13 + i, var14 + j, var15 + k, false)
+                                       && this.worldObj.isAirBlock(var13 + i, var14 + j + 1, var15 + k) )
+                            {
+                                this.worldObj.setBlock(var13 + i, var14 + j + 1, var15 + k, Blocks.snow);
+                            } else if( blockID == Blocks.fire ) {
+                                this.worldObj.setBlockToAir(var13 + i, var14 + j, var15 + k);
                                 playSound = true;
                             }
                         }
@@ -85,7 +87,7 @@ public class EntityPearlNivis
                 if( playSound ) {
                     this.worldObj.playSoundEffect(var13, var14, var15, "random.fizz", 1.0F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
                 }
-            } else if( movingObjPos.typeOfHit == EnumMovingObjectType.ENTITY && movingObjPos.entityHit != null ) {
+            } else if( movingObjPos.typeOfHit == MovingObjectType.ENTITY && movingObjPos.entityHit != null ) {
                 if( movingObjPos.entityHit instanceof EntityLivingBase ) {
                     ((EntityLivingBase) movingObjPos.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 300, 0));
                 }

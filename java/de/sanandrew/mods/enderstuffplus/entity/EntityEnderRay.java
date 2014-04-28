@@ -11,14 +11,17 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityFireball;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
+import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
 
 public class EntityEnderRay
@@ -36,6 +39,18 @@ public class EntityEnderRay
     private double waypointY;
     private double waypointZ;
 
+    private static final List<Triplet<? extends Item, Integer, Integer>> RARE_DROPS = new ArrayList<>();
+
+    static {
+        RARE_DROPS.add(Triplet.with(Items.diamond_sword, 1, 0));
+        RARE_DROPS.add(Triplet.with(Items.diamond_helmet, 1, 0));
+        RARE_DROPS.add(Triplet.with(Items.diamond, 3, 0));
+        RARE_DROPS.add(Triplet.with(Items.diamond_shovel, 1, 0));
+        RARE_DROPS.add(Triplet.with(Items.diamond_pickaxe, 1, 0));
+        RARE_DROPS.add(Triplet.with(Items.diamond_boots, 1, 0));
+        RARE_DROPS.add(Triplet.with(ModItemRegistry.enderFlesh, 2, 3));
+    }
+
     public EntityEnderRay(World world) {
         super(world);
         this.setSize(6.0F, 1.0F);
@@ -46,8 +61,8 @@ public class EntityEnderRay
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.3D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.3D);
     }
 
     @Override
@@ -82,40 +97,26 @@ public class EntityEnderRay
 
     @Override
     protected void dropFewItems(boolean recentlyHit, int fortuneLevel) {
-        int itemId = ModItemRegistry.enderFlesh.itemID;
-        int damage = this.rand.nextInt(5) == 0 ? 1 : 0;
+        int dropCount = this.rand.nextInt(3);
 
-        if( itemId > 0 ) {
-            int dropCount = this.rand.nextInt(3);
+        if( fortuneLevel > 0 ) {
+            dropCount += this.rand.nextInt(fortuneLevel + 1);
+        }
 
-            if( fortuneLevel > 0 ) {
-                dropCount += this.rand.nextInt(fortuneLevel + 1);
-            }
-
-            for( int i = 0; i < dropCount; i++ ) {
-                this.entityDropItem(new ItemStack(itemId, 1, damage), 0.0F);
-            }
+        for( int i = 0; i < dropCount; i++ ) {
+            this.entityDropItem(new ItemStack(ModItemRegistry.enderFlesh, 1, this.rand.nextInt(5) == 0 ? 1 : 0), 0.0F);
         }
     }
 
     @Override
     protected void dropRareDrop(int shouldDefDrop) {
-        List<ItemStack> rareItems = new ArrayList<ItemStack>();
-
-        rareItems.add(new ItemStack(Item.swordDiamond, 1));
-        rareItems.add(new ItemStack(Item.helmetDiamond, 1));
-        rareItems.add(new ItemStack(Item.diamond, this.rand.nextInt(3) + 1));
-        rareItems.add(new ItemStack(Item.shovelDiamond, 1));
-        rareItems.add(new ItemStack(Item.pickaxeDiamond, 1));
-        rareItems.add(new ItemStack(Item.bootsDiamond, 1));
-        rareItems.add(new ItemStack(ModItemRegistry.enderFlesh, 1, 2));
-
-        this.entityDropItem(rareItems.get(this.rand.nextInt(rareItems.size())), 0.0F);
+        Triplet<? extends Item, Integer, Integer> randItem = RARE_DROPS.get(this.rand.nextInt(RARE_DROPS.size()));
+        this.entityDropItem(new ItemStack(randItem.getValue0(), this.rand.nextInt(randItem.getValue1()), this.rand.nextInt(randItem.getValue2() + 1)), 0.0F);
     }
 
     @Override
     public boolean getCanSpawnHere() {
-        return this.rand.nextInt(10) == 0 && super.getCanSpawnHere() && this.worldObj.difficultySetting > 0
+        return this.rand.nextInt(10) == 0 && super.getCanSpawnHere() && this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL
                && !this.checkIfEntitiesExist(this.getClass(), 2);
     }
 
@@ -163,7 +164,7 @@ public class EntityEnderRay
 
     @Override
     public void onUpdate() {
-        if( this.worldObj.difficultySetting == 0 && !this.worldObj.isRemote ) {
+        if( this.worldObj.difficultySetting == EnumDifficulty.PEACEFUL && !this.worldObj.isRemote ) {
             this.setDead();
         }
 

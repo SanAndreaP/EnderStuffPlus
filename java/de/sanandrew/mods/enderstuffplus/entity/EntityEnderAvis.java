@@ -1,20 +1,20 @@
 package de.sanandrew.mods.enderstuffplus.entity;
 
+import ibxm.Player;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
-
-import de.sanandrew.core.manpack.mod.packet.PacketRegistry;
-import de.sanandrew.core.manpack.util.SAPUtils;
 
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeInstance;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemFood;
@@ -26,13 +26,14 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
-import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.enderstuffplus.item.ItemRaincoat;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
@@ -77,8 +78,8 @@ public class EntityEnderAvis
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(40.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.3D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.3D);
     }
 
     @Override
@@ -151,9 +152,9 @@ public class EntityEnderAvis
         super.entityInit();
 
         this.dataWatcher.addObject(15, new Byte((byte) 0));
-        this.dataWatcher.addObject(16, new Byte((byte) this.rand.nextInt(ItemDye.dyeColors.length)));
+        this.dataWatcher.addObject(16, new Byte((byte) this.rand.nextInt(ItemDye.field_150922_c.length)));
         this.dataWatcher.addObject(17, 20);
-        this.dataWatcher.addObject(22, new ItemStack(Item.shovelIron));
+        this.dataWatcher.addObject(22, new ItemStack(Items.iron_shovel));
     }
 
     @Override
@@ -203,7 +204,7 @@ public class EntityEnderAvis
     }
 
     public float[] getCollarColorArr() {
-        int color = ItemDye.dyeColors[this.getCollarColor()];
+        int color = ItemDye.field_150922_c[this.getCollarColor()];
 
         float red = (color >> 16 & 255) / 255.0F;
         float green = (color >> 8 & 255) / 255.0F;
@@ -229,8 +230,8 @@ public class EntityEnderAvis
     }
 
     @Override
-    protected int getDropItemId() {
-        return ModItemRegistry.avisFeather.itemID;
+    protected Item getDropItem() {
+        return ModItemRegistry.avisFeather;
     }
 
     @Override
@@ -271,12 +272,12 @@ public class EntityEnderAvis
     @SuppressWarnings("unchecked")
     private EntityPlayer getOwningPlayer(float distance) {
         if( !this.worldObj.isRemote && this.isTamed() ) {
-            if( this.ownerInst == null || !this.ownerInst.username.equals(this.ownerName) ) {
+            if( this.ownerInst == null || !this.ownerInst.getCommandSenderName().equals(this.ownerName) ) {
                 Iterator<EntityPlayer> players = this.worldObj.playerEntities.iterator();
                 while( players.hasNext() ) {
                     EntityPlayer currPlayer = players.next();
 
-                    if( this.ownerName.equals(currPlayer.username) ) {
+                    if( this.ownerName.equals(currPlayer.getCommandSenderName()) ) {
                         if( currPlayer.isDead ) {
                             this.ownerInst = null;
 
@@ -337,7 +338,7 @@ public class EntityEnderAvis
         if( player.getCurrentEquippedItem() != null ) {
             ItemStack playerItem = player.getCurrentEquippedItem();
 
-            if( !this.worldObj.isRemote && this.isTamed() && this.ownerName.equals(player.username) && !this.isRidden() ) {
+            if( !this.worldObj.isRemote && this.isTamed() && this.ownerName.equals(player.getCommandSenderName()) && !this.isRidden() ) {
                 if( this.isCoatApplicable(playerItem) ) {
                     if( this.hasCoat() && !player.capabilities.isCreativeMode ) {
                         player.inventory.addItemStackToInventory(this.getCoat().copy());
@@ -349,12 +350,12 @@ public class EntityEnderAvis
                     this.setCoat(coatItem);
                     playerItem.stackSize--;
                     return true;
-                } else if( playerItem.getItem() == Item.dyePowder && playerItem.getItemDamage() != this.getCollarColor() ) {
+                } else if( playerItem.getItem() == Items.dye && playerItem.getItemDamage() != this.getCollarColor() ) {
                     this.setCollarColor(playerItem.getItemDamage());
                     playerItem.stackSize--;
                     return true;
                 } else if( playerItem.getItem() instanceof ItemFood && this.getHealth() < this.getMaxHealth() ) {
-                    this.heal(((ItemFood) playerItem.getItem()).getHealAmount());
+                    this.heal(((ItemFood) playerItem.getItem()).func_150905_g(playerItem));
                     ESPModRegistry.sendPacketAllRng("fxTameAcc", this.posX, this.posY, this.posZ, 128.0D,
                                                     this.dimension, this.posX, this.posY, this.posZ, this.width,
                                                     this.height);
@@ -365,12 +366,12 @@ public class EntityEnderAvis
                     PacketRegistry.sendPacketToPlayer(ESPModRegistry.MOD_ID, "showPetGui", (Player) player, this);
 
                     return true;
-                } else if( playerItem.getItem() == Item.saddle && !this.isSaddled() ) {
+                } else if( playerItem.getItem() == Items.saddle && !this.isSaddled() ) {
                     this.setSaddled(true);
                     playerItem.stackSize--;
 
                     return true;
-                } else if( playerItem.getItem() == Item.sugar && this.currFlightCondition < 9.8F ) {
+                } else if( playerItem.getItem() == Items.sugar && this.currFlightCondition < 9.8F ) {
                     this.increaseCondition(2F);
                     playerItem.stackSize--;
 
@@ -385,7 +386,7 @@ public class EntityEnderAvis
                                                 StatCollector.translateToLocal("entity.EnderAvis.name"),
                                                 this.getName().isEmpty() ? EnumChatFormatting.OBFUSCATED + "RANDOM"
                                                                            + EnumChatFormatting.RESET : this.getName()));
-            if( this.ownerName.equals(player.username) ) {
+            if( this.ownerName.equals(player.getCommandSenderName()) ) {
                 int percHealth = (int) (this.getHealth() / this.getMaxHealth() * 100F);
                 int percCondit = (int) (this.currFlightCondition * 10F);
                 player.addChatMessage("  "
@@ -505,9 +506,9 @@ public class EntityEnderAvis
         if( !this.worldObj.isRemote ) {
             if( this.prevCoatBase != this.getCoat() ) {
                 if( this.hasCoat() && this.getCoat().getTagCompound().getString("base").equals(ESPModRegistry.MOD_ID + "_004") ) {
-                    this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(60.0D);
+                    this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(60.0D);
                 } else {
-                    this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(40.0D);
+                    this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
                     this.setHealth(Math.min(this.getHealth(), this.getMaxHealth()));
                 }
 
@@ -567,7 +568,7 @@ public class EntityEnderAvis
         }
 
         EntityPlayer ep = this.getOwningPlayer(25F);
-        AttributeInstance attributeinstance = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+        IAttributeInstance attributeinstance = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
         attributeinstance.removeModifier(SPEED_TAMED);
         attributeinstance.removeModifier(SPEED_AGGRO);
 
@@ -576,7 +577,7 @@ public class EntityEnderAvis
         }
 
         if( this.isTamed() && !this.isSitting() && !this.isRidden() && ep != null && this.isFollowing()
-            && this.getDistanceToEntity(ep) > 2F && this.ownerName.equals(ep.username) ) {
+            && this.getDistanceToEntity(ep) > 2F && this.ownerName.equals(ep.getCommandSenderName()) ) {
             attributeinstance.applyModifier(SPEED_TAMED);
             this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 24F, false, false,
                                                                      !this.hasCoat(), !this.hasCoat()));
@@ -631,7 +632,7 @@ public class EntityEnderAvis
             this.dataWatcher.updateObject(17, Math.round(this.currFlightCondition * 2F));
         }
 
-        if( !this.worldObj.isRemote && this.worldObj.difficultySetting == 0 && !this.isTamed() ) {
+        if( !this.worldObj.isRemote && this.worldObj.difficultySetting == EnumDifficulty.PEACEFUL && !this.isTamed() ) {
             this.setDead();
         }
     }
@@ -657,9 +658,9 @@ public class EntityEnderAvis
 
         if( par1nbtTagCompound.hasKey("coatItem") ) {
             ItemStack is = ItemStack.loadItemStackFromNBT(par1nbtTagCompound.getCompoundTag("coatItem"));
-            this.setCoat(is == null ? new ItemStack(Item.shovelIron) : is);
+            this.setCoat(is == null ? new ItemStack(Items.iron_shovel) : is);
         } else {
-            this.setCoat(new ItemStack(Item.shovelIron));
+            this.setCoat(new ItemStack(Items.iron_shovel));
         }
 
         this.setSitting(par1nbtTagCompound.getBoolean("isSitting"));
@@ -776,16 +777,16 @@ public class EntityEnderAvis
         nbt.setInteger("collarColor", this.getCollarColor());
         nbt.setBoolean("saddled", this.isSaddled());
 
-        if( this.getCoat().getItem() != Item.shovelIron ) {
+        if( this.getCoat().getItem() != Items.iron_shovel ) {
             NBTTagCompound item = new NBTTagCompound();
             this.getCoat().writeToNBT(item);
-            nbt.setCompoundTag("coat", item);
+            nbt.setTag("coat", item);
         }
     }
 
     public void setCoat(ItemStack stack) {
         if( stack == null || stack.getItem() != ModItemRegistry.rainCoat ) {
-            stack = new ItemStack(Item.shovelIron);
+            stack = new ItemStack(Items.iron_shovel);
         }
 
         this.dataWatcher.updateObject(22, stack);
