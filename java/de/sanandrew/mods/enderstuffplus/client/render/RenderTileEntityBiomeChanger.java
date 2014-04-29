@@ -78,10 +78,10 @@ public class RenderTileEntityBiomeChanger
 
         this.modelBlock.renderBlock();
 
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+//        GL11.glDisable(GL11.GL_TEXTURE_2D);
+//        GL11.glDisable(GL11.GL_LIGHTING);
+//        GL11.glEnable(GL11.GL_BLEND);
+//        GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 
         int bright = 0xF0;
         int brightX = bright % 65536;
@@ -93,9 +93,9 @@ public class RenderTileEntityBiomeChanger
         this.renderRay(90F + te.getRenderCurrAngle(), te.getRenderCurrHeight(), tess);
         this.renderRay(270F + te.getRenderCurrAngle(), te.getRenderCurrHeight(), tess);
 
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+//        GL11.glDisable(GL11.GL_BLEND);
+//        GL11.glEnable(GL11.GL_LIGHTING);
+//        GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glPopMatrix();
     }
 }

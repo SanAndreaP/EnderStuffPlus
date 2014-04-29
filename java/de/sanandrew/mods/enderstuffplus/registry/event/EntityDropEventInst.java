@@ -2,8 +2,6 @@ package de.sanandrew.mods.enderstuffplus.registry.event;
 
 import java.util.ArrayList;
 
-import de.sanandrew.core.manpack.util.SAPUtils;
-
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -11,10 +9,11 @@ import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
+import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.enderstuffplus.entity.IEnderCreature;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
@@ -61,10 +60,10 @@ public class EntityDropEventInst
             }
 
             if( spawnParticles ) {
-                ESPModRegistry.sendPacketAllRng("fxPortal", event.entityLiving.posX, event.entityLiving.posY,
-                                                event.entityLiving.posZ, 128.0D, player.dimension,
-                                                event.entityLiving.posX, event.entityLiving.posY,
-                                                event.entityLiving.posZ, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 20);
+//                ESPModRegistry.sendPacketAllRng("fxPortal", event.entityLiving.posX, event.entityLiving.posY,
+//                                                event.entityLiving.posZ, 128.0D, player.dimension,
+//                                                event.entityLiving.posX, event.entityLiving.posY,
+//                                                event.entityLiving.posZ, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 20);
             }
         }
     }

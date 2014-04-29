@@ -15,6 +15,7 @@ import de.sanandrew.core.manpack.mod.packet.IPacket;
 import de.sanandrew.core.manpack.util.client.GuiItemTab;
 import de.sanandrew.mods.enderstuffplus.client.event.IconRegistry;
 import de.sanandrew.mods.enderstuffplus.packet.PacketBCGUIAction;
+import de.sanandrew.mods.enderstuffplus.packet.PacketChangeBCGUI;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.Textures;
 import de.sanandrew.mods.enderstuffplus.tileentity.TileEntityBiomeChanger;
@@ -43,16 +44,16 @@ public abstract class GuiBiomeChangerBase
             this.mc.thePlayer.closeScreen();
         } else if( button.id == this.tabFuel.id ) {
             this.mc.thePlayer.openGui(ESPModRegistry.instance, 1, this.mc.theWorld, this.teBiomeChanger.xCoord, this.teBiomeChanger.yCoord, this.teBiomeChanger.zCoord);
-//            IPacket packet = new PacketChangeBCGUI(1, this.teBiomeChanger.xCoord, this.teBiomeChanger.yCoord, this.teBiomeChanger.zCoord);
-//            ESPModRegistry.channelHandler.sendToServer(packet);
+            IPacket packet = new PacketChangeBCGUI(1, this.teBiomeChanger.xCoord, this.teBiomeChanger.yCoord, this.teBiomeChanger.zCoord);
+            ESPModRegistry.channelHandler.sendToServer(packet);
         } else if( button.id == this.tabBiomes.id ) {
             this.mc.thePlayer.openGui(ESPModRegistry.instance, 2, this.mc.theWorld, this.teBiomeChanger.xCoord, this.teBiomeChanger.yCoord, this.teBiomeChanger.zCoord);
-//            IPacket packet = new PacketChangeBCGUI(2, this.teBiomeChanger.xCoord, this.teBiomeChanger.yCoord, this.teBiomeChanger.zCoord);
-//            ESPModRegistry.channelHandler.sendToServer(packet);
+            IPacket packet = new PacketChangeBCGUI(2, this.teBiomeChanger.xCoord, this.teBiomeChanger.yCoord, this.teBiomeChanger.zCoord);
+            ESPModRegistry.channelHandler.sendToServer(packet);
         } else if( button.id == this.tabCofig.id ) {
             this.mc.thePlayer.openGui(ESPModRegistry.instance, 3, this.mc.theWorld, this.teBiomeChanger.xCoord, this.teBiomeChanger.yCoord, this.teBiomeChanger.zCoord);
-//            IPacket packet = new PacketChangeBCGUI(3, this.teBiomeChanger.xCoord, this.teBiomeChanger.yCoord, this.teBiomeChanger.zCoord);
-//            ESPModRegistry.channelHandler.sendToServer(packet);
+            IPacket packet = new PacketChangeBCGUI(3, this.teBiomeChanger.xCoord, this.teBiomeChanger.yCoord, this.teBiomeChanger.zCoord);
+            ESPModRegistry.channelHandler.sendToServer(packet);
         }
     }
 

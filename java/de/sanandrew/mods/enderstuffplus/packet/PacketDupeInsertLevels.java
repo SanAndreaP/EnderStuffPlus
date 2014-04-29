@@ -1,47 +1,54 @@
 package de.sanandrew.mods.enderstuffplus.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import io.netty.buffer.ByteBuf;
 
-import de.sanandrew.core.manpack.mod.packet.ISAPPacketHandler;
-
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.INetworkManager;
+import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.WorldServer;
 
-import cpw.mods.fml.common.network.Player;
-
+import de.sanandrew.core.manpack.mod.packet.IPacket;
+import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.enderstuffplus.tileentity.TileEntityDuplicator;
 
 public class PacketDupeInsertLevels
-    implements ISAPPacketHandler
+    implements IPacket
 {
-    @Override
-    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Throwable {
-        doStream.writeInt(((TileEntity) data[0]).xCoord);
-        doStream.writeInt(((TileEntity) data[0]).yCoord);
-        doStream.writeInt(((TileEntity) data[0]).zCoord);
+    private Triplet<Integer, Integer, Integer> pos;
+
+    public PacketDupeInsertLevels() { }
+
+    public PacketDupeInsertLevels(TileEntity tile) {
+        this.pos = Triplet.with(tile.xCoord, tile.yCoord, tile.zCoord);
     }
 
     @Override
-    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Throwable {
-        EntityPlayerMP playerMP = (EntityPlayerMP) player;
+    public void readBytes(ByteBuf bytes) {
+        this.pos = Triplet.with(bytes.readInt(), bytes.readInt(), bytes.readInt());
+    }
 
-        WorldServer serverWorld = (WorldServer) playerMP.worldObj;
-        int posX = diStream.readInt();
-        int posY = diStream.readInt();
-        int posZ = diStream.readInt();
-        TileEntityDuplicator dupe = (TileEntityDuplicator) serverWorld.getBlockTileEntity(posX, posY, posZ);
+    @Override
+    public void writeBytes(ByteBuf bytes) {
+        bytes.writeInt(this.pos.getValue0());
+        bytes.writeInt(this.pos.getValue1());
+        bytes.writeInt(this.pos.getValue2());
+    }
 
-        if( playerMP.capabilities.isCreativeMode ) {
+    @Override
+    public void handleClientSide(NetHandlerPlayClient nhClient) { }
+
+    @Override
+    public void handleServerSide(NetHandlerPlayServer nhServer) {
+        TileEntity tile = nhServer.playerEntity.worldObj.getTileEntity(this.pos.getValue0(), this.pos.getValue1(), this.pos.getValue2());
+        TileEntityDuplicator dupe = (TileEntityDuplicator) tile;
+
+        if( nhServer.playerEntity.capabilities.isCreativeMode ) {
             dupe.addLevels(50);
         } else {
-            dupe.addLevels(Math.min(playerMP.experienceLevel, 10));
-            playerMP.addExperienceLevel(-Math.min(playerMP.experienceLevel, 10));
+            dupe.addLevels(Math.min(nhServer.playerEntity.experienceLevel, 10));
+            nhServer.playerEntity.addExperienceLevel(-Math.min(nhServer.playerEntity.experienceLevel, 10));
         }
 
-        dupe.onInventoryChanged();
-        serverWorld.markBlockForUpdate(posX, posY, posZ);
+        dupe.markDirty();
+        nhServer.playerEntity.worldObj.markBlockForUpdate(this.pos.getValue0(), this.pos.getValue1(), this.pos.getValue2());
     }
 }

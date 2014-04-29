@@ -35,6 +35,7 @@ import de.sanandrew.mods.enderstuffplus.item.ItemEnderPetEgg;
 import de.sanandrew.mods.enderstuffplus.packet.PacketBCGUIAction;
 import de.sanandrew.mods.enderstuffplus.packet.PacketChangeBCGUI;
 import de.sanandrew.mods.enderstuffplus.packet.PacketChangeBiome;
+import de.sanandrew.mods.enderstuffplus.packet.PacketDupeInsertLevels;
 import de.sanandrew.mods.enderstuffplus.registry.raincoat.RegistryRaincoats;
 import de.sanandrew.mods.enderstuffplus.world.biome.BiomeGenSurfaceEnd;
 
@@ -68,7 +69,7 @@ public class ESPModRegistry
     @EventHandler
     public void modConstruct(FMLConstructionEvent event) {
         try {
-            updMan =  new SAPUpdateManager("EnderStuffPlus", 1, 1, 0,
+            updMan =  new SAPUpdateManager("EnderStuffPlus", 1, 0, 0,
                                            "http://dl.dropbox.com/u/56920617/EnderStuffPMod_latest.txt",
                                            "http://www.minecraftforum.net/topic/936911-");
         } catch( NoClassDefFoundError ex ) {
@@ -116,6 +117,7 @@ public class ESPModRegistry
         channelHandler.registerPacket(PacketBCGUIAction.class);
         channelHandler.registerPacket(PacketChangeBCGUI.class);
         channelHandler.registerPacket(PacketChangeBiome.class);
+        channelHandler.registerPacket(PacketDupeInsertLevels.class);
 
 //        proxy.registerPackets();
         RegistryDungeonLoot.initialize();

@@ -12,9 +12,11 @@ import net.minecraft.util.MathHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import de.sanandrew.core.manpack.mod.packet.IPacket;
 import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.core.manpack.util.client.GuiItemTab;
 import de.sanandrew.mods.enderstuffplus.inventory.ContainerDuplicator;
+import de.sanandrew.mods.enderstuffplus.packet.PacketDupeInsertLevels;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.RegistryDuplicator;
 import de.sanandrew.mods.enderstuffplus.registry.Textures;
@@ -25,7 +27,7 @@ public class GuiDuplicator
     extends GuiContainer
 {
     private GuiButton insertXP;
-    private TileEntityDuplicator teDuplicator;
+    private final TileEntityDuplicator teDuplicator;
 
     public GuiDuplicator(ContainerDuplicator container) {
         super(container);
@@ -37,7 +39,9 @@ public class GuiDuplicator
     @Override
     protected void actionPerformed(GuiButton button) {
         if( button.id == this.insertXP.id ) {
-            ESPModRegistry.sendPacketSrv("dupeInsLevels", this.teDuplicator);
+            IPacket packet = new PacketDupeInsertLevels(this.teDuplicator);
+            ESPModRegistry.channelHandler.sendToServer(packet);
+//            ESPModRegistry.sendPacketSrv("dupeInsLevels", this.teDuplicator);
         } else {
             super.actionPerformed(button);
         }
