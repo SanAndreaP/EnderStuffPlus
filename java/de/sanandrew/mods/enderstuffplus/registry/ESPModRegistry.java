@@ -21,25 +21,30 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLConstructionEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
 import de.sanandrew.core.manpack.managers.SAPUpdateManager;
+import de.sanandrew.core.manpack.mod.packet.ChannelHandler;
 import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.enderstuffplus.enchantment.EnchantmentEnderChestTeleport;
 import de.sanandrew.mods.enderstuffplus.item.ItemEnderPetEgg;
+import de.sanandrew.mods.enderstuffplus.packet.PacketBCGUIAction;
+import de.sanandrew.mods.enderstuffplus.packet.PacketChangeBCGUI;
+import de.sanandrew.mods.enderstuffplus.packet.PacketChangeBiome;
 import de.sanandrew.mods.enderstuffplus.registry.raincoat.RegistryRaincoats;
 import de.sanandrew.mods.enderstuffplus.world.biome.BiomeGenSurfaceEnd;
 
 @Mod(modid = ESPModRegistry.MOD_ID, name = ESPModRegistry.MOD_NAME, version = ESPModRegistry.VERSION, dependencies = "required-after:sapmanpack")
-//@NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class ESPModRegistry
 {
 
     public static final String MOD_ID = "enderstuffp";
     public static final String MOD_NAME = "EnderStuff+";
+    public static final String MOD_CHANNEL = "enderstuffp";
     public static final String PROXY_CLIENT = "de.sanandrew.mods.enderstuffplus.client.registry.ClientProxy";
     public static final String PROXY_COMMON = "de.sanandrew.mods.enderstuffplus.registry.CommonProxy";
     public static final String VERSION = "1.6.4-1.1.0";
@@ -48,6 +53,8 @@ public class ESPModRegistry
     public static ESPModRegistry instance;
     @SidedProxy(clientSide = ESPModRegistry.PROXY_CLIENT, serverSide = ESPModRegistry.PROXY_COMMON)
     public static CommonProxy proxy;
+
+    public static ChannelHandler channelHandler;
 
     public static ConfigRegistry conf;
     public static DamageSource endAcid;
@@ -59,7 +66,7 @@ public class ESPModRegistry
     public static BiomeGenBase espBiome;
 
     @EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
+    public void modConstruct(FMLConstructionEvent event) {
         try {
             updMan =  new SAPUpdateManager("EnderStuffPlus", 1, 1, 0,
                                            "http://dl.dropbox.com/u/56920617/EnderStuffPMod_latest.txt",
@@ -67,26 +74,20 @@ public class ESPModRegistry
         } catch( NoClassDefFoundError ex ) {
             throw new NoManpackFoundException(ex);
         }
+        channelHandler = new ChannelHandler(MOD_NAME, MOD_CHANNEL);
+    }
 
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
         ConfigRegistry.setConfig(event.getModConfigurationDirectory());
 
         ESPModRegistry.espTab = new CreativeTabs("ESPTab") {
-//            @Override
-//            public ItemStack getIconItemStack() {
-//                return new ItemStack(ModBlockRegistry.biomeChanger);
-//            }
-
             @Override
             public Item getTabIconItem() {
                 return Item.getItemFromBlock(ModBlockRegistry.biomeChanger);
             }
         };
         ESPModRegistry.espTabCoats = new CreativeTabs("ESPTabCoats") {
-//            @Override
-//            public ItemStack getIconItemStack() {
-//                return new ItemStack(ModItemRegistry.rainCoat, 1, 16 | 32);
-//            }
-
             @Override
             public Item getTabIconItem() {
                 return ModItemRegistry.rainCoat;
@@ -111,10 +112,16 @@ public class ESPModRegistry
         niobSet.put(3, new ItemStack(ModItemRegistry.niobHelmet));
 
         proxy.registerHandlers();
-        proxy.registerPackets();
+
+        channelHandler.registerPacket(PacketBCGUIAction.class);
+        channelHandler.registerPacket(PacketChangeBCGUI.class);
+        channelHandler.registerPacket(PacketChangeBiome.class);
+
+//        proxy.registerPackets();
         RegistryDungeonLoot.initialize();
         RegistryRaincoats.initialize();
         RegistryDuplicator.initialize();
+        RegistryBiomeChanger.initialize();
 
         endAcid = SAPUtils.getNewDamageSource("enderstuffp:endAcid");
 
@@ -136,6 +143,7 @@ public class ESPModRegistry
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
+        channelHandler.initialise();
         FurnaceRecipes.smelting().func_151394_a(new ItemStack(ModBlockRegistry.endOre, 1, 0),
                                                 new ItemStack(ModItemRegistry.endIngot, 1, 0), 0.85F);
         CraftingRegistry.initialize();
@@ -143,7 +151,7 @@ public class ESPModRegistry
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent evt) {
-
+        channelHandler.postInitialise();
     }
 
     public static boolean hasPlayerFullNiob(EntityPlayer player) {
@@ -169,22 +177,22 @@ public class ESPModRegistry
         return ep != null ? ep.isSprinting() : false;
     }
 
-    //TODO use new packet system!
-    public static void sendPacketAllPlyr(String name, Object... data) {
-//        PacketRegistry.sendPacketToAllPlayers(MOD_ID, name, data);
-    }
-
-    public static void sendPacketAllRng(String name, double x, double y, double z, double rng, int dimID, Object... data) {
-//        PacketRegistry.sendPacketToAllAround(MOD_ID, name, x, y, z, rng, dimID, data);
-    }
-
-    public static void sendPacketPlyr(String name, EntityPlayer player, Object... data) {
-//        PacketRegistry.sendPacketToPlayer(MOD_ID, name, (Player) player, data);
-    }
-
-    public static void sendPacketSrv(String name, Object... data) {
-//        PacketRegistry.sendPacketToServer(MOD_ID, name, data);
-    }
+//    //TODO use new packet system!
+//    public static void sendPacketAllPlyr(String name, Object... data) {
+////        PacketRegistry.sendPacketToAllPlayers(MOD_ID, name, data);
+//    }
+//
+//    public static void sendPacketAllRng(String name, double x, double y, double z, double rng, int dimID, Object... data) {
+////        PacketRegistry.sendPacketToAllAround(MOD_ID, name, x, y, z, rng, dimID, data);
+//    }
+//
+//    public static void sendPacketPlyr(String name, EntityPlayer player, Object... data) {
+////        PacketRegistry.sendPacketToPlayer(MOD_ID, name, (Player) player, data);
+//    }
+//
+//    public static void sendPacketSrv(String name, Object... data) {
+////        PacketRegistry.sendPacketToServer(MOD_ID, name, data);
+//    }
 
     private static class NoManpackFoundException
         extends RuntimeException

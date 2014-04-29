@@ -11,8 +11,10 @@ import net.minecraft.inventory.Container;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import de.sanandrew.core.manpack.mod.packet.IPacket;
 import de.sanandrew.core.manpack.util.client.GuiItemTab;
 import de.sanandrew.mods.enderstuffplus.client.event.IconRegistry;
+import de.sanandrew.mods.enderstuffplus.packet.PacketBCGUIAction;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.Textures;
 import de.sanandrew.mods.enderstuffplus.tileentity.TileEntityBiomeChanger;
@@ -36,22 +38,21 @@ public abstract class GuiBiomeChangerBase
     @Override
     protected void actionPerformed(GuiButton button) {
         if( button.id == this.tabActivate.id ) {
-            if( this.teBiomeChanger.isActive() ) {
-                ESPModRegistry.sendPacketSrv("bcGuiAction", this.teBiomeChanger, (byte) 0, 0);
-                this.mc.displayGuiScreen(null);
-            } else {
-                ESPModRegistry.sendPacketSrv("bcGuiAction", this.teBiomeChanger, (byte) 0, 0);
-                this.mc.displayGuiScreen(null);
-            }
+            IPacket packet = new PacketBCGUIAction(this.teBiomeChanger, 0, 0);
+            ESPModRegistry.channelHandler.sendToServer(packet);
+            this.mc.thePlayer.closeScreen();
         } else if( button.id == this.tabFuel.id ) {
-            ESPModRegistry.sendPacketSrv("bcGuiChange", 1, this.teBiomeChanger.xCoord, this.teBiomeChanger.yCoord,
-                                         this.teBiomeChanger.zCoord, this.mc.thePlayer);
+            this.mc.thePlayer.openGui(ESPModRegistry.instance, 1, this.mc.theWorld, this.teBiomeChanger.xCoord, this.teBiomeChanger.yCoord, this.teBiomeChanger.zCoord);
+//            IPacket packet = new PacketChangeBCGUI(1, this.teBiomeChanger.xCoord, this.teBiomeChanger.yCoord, this.teBiomeChanger.zCoord);
+//            ESPModRegistry.channelHandler.sendToServer(packet);
         } else if( button.id == this.tabBiomes.id ) {
-            ESPModRegistry.sendPacketSrv("bcGuiChange", 2, this.teBiomeChanger.xCoord, this.teBiomeChanger.yCoord,
-                                         this.teBiomeChanger.zCoord, this.mc.thePlayer);
+            this.mc.thePlayer.openGui(ESPModRegistry.instance, 2, this.mc.theWorld, this.teBiomeChanger.xCoord, this.teBiomeChanger.yCoord, this.teBiomeChanger.zCoord);
+//            IPacket packet = new PacketChangeBCGUI(2, this.teBiomeChanger.xCoord, this.teBiomeChanger.yCoord, this.teBiomeChanger.zCoord);
+//            ESPModRegistry.channelHandler.sendToServer(packet);
         } else if( button.id == this.tabCofig.id ) {
-            ESPModRegistry.sendPacketSrv("bcGuiChange", 3, this.teBiomeChanger.xCoord, this.teBiomeChanger.yCoord,
-                                         this.teBiomeChanger.zCoord, this.mc.thePlayer);
+            this.mc.thePlayer.openGui(ESPModRegistry.instance, 3, this.mc.theWorld, this.teBiomeChanger.xCoord, this.teBiomeChanger.yCoord, this.teBiomeChanger.zCoord);
+//            IPacket packet = new PacketChangeBCGUI(3, this.teBiomeChanger.xCoord, this.teBiomeChanger.yCoord, this.teBiomeChanger.zCoord);
+//            ESPModRegistry.channelHandler.sendToServer(packet);
         }
     }
 
@@ -70,21 +71,20 @@ public abstract class GuiBiomeChangerBase
     @SuppressWarnings("unchecked")
     public void initGui() {
         super.initGui();
-        this.tabActivate = new GuiItemTab(this.buttonList.size(), this.guiLeft + this.xSize - 3,
-                                          this.guiTop + this.ySize - 35, "Activate", IconRegistry.guiActiveOn, true,
-                                          false, Textures.GUI_BUTTONS.getResource());
+        this.tabActivate = new GuiItemTab(this.buttonList.size(), this.guiLeft + this.xSize - 3, this.guiTop + this.ySize - 35, "Activate",
+                                          IconRegistry.guiActiveOn, true, false, Textures.GUI_BUTTONS.getResource());
         this.buttonList.add(this.tabActivate);
 
         this.tabFuel = new GuiItemTab(this.buttonList.size(), this.guiLeft + this.xSize - 3, this.guiTop + 10, "Fuel",
                                       Items.blaze_powder.getIconFromDamage(0), true, false, Textures.GUI_BUTTONS.getResource());
         this.buttonList.add(this.tabFuel);
 
-        this.tabBiomes = new GuiItemTab(this.buttonList.size(), this.guiLeft + this.xSize - 3, this.guiTop + 36,
-                                        "Biome", Blocks.sapling.getIcon(0, 0), true, false, Textures.GUI_BUTTONS.getResource());
+        this.tabBiomes = new GuiItemTab(this.buttonList.size(), this.guiLeft + this.xSize - 3, this.guiTop + 36, "Biome",
+                                        Blocks.sapling.getIcon(0, 0), true, false, Textures.GUI_BUTTONS.getResource());
         this.buttonList.add(this.tabBiomes);
 
-        this.tabCofig = new GuiItemTab(this.buttonList.size(), this.guiLeft + this.xSize - 3, this.guiTop + 62,
-                                       "Settings", IconRegistry.guiSpanner, true, false, Textures.GUI_BUTTONS.getResource());
+        this.tabCofig = new GuiItemTab(this.buttonList.size(), this.guiLeft + this.xSize - 3, this.guiTop + 62, "Settings",
+                                       IconRegistry.guiSpanner, true, false, Textures.GUI_BUTTONS.getResource());
         this.buttonList.add(this.tabCofig);
 
         this.tabActivate.textureBaseX = 52;

@@ -106,7 +106,7 @@ public class ClientProxy
     public void registerPackets() {
         super.registerPackets();
         //TODO use new packet system!
-//        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "changeBiome", new PacketChngBiome());
+//        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "changeBiome", new PacketChangeBiome());
 //        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "showPetGui", new PacketShowPetGUI());
 //        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "fxPortal", new PacketFXSpawnPortalFX());
 //        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "fxTameAcc", new PacketFXSpawnTameAccept());

@@ -16,7 +16,9 @@ import net.minecraft.world.biome.BiomeGenBase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import de.sanandrew.core.manpack.mod.packet.IPacket;
 import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.mods.enderstuffplus.packet.PacketBCGUIAction;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.RegistryBiomeChanger;
 import de.sanandrew.mods.enderstuffplus.registry.Textures;
@@ -127,8 +129,11 @@ public class GuiBiomeChangerBiomes
 
             if( (mouseX < x + 11) && (mouseX >= x) && (mouseY < y + 11) && (mouseY >= y) ) {
                 this.teBiomeChanger.setBiomeID(this.biomeList.get(this.entryPosition + i).biomeID);
-                ESPModRegistry.sendPacketSrv("bcGuiAction", this.teBiomeChanger, (byte) 1,
-                                             this.biomeList.get(this.entryPosition + i).biomeID);
+
+                IPacket packet = new PacketBCGUIAction(this.teBiomeChanger, 1, this.biomeList.get(this.entryPosition + i).biomeID);
+                ESPModRegistry.channelHandler.sendToServer(packet);
+//                ESPModRegistry.sendPacketSrv("bcGuiAction", this.teBiomeChanger, (byte) 1,
+//                                             this.biomeList.get(this.entryPosition + i).biomeID);
                 break;
             }
         }

@@ -16,9 +16,13 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import de.sanandrew.core.manpack.mod.packet.IPacket;
+import de.sanandrew.mods.enderstuffplus.packet.PacketChangeBiome;
+import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.ModBlockRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.RegistryBiomeChanger;
 
@@ -26,10 +30,9 @@ public class TileEntityBiomeChanger
     extends TileEntity
     implements IInventory
 {
-
     private byte biomeID = (byte) BiomeGenBase.plains.biomeID;
     private byte currRange = 0;
-    private EnumPerimForm form = EnumPerimForm.CIRCLE; // 0: circle; 1: square; 2: rhombus
+    private EnumPerimForm form = EnumPerimForm.CIRCLE;
     private ItemStack invItemStacks[] = new ItemStack[9];
     private boolean isActive = false;
     private boolean isReplacingBlocks = false;
@@ -155,7 +158,7 @@ public class TileEntityBiomeChanger
             if( this.invItemStacks[par1].stackSize <= par2 ) {
                 var3 = this.invItemStacks[par1];
                 this.invItemStacks[par1] = null;
-//                this.onInventoryChanged();
+                this.markDirty();
                 return var3;
             } else {
                 var3 = this.invItemStacks[par1].splitStack(par2);
@@ -164,7 +167,7 @@ public class TileEntityBiomeChanger
                     this.invItemStacks[par1] = null;
                 }
 
-//                this.onInventoryChanged();
+                this.markDirty();
                 return var3;
             }
         } else {
@@ -351,9 +354,9 @@ public class TileEntityBiomeChanger
 
         this.prevFuelItem = null;
 
-//        if( amount > 0 ) {
-//            this.onInventoryChanged();
-//        }
+        if( amount > 0 ) {
+            this.markDirty();
+        }
     }
 
     @Override
@@ -424,7 +427,7 @@ public class TileEntityBiomeChanger
             this.invItemStacks[i] = is != null ? is.copy() : null;
         }
 
-//        this.onInventoryChanged();
+        this.markDirty();
         return true;
     }
 
@@ -483,13 +486,13 @@ public class TileEntityBiomeChanger
                 if( this.getNeededFuel(this.getMaxRange() - this.getCurrRange()) < 0 ) {
                     this.setActive(false);
                     this.setCurrRange(0);
-//                    this.onInventoryChanged();
+                    this.markDirty();
                     this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                     return;
                 } else if( !this.removeFuel(this.getNeededFuel(this.getMaxRange() - this.getCurrRange())) ) {
                     this.setActive(false);
                     this.setCurrRange(0);
-//                    this.onInventoryChanged();
+                    this.markDirty();
                     this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                     return;
                 } else {
@@ -499,8 +502,10 @@ public class TileEntityBiomeChanger
 
             if( this.ticksExisted % (30 * (this.isReplacingBlocks() ? 2 : 1)) == 0 && !this.worldObj.isRemote ) {
                 this.changeBiome(this.getCurrRange(), false);
-                this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord,
-                                            ModBlockRegistry.biomeChanger, 1, this.getCurrRange());
+                IPacket packet = new PacketChangeBiome(this, this.getCurrRange());
+                TargetPoint tPoint = new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 256);
+                ESPModRegistry.channelHandler.sendToAllAround(packet, tPoint);
+//                this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ModBlockRegistry.biomeChanger, 1, this.getCurrRange());
                 //TODO use new packet system
 //                PacketRegistry.sendPacketToAllAround(ESPModRegistry.MOD_ID, "setWeather", this.xCoord, this.yCoord,
 //                                                     this.zCoord, 256, this.worldObj.provider.dimensionId, this,
@@ -512,14 +517,13 @@ public class TileEntityBiomeChanger
                     this.setCurrRange(0);
                     this.prevActiveState = false;
                     this.prevFuelItem = null;
-//                    this.onInventoryChanged();
-                    this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord,
-                                                ModBlockRegistry.biomeChanger, 2, 0);
+                    this.markDirty();
+                    this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ModBlockRegistry.biomeChanger, 2, 0);
                     this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                     return;
                 }
 
-//                this.onInventoryChanged();
+                this.markDirty();
                 this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             }
         }
@@ -586,7 +590,7 @@ public class TileEntityBiomeChanger
 
     public static enum EnumPerimForm
     {
-        CIRCLE, SQUARE, RHOMBUS;
+        CIRCLE, RHOMBUS, SQUARE;
 
         private static EnumPerimForm[] valueCache = null;
 

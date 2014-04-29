@@ -9,6 +9,8 @@ import net.minecraft.util.MathHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import de.sanandrew.core.manpack.mod.packet.IPacket;
+import de.sanandrew.mods.enderstuffplus.packet.PacketBCGUIAction;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 import de.sanandrew.mods.enderstuffplus.tileentity.TileEntityBiomeChanger;
 
@@ -17,8 +19,8 @@ public class GuiBiomeChangerSlider
     extends GuiButton
 {
     private boolean isDragging = false;
-    private float maxSliderValue = 1.0F;
-    private float sliderValue = 1.0F;
+    private float maxSliderVal = 1.0F;
+    private float sliderVal = 1.0F;
     private TileEntityBiomeChanger teBiomeChanger = null;
     private String title = "";
 
@@ -28,8 +30,8 @@ public class GuiBiomeChangerSlider
 
         this.title = label;
         this.teBiomeChanger = tileBiomeChanger;
-        this.maxSliderValue = Math.max(Math.min(maxValue, 128.00F), 1);
-        this.sliderValue = currValue / maxValue;
+        this.maxSliderVal = Math.max(Math.min(maxValue, 128.00F), 1);
+        this.sliderVal = currValue / maxValue;
     }
 
     @Override
@@ -41,44 +43,49 @@ public class GuiBiomeChangerSlider
     protected void mouseDragged(Minecraft minecraft, int mouseX, int mouseY) {
         if( this.visible ) {
             if( this.isDragging && this.enabled ) {
-                this.sliderValue = (float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8);
+                this.sliderVal = (float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8);
 
-                if( this.sliderValue < 1.0F / this.maxSliderValue ) {
-                    this.sliderValue = 1.0F / this.maxSliderValue;
+                if( this.sliderVal < 1.0F / this.maxSliderVal ) {
+                    this.sliderVal = 1.0F / this.maxSliderVal;
                 }
 
-                if( this.sliderValue > 1.0F ) {
-                    this.sliderValue = 1.0F;
+                if( this.sliderVal > 1.0F ) {
+                    this.sliderVal = 1.0F;
                 }
 
-                this.displayString = this.title + ": " + MathHelper.floor_float(this.sliderValue * this.maxSliderValue);
+                this.displayString = this.title + ": " + MathHelper.floor_float(this.sliderVal * this.maxSliderVal);
 
-                ESPModRegistry.sendPacketSrv("bcGuiAction", this.teBiomeChanger, (byte) 2,
-                                             MathHelper.floor_float(this.sliderValue * this.maxSliderValue));
+                IPacket packet = new PacketBCGUIAction(this.teBiomeChanger, 2, MathHelper.floor_float(this.sliderVal * this.maxSliderVal));
+                ESPModRegistry.channelHandler.sendToServer(packet);
+//                ESPModRegistry.sendPacketSrv("bcGuiAction", this.teBiomeChanger, (byte) 2,
+//                                             MathHelper.floor_float(this.sliderValue * this.maxSliderValue));
             }
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.drawTexturedModalRect(this.xPosition + (int) (this.sliderValue * (this.width - 8)), this.yPosition, 0, 66, 4, 20);
-            this.drawTexturedModalRect(this.xPosition + (int) (this.sliderValue * (this.width - 8)) + 4, this.yPosition, 196, 66, 4, 20);
+            this.drawTexturedModalRect(this.xPosition + (int) (this.sliderVal * (this.width - 8)), this.yPosition, 0, 66, 4, 20);
+            this.drawTexturedModalRect(this.xPosition + (int) (this.sliderVal * (this.width - 8)) + 4, this.yPosition, 196, 66, 4, 20);
         }
     }
 
     @Override
     public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
         if( super.mousePressed(minecraft, mouseX, mouseY) && this.enabled ) {
-            this.sliderValue = (float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8);
+            this.sliderVal = (float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8);
 
-            if( this.sliderValue < 1.0F / this.maxSliderValue ) {
-                this.sliderValue = 1.0F / this.maxSliderValue;
+            if( this.sliderVal < 1.0F / this.maxSliderVal ) {
+                this.sliderVal = 1.0F / this.maxSliderVal;
             }
 
-            if( this.sliderValue > 1.0F ) {
-                this.sliderValue = 1.0F;
+            if( this.sliderVal > 1.0F ) {
+                this.sliderVal = 1.0F;
             }
 
-            this.displayString = this.title + ": " + MathHelper.floor_float(this.sliderValue * this.maxSliderValue);
-            ESPModRegistry.sendPacketSrv("bcGuiAction", this.teBiomeChanger, (byte) 2,
-                                         MathHelper.floor_float(this.sliderValue * this.maxSliderValue));
+            this.displayString = this.title + ": " + MathHelper.floor_float(this.sliderVal * this.maxSliderVal);
+
+            IPacket packet = new PacketBCGUIAction(this.teBiomeChanger, 2, MathHelper.floor_float(this.sliderVal * this.maxSliderVal));
+            ESPModRegistry.channelHandler.sendToServer(packet);
+//            ESPModRegistry.sendPacketSrv("bcGuiAction", this.teBiomeChanger, (byte) 2,
+//                                         MathHelper.floor_float(this.sliderVal * this.maxSliderVal));
             this.isDragging = true;
             return true;
         } else {

@@ -10,7 +10,9 @@ import net.minecraft.inventory.Container;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import de.sanandrew.core.manpack.mod.packet.IPacket;
 import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.mods.enderstuffplus.packet.PacketBCGUIAction;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.Textures;
 import de.sanandrew.mods.enderstuffplus.tileentity.TileEntityBiomeChanger;
@@ -40,14 +42,23 @@ public class GuiBiomeChangerConfig
     protected void actionPerformed(GuiButton button) {
         int id = button.id;
 
+        IPacket packet = null;
         if( id == this.circularButton.id ) {
-            ESPModRegistry.sendPacketSrv("bcGuiAction", this.teBiomeChanger, (byte) 3, 0);
+            packet = new PacketBCGUIAction(this.teBiomeChanger, 3, 0);
+//            ESPModRegistry.sendPacketSrv("bcGuiAction", this.teBiomeChanger, (byte) 3, 0);
         } else if( id == this.rhombicButton.id ) {
-            ESPModRegistry.sendPacketSrv("bcGuiAction", this.teBiomeChanger, (byte) 3, 1);
+            packet = new PacketBCGUIAction(this.teBiomeChanger, 3, 1);
+//            ESPModRegistry.sendPacketSrv("bcGuiAction", this.teBiomeChanger, (byte) 3, 1);
         } else if( id == this.squareButton.id ) {
-            ESPModRegistry.sendPacketSrv("bcGuiAction", this.teBiomeChanger, (byte) 3, 2);
+            packet = new PacketBCGUIAction(this.teBiomeChanger, 3, 2);
+//            ESPModRegistry.sendPacketSrv("bcGuiAction", this.teBiomeChanger, (byte) 3, 2);
         } else if( id == this.changeBlocksButton.id ) {
-            ESPModRegistry.sendPacketSrv("bcGuiAction", this.teBiomeChanger, (byte) 4, 0);
+            packet = new PacketBCGUIAction(this.teBiomeChanger, 4, 0);
+//            ESPModRegistry.sendPacketSrv("bcGuiAction", this.teBiomeChanger, (byte) 4, 0);
+        }
+
+        if( packet != null ) {
+            ESPModRegistry.channelHandler.sendToServer(packet);
         } else {
             super.actionPerformed(button);
         }
