@@ -25,7 +25,7 @@ public class BlockEnderDoor
 {
     private static final String[] doorIconNames = new String[] { "doorNiob_lower", "doorNiob_middle", "doorNiob_upper" };
     @SideOnly(Side.CLIENT)
-    private IIcon[] icons = new IIcon[doorIconNames.length * 2];
+    private IIcon[] icons;
 
     public BlockEnderDoor(Material material) {
         super(material);
@@ -268,6 +268,8 @@ public class BlockEnderDoor
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister regIcon) {
+        this.icons = new IIcon[doorIconNames.length * 2];
+
         for( int i = 0; i < doorIconNames.length; ++i ) {
             this.icons[i] = regIcon.registerIcon("enderstuffp:" + doorIconNames[i]);
             this.icons[i + doorIconNames.length] = new IconFlipped(this.icons[i], true, false);

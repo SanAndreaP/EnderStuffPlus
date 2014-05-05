@@ -24,7 +24,7 @@ public class ItemCustomEnderPearl
     extends Item
 {
     @SideOnly(Side.CLIENT)
-    private IIcon[] icons = new IIcon[3];
+    private IIcon[] icons;
 
     public ItemCustomEnderPearl() {
         super();
@@ -96,6 +96,8 @@ public class ItemCustomEnderPearl
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
+        this.icons = new IIcon[3];
+
         this.itemIcon = iconRegister.registerIcon("enderstuffp:pearlNivis");
         this.icons[0] = this.itemIcon;
         this.icons[1] = iconRegister.registerIcon("enderstuffp:pearlIgnis");

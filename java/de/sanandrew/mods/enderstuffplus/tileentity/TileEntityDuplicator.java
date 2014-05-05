@@ -3,6 +3,7 @@ package de.sanandrew.mods.enderstuffplus.tileentity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -12,12 +13,14 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import net.minecraftforge.common.util.Constants;
+
 import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.enderstuffplus.registry.RegistryDuplicator;
 
 public class TileEntityDuplicator
     extends TileEntity
-    implements IInventory
+    implements IInventory, ISidedInventory
 {
     private int burnTime = 0;
 
@@ -174,7 +177,7 @@ public class TileEntityDuplicator
 
         this.readDupeNBT(par1nbtTagCompound);
 
-        NBTTagList var2 = par1nbtTagCompound.getTagList("Items", 10); // I absolutely HATE magic numbers like these... why do they do this?
+        NBTTagList var2 = par1nbtTagCompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
         this.dupeInv = new ItemStack[this.getSizeInventory()];
 
         for( int var3 = 0; var3 < var2.tagCount(); ++var3 ) {
@@ -282,4 +285,21 @@ public class TileEntityDuplicator
         par1nbtTagCompound.setTag("Items", var2);
     }
 
+    @Override
+    public int[] getAccessibleSlotsFromSide(int var1) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public boolean canInsertItem(int var1, ItemStack var2, int var3) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean canExtractItem(int var1, ItemStack var2, int var3) {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

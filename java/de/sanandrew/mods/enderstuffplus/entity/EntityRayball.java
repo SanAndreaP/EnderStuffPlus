@@ -10,7 +10,11 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+
+import de.sanandrew.core.manpack.mod.ModCntManPack;
+import de.sanandrew.core.manpack.mod.packet.IPacket;
+import de.sanandrew.mods.enderstuffplus.packet.PacketFXRayball;
 
 public class EntityRayball
     extends EntityFireball
@@ -48,7 +52,7 @@ public class EntityRayball
     public void onUpdate() {
         super.onUpdate();
         this.extinguish();
-        ESPModRegistry.sendPacketAllRng("fxRayball", this.posX, this.posY, this.posZ, 128.0D, this.dimension,
-                                        this.posX, this.posY, this.posZ);
+        IPacket packet = new PacketFXRayball(this.posX, this.posY, this.posZ);
+        ModCntManPack.channelHandler.sendToAllAround(packet, new TargetPoint(this.dimension, this.posX, this.posY, this.posZ, 128.0D));
     }
 }

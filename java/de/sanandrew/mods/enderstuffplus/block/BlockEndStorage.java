@@ -27,13 +27,13 @@ public class BlockEndStorage
     implements IGlowBlockOverlay
 {
     @SideOnly(Side.CLIENT)
-    private IIcon[] baseIcons = new IIcon[2];
+    private IIcon[] baseIcons;
     @SideOnly(Side.CLIENT)
-    private IIcon[] baseTopIcons = new IIcon[2];
+    private IIcon[] baseTopIcons;
     @SideOnly(Side.CLIENT)
-    private IIcon[] glowIcons = new IIcon[2];
+    private IIcon[] glowIcons;
     @SideOnly(Side.CLIENT)
-    private IIcon[] glowTopIcons = new IIcon[2];
+    private IIcon[] glowTopIcons;
 
     public BlockEndStorage() {
         super(MapColor.purpleColor);
@@ -131,6 +131,11 @@ public class BlockEndStorage
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
+        this.baseIcons = new IIcon[2];
+        this.baseTopIcons = new IIcon[2];
+        this.glowIcons = new IIcon[2];
+        this.glowTopIcons = new IIcon[2];
+
         this.baseIcons[0] = iconRegister.registerIcon("enderstuffp:niobBlock");
         this.baseIcons[1] = iconRegister.registerIcon("enderstuffp:tantalBlock");
         this.glowIcons[0] = iconRegister.registerIcon("enderstuffp:niobBlock_glow");

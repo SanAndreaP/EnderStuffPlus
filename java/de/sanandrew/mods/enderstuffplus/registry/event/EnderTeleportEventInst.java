@@ -6,6 +6,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 
+import de.sanandrew.core.manpack.util.event.entity.EnderFacingEvent;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 
 public class EnderTeleportEventInst
@@ -19,5 +20,10 @@ public class EnderTeleportEventInst
                 player.inventory.damageArmor(1);
             }
         }
+    }
+    
+    @SubscribeEvent
+    public void onEnderFacing(EnderFacingEvent event) {
+        event.setCanceled(ESPModRegistry.hasPlayerFullNiob(event.entityPlayer));
     }
 }

@@ -16,7 +16,7 @@ public class BlockCorruptEndStone
     extends Block
 {
     @SideOnly(Side.CLIENT)
-    private IIcon[] icons = new IIcon[4];
+    private IIcon[] icons;
 
     public BlockCorruptEndStone() {
         super(Blocks.end_stone.getMaterial());
@@ -37,6 +37,7 @@ public class BlockCorruptEndStone
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
+        this.icons = new IIcon[4];
         this.blockIcon = iconRegister.registerIcon("enderstuffp:corrupt_end_stone");
         this.icons[0] = this.blockIcon;
         this.icons[1] = new IconFlippedFixed(this.blockIcon, true, false);

@@ -26,7 +26,7 @@ public class BlockEndLeaves
     extends BlockLeaves
 {
     @SideOnly(Side.CLIENT)
-    private IIcon[] icons = new IIcon[2];
+    private IIcon[] icons;
 
     public BlockEndLeaves() {
         super();
@@ -101,6 +101,8 @@ public class BlockEndLeaves
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
+        this.icons = new IIcon[2];
+
         String nA = (!ConfigRegistry.useAnimations ? "_NA" : "");
         this.icons[0] = iconRegister.registerIcon("enderstuffp:enderLeaves" + nA);
         this.icons[1] = iconRegister.registerIcon("enderstuffp:enderLeaves_opaque" + nA);

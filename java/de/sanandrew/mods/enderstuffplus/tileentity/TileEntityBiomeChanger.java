@@ -16,6 +16,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 
+import net.minecraftforge.common.util.Constants;
+
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -375,7 +377,7 @@ public class TileEntityBiomeChanger
             this.prevFuelItem = ItemStack.loadItemStackFromNBT(par1nbtTagCompound.getCompoundTag("prevFuelItem"));
         }
 
-        NBTTagList var2 = par1nbtTagCompound.getTagList("Items", 10); // magic number... -.-
+        NBTTagList var2 = par1nbtTagCompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
         this.invItemStacks = new ItemStack[this.getSizeInventory()];
 
         for( int var3 = 0; var3 < var2.tagCount(); ++var3 ) {
@@ -506,7 +508,7 @@ public class TileEntityBiomeChanger
                 TargetPoint tPoint = new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 256);
                 ESPModRegistry.channelHandler.sendToAllAround(packet, tPoint);
 //                this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ModBlockRegistry.biomeChanger, 1, this.getCurrRange());
-                //TODO use new packet system
+                //TODO use new packet system!
 //                PacketRegistry.sendPacketToAllAround(ESPModRegistry.MOD_ID, "setWeather", this.xCoord, this.yCoord,
 //                                                     this.zCoord, 256, this.worldObj.provider.dimensionId, this,
 //                                                     this.getCurrRange());

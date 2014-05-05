@@ -1,12 +1,9 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode fieldsfirst
-
 package de.sanandrew.mods.enderstuffplus.entity;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.item.Item;
+import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -14,10 +11,9 @@ import net.minecraft.world.World;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
 
 public class EntityEnderNivis
-    extends EntityEndermanESP
+    extends EntityEnderman
     implements IEnderCreature
 {
-
     public EntityEnderNivis(World world) {
         super(world);
         this.setSize(0.6F, 2.9F);
@@ -29,8 +25,8 @@ public class EntityEnderNivis
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(80.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(80.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(10.0D);
     }
 
     @Override
@@ -48,23 +44,23 @@ public class EntityEnderNivis
     }
 
     @Override
-    protected int getDamageDropped() {
-        return 0;
-    }
-
-    @Override
     protected String getDeathSound() {
         return "enderstuffp:endernivis.death";
     }
 
     @Override
-    protected int getDropItemId() {
-        return ModItemRegistry.espPearls.itemID;
+    protected void dropFewItems(boolean recentlyHit, int lootingLvl) {
+        int j = this.rand.nextInt(3);
+
+        if( lootingLvl > 0 ) {
+            j += this.rand.nextInt(lootingLvl + 1);
+        }
+        this.entityDropItem(new ItemStack(ModItemRegistry.espPearls, j, 0), 0.0F);
     }
 
     @Override
     public ItemStack getHeldItem() {
-        return new ItemStack(Item.swordIron);
+        return new ItemStack(Items.iron_sword);
     }
 
     @Override
@@ -94,8 +90,8 @@ public class EntityEnderNivis
         for( int x = -2; x <= 2; x++ ) {
             for( int z = -2; z <= 2; z++ ) {
                 if( Math.sqrt((x * x) + (z * z)) <= 2.3D ) {
-                    if( this.worldObj.getBlockId(blockPosX + x, blockPosY, blockPosZ + z) == Block.waterStill.blockID ) {
-                        this.worldObj.setBlock(blockPosX + x, blockPosY, blockPosZ + z, Block.ice.blockID);
+                    if( this.worldObj.getBlock(blockPosX + x, blockPosY, blockPosZ + z) == Blocks.water ) {
+                        this.worldObj.setBlock(blockPosX + x, blockPosY, blockPosZ + z, Blocks.ice);
                     }
                 }
             }

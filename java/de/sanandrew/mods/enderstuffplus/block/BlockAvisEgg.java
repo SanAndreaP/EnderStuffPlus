@@ -79,7 +79,7 @@ public class BlockAvisEgg
         }
     }
 
-    //TODO use setTextureName on block construction!
+    //TODO use setTextureName
 //    @Override
 //    @SideOnly(Side.CLIENT)
 //    public void registerBlockIcons(IIconRegister iconRegister) {

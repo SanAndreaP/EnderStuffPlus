@@ -22,9 +22,9 @@ public class BlockEndOre
     implements IGlowBlockOverlay
 {
     @SideOnly(Side.CLIENT)
-    private IIcon[] baseIcons = new IIcon[2];
+    private IIcon[] baseIcons;
     @SideOnly(Side.CLIENT)
-    private IIcon[] glowIcons = new IIcon[2];
+    private IIcon[] glowIcons;
 
     public BlockEndOre() {
         super();
@@ -68,6 +68,9 @@ public class BlockEndOre
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
+        this.baseIcons = new IIcon[2];
+        this.glowIcons = new IIcon[2];
+
         this.baseIcons[0] = iconRegister.registerIcon("enderstuffp:niobOre");
         this.baseIcons[1] = iconRegister.registerIcon("enderstuffp:tantalOre");
         this.glowIcons[0] = iconRegister.registerIcon("enderstuffp:niobOre_glow");
