@@ -10,7 +10,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 import de.sanandrew.mods.enderstuffplus.registry.event.ArrowEventsInst;
 import de.sanandrew.mods.enderstuffplus.registry.event.BonemealEventInst;
-import de.sanandrew.mods.enderstuffplus.registry.event.EnderTeleportEventInst;
+import de.sanandrew.mods.enderstuffplus.registry.event.EnderEvents;
 import de.sanandrew.mods.enderstuffplus.registry.event.EntityDropEventInst;
 import de.sanandrew.mods.enderstuffplus.registry.event.EntityHitEventInst;
 import de.sanandrew.mods.enderstuffplus.registry.event.EntityInteractEventInst;
@@ -39,7 +39,7 @@ public class CommonProxy
     public void registerHandlers() {
         MinecraftForge.EVENT_BUS.register(new ArrowEventsInst());
         MinecraftForge.EVENT_BUS.register(new BonemealEventInst());
-        MinecraftForge.EVENT_BUS.register(new EnderTeleportEventInst());
+        MinecraftForge.EVENT_BUS.register(new EnderEvents());
         MinecraftForge.EVENT_BUS.register(new EntityDropEventInst());
         MinecraftForge.EVENT_BUS.register(new EntityHitEventInst());
         MinecraftForge.EVENT_BUS.register(new EntityInteractEventInst());
