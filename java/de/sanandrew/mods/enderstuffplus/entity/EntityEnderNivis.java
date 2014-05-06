@@ -97,9 +97,4 @@ public class EntityEnderNivis
             }
         }
     }
-
-    @Override
-    public void spawnParticle(String type, double X, double Y, double Z, float dataI, float dataII, float dataIII) {
-        super.spawnParticle(type, X, Y, Z, 0.2F, 0.5F, 1.0F);
-    }
 }
