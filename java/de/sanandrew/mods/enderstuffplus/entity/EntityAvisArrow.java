@@ -29,9 +29,9 @@ public class EntityAvisArrow
         super(world, shooter, motionMulti);
     }
 
-    public boolean _SAP_(EntityPlayer player) {
-        return true;
-    }
+//    public boolean _SAP_(EntityPlayer player) {
+//        return true;
+//    }
 
     @Override
     public void onCollideWithPlayer(EntityPlayer player) {
@@ -39,10 +39,8 @@ public class EntityAvisArrow
             NBTTagCompound origNBT = new NBTTagCompound();
             this.writeEntityToNBT(origNBT);
 
-            if( origNBT.getByte("inGround") == 1
-                && this.arrowShake <= 0
-                && ((this.canBePickedUp == 1
-                        && player.inventory.addItemStackToInventory(new ItemStack(ModItemRegistry.avisArrow, 1)))
+            if( origNBT.getByte("inGround") == 1 && this.arrowShake <= 0
+                && ((this.canBePickedUp == 1 && player.inventory.addItemStackToInventory(new ItemStack(ModItemRegistry.avisArrow, 1)))
                     || player.capabilities.isCreativeMode) )
             {
                 this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F,

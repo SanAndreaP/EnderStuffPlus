@@ -13,7 +13,7 @@ import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import de.sanandrew.mods.enderstuffplus.entity.IEnderPet;
+import de.sanandrew.mods.enderstuffplus.entity.living.IEnderPet;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 
 @SideOnly(Side.CLIENT)

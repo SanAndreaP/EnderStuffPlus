@@ -15,7 +15,7 @@ import net.minecraft.world.WorldServer;
 
 import cpw.mods.fml.common.network.Player;
 
-import de.sanandrew.mods.enderstuffplus.entity.IEnderPet;
+import de.sanandrew.mods.enderstuffplus.entity.living.IEnderPet;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
 
 public class PacketEnderPetGUIAction

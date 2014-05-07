@@ -12,7 +12,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.sanandrew.mods.enderstuffplus.client.model.ModelEnderRay;
-import de.sanandrew.mods.enderstuffplus.entity.EntityEnderRay;
+import de.sanandrew.mods.enderstuffplus.entity.living.monster.EntityEnderRay;
 import de.sanandrew.mods.enderstuffplus.registry.Textures;
 
 @SideOnly(Side.CLIENT)

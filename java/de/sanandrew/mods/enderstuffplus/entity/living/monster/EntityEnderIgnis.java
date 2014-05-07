@@ -1,4 +1,4 @@
-package de.sanandrew.mods.enderstuffplus.entity;
+package de.sanandrew.mods.enderstuffplus.entity.living.monster;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -7,6 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import de.sanandrew.mods.enderstuffplus.entity.living.IEnderCreature;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
 
 public class EntityEnderIgnis

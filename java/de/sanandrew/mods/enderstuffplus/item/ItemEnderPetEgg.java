@@ -26,9 +26,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.sanandrew.core.manpack.util.SAPUtils;
-import de.sanandrew.mods.enderstuffplus.entity.EntityEnderAvis;
-import de.sanandrew.mods.enderstuffplus.entity.EntityEnderMiss;
-import de.sanandrew.mods.enderstuffplus.entity.IEnderPet;
+import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderAvis;
+import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderMiss;
+import de.sanandrew.mods.enderstuffplus.entity.living.IEnderPet;
 
 public class ItemEnderPetEgg
     extends Item

@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import de.sanandrew.mods.enderstuffplus.client.model.ModelEnderMiss;
-import de.sanandrew.mods.enderstuffplus.entity.EntityEnderMiss;
+import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderMiss;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.Textures;
 import de.sanandrew.mods.enderstuffplus.registry.raincoat.RegistryRaincoats.CoatBaseEntry;

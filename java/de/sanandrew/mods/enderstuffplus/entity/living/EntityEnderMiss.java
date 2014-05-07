@@ -1,4 +1,4 @@
-package de.sanandrew.mods.enderstuffplus.entity;
+package de.sanandrew.mods.enderstuffplus.entity.living;
 
 import java.util.Iterator;
 import java.util.List;

@@ -14,6 +14,7 @@ import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 
 import de.sanandrew.core.manpack.mod.ModCntManPack;
 import de.sanandrew.core.manpack.mod.packet.IPacket;
+import de.sanandrew.mods.enderstuffplus.entity.living.monster.EntityEnderRay;
 import de.sanandrew.mods.enderstuffplus.packet.PacketFXRayball;
 
 public class EntityRayball

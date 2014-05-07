@@ -1,4 +1,4 @@
-package de.sanandrew.mods.enderstuffplus.entity;
+package de.sanandrew.mods.enderstuffplus.entity.living.monster;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityEnderman;
@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
+import de.sanandrew.mods.enderstuffplus.entity.living.IEnderCreature;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
 
 public class EntityEnderNivis
@@ -19,7 +20,6 @@ public class EntityEnderNivis
         this.setSize(0.6F, 2.9F);
         this.stepHeight = 1.0F;
         this.experienceValue = 8;
-        this.isImmuneToWater = true;
     }
 
     @Override
@@ -31,6 +31,8 @@ public class EntityEnderNivis
 
     @Override
     public boolean attackEntityFrom(DamageSource dmgSource, float attackPts) {
+        if( dmgSource.equals(DamageSource.drown) && this.getAir() > -20 ) return false;
+        
         if( dmgSource.isFireDamage() ) {
             attackPts *= 5;
         }
@@ -89,10 +91,8 @@ public class EntityEnderNivis
 
         for( int x = -2; x <= 2; x++ ) {
             for( int z = -2; z <= 2; z++ ) {
-                if( Math.sqrt((x * x) + (z * z)) <= 2.3D ) {
-                    if( this.worldObj.getBlock(blockPosX + x, blockPosY, blockPosZ + z) == Blocks.water ) {
-                        this.worldObj.setBlock(blockPosX + x, blockPosY, blockPosZ + z, Blocks.ice);
-                    }
+                if( Math.sqrt((x * x) + (z * z)) <= 2.3D && this.worldObj.getBlock(blockPosX + x, blockPosY, blockPosZ + z) == Blocks.water ) {
+                    this.worldObj.setBlock(blockPosX + x, blockPosY, blockPosZ + z, Blocks.ice);
                 }
             }
         }

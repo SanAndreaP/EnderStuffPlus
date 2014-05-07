@@ -10,7 +10,7 @@ import net.minecraft.network.INetworkManager;
 
 import cpw.mods.fml.common.network.Player;
 
-import de.sanandrew.mods.enderstuffplus.entity.IEnderPet;
+import de.sanandrew.mods.enderstuffplus.entity.living.IEnderPet;
 
 public class PacketRiddenMove
     implements ISAPPacketHandler

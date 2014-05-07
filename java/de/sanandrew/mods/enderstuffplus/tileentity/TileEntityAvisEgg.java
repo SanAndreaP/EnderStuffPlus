@@ -9,7 +9,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
-import de.sanandrew.mods.enderstuffplus.entity.EntityEnderAvis;
+import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderAvis;
 import de.sanandrew.mods.enderstuffplus.item.ItemAvisCompass;
 
 public class TileEntityAvisEgg

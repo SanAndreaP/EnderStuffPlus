@@ -15,7 +15,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
-import de.sanandrew.mods.enderstuffplus.entity.EntityEnderNemesis;
+import de.sanandrew.mods.enderstuffplus.entity.living.monster.EntityEnderNemesis;
 import de.sanandrew.mods.enderstuffplus.registry.ModBlockRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.RegistryDungeonLoot;
 

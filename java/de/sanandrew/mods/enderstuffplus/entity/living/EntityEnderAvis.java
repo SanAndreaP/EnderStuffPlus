@@ -1,4 +1,4 @@
-package de.sanandrew.mods.enderstuffplus.entity;
+package de.sanandrew.mods.enderstuffplus.entity.living;
 
 import ibxm.Player;
 

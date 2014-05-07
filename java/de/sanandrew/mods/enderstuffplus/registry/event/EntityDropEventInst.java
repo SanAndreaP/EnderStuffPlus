@@ -14,7 +14,7 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 import de.sanandrew.core.manpack.util.SAPUtils;
-import de.sanandrew.mods.enderstuffplus.entity.IEnderCreature;
+import de.sanandrew.mods.enderstuffplus.entity.living.IEnderCreature;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
 

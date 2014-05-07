@@ -1,4 +1,4 @@
-package de.sanandrew.mods.enderstuffplus.entity;
+package de.sanandrew.mods.enderstuffplus.entity.living.monster;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,6 +22,8 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
+import de.sanandrew.mods.enderstuffplus.entity.EntityRayball;
+import de.sanandrew.mods.enderstuffplus.entity.living.IEnderCreature;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
 
 public class EntityEnderRay

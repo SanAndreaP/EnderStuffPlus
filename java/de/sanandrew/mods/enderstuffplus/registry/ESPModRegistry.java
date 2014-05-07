@@ -101,7 +101,7 @@ public class ESPModRegistry
 
         ModBlockRegistry.initialize();
         ModItemRegistry.initialize();
-//        ModEntityRegistry.initialize();
+        ModEntityRegistry.initialize();
 
         espBiome = new BiomeGenSurfaceEnd(125);
         //TODO find a reasonable way to register biomes

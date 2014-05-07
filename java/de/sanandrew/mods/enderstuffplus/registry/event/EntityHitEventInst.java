@@ -11,8 +11,8 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import de.sanandrew.mods.enderstuffplus.entity.EntityAvisArrow;
-import de.sanandrew.mods.enderstuffplus.entity.EntityEnderAvis;
-import de.sanandrew.mods.enderstuffplus.entity.IEnderPet;
+import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderAvis;
+import de.sanandrew.mods.enderstuffplus.entity.living.IEnderPet;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
 

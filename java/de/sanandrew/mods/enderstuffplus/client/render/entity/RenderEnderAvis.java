@@ -13,7 +13,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.sanandrew.mods.enderstuffplus.client.model.ModelEnderAvis;
-import de.sanandrew.mods.enderstuffplus.entity.EntityEnderAvis;
+import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderAvis;
 import de.sanandrew.mods.enderstuffplus.registry.Textures;
 import de.sanandrew.mods.enderstuffplus.registry.raincoat.RegistryRaincoats.CoatBaseEntry;
 import de.sanandrew.mods.enderstuffplus.registry.raincoat.RegistryRaincoats.CoatColorEntry;

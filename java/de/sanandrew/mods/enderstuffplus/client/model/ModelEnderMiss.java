@@ -10,7 +10,7 @@ import net.minecraft.entity.Entity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import de.sanandrew.mods.enderstuffplus.entity.EntityEnderMiss;
+import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderMiss;
 
 @SideOnly(Side.CLIENT)
 public class ModelEnderMiss

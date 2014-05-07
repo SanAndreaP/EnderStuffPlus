@@ -16,7 +16,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.sanandrew.mods.enderstuffplus.client.model.ModelEnderIgnis;
-import de.sanandrew.mods.enderstuffplus.entity.EntityEnderIgnis;
+import de.sanandrew.mods.enderstuffplus.entity.living.monster.EntityEnderIgnis;
 import de.sanandrew.mods.enderstuffplus.registry.Textures;
 
 @SideOnly(Side.CLIENT)

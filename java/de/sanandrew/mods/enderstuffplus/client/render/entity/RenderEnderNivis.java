@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -19,7 +20,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.sanandrew.mods.enderstuffplus.client.model.ModelEnderNivis;
-import de.sanandrew.mods.enderstuffplus.entity.EntityEnderNivis;
+import de.sanandrew.mods.enderstuffplus.entity.living.monster.EntityEnderNivis;
 import de.sanandrew.mods.enderstuffplus.registry.Textures;
 
 @SideOnly(Side.CLIENT)
@@ -37,7 +38,7 @@ public class RenderEnderNivis
     }
 
     private void applyStats(EntityEnderNivis nivis, double x, double y, double z, float yaw, float partTicks) {
-        this.nivisModel.setCarrying(nivis.getCarried() > 0);
+        this.nivisModel.setCarrying(nivis.func_146080_bZ().getMaterial() != Material.air);
         this.nivisModel.setAttacking(nivis.isScreaming());
     }
 
@@ -53,7 +54,7 @@ public class RenderEnderNivis
         }
 
         this.applyStats(nivis, x, y, z, yaw, partTicks);
-        this.func_110827_b(nivis, x, y, z, yaw, partTicks);
+        super.doRender(nivis, x, y, z, yaw, partTicks);
     }
 
     @Override
@@ -64,7 +65,7 @@ public class RenderEnderNivis
     private void renderCarrying(EntityEnderNivis nivis, float partTicks) {
         super.renderEquippedItems(nivis, partTicks);
 
-        if( nivis.getCarried() > 0 ) {
+        if( nivis.func_146080_bZ().getMaterial() != Material.air ) {
             float scale = 0.5F;
 
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -83,7 +84,7 @@ public class RenderEnderNivis
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
             this.bindTexture(TextureMap.locationBlocksTexture);
-            this.field_147909_c.renderBlockAsItem(Block.blocksList[nivis.getCarried()], nivis.getCarryingData(), 1.0F);
+            this.field_147909_c.renderBlockAsItem(nivis.func_146080_bZ(), nivis.getCarryingData(), 1.0F);
 
             GL11.glPopMatrix();
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);

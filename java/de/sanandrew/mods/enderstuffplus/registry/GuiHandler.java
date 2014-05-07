@@ -12,7 +12,7 @@ import de.sanandrew.mods.enderstuffplus.client.gui.GuiWeatherAltar;
 import de.sanandrew.mods.enderstuffplus.client.gui.BiomeChanger.GuiBiomeChangerBiomes;
 import de.sanandrew.mods.enderstuffplus.client.gui.BiomeChanger.GuiBiomeChangerConfig;
 import de.sanandrew.mods.enderstuffplus.client.gui.BiomeChanger.GuiBiomeChangerFuel;
-import de.sanandrew.mods.enderstuffplus.entity.IEnderPet;
+import de.sanandrew.mods.enderstuffplus.entity.living.IEnderPet;
 import de.sanandrew.mods.enderstuffplus.inventory.ContainerBiomeChanger;
 import de.sanandrew.mods.enderstuffplus.inventory.ContainerDuplicator;
 import de.sanandrew.mods.enderstuffplus.tileentity.TileEntityBiomeChanger;
