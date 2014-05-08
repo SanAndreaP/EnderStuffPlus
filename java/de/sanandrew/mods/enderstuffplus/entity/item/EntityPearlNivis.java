@@ -12,6 +12,10 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+
+import de.sanandrew.core.manpack.mod.packet.IPacket;
+import de.sanandrew.mods.enderstuffplus.packet.PacketFXEnderman;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 
 public class EntityPearlNivis
@@ -39,8 +43,8 @@ public class EntityPearlNivis
             movingObjPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0.0F);
         }
 
-        ESPModRegistry.sendPacketAllRng("fxPortal", this.posX, this.posY, this.posZ, 128D, this.dimension,
-                                        this.posX, this.posY, this.posZ, 0.2F, 0.5F, 1.0F, this.width, this.height, 8);
+        IPacket packet = new PacketFXEnderman(this.posX, this.posY, this.posZ, 0.2F, 0.5F, 1.0F, this.width, this.height, 8);
+        ESPModRegistry.channelHandler.sendToAllAround(packet, new TargetPoint(this.dimension, this.posX, this.posY, this.posZ, 64));
 
         if( !this.worldObj.isRemote ) {
             if( movingObjPos.typeOfHit == MovingObjectType.BLOCK && this.getThrower() instanceof EntityPlayer ) {
@@ -76,7 +80,7 @@ public class EntityPearlNivis
                             } else if( this.worldObj.isBlockNormalCubeDefault(var13 + i, var14 + j, var15 + k, false)
                                        && this.worldObj.isAirBlock(var13 + i, var14 + j + 1, var15 + k) )
                             {
-                                this.worldObj.setBlock(var13 + i, var14 + j + 1, var15 + k, Blocks.snow);
+                                this.worldObj.setBlock(var13 + i, var14 + j + 1, var15 + k, Blocks.snow_layer);
                             } else if( blockID == Blocks.fire ) {
                                 this.worldObj.setBlockToAir(var13 + i, var14 + j, var15 + k);
                                 playSound = true;

@@ -2,6 +2,7 @@ package de.sanandrew.mods.enderstuffplus.registry.event;
 
 import java.util.ArrayList;
 
+import de.sanandrew.core.manpack.mod.packet.IPacket;
 import de.sanandrew.core.manpack.util.SAPUtils;
 
 import net.minecraft.enchantment.Enchantment;
@@ -14,9 +15,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.IShearable;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 
+import de.sanandrew.mods.enderstuffplus.packet.PacketFXEnderman;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
 
@@ -40,7 +43,6 @@ public class EntityInteractEventInst
                     ItemStack newStack = EnchantmentHelper.getEnchantmentLevel(ESPModRegistry.enderChestTel.effectId, itemstack) > 0
                                                                                     ? SAPUtils.addItemStackToInventory(item.copy(), event.entityPlayer.getInventoryEnderChest())
                                                                                     : item.copy();
-
                     if( newStack != null ) {
                         newStack = SAPUtils.addItemStackToInventory(newStack.copy(), event.entityPlayer.inventory);
 
@@ -58,8 +60,9 @@ public class EntityInteractEventInst
                 }
 
                 if( transportSucceed ) {
-                    ESPModRegistry.sendPacketAllRng("fxPortal", entity.posX, entity.posY, entity.posZ, 128.0D, entity.dimension,
-                                                    entity.posX, entity.posY, entity.posZ, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 10);
+                    IPacket packet = new PacketFXEnderman(entity.posX, entity.posY, entity.posZ, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 10);
+                    ESPModRegistry.channelHandler.sendToAllAround(packet, new TargetPoint(entity.dimension, entity.posX, entity.posY, entity.posZ, 64));
+                    
                     event.entityPlayer.inventoryContainer.detectAndSendChanges();
 
                     if( event.entityPlayer.openContainer != null ) {

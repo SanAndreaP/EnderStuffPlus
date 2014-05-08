@@ -3,7 +3,9 @@ package de.sanandrew.mods.enderstuffplus.entity.living.monster;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.item.Item;
+import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -11,36 +13,25 @@ import de.sanandrew.mods.enderstuffplus.entity.living.IEnderCreature;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
 
 public class EntityEnderIgnis
-    extends EntityEndermanESP
+    extends EntityEnderman
     implements IEnderCreature
 {
-
     public EntityEnderIgnis(World world) {
         super(world);
         this.experienceValue = 8;
         this.isImmuneToFire = true;
-
-        carriableBlocks[Block.grass.blockID] = false;
-        carriableBlocks[Block.dirt.blockID] = false;
-        carriableBlocks[Block.sand.blockID] = false;
-        carriableBlocks[Block.gravel.blockID] = false;
-        carriableBlocks[Block.plantYellow.blockID] = false;
-        carriableBlocks[Block.plantRed.blockID] = false;
-        carriableBlocks[Block.mushroomBrown.blockID] = false;
-        carriableBlocks[Block.mushroomRed.blockID] = false;
-        carriableBlocks[Block.tnt.blockID] = false;
-        carriableBlocks[Block.cactus.blockID] = false;
-        carriableBlocks[Block.blockClay.blockID] = false;
-        carriableBlocks[Block.pumpkin.blockID] = false;
-        carriableBlocks[Block.melon.blockID] = false;
-        carriableBlocks[Block.mycelium.blockID] = false;
+    }
+    
+    @Override
+    public Block func_146080_bZ() {
+        return Blocks.air;
     }
 
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(80.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(80.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(10.0D);
     }
 
     @Override
@@ -54,8 +45,13 @@ public class EntityEnderIgnis
     }
 
     @Override
-    protected int getDamageDropped() {
-        return 1;
+    protected void dropFewItems(boolean recentlyHit, int lootingLvl) {
+        int j = this.rand.nextInt(3);
+
+        if( lootingLvl > 0 ) {
+            j += this.rand.nextInt(lootingLvl + 1);
+        }
+        this.entityDropItem(new ItemStack(ModItemRegistry.espPearls, j, 1), 0.0F);
     }
 
     @Override
@@ -64,13 +60,8 @@ public class EntityEnderIgnis
     }
 
     @Override
-    protected int getDropItemId() {
-        return ModItemRegistry.espPearls.itemID;
-    }
-
-    @Override
     public ItemStack getHeldItem() {
-        return new ItemStack(Item.swordIron);
+        return new ItemStack(Items.iron_sword);
     }
 
     @Override
@@ -93,17 +84,12 @@ public class EntityEnderIgnis
             for( int y = -2; y <= 2; y++ ) {
                 for( int z = -2; z <= 2; z++ ) {
                     if( Math.sqrt((x * x) + (y * y) + (z * z)) <= 2D ) {
-                        if( this.worldObj.getBlockId(blockPosX + x, blockPosY + y, blockPosZ + z) == 0 ) {
-                            this.worldObj.setBlock(blockPosX + x, blockPosY + y, blockPosZ + z, Block.fire.blockID);
+                        if( this.worldObj.isAirBlock(blockPosX + x, blockPosY + y, blockPosZ + z) ) {
+                            this.worldObj.setBlock(blockPosX + x, blockPosY + y, blockPosZ + z, Blocks.fire);
                         }
                     }
                 }
             }
         }
-    }
-
-    @Override
-    public void spawnParticle(String type, double X, double Y, double Z, float dataI, float dataII, float dataIII) {
-        super.spawnParticle(type, X, Y, Z, 1.0F, 1.0F, 0.0F);
     }
 }
