@@ -19,7 +19,7 @@ import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 
-import de.sanandrew.mods.enderstuffplus.packet.PacketFXEnderman;
+import de.sanandrew.mods.enderstuffplus.packet.PacketFXCstPortal;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
 
@@ -60,7 +60,7 @@ public class EntityInteractEventInst
                 }
 
                 if( transportSucceed ) {
-                    IPacket packet = new PacketFXEnderman(entity.posX, entity.posY, entity.posZ, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 10);
+                    IPacket packet = new PacketFXCstPortal(entity.posX, entity.posY, entity.posZ, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 10);
                     ESPModRegistry.channelHandler.sendToAllAround(packet, new TargetPoint(entity.dimension, entity.posX, entity.posY, entity.posZ, 64));
                     
                     event.entityPlayer.inventoryContainer.detectAndSendChanges();

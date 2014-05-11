@@ -55,7 +55,7 @@ public class ModItemRegistry
     public static Item niobShovel;
     public static Item niobSword;
     public static Item rainCoat;
-    //TODO unfinished!
+    //FIXME unfinished!
     public static Item tantalPick;
     public static Item ahrahSword;
 

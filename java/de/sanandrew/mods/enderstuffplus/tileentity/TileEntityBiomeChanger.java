@@ -507,11 +507,7 @@ public class TileEntityBiomeChanger
                 IPacket packet = new PacketChangeBiome(this, this.getCurrRange());
                 TargetPoint tPoint = new TargetPoint(this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 256);
                 ESPModRegistry.channelHandler.sendToAllAround(packet, tPoint);
-//                this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ModBlockRegistry.biomeChanger, 1, this.getCurrRange());
-                //TODO use new packet system!
-//                PacketRegistry.sendPacketToAllAround(ESPModRegistry.MOD_ID, "setWeather", this.xCoord, this.yCoord,
-//                                                     this.zCoord, 256, this.worldObj.provider.dimensionId, this,
-//                                                     this.getCurrRange());
+
                 this.setCurrRange(this.getCurrRange() + 1);
 
                 if( this.getCurrRange() >= this.getMaxRange() ) {

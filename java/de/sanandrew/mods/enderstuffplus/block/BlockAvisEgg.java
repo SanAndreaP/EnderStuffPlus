@@ -79,13 +79,6 @@ public class BlockAvisEgg
         }
     }
 
-    //TODO use setTextureName
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public void registerBlockIcons(IIconRegister iconRegister) {
-//        this.blockIcon = iconRegister.registerIcon("enderstuffp:eggAvis");
-//    }
-
     @Override
     public void updateTick(World world, int x, int y, int z, Random random) {}
 }

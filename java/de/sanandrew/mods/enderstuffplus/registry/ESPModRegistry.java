@@ -36,7 +36,7 @@ import de.sanandrew.mods.enderstuffplus.packet.PacketBCGUIAction;
 import de.sanandrew.mods.enderstuffplus.packet.PacketChangeBCGUI;
 import de.sanandrew.mods.enderstuffplus.packet.PacketChangeBiome;
 import de.sanandrew.mods.enderstuffplus.packet.PacketDupeInsertLevels;
-import de.sanandrew.mods.enderstuffplus.packet.PacketFXEnderman;
+import de.sanandrew.mods.enderstuffplus.packet.PacketFXCstPortal;
 import de.sanandrew.mods.enderstuffplus.packet.PacketFXRayball;
 import de.sanandrew.mods.enderstuffplus.registry.raincoat.RegistryRaincoats;
 import de.sanandrew.mods.enderstuffplus.world.biome.BiomeGenSurfaceEnd;
@@ -124,7 +124,7 @@ public class ESPModRegistry
         channelHandler.registerPacket(PacketChangeBiome.class);
         channelHandler.registerPacket(PacketDupeInsertLevels.class);
         channelHandler.registerPacket(PacketFXRayball.class);
-        channelHandler.registerPacket(PacketFXEnderman.class);
+        channelHandler.registerPacket(PacketFXCstPortal.class);
 
 //        proxy.registerPackets();
         RegistryDungeonLoot.initialize();
@@ -185,23 +185,6 @@ public class ESPModRegistry
     public static boolean isSprintActivated(EntityPlayer ep) {
         return ep != null ? ep.isSprinting() : false;
     }
-
-//    //TODO use new packet system!
-//    public static void sendPacketAllPlyr(String name, Object... data) {
-////        PacketRegistry.sendPacketToAllPlayers(MOD_ID, name, data);
-//    }
-//
-//    public static void sendPacketAllRng(String name, double x, double y, double z, double rng, int dimID, Object... data) {
-////        PacketRegistry.sendPacketToAllAround(MOD_ID, name, x, y, z, rng, dimID, data);
-//    }
-//
-//    public static void sendPacketPlyr(String name, EntityPlayer player, Object... data) {
-////        PacketRegistry.sendPacketToPlayer(MOD_ID, name, (Player) player, data);
-//    }
-//
-//    public static void sendPacketSrv(String name, Object... data) {
-////        PacketRegistry.sendPacketToServer(MOD_ID, name, data);
-//    }
 
     private static class NoManpackFoundException
         extends RuntimeException

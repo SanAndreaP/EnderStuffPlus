@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 
 import de.sanandrew.core.manpack.mod.packet.IPacket;
-import de.sanandrew.mods.enderstuffplus.packet.PacketFXEnderman;
+import de.sanandrew.mods.enderstuffplus.packet.PacketFXCstPortal;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 
 public class EntityPearlNivis
@@ -43,7 +43,7 @@ public class EntityPearlNivis
             movingObjPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0.0F);
         }
 
-        IPacket packet = new PacketFXEnderman(this.posX, this.posY, this.posZ, 0.2F, 0.5F, 1.0F, this.width, this.height, 8);
+        IPacket packet = new PacketFXCstPortal(this.posX, this.posY, this.posZ, 0.2F, 0.5F, 1.0F, this.width, this.height, 8);
         ESPModRegistry.channelHandler.sendToAllAround(packet, new TargetPoint(this.dimension, this.posX, this.posY, this.posZ, 64));
 
         if( !this.worldObj.isRemote ) {

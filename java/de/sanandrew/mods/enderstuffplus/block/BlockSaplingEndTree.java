@@ -71,13 +71,6 @@ public class BlockSaplingEndTree
         }
     }
 
-    //TODO use setTextureName
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public void registerIcons(IIconRegister iconRegister) {
-//        this.blockIcon = iconRegister.registerIcon("enderstuffp:sapling_end");
-//    }
-
     @Override
     public void updateTick(World world, int x, int y, int z, Random random) {
         if( !world.isRemote ) {

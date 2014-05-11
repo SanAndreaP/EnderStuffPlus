@@ -11,22 +11,22 @@ import de.sanandrew.core.manpack.util.javatuples.Quintet;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.enderstuffplus.client.particle.ParticleFXFuncCollection;
 
-public class PacketFXEnderman
+public class PacketFXCstPortal
     implements IPacket
 {
     private Triplet<Double, Double, Double> pos;
     private Quintet<Float, Float, Float, Float, Float> data;
     private short forcnt;
     
-    public PacketFXEnderman() { }
+    public PacketFXCstPortal() { }
     
-    public PacketFXEnderman(double x, double y, double z, float data1, float data2, float data3, float width, float height, int forCntMax) {
+    public PacketFXCstPortal(double x, double y, double z, float data1, float data2, float data3, float width, float height, int forCntMax) {
         this.pos = Triplet.with(x, y, z);
         this.data = Quintet.with(data1,  data2,  data3, width, height);
         this.forcnt = (short)forCntMax;
     }
     
-    public PacketFXEnderman(double x, double y, double z, float data1, float data2, float data3, float width, float height) {
+    public PacketFXCstPortal(double x, double y, double z, float data1, float data2, float data3, float width, float height) {
         this(x, y, z, data1, data2, data3, width, height, 1);
     }
 

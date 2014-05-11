@@ -1,7 +1,6 @@
 package de.sanandrew.mods.enderstuffplus.item.tool;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -11,15 +10,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.stats.StatList;
 
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+
+import de.sanandrew.core.manpack.mod.packet.IPacket;
 import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.mods.enderstuffplus.packet.PacketFXCstPortal;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
 
 public final class NiobToolHelper
 {
-    private static final Random rand = new Random();
-
-    public static final boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player, Block[] toolEffectives,
+    public static boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player, Block[] toolEffectives,
                                                   boolean shouldDropNugget) {
         if( stack == null || player.worldObj.isRemote || player.capabilities.isCreativeMode ) {
             return false;
@@ -37,9 +38,9 @@ public final class NiobToolHelper
 
         int fortune = EnchantmentHelper.getFortuneModifier(player);
 
-        if( shouldDropNugget && rand.nextInt(50) == 0 ) {
+        if( shouldDropNugget && SAPUtils.RANDOM.nextInt(50) == 0 ) {
             ItemStack nugget = new ItemStack(ModItemRegistry.endNugget,
-                                             rand.nextInt(EnchantmentHelper.getFortuneModifier(player) + 1) + 1);
+                                             SAPUtils.RANDOM.nextInt(EnchantmentHelper.getFortuneModifier(player) + 1) + 1);
             nugget = EnchantmentHelper.getEnchantmentLevel(ESPModRegistry.enderChestTel.effectId, stack) > 0
                         ? SAPUtils.addItemStackToInventory(nugget, player.getInventoryEnderChest())
                         : nugget;
@@ -63,12 +64,10 @@ public final class NiobToolHelper
                     if( newStack != null ) {
                         SAPUtils.dropBlockAsItem(block, player.worldObj, x, y, z, newStack);
                     } else {
-                        ESPModRegistry.sendPacketAllRng("fxPortal", x, y, z, 128.0D, player.dimension, x + 0.5F,
-                                                        y + 0.5F, z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 10);
+                        spawnFX(x, y, z, player.dimension);
                     }
                 } else {
-                    ESPModRegistry.sendPacketAllRng("fxPortal", x, y, z, 128.0D, player.dimension, x + 0.5F, y + 0.5F,
-                                                    z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 10);
+                    spawnFX(x, y, z, player.dimension);
                 }
             }
         } else {
@@ -83,12 +82,10 @@ public final class NiobToolHelper
                     if( newStack != null ) {
                         SAPUtils.dropBlockAsItem(block, player.worldObj, x, y, z, newStack);
                     } else {
-                        ESPModRegistry.sendPacketAllRng("fxPortal", x, y, z, 128.0D, player.dimension, x + 0.5F,
-                                                        y + 0.5F, z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 10);
+                        spawnFX(x, y, z, player.dimension);
                     }
                 } else {
-                    ESPModRegistry.sendPacketAllRng("fxPortal", x, y, z, 128.0D, player.dimension, x + 0.5F, y + 0.5F,
-                                                    z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 10);
+                    spawnFX(x, y, z, player.dimension);
                 }
             }
         }
@@ -108,11 +105,16 @@ public final class NiobToolHelper
         return true;
     }
 
-    public static final boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player, boolean shouldDropNugget) {
+    public static boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player, boolean shouldDropNugget) {
         if( !(stack.getItem() instanceof ItemTool) ) {
             return false;
         }
 
         return onBlockStartBreak(stack, x, y, z, player, SAPUtils.getToolBlocks((ItemTool) stack.getItem()), shouldDropNugget);
+    }
+
+    private static void spawnFX(int x, int y, int z, int dimId) {
+        IPacket packet = new PacketFXCstPortal(x, y, z, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 10);
+        ESPModRegistry.channelHandler.sendToAllAround(packet, new TargetPoint(dimId, x + 0.5F, y + 0.5F, z + 0.5F, 64.0D));
     }
 }

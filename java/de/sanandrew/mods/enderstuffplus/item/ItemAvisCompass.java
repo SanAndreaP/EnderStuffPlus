@@ -3,9 +3,9 @@ package de.sanandrew.mods.enderstuffplus.item;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -58,8 +58,7 @@ public class ItemAvisCompass
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int dmg) {
-        return IconRegistry.compass;
+    public void registerIcons(IIconRegister par1IconRegister) {
+        this.itemIcon = IconRegistry.compass;
     }
 }

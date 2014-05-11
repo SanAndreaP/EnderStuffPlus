@@ -13,7 +13,7 @@ import de.sanandrew.core.manpack.util.event.entity.EnderSpawnParticleEvent;
 import de.sanandrew.core.manpack.util.event.entity.EnderSpawnParticleEvent.EnderParticleType;
 import de.sanandrew.mods.enderstuffplus.entity.living.monster.EntityEnderIgnis;
 import de.sanandrew.mods.enderstuffplus.entity.living.monster.EntityEnderNivis;
-import de.sanandrew.mods.enderstuffplus.packet.PacketFXEnderman;
+import de.sanandrew.mods.enderstuffplus.packet.PacketFXCstPortal;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 
 public class EnderEvents
@@ -46,12 +46,12 @@ public class EnderEvents
         if( particleData != null ) {
             if( !event.entityEnderman.worldObj.isRemote ) {
                 if( event.particleType == EnderParticleType.IDLE_FX ) {
-                    IPacket packet = new PacketFXEnderman(event.entityEnderman.posX, event.entityEnderman.posY, event.entityEnderman.posZ, particleData[0],
+                    IPacket packet = new PacketFXCstPortal(event.entityEnderman.posX, event.entityEnderman.posY, event.entityEnderman.posZ, particleData[0],
                                                           particleData[1], particleData[2], event.entityEnderman.width, event.entityEnderman.height, 2);
                     ESPModRegistry.channelHandler.sendToAllAround(packet, new TargetPoint(event.entityEnderman.dimension, event.entityEnderman.posX,
                                                                                           event.entityEnderman.posY, event.entityEnderman.posZ, 64));
                 } else if( event.particleType == EnderParticleType.TELEPORT_FX ) {
-                    IPacket packet = new PacketFXEnderman(event.getX(), event.getY(), event.getZ(), particleData[0], particleData[1], particleData[2],
+                    IPacket packet = new PacketFXCstPortal(event.getX(), event.getY(), event.getZ(), particleData[0], particleData[1], particleData[2],
                                                           event.entityEnderman.width, event.entityEnderman.height);
                     ESPModRegistry.channelHandler.sendToAllAround(packet, new TargetPoint(event.entityEnderman.dimension, event.getX(), event.getY(),
                                                                                           event.getZ(), 64));

@@ -49,7 +49,7 @@ public class CommonProxy
         GameRegistry.registerWorldGenerator(new EnderStuffWorldGenerator(), 10);
     }
 
-    public void registerPackets() { //TODO use new packet system!
+    public void registerPackets() { //FIXME use new packet system!
 //        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "bcGuiAction", new PacketBCGUIAction());
 //        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "bcGuiChange", new PacketChangeBCGUI());
 //        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "dupeInsLevels", new PacketDupeInsertLevels());

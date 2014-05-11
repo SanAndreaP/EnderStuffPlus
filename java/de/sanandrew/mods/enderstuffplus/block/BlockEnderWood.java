@@ -17,11 +17,4 @@ public class BlockEnderWood
     public boolean canEntityDestroy(IBlockAccess blockAccess, int x, int y, int z, Entity entity) {
         return !(entity instanceof EntityDragon);
     }
-
-    //TODO use setTextureName
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public void registerIcons(IIconRegister iconRegister) {
-//        this.blockIcon = iconRegister.registerIcon("enderstuffp:enderWood" + (!ConfigRegistry.useAnimations ? "_NA" : ""));
-//    }
 }

@@ -20,10 +20,13 @@ import net.minecraft.world.World;
 
 import net.minecraftforge.common.IShearable;
 
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import de.sanandrew.core.manpack.mod.packet.IPacket;
 import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.mods.enderstuffplus.packet.PacketFXCstPortal;
 import de.sanandrew.mods.enderstuffplus.registry.ConfigRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
@@ -121,9 +124,11 @@ public class ItemNiobShears
             stack.damageItem(1, player);
             player.addStat(StatList.mineBlockStatArray[Block.getIdFromBlock(block)], 1);    // shouldn't use this, but vanilla does it
             if( hasTransported ) {                                                          // this way, so meh...
-                ESPModRegistry.sendPacketAllRng("fxPortal", x, y, z, 128.0D, player.dimension, x + 0.5F, y + 0.5F,
-                                                z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 10);
+                IPacket packet = new PacketFXCstPortal(x + 0.5F, y + 0.5F, z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 10);
+                ESPModRegistry.channelHandler.sendToAllAround(packet, new TargetPoint(player.dimension, x, y, z, 64D));
+
                 player.inventoryContainer.detectAndSendChanges();
+
                 if( player.openContainer != null ) {
                     player.openContainer.detectAndSendChanges();
                 }
