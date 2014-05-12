@@ -49,7 +49,7 @@ public class RenderEnderIgnis
         }
 
         this.applyStats(ignis);
-        this.func_110827_b(ignis, x, y, z, yaw, partTicks);
+        super.doRender(ignis, x, y, z, yaw, partTicks);
     }
 
     @Override

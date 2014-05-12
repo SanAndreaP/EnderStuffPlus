@@ -15,7 +15,7 @@ import de.sanandrew.mods.enderstuffplus.registry.ModBlockRegistry;
 @SideOnly(Side.CLIENT)
 public class IconRegistry
 {
-    public static TextureAtlasSprite compass;
+    public static TextureAtlasSprite compass = new TextureAvisCompass();
     public static IIcon sun;
     public static IIcon rain;
     public static IIcon thunder;
@@ -41,7 +41,7 @@ public class IconRegistry
             guiActiveOn = event.map.registerIcon("enderstuffp:activeOn");
             guiActiveOff = event.map.registerIcon("enderstuffp:activeOff");
 
-            event.map.setTextureEntry("enderstuffp:compass", compass = new TextureAvisCompass());
+            event.map.setTextureEntry("enderstuffp:compass", compass);
         }
     }
 }

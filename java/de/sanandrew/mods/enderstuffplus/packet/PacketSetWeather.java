@@ -1,37 +1,51 @@
 package de.sanandrew.mods.enderstuffplus.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import io.netty.buffer.ByteBuf;
 
-import de.sanandrew.core.manpack.mod.packet.ISAPPacketHandler;
+import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.network.NetHandlerPlayServer;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.tileentity.TileEntity;
-
-import cpw.mods.fml.common.network.Player;
-
+import de.sanandrew.core.manpack.mod.packet.IPacket;
+import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.enderstuffplus.tileentity.TileEntityWeatherAltar;
 
 public class PacketSetWeather
-    implements ISAPPacketHandler
+    implements IPacket
 {
-    @Override
-    public void getDataForPacket(DataOutputStream doStream, Object... data) throws Throwable {
-        doStream.writeInt((Integer) data[0]); // x
-        doStream.writeInt((Integer) data[1]); // y
-        doStream.writeInt((Integer) data[2]); // z
-        doStream.writeInt((Integer) data[3]); // weather ID
-        doStream.writeInt((Integer) data[4]); // duration
+    private Triplet<Integer, Integer, Integer> altarPos;
+    private byte wthId;
+    private int dur;
+
+    public PacketSetWeather() { }
+
+    public PacketSetWeather(TileEntityWeatherAltar altar, int weatherId, int duration) {
+        this.altarPos = Triplet.with(altar.xCoord, altar.yCoord, altar.zCoord);
+        this.wthId = (byte) weatherId;
+        this.dur = duration;
     }
 
     @Override
-    public void processData(INetworkManager manager, Player player, DataInputStream diStream) throws Throwable {
-        int weatherID = diStream.readInt();
-        int duration = diStream.readInt();
-        TileEntity tile = ((EntityPlayer) player).worldObj.getBlockTileEntity(diStream.readInt(), diStream.readInt(), diStream.readInt());
-        if( tile instanceof TileEntityWeatherAltar ) {
-            ((TileEntityWeatherAltar) tile).setWeather(weatherID, duration);
-        }
+    public void readBytes(ByteBuf bytes) {
+        this.altarPos = Triplet.with(bytes.readInt(), bytes.readInt(), bytes.readInt());
+        this.wthId = bytes.readByte();
+        this.dur = bytes.readInt();
+    }
+
+    @Override
+    public void writeBytes(ByteBuf bytes) {
+        bytes.writeInt(this.altarPos.getValue0());
+        bytes.writeInt(this.altarPos.getValue1());
+        bytes.writeInt(this.altarPos.getValue2());
+        bytes.writeByte(this.wthId);
+        bytes.writeInt(this.dur);
+    }
+
+    @Override
+    public void handleClientSide(NetHandlerPlayClient nhClient) { }
+
+    @Override
+    public void handleServerSide(NetHandlerPlayServer nhServer) {
+        TileEntityWeatherAltar teAltar = (TileEntityWeatherAltar) nhServer.playerEntity.worldObj.getTileEntity(this.altarPos.getValue0(), this.altarPos.getValue1(), this.altarPos.getValue2());
+        teAltar.setWeather(this.wthId, this.dur);
     }
 }

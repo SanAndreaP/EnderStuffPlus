@@ -12,6 +12,10 @@ import net.minecraft.world.World;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+
+import de.sanandrew.core.manpack.mod.packet.IPacket;
+import de.sanandrew.mods.enderstuffplus.packet.PacketFXCstPortal;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 
 public class EntityPearlIgnis
@@ -39,8 +43,8 @@ public class EntityPearlIgnis
             movingObjPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0.0F);
         }
 
-        ESPModRegistry.sendPacketAllRng("fxPortal", this.posX, this.posY, this.posZ, 128D, this.dimension,
-                                        this.posX, this.posY, this.posZ, 1.0F, 0.3F, 0.0F, this.width, this.height, 8);
+        IPacket packet = new PacketFXCstPortal(this.posX, this.posY, this.posZ, 1.0F, 0.3F, 0.0F, this.width, this.height, 8);
+        ESPModRegistry.channelHandler.sendToAllAround(packet, new TargetPoint(this.dimension, this.posX, this.posY, this.posZ, 64));
 
         if( !this.worldObj.isRemote ) {
             if( movingObjPos.typeOfHit == MovingObjectType.BLOCK && this.getThrower() instanceof EntityPlayer ) {

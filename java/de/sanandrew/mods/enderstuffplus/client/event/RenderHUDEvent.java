@@ -12,7 +12,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderAvis;
+//import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderAvis;
 import de.sanandrew.mods.enderstuffplus.entity.living.IEnderPet;
 import de.sanandrew.mods.enderstuffplus.registry.Textures;
 
@@ -42,9 +42,9 @@ public class RenderHUDEvent
                 this.mc.getTextureManager().bindTexture(Textures.GUI_INGAMEICONS.getResource());
                 this.renderEnderStats(pet.getPetHealth(), pet.getPetMaxHealth(), scaledWdt / 2 + 91, scaledHgt - 39, 9);
 
-                if( this.mc.thePlayer.ridingEntity instanceof EntityEnderAvis ) {
-                    this.renderEnderStats(((EntityEnderAvis) pet).getCurrFlightCondInt(), 20, scaledWdt / 2 + 91, scaledHgt - 49, 0);
-                }
+//                if( this.mc.thePlayer.ridingEntity instanceof EntityEnderAvis ) {
+//                    this.renderEnderStats(((EntityEnderAvis) pet).getCurrFlightCondInt(), 20, scaledWdt / 2 + 91, scaledHgt - 49, 0);
+//                }
                 event.setCanceled(true);
             }
         }

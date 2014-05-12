@@ -26,9 +26,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.sanandrew.core.manpack.util.SAPUtils;
-import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderAvis;
-import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderMiss;
 import de.sanandrew.mods.enderstuffplus.entity.living.IEnderPet;
+//import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderAvis;
 
 public class ItemEnderPetEgg
     extends Item
@@ -74,9 +73,9 @@ public class ItemEnderPetEgg
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public void addInformation(ItemStack stack, EntityPlayer player, List infos, boolean isAdvancedInfo) {
         if( stack.getItemDamage() == 0 ) {
-            EntityEnderMiss.getEggInfo(stack, player, infos, isAdvancedInfo);
+//            EntityEnderMiss.getEggInfo(stack, player, infos, isAdvancedInfo);
         } else if( stack.getItemDamage() == 1 ) {
-            EntityEnderAvis.getEggInfo(stack, player, infos, isAdvancedInfo);
+//            EntityEnderAvis.getEggInfo(stack, player, infos, isAdvancedInfo);
         }
     }
 

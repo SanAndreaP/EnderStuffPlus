@@ -9,6 +9,10 @@ import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+
+import de.sanandrew.core.manpack.mod.packet.IPacket;
+import de.sanandrew.mods.enderstuffplus.packet.PacketFXCstPortal;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 
 public class EntityBait
@@ -32,8 +36,8 @@ public class EntityBait
         }
 
         if( this.ticksExisted % 10 == 0 ) {
-            ESPModRegistry.sendPacketAllRng("fxPortal", this.posX, this.posY, this.posZ, 128.0D, this.dimension, this.posX,
-                                            this.posY, this.posZ, 1.0F, 0.5F, 0.7F, this.width, this.height, 10);
+            IPacket packet = new PacketFXCstPortal(this.posX, this.posY, this.posZ, 1.0F, 0.5F, 0.7F, this.width, this.height, 10);
+            ESPModRegistry.channelHandler.sendToAllAround(packet, new TargetPoint(this.dimension, this.posX, this.posY, this.posZ, 64));
         }
 
         if( !this.worldObj.isRemote ) {

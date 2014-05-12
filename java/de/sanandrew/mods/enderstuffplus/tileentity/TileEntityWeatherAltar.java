@@ -42,16 +42,13 @@ public class TileEntityWeatherAltar
 
     public int[] getWeather() {
         int[] ret = new int[2];
-        WorldInfo wInfo = this.worldObj.getWorldInfo();
-        if( wInfo.isRaining() && wInfo.isThundering() ) {
+
+        if( this.worldObj.getWeightedThunderStrength(0F) > 0.5F ) {
             ret[0] = 2;
-            ret[1] = wInfo.getThunderTime() * 20;
-        } else if( wInfo.isRaining() ) {
+        } else if( this.worldObj.getRainStrength(0F) > 0.5F ) {
             ret[0] = 1;
-            ret[1] = wInfo.getRainTime() * 20;
         } else {
             ret[0] = 0;
-            ret[1] = wInfo.getRainTime() * 20;
         }
 
         return ret;

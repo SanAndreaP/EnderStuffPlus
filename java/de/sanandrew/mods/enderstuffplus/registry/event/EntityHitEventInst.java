@@ -6,12 +6,12 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
 import de.sanandrew.mods.enderstuffplus.entity.EntityAvisArrow;
-import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderAvis;
+//import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderAvis;
 import de.sanandrew.mods.enderstuffplus.entity.living.IEnderPet;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
@@ -20,7 +20,7 @@ public class EntityHitEventInst
 {
     @SubscribeEvent
     public void onEntityHit(LivingHurtEvent event) {
-        if( (event.source.getSourceOfDamage() instanceof EntityAvisArrow) && !(event.entityLiving instanceof EntityEnderAvis) ) {
+        if( (event.source.getSourceOfDamage() instanceof EntityAvisArrow) /*&& !(event.entityLiving instanceof EntityEnderAvis)*/ ) {
             EntityAvisArrow arrow = ((EntityAvisArrow) event.source.getSourceOfDamage());
             event.entityLiving.addPotionEffect(new PotionEffect(Potion.poison.id, 100, arrow.getIsCritical() ? 1 : 0));
         } else if( event.source.equals(DamageSource.fall) && event.entityLiving instanceof EntityPlayer ) {

@@ -38,6 +38,7 @@ import de.sanandrew.mods.enderstuffplus.packet.PacketChangeBiome;
 import de.sanandrew.mods.enderstuffplus.packet.PacketDupeInsertLevels;
 import de.sanandrew.mods.enderstuffplus.packet.PacketFXCstPortal;
 import de.sanandrew.mods.enderstuffplus.packet.PacketFXRayball;
+import de.sanandrew.mods.enderstuffplus.packet.PacketSetWeather;
 import de.sanandrew.mods.enderstuffplus.registry.raincoat.RegistryRaincoats;
 import de.sanandrew.mods.enderstuffplus.world.biome.BiomeGenSurfaceEnd;
 
@@ -125,6 +126,7 @@ public class ESPModRegistry
         channelHandler.registerPacket(PacketDupeInsertLevels.class);
         channelHandler.registerPacket(PacketFXRayball.class);
         channelHandler.registerPacket(PacketFXCstPortal.class);
+        channelHandler.registerPacket(PacketSetWeather.class);
 
 //        proxy.registerPackets();
         RegistryDungeonLoot.initialize();

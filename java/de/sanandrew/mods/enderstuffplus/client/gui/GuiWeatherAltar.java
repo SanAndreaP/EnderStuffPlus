@@ -9,7 +9,9 @@ import net.minecraft.client.gui.GuiTextField;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import de.sanandrew.core.manpack.mod.packet.IPacket;
 import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.mods.enderstuffplus.packet.PacketSetWeather;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.Textures;
 import de.sanandrew.mods.enderstuffplus.tileentity.TileEntityWeatherAltar;
@@ -38,17 +40,18 @@ public class GuiWeatherAltar
         int dur = this.getDurationInt();
 
         if( dur > 0 ) {
+            IPacket packet = null;
+
             if( button.id == this.btnSun.id ) {
-                ESPModRegistry.sendPacketSrv("setWeather", 0, dur, this.teWeatherAltar.xCoord, this.teWeatherAltar.yCoord,
-                                             this.teWeatherAltar.zCoord, this.mc.theWorld);
-                this.mc.thePlayer.closeScreen();
+                packet = new PacketSetWeather(this.teWeatherAltar, 0, dur);
             } else if( button.id == this.btnRain.id ) {
-                ESPModRegistry.sendPacketSrv("setWeather", 1, dur, this.teWeatherAltar.xCoord, this.teWeatherAltar.yCoord,
-                                             this.teWeatherAltar.zCoord, this.mc.theWorld);
-                this.mc.thePlayer.closeScreen();
+                packet = new PacketSetWeather(this.teWeatherAltar, 1, dur);
             } else if( button.id == this.btnStorm.id ) {
-                ESPModRegistry.sendPacketSrv("setWeather", 2, dur, this.teWeatherAltar.xCoord, this.teWeatherAltar.yCoord,
-                                             this.teWeatherAltar.zCoord, this.mc.theWorld);
+                packet = new PacketSetWeather(this.teWeatherAltar, 2, dur);
+            }
+
+            if( packet != null ) {
+                ESPModRegistry.channelHandler.sendToServer(packet);
                 this.mc.thePlayer.closeScreen();
             }
         }
@@ -91,8 +94,8 @@ public class GuiWeatherAltar
         }
     }
 
-    @SuppressWarnings({ "unchecked" })
     @Override
+    @SuppressWarnings({ "unchecked" })
     public void initGui() {
         super.initGui();
         this.guiLeft = (this.width - this.xSize) / 2;

@@ -25,6 +25,7 @@ import de.sanandrew.mods.enderstuffplus.client.render.RenderTileEntityWeatherAlt
 import de.sanandrew.mods.enderstuffplus.client.render.RenderWeatherAltarFirework;
 import de.sanandrew.mods.enderstuffplus.client.render.entity.RenderAvisArrow;
 import de.sanandrew.mods.enderstuffplus.client.render.entity.RenderEnderAvis;
+import de.sanandrew.mods.enderstuffplus.client.render.entity.RenderEnderIgnis;
 import de.sanandrew.mods.enderstuffplus.client.render.entity.RenderEnderMiss;
 import de.sanandrew.mods.enderstuffplus.client.render.entity.RenderEnderNivis;
 import de.sanandrew.mods.enderstuffplus.client.render.entity.RenderEnderRay;
@@ -36,8 +37,9 @@ import de.sanandrew.mods.enderstuffplus.entity.item.EntityBait;
 import de.sanandrew.mods.enderstuffplus.entity.item.EntityPearlIgnis;
 import de.sanandrew.mods.enderstuffplus.entity.item.EntityPearlMiss;
 import de.sanandrew.mods.enderstuffplus.entity.item.EntityPearlNivis;
-import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderAvis;
+import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderAvisBase;
 import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderMiss;
+import de.sanandrew.mods.enderstuffplus.entity.living.monster.EntityEnderIgnis;
 import de.sanandrew.mods.enderstuffplus.entity.living.monster.EntityEnderNivis;
 import de.sanandrew.mods.enderstuffplus.entity.living.monster.EntityEnderRay;
 import de.sanandrew.mods.enderstuffplus.registry.CommonProxy;
@@ -58,10 +60,10 @@ public class ClientProxy
     @Override
     public void registerClientStuff() {
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderNivis.class, new RenderEnderNivis());
-//        RenderingRegistry.registerEntityRenderingHandler(EntityEnderIgnis.class, new RenderEnderIgnis());
+        RenderingRegistry.registerEntityRenderingHandler(EntityEnderIgnis.class, new RenderEnderIgnis());
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderMiss.class, new RenderEnderMiss());
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderRay.class, new RenderEnderRay());
-        RenderingRegistry.registerEntityRenderingHandler(EntityEnderAvis.class, new RenderEnderAvis());
+        RenderingRegistry.registerEntityRenderingHandler(EntityEnderAvisBase.class, new RenderEnderAvis());
         RenderingRegistry.registerEntityRenderingHandler(EntityRayball.class, new RenderRayball(1F));
         RenderingRegistry.registerEntityRenderingHandler(EntityAvisArrow.class, new RenderAvisArrow());
         RenderingRegistry.registerEntityRenderingHandler(EntityWeatherAltarFirework.class, new RenderWeatherAltarFirework());
@@ -96,18 +98,6 @@ public class ClientProxy
 //        TickRegistry.registerTickHandler(new TickHandlerPlayerClt(), Side.CLIENT);
 
         super.registerHandlers();
-    }
-
-    @Override
-    public void registerPackets() {
-        super.registerPackets();
-        //FIXME use new packet system!
-//        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "changeBiome", new PacketChangeBiome());
-//        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "showPetGui", new PacketShowPetGUI());
-//        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "fxPortal", new PacketFXSpawnPortalFX());
-//        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "fxTameAcc", new PacketFXSpawnTameAccept());
-//        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "fxTameRef", new PacketFXSpawnTameRefuse());
-//        PacketRegistry.registerPacketHandler(ESPModRegistry.MOD_ID, "fxRayball", new PacketFXSpawnRayballFX());
     }
 
     @Override

@@ -114,10 +114,12 @@ public class EntityEnderAvis
 
     @Override
     public boolean attackEntityFrom(DamageSource dmgSource, float dmg) {
+        // TODO only for tamed
         if( this.isRidden() && dmgSource != null && dmgSource.getEntity() instanceof EntityPlayer ) {
             return false;
         }
 
+        // TODO only for aggressive
         if( super.attackEntityFrom(dmgSource, dmg) ) {
             Entity hitter = dmgSource.getEntity();
 
@@ -133,17 +135,17 @@ public class EntityEnderAvis
         }
     }
 
-    @Override
+    @Override // TODO only for tamed
     public boolean canBeSteered() {
         return this.isRiddenDW();
     }
 
-    @Override
+    @Override // TODO only for tamed
     protected boolean canDespawn() {
         return !this.isTamed();
     }
 
-    public boolean canFly() {
+    public boolean canFly() { // TODO only for tamed
         return (this.dataWatcher.getWatchableObjectByte(15) & 64) == 64;
     }
 
@@ -168,7 +170,7 @@ public class EntityEnderAvis
     }
 
     @Override
-    public boolean getCanSpawnHere() {
+    public boolean getCanSpawnHere() { // TODO only aggressive
         return this.isValidLightLevel() && super.getCanSpawnHere();
     }
 
