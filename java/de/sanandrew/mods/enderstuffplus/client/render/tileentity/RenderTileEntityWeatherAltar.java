@@ -1,4 +1,4 @@
-package de.sanandrew.mods.enderstuffplus.client.render;
+package de.sanandrew.mods.enderstuffplus.client.render.tileentity;
 
 import org.lwjgl.opengl.GL11;
 
