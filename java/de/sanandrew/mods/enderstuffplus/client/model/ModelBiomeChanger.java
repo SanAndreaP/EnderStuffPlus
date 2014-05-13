@@ -41,6 +41,6 @@ public class ModelBiomeChanger
         this.floatyBox1.rotateAngleY = (float) (-angle / 180F * Math.PI);
         this.floatyBox2.rotateAngleY = (float) (-angle / 180F * Math.PI);
         this.floatyBox1.rotationPointY = (float) (13D + Math.sin(angle / 180 * Math.PI) * 0.5D);
-        this.floatyBox2.rotationPointY = (float) (13D - Math.sin(angle / 180 * Math.PI) * 0.5D);
+        this.floatyBox2.rotationPointY = (float) (13D - Math.sin(angle / 180 * Math.PI) * 0.5D) + 0.001F;
     }
 }

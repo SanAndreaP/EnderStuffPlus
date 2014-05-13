@@ -45,6 +45,9 @@ public class TileEntityBiomeChanger
     private float renderCurrAngle = 0F;
     private float renderCurrHeight = 0F;
     private long ticksExisted = 0;
+    
+    @SideOnly(Side.CLIENT)
+    public int currentRenderPass = 0;
 
     public TileEntityBiomeChanger() {}
 
@@ -576,6 +579,13 @@ public class TileEntityBiomeChanger
 
     public boolean isReplacingBlocks() {
         return this.isReplacingBlocks;
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean shouldRenderInPass(int pass) {
+        this.currentRenderPass = pass;
+        return pass <= 1;
     }
 
     public void setReplacingBlocks(boolean isReplacingBlocks) {
