@@ -18,8 +18,8 @@ import de.sanandrew.mods.enderstuffplus.registry.Textures;
 public class RenderEnderAvis
     extends RenderLiving
 {
-    private ModelEnderAvis avisModel;
-    private ModelEnderAvis coatModel;
+    private final ModelEnderAvis avisModel;
+    private final ModelEnderAvis coatModel;
 
     public RenderEnderAvis() {
         super(new ModelEnderAvis(), 0.5F);
@@ -46,6 +46,7 @@ public class RenderEnderAvis
 
 //        this.applyStats(avis);
 //        this.func_110827_b(avis, x, y, z, yaw, partTicks);
+        super.doRender(entity, x, y, z, yaw, partTicks);
     }
 
     @Override

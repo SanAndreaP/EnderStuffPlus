@@ -5,7 +5,7 @@ import java.util.Random;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -25,8 +25,8 @@ import de.sanandrew.mods.enderstuffplus.registry.Textures;
 public class RenderEnderNemesis
     extends RenderLiving
 {
-    private ModelEnderNemesis endermanModel;
-    private Random rnd;
+    private final ModelEnderNemesis endermanModel;
+    private final Random rnd;
 
     public RenderEnderNemesis() {
         super(new ModelEnderNemesis(), 0.7F);
@@ -36,7 +36,7 @@ public class RenderEnderNemesis
     }
 
     private void applyStats(EntityEnderNemesis nemesis) {
-        this.endermanModel.isCarrying = nemesis.getCarried() > 0;
+        this.endermanModel.isCarrying = nemesis.func_146080_bZ().getMaterial() != Material.air;
         this.endermanModel.isAttacking = nemesis.isScreaming();
     }
 
@@ -52,7 +52,7 @@ public class RenderEnderNemesis
         }
 
         this.applyStats((EntityEnderNemesis) entity);
-        this.func_110827_b(nemesis, x, y, z, yaw, partTicks);
+        super.doRender(nemesis, x, y, z, yaw, partTicks);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class RenderEnderNemesis
     private void renderCarrying(EntityEnderNemesis nemesis, float partTicks) {
         super.renderEquippedItems(nemesis, partTicks);
 
-        if( nemesis.getCarried() > 0 ) {
+        if( nemesis.func_146080_bZ().getMaterial() != Material.air ) {
             float scale = 0.5F;
 
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -81,7 +81,7 @@ public class RenderEnderNemesis
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
             this.bindTexture(TextureMap.locationBlocksTexture);
-            this.field_147909_c.renderBlockAsItem(Block.blocksList[nemesis.getCarried()], nemesis.getCarryingData(), 1.0F);
+            this.field_147909_c.renderBlockAsItem(nemesis.func_146080_bZ(), nemesis.getCarryingData(), 1.0F);
 
             GL11.glPopMatrix();
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);

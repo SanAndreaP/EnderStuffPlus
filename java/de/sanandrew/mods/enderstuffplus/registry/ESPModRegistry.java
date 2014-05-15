@@ -75,9 +75,6 @@ public class ESPModRegistry
             updMan =  new SAPUpdateManager("EnderStuffPlus", 1, 0, 0,
                                            "http://dl.dropbox.com/u/56920617/EnderStuffPMod_latest.txt",
                                            "http://www.minecraftforum.net/topic/936911-");
-            new SAPUpdateManager("EnderStuffPlus2", 0, 0, 0,
-                                 "http://dl.dropbox.com/u/56920617/EnderStuffPMod_latest.txt",
-                                 "http://www.minecraftforum.net/topic/936911-");
         } catch( NoClassDefFoundError ex ) {
             throw new NoManpackFoundException(ex);
         }
@@ -128,7 +125,6 @@ public class ESPModRegistry
         channelHandler.registerPacket(PacketFXCstPortal.class);
         channelHandler.registerPacket(PacketSetWeather.class);
 
-//        proxy.registerPackets();
         RegistryDungeonLoot.initialize();
         RegistryRaincoats.initialize();
         RegistryDuplicator.initialize();

@@ -31,8 +31,10 @@ public class EntityEnderNivis
 
     @Override
     public boolean attackEntityFrom(DamageSource dmgSource, float attackPts) {
-        if( dmgSource.equals(DamageSource.drown) && this.getAir() > -20 ) return false;
-        
+        if( dmgSource.equals(DamageSource.drown) && this.getAir() > -20 ) {
+            return false;
+        }
+
         if( dmgSource.isFireDamage() ) {
             attackPts *= 5;
         }
@@ -57,6 +59,7 @@ public class EntityEnderNivis
         if( lootingLvl > 0 ) {
             j += this.rand.nextInt(lootingLvl + 1);
         }
+
         this.entityDropItem(new ItemStack(ModItemRegistry.espPearls, j, 0), 0.0F);
     }
 

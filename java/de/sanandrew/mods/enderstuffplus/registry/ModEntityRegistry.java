@@ -23,8 +23,10 @@ import de.sanandrew.mods.enderstuffplus.entity.item.EntityItemTantal;
 import de.sanandrew.mods.enderstuffplus.entity.item.EntityPearlIgnis;
 import de.sanandrew.mods.enderstuffplus.entity.item.EntityPearlMiss;
 import de.sanandrew.mods.enderstuffplus.entity.item.EntityPearlNivis;
+import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderAvisBase;
 import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderMiss;
 import de.sanandrew.mods.enderstuffplus.entity.living.monster.EntityEnderIgnis;
+import de.sanandrew.mods.enderstuffplus.entity.living.monster.EntityEnderNemesis;
 import de.sanandrew.mods.enderstuffplus.entity.living.monster.EntityEnderNivis;
 import de.sanandrew.mods.enderstuffplus.entity.living.monster.EntityEnderRay;
 
@@ -43,10 +45,10 @@ public final class ModEntityRegistry
         ESPModRegistry.proxy.registerEntityWithEgg(EntityEnderIgnis.class, "EnderIgnis", entityID++, ESPModRegistry.instance, 80, 3, true, 0xFF0000, 0xFFFF00);
         ESPModRegistry.proxy.registerEntityWithEgg(EntityEnderRay.class, "EnderRay", entityID++, ESPModRegistry.instance, 80, 3, true, 0x222222, 0x8800AA);
 //        ESPModRegistry.proxy.registerEntityWithEgg(EntityEnderMiss.class, "EnderMiss", entityID++, ESPModRegistry.instance, 80, 3, true, 0xffbbdd, 0x303030);
-//        ESPModRegistry.proxy.registerEntityWithEgg(EntityEnderAvis.class, "EnderAvis", entityID++, ESPModRegistry.instance, 80, 3, true, 0x606060, 0xFF00FF);
+        ESPModRegistry.proxy.registerEntityWithEgg(EntityEnderAvisBase.class, "EnderAvis", entityID++, ESPModRegistry.instance, 80, 3, true, 0x606060, 0xFF00FF);
         ESPModRegistry.proxy.registerEntity       (EntityRayball.class, "EnderRayBall", entityID++, ESPModRegistry.instance, 64, 1, false);
         ESPModRegistry.proxy.registerEntity       (EntityWeatherAltarFirework.class, "WAltarFirework", entityID++, ESPModRegistry.instance, 64, 10, true);
-//        ESPModRegistry.proxy.registerEntityWithEgg(EntityEnderNemesis.class, "EnderNemesis", entityID++, ESPModRegistry.instance, 80, 3, true, 0x606060, 0x3A3AAE);
+        ESPModRegistry.proxy.registerEntityWithEgg(EntityEnderNemesis.class, "EnderNemesis", entityID++, ESPModRegistry.instance, 80, 3, true, 0x606060, 0x3A3AAE);
         ESPModRegistry.proxy.registerEntity       (EntityPearlNivis.class, "EnderNivisPearl", entityID++, ESPModRegistry.instance, 64, 10, true);
         ESPModRegistry.proxy.registerEntity       (EntityPearlIgnis.class, "EnderIgnisPearl", entityID++, ESPModRegistry.instance, 64, 10, true);
         ESPModRegistry.proxy.registerEntity       (EntityPearlMiss.class, "EnderMissPearl", entityID++, ESPModRegistry.instance, 64, 10, true);
