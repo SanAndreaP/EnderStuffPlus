@@ -1,0 +1,48 @@
+package de.sanandrew.mods.enderstuffp.item.tool;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.mods.enderstuffp.util.ConfigRegistry;
+import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
+import de.sanandrew.mods.enderstuffp.util.RegistryItems;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
+import net.minecraft.util.IIcon;
+
+public class ItemNiobSword
+    extends ItemSword
+{
+    @SideOnly(Side.CLIENT)
+    private IIcon glowMap;
+
+    public ItemNiobSword(ToolMaterial toolMaterial) {
+        super(toolMaterial);
+        this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":niobSword");
+        this.setCreativeTab(EnderStuffPlus.ESP_TAB);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(ItemStack stack, int pass) {
+        return pass == 1 ? this.glowMap : super.getIcon(stack, pass);
+    }
+
+    @Override
+    public boolean getIsRepairable(ItemStack brokenItem, ItemStack repairItem) {
+        return repairItem.getItem() == RegistryItems.endIngot || super.getIsRepairable(brokenItem, repairItem);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconRegister) {
+        this.itemIcon = iconRegister.registerIcon(EnderStuffPlus.MOD_ID + ":niobSword");
+        this.glowMap = iconRegister.registerIcon(EnderStuffPlus.MOD_ID + ":niobSwordGlow" + (ConfigRegistry.useNiobHDGlow ? "HD" : ""));
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean requiresMultipleRenderPasses() {
+        return true;
+    }
+}

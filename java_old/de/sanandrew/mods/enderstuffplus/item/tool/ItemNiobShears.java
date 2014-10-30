@@ -51,7 +51,7 @@ public class ItemNiobShears
 
     @Override
     public int getItemEnchantability() {
-        return ModItemRegistry.TOOL_NIOBIUM.getEnchantability();
+        return ModItemRegistry.toolNiobium.getEnchantability();
     }
 
     private List<Block> getShearable(ItemStack stack, World worldObj, int x, int y, int z) {

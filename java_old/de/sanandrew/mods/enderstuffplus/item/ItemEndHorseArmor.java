@@ -1,12 +1,11 @@
 package de.sanandrew.mods.enderstuffplus.item;
 
+import de.sanandrew.core.manpack.item.AItemHorseArmor;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.item.ItemStack;
 
-import de.sanandrew.core.manpack.util.ItemHorseArmor;
-
 public class ItemEndHorseArmor
-    extends ItemHorseArmor
+    extends AItemHorseArmor
 {
     public ItemEndHorseArmor() {
         super();

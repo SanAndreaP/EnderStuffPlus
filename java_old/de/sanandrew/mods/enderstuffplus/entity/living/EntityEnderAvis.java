@@ -1,5 +1,6 @@
 package de.sanandrew.mods.enderstuffplus.entity.living;
 
+import de.sanandrew.core.manpack.util.client.SAPClientUtils;
 import ibxm.Player;
 
 import java.util.Iterator;
@@ -22,10 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.*;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
@@ -40,6 +38,7 @@ import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.raincoat.RegistryRaincoats;
 import de.sanandrew.mods.enderstuffplus.registry.raincoat.RegistryRaincoats.CoatBaseEntry;
 import de.sanandrew.mods.enderstuffplus.registry.raincoat.RegistryRaincoats.CoatColorEntry;
+import tv.twitch.chat.IChatCallbacks;
 
 public class EntityEnderAvis
     extends EntityCreature
@@ -383,21 +382,21 @@ public class EntityEnderAvis
         }
 
         if( this.isTamed() && !this.worldObj.isRemote ) {
-            player.addChatMessage(String.format("\247d[%s]\247f "
+            player.addChatMessage(new ChatComponentText(String.format("\247d[%s]\247f "
                                                         + StatCollector.translateToLocal("enderstuffplus.chat.name"),
                                                 StatCollector.translateToLocal("entity.EnderAvis.name"),
                                                 this.getName().isEmpty() ? EnumChatFormatting.OBFUSCATED + "RANDOM"
-                                                                           + EnumChatFormatting.RESET : this.getName()));
+                                                                           + EnumChatFormatting.RESET : this.getName())));
             if( this.ownerName.equals(player.getCommandSenderName()) ) {
-                int percHealth = (int) (this.getHealth() / this.getMaxHealth() * 100F);
-                int percCondit = (int) (this.currFlightCondition * 10F);
-                player.addChatMessage("  "
+                int percHealth = (int) (this.getHealth() / this.getMaxHealth() * 100.0F);
+                int percCondit = (int) (this.currFlightCondition * 10.0F);
+                player.addChatMessage(new ChatComponentText("  "
                                       + String.format(StatCollector.translateToLocal("enderstuffplus.chat.avisFriend"),
-                                                      percHealth, percCondit));
+                                                      percHealth, percCondit)));
             } else {
-                player.addChatMessage("  "
+                player.addChatMessage(new ChatComponentText("  "
                                       + String.format(StatCollector.translateToLocal("enderstuffplus.chat.stranger"),
-                                                      this.ownerName));
+                                                      this.ownerName)));
             }
             return true;
         }
@@ -810,19 +809,19 @@ public class EntityEnderAvis
         if( stack.hasTagCompound() ) {
             NBTTagCompound nbt = stack.getTagCompound();
             infos.add(String.format("%s: \2473%s",
-                                    SAPUtils.getTranslated("enderstuffplus.petegg.health"),
+                                    SAPClientUtils.translate("enderstuffplus.petegg.health"),
                                     (int) (nbt.getFloat("health") / 40F * 100F) + "%"));
             infos.add(String.format("%s: \2473%s",
-                                    SAPUtils.getTranslated("enderstuffplus.petegg.condition"),
+                                    SAPClientUtils.translate("enderstuffplus.petegg.condition"),
                                     (int) (nbt.getFloat("condition") * 10F) + "%"));
             infos.add(String.format("%s: \2473%s",
-                                    SAPUtils.getTranslated("enderstuffplus.petegg.saddle"),
-                                    nbt.getBoolean("saddled") ? SAPUtils.getTranslated("enderstuffplus.petegg.true")
-                                                              : SAPUtils.getTranslated("enderstuffplus.petegg.false")));
+                                    SAPClientUtils.translate("enderstuffplus.petegg.saddle"),
+                                    nbt.getBoolean("saddled") ? SAPClientUtils.translate("enderstuffplus.petegg.true")
+                                                              : SAPClientUtils.translate("enderstuffplus.petegg.false")));
             infos.add(String.format("%s: \2473%s",
-                                    SAPUtils.getTranslated("enderstuffplus.petegg.immuneToH2O"),
-                                    nbt.hasKey("coat") ? SAPUtils.getTranslated("enderstuffplus.petegg.true")
-                                                       : SAPUtils.getTranslated("enderstuffplus.petegg.false")));
+                                    SAPClientUtils.translate("enderstuffplus.petegg.immuneToH2O"),
+                                    nbt.hasKey("coat") ? SAPClientUtils.translate("enderstuffplus.petegg.true")
+                                                       : SAPClientUtils.translate("enderstuffplus.petegg.false")));
         }
     }
 }

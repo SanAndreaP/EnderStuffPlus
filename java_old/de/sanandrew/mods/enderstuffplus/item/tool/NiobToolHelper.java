@@ -1,7 +1,11 @@
 package de.sanandrew.mods.enderstuffplus.item.tool;
 
-import java.util.ArrayList;
-
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import de.sanandrew.core.manpack.mod.packet.IPacket;
+import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.mods.enderstuffplus.packet.PacketFXCstPortal;
+import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
+import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,18 +14,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.stats.StatList;
 
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-
-import de.sanandrew.core.manpack.mod.packet.IPacket;
-import de.sanandrew.core.manpack.util.SAPUtils;
-import de.sanandrew.mods.enderstuffplus.packet.PacketFXCstPortal;
-import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
-import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
+import java.util.ArrayList;
 
 public final class NiobToolHelper
 {
-    public static boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player, Block[] toolEffectives,
-                                                  boolean shouldDropNugget) {
+    public static boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player, Block[] toolEffectives, boolean shouldDropNugget) {
         if( stack == null || player.worldObj.isRemote || player.capabilities.isCreativeMode ) {
             return false;
         }
@@ -38,9 +35,8 @@ public final class NiobToolHelper
 
         int fortune = EnchantmentHelper.getFortuneModifier(player);
 
-        if( shouldDropNugget && SAPUtils.RANDOM.nextInt(50) == 0 ) {
-            ItemStack nugget = new ItemStack(ModItemRegistry.endNugget,
-                                             SAPUtils.RANDOM.nextInt(EnchantmentHelper.getFortuneModifier(player) + 1) + 1);
+        if( shouldDropNugget && SAPUtils.RNG.nextInt(50) == 0 ) {
+            ItemStack nugget = new ItemStack(ModItemRegistry.endNugget, SAPUtils.RNG.nextInt(EnchantmentHelper.getFortuneModifier(player) + 1) + 1);
             nugget = EnchantmentHelper.getEnchantmentLevel(ESPModRegistry.enderChestTel.effectId, stack) > 0
                         ? SAPUtils.addItemStackToInventory(nugget, player.getInventoryEnderChest())
                         : nugget;

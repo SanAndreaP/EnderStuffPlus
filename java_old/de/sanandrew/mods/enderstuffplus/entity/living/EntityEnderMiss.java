@@ -2,8 +2,10 @@ package de.sanandrew.mods.enderstuffplus.entity.living;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import com.google.common.collect.Maps;
 import de.sanandrew.core.manpack.mod.packet.PacketRegistry;
 import de.sanandrew.core.manpack.util.SAPUtils;
 
@@ -14,8 +16,12 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeInstance;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemFood;
@@ -23,11 +29,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSourceIndirect;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
@@ -50,7 +52,7 @@ public class EntityEnderMiss
     extends EntityCreature
     implements IEnderPet, IEnderCreature
 {
-    private static boolean[] carriableBlocks = new boolean[Block.blocksList.length];
+    private static Map<Block, Boolean> carriableBlocks = Maps.newHashMap();
     private static final AttributeModifier SPEED_TAMED =
             (new AttributeModifier(UUID.fromString("020E0DFB-87AE-4653-9556-831010E291A0"),
                                    "Tamerfollowing speed boost", 6.199999809265137D, 0)).setSaved(false);
@@ -62,24 +64,24 @@ public class EntityEnderMiss
      * entire players list when getting the owning player
      **/
     private EntityPlayer ownerInst = null;
-    private String ownerName = "";
+    private UUID ownerName = null;
     private int teleportTimer = 0;
 
     static {
-        carriableBlocks[Block.grass.blockID] = true;
-        carriableBlocks[Block.dirt.blockID] = true;
-        carriableBlocks[Block.sand.blockID] = true;
-        carriableBlocks[Block.gravel.blockID] = true;
-        carriableBlocks[Block.plantYellow.blockID] = true;
-        carriableBlocks[Block.plantRed.blockID] = true;
-        carriableBlocks[Block.mushroomBrown.blockID] = true;
-        carriableBlocks[Block.mushroomRed.blockID] = true;
-        carriableBlocks[Block.tnt.blockID] = true;
-        carriableBlocks[Block.cactus.blockID] = true;
-        carriableBlocks[Block.blockClay.blockID] = true;
-        carriableBlocks[Block.pumpkin.blockID] = true;
-        carriableBlocks[Block.melon.blockID] = true;
-        carriableBlocks[Block.mycelium.blockID] = true;
+        carriableBlocks.put(Blocks.grass, true);
+        carriableBlocks.put(Blocks.dirt, true);
+        carriableBlocks.put(Blocks.sand, true);
+        carriableBlocks.put(Blocks.gravel, true);
+        carriableBlocks.put(Blocks.yellow_flower, true);
+        carriableBlocks.put(Blocks.red_flower, true);
+        carriableBlocks.put(Blocks.brown_mushroom, true);
+        carriableBlocks.put(Blocks.red_mushroom, true);
+        carriableBlocks.put(Blocks.tnt, true);
+        carriableBlocks.put(Blocks.cactus, true);
+        carriableBlocks.put(Blocks.clay, true);
+        carriableBlocks.put(Blocks.pumpkin, true);
+        carriableBlocks.put(Blocks.melon_block, true);
+        carriableBlocks.put(Blocks.mycelium, true);
     }
 
     public EntityEnderMiss(World world) {
@@ -93,8 +95,8 @@ public class EntityEnderMiss
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(40.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.3D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.3D);
     }
 
     @Override
@@ -112,7 +114,7 @@ public class EntityEnderMiss
             this.setSitting(false);
         }
 
-        if( this.isRidden() && dmgSource != null && dmgSource.getEntity() instanceof EntityPlayer ) {
+        if( this.isRidden() && dmgSource != null && dmgSource.getEntity() instanceof EntityPlayer || dmgSource == null ) {
             return false;
         }
 
@@ -124,7 +126,7 @@ public class EntityEnderMiss
             }
 
             return false;
-        } else if( this.isTamed() && dmgSource.equals(DamageSource.fall) && !this.canGetFallDmg() ) {
+        } else if( this.isTamed() && dmgSource == DamageSource.fall && !this.canGetFallDmg() ) {
             return false;
         } else {
             if( dmgSource.getEntity() != null && dmgSource.getEntity() instanceof EntityPlayer && !this.isTamed() ) {
@@ -132,13 +134,14 @@ public class EntityEnderMiss
                         this.worldObj.getEntitiesWithinAABBExcludingEntity(this, (this.boundingBox.copy()).expand(16D, 16D, 16D));
 
                 for( Entity entity : entities ) {
-                    if( entity != null && (entity instanceof EntityEnderman) ) {
+                    if( entity instanceof EntityEnderman ) {
                         ((EntityEnderman) entity).setTarget(dmgSource.getEntity());
                         ((EntityEnderman) entity).setScreaming(true);
-                    } else if( entity != null && (entity instanceof EntityEndermanESP) ) {
-                        ((EntityEndermanESP) entity).setTarget(dmgSource.getEntity());
-                        ((EntityEndermanESP) entity).setScreaming(true);
                     }
+//                    else if( entity instanceof EntityEndermanESP ) {
+//                        ((EntityEndermanESP) entity).setTarget(dmgSource.getEntity());
+//                        ((EntityEndermanESP) entity).setScreaming(true);
+//                    }
                 }
             }
 
@@ -162,9 +165,9 @@ public class EntityEnderMiss
 
     @Override
     protected void dropFewItems(boolean hitByPlyr, int lootLvl) {
-        int itemId = this.getDropItemId();
+        Item itemId = this.getDropItem();
 
-        if( itemId > 0 && !this.isTamed() ) {
+        if( itemId != null && !this.isTamed() ) {
             int k = this.rand.nextInt(2 + lootLvl);
 
             for( int l = 0; l < k; ++l ) {
@@ -176,11 +179,11 @@ public class EntityEnderMiss
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.addObject(16, new Byte((byte) 0));
-        this.dataWatcher.addObject(17, new Byte((byte) 0));
-        this.dataWatcher.addObject(18, new Byte((byte) this.rand.nextInt(ItemDye.dyeColors.length)));
-        this.dataWatcher.addObject(21, new Byte((byte) 0));
-        this.dataWatcher.addObject(22, new ItemStack(Item.shovelIron));
+        this.dataWatcher.addObject(16, (byte) 0);
+        this.dataWatcher.addObject(17, (byte) 0);
+        this.dataWatcher.addObject(18, (byte) this.rand.nextInt(ItemDye.field_150922_c.length));
+        this.dataWatcher.addObject(21, (byte) 0);
+        this.dataWatcher.addObject(22, new ItemStack(Blocks.air));
 
         this.setSpecial(this.rand.nextInt(16) == 0);
         this.setCanGetFallDmg(true);
@@ -190,8 +193,8 @@ public class EntityEnderMiss
             int rndBase = this.rand.nextInt(RegistryRaincoats.BASE_LIST.size());
             int rndColor = this.rand.nextInt(RegistryRaincoats.COLOR_LIST.size());
 
-            nbt.setString("base", RegistryRaincoats.BASE_LIST.keySet().toArray(new String[0])[rndBase]);
-            nbt.setString("color", RegistryRaincoats.COLOR_LIST.keySet().toArray(new String[0])[rndColor]);
+            nbt.setString("base", SAPUtils.getArrayFromCollection(RegistryRaincoats.BASE_LIST.keySet(), String.class)[rndBase]);
+            nbt.setString("color", SAPUtils.getArrayFromCollection(RegistryRaincoats.COLOR_LIST.keySet(), String.class)[rndColor]);
             ItemStack stack = new ItemStack(ModItemRegistry.rainCoat, 1, 0);
             stack.setTagCompound(nbt);
             this.setCoat(stack);
@@ -213,7 +216,7 @@ public class EntityEnderMiss
     @Override
     public float getAIMoveSpeed() {
         return this.isSitting() ? 0.0F
-                                : (this.isRiddenDW() ? 0.2F + (this.getCoatBase().equals(ESPModRegistry.MOD_ID + "_000") ? 0.05F : 0F)
+                                : (this.isRiddenDW() ? 0.2F + (this.getCoatBase().name.equals(ESPModRegistry.MOD_ID + "_000") ? 0.05F : 0.0F)
                                                      : 0.1F);
     }
 
@@ -223,7 +226,7 @@ public class EntityEnderMiss
     }
 
     public float[] getBowColorArr() {
-        int color = ItemDye.dyeColors[this.getBowColor()];
+        int color = ItemDye.field_150922_c[this.getBowColor()];
 
         float red = (color >> 16 & 255) / 255.0F;
         float green = (color >> 8 & 255) / 255.0F;
@@ -264,7 +267,7 @@ public class EntityEnderMiss
             String base = coat.getTagCompound().getString("base");
             String color = coat.getTagCompound().getString("color");
 
-            return !this.getCoatColor().equals(color) || !this.getCoatBase().equals(base);
+            return !this.getCoatColor().name.equals(color) || !this.getCoatBase().name.equals(base);
         }
 
         return false;
@@ -286,8 +289,8 @@ public class EntityEnderMiss
     }
 
     @Override
-    protected int getDropItemId() {
-        return ModItemRegistry.espPearls.itemID;
+    protected Item getDropItem() {
+        return ModItemRegistry.espPearls;
     }
 
     @Override
@@ -302,7 +305,7 @@ public class EntityEnderMiss
 
     @Override
     public ItemStack getHeldItem() {
-        return this.isTamed() ? new ItemStack(Block.plantYellow) : new ItemStack(Block.plantRed);
+        return this.isTamed() ? new ItemStack(Blocks.yellow_flower) : new ItemStack(Blocks.red_flower);
     }
 
     @Override
@@ -328,15 +331,11 @@ public class EntityEnderMiss
     @SuppressWarnings("unchecked")
     private EntityPlayer getOwningPlayerInRng(float distance) {
         if( !this.worldObj.isRemote && this.isTamed() ) {
-            if( this.ownerInst == null || !this.ownerInst.username.equals(this.ownerName) ) {
-                Iterator<EntityPlayer> players = this.worldObj.playerEntities.iterator();
-                while( players.hasNext() ) {
-                    EntityPlayer currPlayer = players.next();
-
-                    if( this.ownerName.equals(currPlayer.username) ) {
+            if( this.ownerInst == null || !this.ownerInst.getGameProfile().getId().equals(this.ownerName) ) {
+                for( EntityPlayer currPlayer : (Iterable<EntityPlayer>) this.worldObj.playerEntities ) {
+                    if( this.ownerName.equals(currPlayer.getGameProfile().getId()) ) {
                         if( currPlayer.isDead ) {
                             this.ownerInst = null;
-
                             return null;
                         }
 
@@ -372,12 +371,10 @@ public class EntityEnderMiss
         if( player.getCurrentEquippedItem() != null ) {
             ItemStack playerItem = player.getCurrentEquippedItem();
 
-            if( SAPUtils.areItemInstEqual(playerItem, Block.plantYellow) && !this.worldObj.isRemote
-                && (!this.isTamed() || this.ownerName.isEmpty()) )
-            {
+            if( SAPUtils.areItemInstEqual(playerItem, Blocks.yellow_flower) && !this.worldObj.isRemote && (!this.isTamed() || this.ownerName == null) ) {
                 if( this.rand.nextInt(10) == 0 ) {
                     this.setTamed(true);
-                    this.ownerName = player.username;
+                    this.ownerName = player.getGameProfile().getId();
 
                     if( !this.worldObj.isRemote ) {
                         ESPModRegistry.sendPacketAllRng("fxTameAcc", this.posX, this.posY, this.posZ, 128.0D, this.dimension,
@@ -395,7 +392,7 @@ public class EntityEnderMiss
                     playerItem.stackSize--;
                     return true;
                 }
-            } else if( !this.worldObj.isRemote && this.isTamed() && this.ownerName.equals(player.username) && !this.isRidden() ) {
+            } else if( !this.worldObj.isRemote && this.isTamed() && this.ownerName.equals(player.getGameProfile().getId()) && !this.isRidden() ) {
                 if( this.isCoatApplicable(playerItem) ) {
                     if( this.hasCoat() && !player.capabilities.isCreativeMode ) {
                         player.inventory.addItemStackToInventory(this.getCoat().copy());
@@ -411,14 +408,12 @@ public class EntityEnderMiss
                     this.setCanGetFallDmg(false);
                     playerItem.stackSize--;
                     return true;
-                } else if( SAPUtils.areItemInstEqual(playerItem, Item.dyePowder)
-                        && playerItem.getItemDamage() != this.getBowColor() )
-                {
+                } else if( SAPUtils.areItemInstEqual(playerItem, Items.dye) && playerItem.getItemDamage() != this.getBowColor() ) {
                     this.setBowColor(playerItem.getItemDamage());
                     playerItem.stackSize--;
                     return true;
                 } else if( playerItem.getItem() instanceof ItemFood && this.getHealth() < this.getMaxHealth() ) {
-                    this.heal(((ItemFood) playerItem.getItem()).getHealAmount());
+                    this.heal(((ItemFood) playerItem.getItem()).func_150905_g(playerItem));
 
                     if( !this.worldObj.isRemote ) {
                         ESPModRegistry.sendPacketAllRng("fxTameAcc", this.posX, this.posY, this.posZ, 128.0D,
@@ -436,16 +431,16 @@ public class EntityEnderMiss
         }
 
         if( this.isTamed() && !this.worldObj.isRemote ) {
-            String s1 = "\247d[%s]\247f " + SAPUtils.getTranslated("enderstuffplus.chat.name");
+            String s1 = "\247d[%s]\247f " + StatCollector.translateToLocal("enderstuffplus.chat.name");
             String s2 = this.getName().isEmpty() ? EnumChatFormatting.OBFUSCATED + "RANDOM" + EnumChatFormatting.RESET : this.getName();
-            player.addChatMessage(SAPUtils.getTranslated(s1, SAPUtils.getTranslated("entity.EnderMiss.name"), s2));
+            player.addChatMessage(new ChatComponentText(StatCollector.translateToLocalFormatted(s1, StatCollector.translateToLocal("entity.EnderMiss.name"), s2)));
 
-            if( this.ownerName.equals(player.username) ) {
-                int percHealth = (int) (this.getHealth() / this.getMaxHealth() * 100F);
+            if( this.ownerName.equals(player.getGameProfile().getId()) ) {
+                int percHealth = (int) (this.getHealth() / this.getMaxHealth() * 100.0F);
 
-                player.addChatMessage("  " + SAPUtils.getTranslated("enderstuffplus.chat.missFriend", percHealth));
+                player.addChatMessage(new ChatComponentText("  " + StatCollector.translateToLocalFormatted("enderstuffplus.chat.missFriend", percHealth)));
             } else {
-                player.addChatMessage("  " + SAPUtils.getTranslated("enderstuffplus.chat.stranger", this.ownerName));
+                player.addChatMessage(new ChatComponentText("  " + StatCollector.translateToLocalFormatted("enderstuffplus.chat.stranger", this.ownerName)));
             }
 
             return true;
@@ -470,7 +465,7 @@ public class EntityEnderMiss
 
     @Override
     public boolean isPotionApplicable(PotionEffect effect) {
-        return !this.getCoatBase().equals(ESPModRegistry.MOD_ID + "_001") || !Potion.potionTypes[effect.getPotionID()].isBadEffect();
+        return !this.getCoatBase().name.equals(ESPModRegistry.MOD_ID + "_001") || !Potion.potionTypes[effect.getPotionID()].isBadEffect();
     }
 
     public boolean isRidden() {
@@ -533,7 +528,7 @@ public class EntityEnderMiss
                 this.motionY += (this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F;
             }
 
-            if( this.getCoatBase().equals(ESPModRegistry.MOD_ID + "_003") ) {
+            if( this.getCoatBase().name.equals(ESPModRegistry.MOD_ID + "_003") ) {
                 this.motionY += 0.1F;
             }
 
@@ -567,7 +562,7 @@ public class EntityEnderMiss
     }
 
     public boolean needFood() {
-        return this.getHealth() < (this.getMaxHealth() / 100F) * 20F;
+        return this.getHealth() < (this.getMaxHealth() / 100.0F) * 20.0F;
     }
 
     @Override
@@ -580,9 +575,9 @@ public class EntityEnderMiss
         if( !this.worldObj.isRemote ) {
             if( this.prevCoatBase != this.getCoat() ) {
                 if( this.hasCoat() && this.getCoat().getTagCompound().getString("base").equals(ESPModRegistry.MOD_ID + "_004") ) {
-                    this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(60.0D);
+                    this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(60.0D);
                 } else {
-                    this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(40.0D);
+                    this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
                     this.setHealth(Math.min(this.getHealth(), this.getMaxHealth()));
                 }
 
@@ -606,28 +601,24 @@ public class EntityEnderMiss
             this.height = 2.9F;
         }
 
-        EntityPlayer ep = this.getOwningPlayerInRng(25F);
+        EntityPlayer ep = this.getOwningPlayerInRng(25.0F);
 
-        AttributeInstance attributeinstance = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+        IAttributeInstance attributeinstance = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
 
         attributeinstance.removeModifier(SPEED_TAMED);
 
-        if( this.isTamed() && !this.isSitting() && !this.isRidden() && ep != null && this.getDistanceToEntity(ep) > 2F
-            && this.isFollowing() )
-        {
-            this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 24F, false, false, !this.isImmuneToWater(),
-                                                                     !this.isImmuneToWater()));
+        if( this.isTamed() && !this.isSitting() && !this.isRidden() && ep != null && this.getDistanceToEntity(ep) > 2.0F && this.isFollowing() ) {
+            this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 24.0F, false, false, !this.isImmuneToWater(), !this.isImmuneToWater()));
             attributeinstance.applyModifier(SPEED_TAMED);
 
-            if( this.getDistanceToEntity(ep) > 10F && this.teleportTimer <= 0 && Math.abs(ep.posY - this.posY) < 6F ) {
+            if( this.getDistanceToEntity(ep) > 10.0F && this.teleportTimer <= 0 && Math.abs(ep.posY - this.posY) < 6.0F ) {
                 this.teleportToEntity(ep);
             }
         } else if( this.isTamed() && !this.isRidden() && ep != null && ep.getCurrentEquippedItem() != null
-                   && ep.getCurrentEquippedItem().getItem() instanceof ItemFood && this.getDistanceToEntity(ep) > 2F
-                   && this.needFood() && !this.isSitting() ) {
+                   && ep.getCurrentEquippedItem().getItem() instanceof ItemFood && this.getDistanceToEntity(ep) > 2.0F && this.needFood() && !this.isSitting() )
+        {
             attributeinstance.applyModifier(SPEED_TAMED);
-            this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 8F, false, false, !this.isImmuneToWater(),
-                                                                     !this.isImmuneToWater()));
+            this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 8.0F, false, false, !this.isImmuneToWater(), !this.isImmuneToWater()));
         }
 
         if( this.isWet() && !this.isImmuneToWater() ) {
@@ -637,30 +628,31 @@ public class EntityEnderMiss
         this.entityToAttack = null;
 
         if( !this.worldObj.isRemote && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing") && ConfigRegistry.griefing ) {
-            int x, y, z, blockID;
+            int x, y, z;
+            Block block;
 
             if( this.getCarried() == 0 && !this.isTamed() ) {
                 if( this.rand.nextInt(20) == 0 ) {
                     x = MathHelper.floor_double(this.posX - 2.0D + this.rand.nextDouble() * 4.0D);
                     y = MathHelper.floor_double(this.posY + this.rand.nextDouble() * 3.0D);
                     z = MathHelper.floor_double(this.posZ - 2.0D + this.rand.nextDouble() * 4.0D);
-                    blockID = this.worldObj.getBlockId(x, y, z);
+                    block = this.worldObj.getBlock(x, y, z);
 
-                    if( carriableBlocks[blockID] ) {
-                        this.setCarried(this.worldObj.getBlockId(x, y, z));
+                    if( carriableBlocks.containsKey(block) ) {
+                        this.setCarried(this.worldObj.getBlock(x, y, z));
                         this.setCarryingData(this.worldObj.getBlockMetadata(x, y, z));
-                        this.worldObj.setBlock(x, y, z, 0);
+                        this.worldObj.setBlock(x, y, z, Blocks.air);
                     }
                 }
             } else if( (this.rand.nextInt(2000) == 0 || this.isTamed()) && this.getCarried() != 0 ) {
                 x = MathHelper.floor_double(this.posX - 1.0D + this.rand.nextDouble() * 2.0D);
                 y = MathHelper.floor_double(this.posY + this.rand.nextDouble() * 2.0D);
                 z = MathHelper.floor_double(this.posZ - 1.0D + this.rand.nextDouble() * 2.0D);
-                blockID = this.worldObj.getBlockId(x, y, z);
+                block = this.worldObj.getBlock(x, y, z);
 
-                int belowBID = this.worldObj.getBlockId(x, y - 1, z);
+                Block belowBID = this.worldObj.getBlock(x, y - 1, z);
 
-                if( blockID == 0 && belowBID > 0 && Block.blocksList[belowBID].renderAsNormalBlock() ) {
+                if( block == Blocks.air && belowBID != Blocks.air && block.renderAsNormalBlock() ) {
                     this.worldObj.setBlock(x, y, z, this.getCarried(), this.getCarryingData(), 3);
                     this.setCarried(0);
                 }

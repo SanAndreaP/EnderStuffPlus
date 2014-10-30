@@ -1,16 +1,15 @@
-package de.sanandrew.mods.enderstuffplus.item;
-
-import java.util.HashMap;
-import java.util.List;
+package de.sanandrew.mods.enderstuffp.item;
 
 import com.google.common.collect.Maps;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.core.manpack.util.client.SAPClientUtils;
+import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -19,14 +18,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import de.sanandrew.core.manpack.util.SAPUtils;
-import de.sanandrew.mods.enderstuffplus.entity.living.IEnderPet;
+import java.util.HashMap;
+import java.util.List;
 //import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderAvis;
 
 public class ItemEnderPetEgg
@@ -35,7 +30,8 @@ public class ItemEnderPetEgg
     private static final HashMap<Integer, Object[]> PETS = Maps.newHashMap();
 
     public ItemEnderPetEgg() {
-        super();
+        this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":enderPetEgg");
+        this.setCreativeTab(EnderStuffPlus.ESP_TAB);
         this.setHasSubtypes(true);
         this.setMaxStackSize(1);
     }
@@ -52,17 +48,18 @@ public class ItemEnderPetEgg
             Entity entity = EntityList.createEntityByName(entityName, world);
             NBTTagCompound nbt = stack.getTagCompound();
 
-            if( entity instanceof IEnderPet && nbt != null && nbt.hasKey("petID") ) {
-                IEnderPet pet = (IEnderPet) entity;
-
-                entity.setLocationAndAngles(posX, posY, posZ, world.rand.nextFloat() * 360.0F, 0.0F);
-                pet.readPetFromNBT(nbt);
-                pet.setTamed(true);
-                pet.setOwnerName(playerName);
-                world.spawnEntityInWorld(entity);
-                ((EntityLiving) pet).playLivingSound();
-
-            }
+            // todo reimplement entity spawning
+//            if( entity instanceof IEnderPet && nbt != null && nbt.hasKey("petID") ) {
+//                IEnderPet pet = (IEnderPet) entity;
+//
+//                entity.setLocationAndAngles(posX, posY, posZ, world.rand.nextFloat() * 360.0F, 0.0F);
+//                pet.readPetFromNBT(nbt);
+//                pet.setTamed(true);
+//                pet.setOwnerName(playerName);
+//                world.spawnEntityInWorld(entity);
+//                ((EntityLiving) pet).playLivingSound();
+//
+//            }
 
             return entity != null;
         }
@@ -86,10 +83,10 @@ public class ItemEnderPetEgg
         return (Integer) (PETS.containsKey(par1) ? (pass == 0 ? PETS.get(par1)[1] : PETS.get(par1)[2]) : 0xFFFFFF);
     }
 
-    private String getEnderPetName(ItemStack stack) {
+    private static String getEnderPetName(ItemStack stack) {
         int petID = stack.getItemDamage();
         if( !PETS.containsKey(petID) ) {
-            petID = 0;
+            return "";
         }
 
         return (String) PETS.get(petID)[0];
@@ -104,11 +101,11 @@ public class ItemEnderPetEgg
     @Override
     @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
-        String itemName = ("" + SAPUtils.getTranslated(this.getUnlocalizedName() + ".name")).trim();
-        String petName = this.getEnderPetName(stack);
+        String itemName = (SAPClientUtils.translate(this.getUnlocalizedName() + ".name")).trim();
+        String petName = getEnderPetName(stack);
 
         if( petName != null ) {
-            itemName = itemName + " " + StatCollector.translateToLocal("entity." + petName + ".name");
+            itemName = itemName + ' ' + SAPClientUtils.translate("entity." + petName + ".name");
         }
 
         return itemName;
@@ -165,7 +162,7 @@ public class ItemEnderPetEgg
                 yOffset = 0.5D;
             }
 
-            if( spawnEnderPet(world, stack, this.getEnderPetName(stack), x + 0.5D, y + yOffset, z + 0.5D, player.getCommandSenderName()) ) {
+            if( spawnEnderPet(world, stack, getEnderPetName(stack), x + 0.5D, y + yOffset, z + 0.5D, player.getCommandSenderName()) ) {
                 --stack.stackSize;
             }
 
@@ -175,7 +172,7 @@ public class ItemEnderPetEgg
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconRegister) {}
+    public void registerIcons(IIconRegister iconRegister) { }
 
     @Override
     @SideOnly(Side.CLIENT)
