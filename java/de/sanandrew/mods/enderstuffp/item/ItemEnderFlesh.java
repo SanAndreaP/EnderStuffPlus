@@ -4,6 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -48,7 +49,7 @@ public class ItemEnderFlesh
         super(2, 0.6F, false);
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":enderFlesh");
         this.setTextureName(EnderStuffPlus.MOD_ID + ":enderFlesh");
-        this.setCreativeTab(EnderStuffPlus.ESP_TAB);
+        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
         this.setAlwaysEdible();
         this.setMaxDamage(0);
         this.setHasSubtypes(true);

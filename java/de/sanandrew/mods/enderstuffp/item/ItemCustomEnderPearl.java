@@ -2,6 +2,7 @@ package de.sanandrew.mods.enderstuffp.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -23,7 +24,7 @@ public class ItemCustomEnderPearl
     public ItemCustomEnderPearl() {
         super();
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":espPearls");
-        this.setCreativeTab(EnderStuffPlus.ESP_TAB);
+        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
         this.setMaxStackSize(16);

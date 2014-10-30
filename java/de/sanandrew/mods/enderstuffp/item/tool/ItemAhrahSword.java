@@ -2,6 +2,7 @@ package de.sanandrew.mods.enderstuffp.item.tool;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.RegistryItems;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -18,7 +19,7 @@ public class ItemAhrahSword
         super(toolMaterial);
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":ahrahSword");
         this.setTextureName(EnderStuffPlus.MOD_ID + ":ahrah");
-        this.setCreativeTab(EnderStuffPlus.ESP_TAB);
+        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
     }
 
 //    @Override

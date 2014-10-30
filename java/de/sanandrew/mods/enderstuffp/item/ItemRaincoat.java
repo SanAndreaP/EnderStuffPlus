@@ -3,6 +3,7 @@ package de.sanandrew.mods.enderstuffp.item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.client.SAPClientUtils;
+import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -23,7 +24,7 @@ public class ItemRaincoat
 
     public ItemRaincoat() {
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":rainCoat");
-        this.setCreativeTab(EnderStuffPlus.ESP_TAB);
+        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB_COATS);
         this.setMaxDamage(0);
     }
 

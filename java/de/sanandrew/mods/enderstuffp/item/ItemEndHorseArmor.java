@@ -1,6 +1,7 @@
 package de.sanandrew.mods.enderstuffp.item;
 
 import de.sanandrew.core.manpack.item.AItemHorseArmor;
+import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.item.ItemStack;
@@ -11,7 +12,7 @@ public class ItemEndHorseArmor
     public ItemEndHorseArmor() {
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":enderHorseArmor");
         this.setTextureName(EnderStuffPlus.MOD_ID + ":enderStick");
-        this.setCreativeTab(EnderStuffPlus.ESP_TAB);
+        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
     }
 
     @Override

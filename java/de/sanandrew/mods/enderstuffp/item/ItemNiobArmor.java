@@ -1,6 +1,7 @@
 package de.sanandrew.mods.enderstuffp.item;
 
 import de.sanandrew.mods.enderstuffp.client.util.Textures;
+import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.RegistryItems;
 import net.minecraft.entity.Entity;
@@ -24,7 +25,7 @@ public class ItemNiobArmor
         super(material, RENDER_ID, slotId);
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ':' + name);
         this.setTextureName(EnderStuffPlus.MOD_ID + ':' + name);
-        this.setCreativeTab(EnderStuffPlus.ESP_TAB);
+        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
     }
 
     @Override

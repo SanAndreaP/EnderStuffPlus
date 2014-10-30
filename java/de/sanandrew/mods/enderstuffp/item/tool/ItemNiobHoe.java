@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.enderstuffp.util.ConfigRegistry;
+import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.RegistryItems;
 import net.minecraft.block.Block;
@@ -27,7 +28,7 @@ public class ItemNiobHoe
     public ItemNiobHoe(ToolMaterial toolMaterial) {
         super(toolMaterial);
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":niobHoe");
-        this.setCreativeTab(EnderStuffPlus.ESP_TAB);
+        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
     }
 
     @Override

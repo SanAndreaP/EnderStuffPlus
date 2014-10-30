@@ -1,5 +1,6 @@
 package de.sanandrew.mods.enderstuffp.item;
 
+import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,7 +15,7 @@ public class ItemNiobDoor
         super();
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":doorNiob");
         this.setTextureName(EnderStuffPlus.MOD_ID + ":doorNiob");
-        this.setCreativeTab(EnderStuffPlus.ESP_TAB);
+        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
         this.setMaxStackSize(1);
     }
 

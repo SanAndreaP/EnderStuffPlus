@@ -15,9 +15,10 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import de.sanandrew.mods.enderstuffp.enchantment.EnchantmentEnderChestTeleport;
-import net.minecraft.creativetab.CreativeTabs;
+import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashMap;
 
@@ -30,8 +31,6 @@ public class EnderStuffPlus
 
     private static final String MOD_PROXY_CLIENT = "de.sanandrew.mods.enderstuffp.client.util.ClientProxy";
     private static final String MOD_PROXY_COMMON = "de.sanandrew.mods.enderstuffp.util.CommonProxy";
-
-    public static final CreativeTabs ESP_TAB = new CreativeTabEnderStuff();
 
     @Instance(EnderStuffPlus.MOD_ID)
     public static EnderStuffPlus instance;
@@ -46,13 +45,6 @@ public class EnderStuffPlus
     public void preInit(FMLPreInitializationEvent event) {
 
 //        ConfigRegistry.setConfig(event.getModConfigurationDirectory());
-//
-//        ESPModRegistry.espTab = new CreativeTabs("ESPTab") {
-//            @Override
-//            public Item getTabIconItem() {
-//                return Item.getItemFromBlock(ModBlockRegistry.biomeChanger);
-//            }
-//        };
 //        ESPModRegistry.espTabCoats = new CreativeTabs("ESPTabCoats") {
 //            @Override
 //            public Item getTabIconItem() {
@@ -77,7 +69,7 @@ public class EnderStuffPlus
         niobSet.put(2, new ItemStack(RegistryItems.niobPlate));
         niobSet.put(3, new ItemStack(RegistryItems.niobHelmet));
 //
-//        proxy.registerHandlers();
+        proxy.registerHandlers();
 //
 //        channelHandler.registerPacket(PacketBCGUIAction.class);
 //        channelHandler.registerPacket(PacketChangeBCGUI.class);
@@ -88,7 +80,7 @@ public class EnderStuffPlus
 //        channelHandler.registerPacket(PacketSetWeather.class);
 //
 //        RegistryDungeonLoot.initialize();
-//        RegistryRaincoats.initialize();
+        RegistryRaincoats.initialize();
 //        RegistryDuplicator.initialize();
 //        RegistryBiomeChanger.initialize();
 //
@@ -99,7 +91,7 @@ public class EnderStuffPlus
 //
 //        NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 //
-//        OreDictionary.registerOre("ingotNiob", new ItemStack(ModItemRegistry.endIngot));
+        OreDictionary.registerOre("ingotNiob", new ItemStack(RegistryItems.endIngot));
 //        OreDictionary.registerOre("oreNiob", new ItemStack(ModBlockRegistry.endOre));
 //        OreDictionary.registerOre("blockNiob", new ItemStack(ModBlockRegistry.endBlock));
 //        OreDictionary.registerOre("logWood", new ItemStack(ModBlockRegistry.enderLog, 1, OreDictionary.WILDCARD_VALUE));

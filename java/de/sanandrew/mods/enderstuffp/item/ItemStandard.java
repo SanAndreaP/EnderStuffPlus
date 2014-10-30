@@ -6,6 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.item;
 
+import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.item.Item;
 
@@ -15,6 +16,6 @@ public class ItemStandard
     public ItemStandard(String name) {
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ':' + name);
         this.setTextureName(EnderStuffPlus.MOD_ID + ':' + name);
-        this.setCreativeTab(EnderStuffPlus.ESP_TAB);
+        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
     }
 }

@@ -2,6 +2,7 @@ package de.sanandrew.mods.enderstuffp.item.tool;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.RegistryItems;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -22,7 +23,7 @@ public class ItemNiobBow
 
     public ItemNiobBow() {
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":bowNiob");
-        this.setCreativeTab(EnderStuffPlus.ESP_TAB);
+        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
         this.setMaxDamage(768);
     }
 

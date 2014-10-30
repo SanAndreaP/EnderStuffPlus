@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.client.SAPClientUtils;
+import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -31,7 +32,7 @@ public class ItemEnderPetEgg
 
     public ItemEnderPetEgg() {
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":enderPetEgg");
-        this.setCreativeTab(EnderStuffPlus.ESP_TAB);
+        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
         this.setHasSubtypes(true);
         this.setMaxStackSize(1);
     }

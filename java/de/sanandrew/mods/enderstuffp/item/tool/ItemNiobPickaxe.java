@@ -3,6 +3,7 @@ package de.sanandrew.mods.enderstuffp.item.tool;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.enderstuffp.util.ConfigRegistry;
+import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.RegistryItems;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -20,7 +21,7 @@ public class ItemNiobPickaxe
     public ItemNiobPickaxe(ToolMaterial toolMaterial) {
         super(toolMaterial);
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":niobPick");
-        this.setCreativeTab(EnderStuffPlus.ESP_TAB);
+        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
     }
 
     @Override

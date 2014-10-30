@@ -2,6 +2,7 @@ package de.sanandrew.mods.enderstuffp.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
@@ -18,7 +19,7 @@ public class ItemAvisCompass
     public ItemAvisCompass() {
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":avisCompass");
         this.setTextureName(EnderStuffPlus.MOD_ID + ":compass");
-        this.setCreativeTab(EnderStuffPlus.ESP_TAB);
+        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
     }
 
     @SideOnly(Side.CLIENT)
