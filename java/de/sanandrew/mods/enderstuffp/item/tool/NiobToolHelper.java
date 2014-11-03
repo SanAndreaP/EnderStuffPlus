@@ -1,7 +1,9 @@
 package de.sanandrew.mods.enderstuffp.item.tool;
 
 import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
+import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
 import de.sanandrew.mods.enderstuffp.util.RegistryItems;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -99,16 +101,11 @@ public final class NiobToolHelper
     }
 
     public static boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player, boolean shouldDropNugget) {
-        if( !(stack.getItem() instanceof ItemTool) ) {
-            return false;
-        }
+        return stack.getItem() instanceof ItemTool && onBlockStartBreak(stack, x, y, z, player, SAPUtils.getToolBlocks((ItemTool) stack.getItem()), shouldDropNugget);
 
-        return onBlockStartBreak(stack, x, y, z, player, SAPUtils.getToolBlocks((ItemTool) stack.getItem()), shouldDropNugget);
     }
 
     private static void spawnFX(int x, int y, int z, int dimId) {
-        //TODO spawn particles
-//        IPacket packet = new PacketFXCstPortal(x, y, z, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 10);
-//        ESPModRegistry.channelHandler.sendToAllAround(packet, new TargetPoint(dimId, x + 0.5F, y + 0.5F, z + 0.5F, 64.0D));
+        EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_NIOBTOOL, x + 0.5F, y, z + 0.5F, dimId, Triplet.with(0.5F, 0.0F, 1.0F));
     }
 }

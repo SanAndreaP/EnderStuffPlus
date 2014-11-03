@@ -2,6 +2,7 @@ package de.sanandrew.mods.enderstuffp.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.mods.enderstuffp.client.event.TextureStitchHandler;
 import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -14,7 +15,7 @@ import java.util.List;
 public class ItemAvisCompass
     extends Item
 {
-    private static final List<TileEntity> AVIS_EGGS = new ArrayList<TileEntity>();
+    private static final List<TileEntity> AVIS_EGGS = new ArrayList<>();
 
     public ItemAvisCompass() {
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":avisCompass");
@@ -61,6 +62,6 @@ public class ItemAvisCompass
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister par1IconRegister) {
-//        this.itemIcon = IconRegistry.compass;
+        this.itemIcon = TextureStitchHandler.compass;
     }
 }

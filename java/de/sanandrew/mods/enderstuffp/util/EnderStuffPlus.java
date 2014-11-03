@@ -14,6 +14,8 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.FMLEventChannel;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import de.sanandrew.mods.enderstuffp.enchantment.EnchantmentEnderChestTeleport;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
 import net.minecraft.enchantment.Enchantment;
@@ -28,6 +30,7 @@ public class EnderStuffPlus
     public static final String MOD_ID = "enderstuffp";
     public static final String VERSION = "2.0.0";
     public static final String MOD_LOG = "EnderStuffP";
+    public static final String MOD_CHANNEL = "EnderStuffPNWCH";
 
     private static final String MOD_PROXY_CLIENT = "de.sanandrew.mods.enderstuffp.client.util.ClientProxy";
     private static final String MOD_PROXY_COMMON = "de.sanandrew.mods.enderstuffp.util.CommonProxy";
@@ -36,6 +39,7 @@ public class EnderStuffPlus
     public static EnderStuffPlus instance;
     @SidedProxy(modId = EnderStuffPlus.MOD_ID, clientSide = EnderStuffPlus.MOD_PROXY_CLIENT, serverSide = EnderStuffPlus.MOD_PROXY_COMMON)
     public static CommonProxy proxy;
+    public static FMLEventChannel channel;
 
     public static Enchantment enderChestTel;
 
@@ -69,7 +73,7 @@ public class EnderStuffPlus
         niobSet.put(2, new ItemStack(RegistryItems.niobPlate));
         niobSet.put(3, new ItemStack(RegistryItems.niobHelmet));
 //
-        proxy.registerHandlers();
+//        proxy.registerHandlers();
 //
 //        channelHandler.registerPacket(PacketBCGUIAction.class);
 //        channelHandler.registerPacket(PacketChangeBCGUI.class);
@@ -98,12 +102,14 @@ public class EnderStuffPlus
 //        OreDictionary.registerOre("plankWood", ModBlockRegistry.enderPlanks);
 //        OreDictionary.registerOre("treeSapling", new ItemStack(ModBlockRegistry.sapEndTree, 1, OreDictionary.WILDCARD_VALUE));
 //
-        proxy.registerClientStuff();
-
+//        proxy.registerClientStuff();
+        proxy.preInit(event);
     }
 
     @EventHandler
-    public void init(FMLInitializationEvent evt) {
+    public void init(FMLInitializationEvent event) {
+        channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(MOD_CHANNEL);
+        proxy.init(event);
 //        channelHandler.initialise();
 //        FurnaceRecipes.smelting().func_151394_a(new ItemStack(ModBlockRegistry.endOre, 1, 0),
 //                                                new ItemStack(ModItemRegistry.endIngot, 1, 0), 0.85F);

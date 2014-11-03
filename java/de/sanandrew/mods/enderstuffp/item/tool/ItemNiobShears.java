@@ -3,10 +3,8 @@ package de.sanandrew.mods.enderstuffp.item.tool;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.SAPUtils;
-import de.sanandrew.mods.enderstuffp.util.ConfigRegistry;
-import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
-import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
-import de.sanandrew.mods.enderstuffp.util.RegistryItems;
+import de.sanandrew.core.manpack.util.javatuples.Triplet;
+import de.sanandrew.mods.enderstuffp.util.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.Enchantment;
@@ -120,10 +118,8 @@ public class ItemNiobShears
             }
             stack.damageItem(1, player);
             player.addStat(StatList.mineBlockStatArray[Block.getIdFromBlock(block)], 1);    // shouldn't use this, but vanilla does it
-            if( hasTransported ) {                                                          // this way, so meh...
-                //TODO: spawn particles
-//                IPacket packet = new PacketFXCstPortal(x + 0.5F, y + 0.5F, z + 0.5F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 10);
-//                ESPModRegistry.channelHandler.sendToAllAround(packet, new TargetPoint(player.dimension, x, y, z, 64D));
+            if( hasTransported ) {
+                EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_NIOBTOOL, x + 0.5D, y, z + 0.5D, player.dimension, Triplet.with(0.5F, 0.0F, 1.0F));
 
                 player.inventoryContainer.detectAndSendChanges();
 
