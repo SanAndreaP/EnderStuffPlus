@@ -31,14 +31,12 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import de.sanandrew.core.manpack.util.SAPUtils;
 import de.sanandrew.mods.enderstuffplus.item.ItemRaincoat;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.raincoat.RegistryRaincoats;
 import de.sanandrew.mods.enderstuffplus.registry.raincoat.RegistryRaincoats.CoatBaseEntry;
 import de.sanandrew.mods.enderstuffplus.registry.raincoat.RegistryRaincoats.CoatColorEntry;
-import tv.twitch.chat.IChatCallbacks;
 
 public class EntityEnderAvis
     extends EntityCreature

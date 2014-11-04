@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 import net.minecraftforge.common.util.Constants;
 
-import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffplus.registry.RegistryDuplicator;
 
 public class TileEntityDuplicator

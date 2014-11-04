@@ -29,7 +29,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 
 import de.sanandrew.core.manpack.managers.SAPUpdateManager;
 import de.sanandrew.core.manpack.mod.packet.ChannelHandler;
-import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffplus.enchantment.EnchantmentEnderChestTeleport;
 import de.sanandrew.mods.enderstuffplus.item.ItemEnderPetEgg;
 import de.sanandrew.mods.enderstuffplus.packet.PacketBCGUIAction;

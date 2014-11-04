@@ -2,7 +2,7 @@ package de.sanandrew.mods.enderstuffplus.item.tool;
 
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import de.sanandrew.core.manpack.mod.packet.IPacket;
-import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffplus.packet.PacketFXCstPortal;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;

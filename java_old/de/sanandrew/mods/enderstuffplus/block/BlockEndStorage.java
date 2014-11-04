@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import de.sanandrew.core.manpack.util.IGlowBlockOverlay;
+import de.sanandrew.core.manpack.util.client.IGlowBlockOverlay;
 import de.sanandrew.core.manpack.util.client.RenderBlockGlowOverlay;
 
 public class BlockEndStorage

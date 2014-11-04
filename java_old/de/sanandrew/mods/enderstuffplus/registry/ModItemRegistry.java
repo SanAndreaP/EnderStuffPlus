@@ -7,7 +7,7 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 
 import net.minecraftforge.common.util.EnumHelper;
 
-import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffplus.item.ItemAvisCompass;
 import de.sanandrew.mods.enderstuffplus.item.ItemCustomEnderPearl;
 import de.sanandrew.mods.enderstuffplus.item.ItemEndHorseArmor;

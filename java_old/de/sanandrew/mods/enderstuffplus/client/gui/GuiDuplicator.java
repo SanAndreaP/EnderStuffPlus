@@ -13,7 +13,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import de.sanandrew.core.manpack.mod.packet.IPacket;
-import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.core.manpack.util.client.GuiItemTab;
 import de.sanandrew.mods.enderstuffplus.inventory.ContainerDuplicator;
 import de.sanandrew.mods.enderstuffplus.packet.PacketDupeInsertLevels;

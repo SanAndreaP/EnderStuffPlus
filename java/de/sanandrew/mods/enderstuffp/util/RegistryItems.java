@@ -1,6 +1,6 @@
 package de.sanandrew.mods.enderstuffp.util;
 
-import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.item.*;
 import de.sanandrew.mods.enderstuffp.item.tool.*;
 import net.minecraft.item.Item;

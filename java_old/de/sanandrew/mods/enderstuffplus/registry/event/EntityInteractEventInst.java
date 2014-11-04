@@ -3,7 +3,7 @@ package de.sanandrew.mods.enderstuffplus.registry.event;
 import java.util.ArrayList;
 
 import de.sanandrew.core.manpack.mod.packet.IPacket;
-import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -62,7 +62,7 @@ public class EntityInteractEventInst
                 if( transportSucceed ) {
                     IPacket packet = new PacketFXCstPortal(entity.posX, entity.posY, entity.posZ, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 10);
                     ESPModRegistry.channelHandler.sendToAllAround(packet, new TargetPoint(entity.dimension, entity.posX, entity.posY, entity.posZ, 64));
-                    
+
                     event.entityPlayer.inventoryContainer.detectAndSendChanges();
 
                     if( event.entityPlayer.openContainer != null ) {

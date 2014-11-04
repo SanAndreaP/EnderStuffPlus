@@ -14,7 +14,7 @@ import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderAvis;
 import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderMiss;
 import de.sanandrew.mods.enderstuffplus.entity.living.IEnderPet;

@@ -9,7 +9,7 @@ import net.minecraftforge.event.entity.player.ArrowNockEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffplus.entity.EntityAvisArrow;
 import de.sanandrew.mods.enderstuffplus.registry.ModItemRegistry;
 

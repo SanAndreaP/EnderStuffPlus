@@ -2,7 +2,7 @@ package de.sanandrew.mods.enderstuffp.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.client.SAPClientUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
@@ -36,7 +36,7 @@ public class ItemRaincoat
             String base = stack.getTagCompound().getString("base");
             if( RegistryRaincoats.BASE_LIST.containsKey(base) ) {
                 RegistryRaincoats.CoatBaseEntry entry = RegistryRaincoats.BASE_LIST.get(base);
-                infos.add("\247o" + SAPClientUtils.translate(entry.name));
+                infos.add("\247o" + SAPUtils.translate(entry.name));
                 String[] split = entry.desc.split("\n");
                 for( String effect : split ) {
                     infos.add("\2473" + effect);
@@ -72,7 +72,7 @@ public class ItemRaincoat
         if( par1ItemStack.getTagCompound() != null ) {
             String clr = par1ItemStack.getTagCompound().getString("color");
             if( RegistryRaincoats.COLOR_LIST.containsKey(clr) ) {
-                return String.format(super.getItemStackDisplayName(par1ItemStack), SAPClientUtils.translate(RegistryRaincoats.COLOR_LIST.get(clr).name));
+                return String.format(super.getItemStackDisplayName(par1ItemStack), SAPUtils.translate(RegistryRaincoats.COLOR_LIST.get(clr).name));
             }
         }
         return String.format(super.getItemStackDisplayName(par1ItemStack), "[UNKNOWN]");

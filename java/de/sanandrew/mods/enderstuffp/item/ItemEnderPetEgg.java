@@ -3,7 +3,7 @@ package de.sanandrew.mods.enderstuffp.item;
 import com.google.common.collect.Maps;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.client.SAPClientUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.block.Block;
@@ -102,11 +102,11 @@ public class ItemEnderPetEgg
     @Override
     @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
-        String itemName = (SAPClientUtils.translate(this.getUnlocalizedName() + ".name")).trim();
+        String itemName = (SAPUtils.translate(this.getUnlocalizedName() + ".name")).trim();
         String petName = getEnderPetName(stack);
 
         if( petName != null ) {
-            itemName = itemName + ' ' + SAPClientUtils.translate("entity." + petName + ".name");
+            itemName = itemName + ' ' + SAPUtils.translate("entity." + petName + ".name");
         }
 
         return itemName;
@@ -143,7 +143,7 @@ public class ItemEnderPetEgg
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack stack) {
+    public boolean hasEffect(ItemStack stack, int pass) {
         return stack.hasTagCompound();
     }
 

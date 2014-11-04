@@ -2,7 +2,7 @@ package de.sanandrew.mods.enderstuffplus.registry;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import de.sanandrew.core.manpack.item.ItemBlockNamedMeta;
-import de.sanandrew.core.manpack.util.SAPUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffplus.block.*;
 import de.sanandrew.mods.enderstuffplus.item.ItemEndLeaves;
 import de.sanandrew.mods.enderstuffplus.tileentity.TileEntityAvisEgg;
