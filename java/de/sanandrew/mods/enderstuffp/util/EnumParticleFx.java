@@ -8,7 +8,10 @@ package de.sanandrew.mods.enderstuffp.util;
 
 public enum EnumParticleFx
 {
-    FX_NIOBTOOL;
+    FX_NIOBTOOL,
+    FX_PEARL_BAIT,
+    FX_PEARL_NIVIS,
+    FX_PEARL_IGNIS;
 
     public static final EnumParticleFx[] VALUES = values();
 

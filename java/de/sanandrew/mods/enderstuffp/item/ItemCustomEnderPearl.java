@@ -2,6 +2,10 @@ package de.sanandrew.mods.enderstuffp.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.mods.enderstuffp.entity.item.EntityBait;
+import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlIgnis;
+import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlMiss;
+import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlNivis;
 import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -10,9 +14,11 @@ import net.minecraft.entity.item.EntityEnderPearl;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class ItemCustomEnderPearl
@@ -59,28 +65,29 @@ public class ItemCustomEnderPearl
         if( !world.isRemote ) {
             switch( stack.getItemDamage() ){
                 // TODO spawn pearl entities
-//                case 0 :
-//                    world.spawnEntityInWorld(new EntityPearlNivis(world, player));
-//                    break;
-//                case 1 :
-//                    world.spawnEntityInWorld(new EntityPearlIgnis(world, player));
-//                    break;
-//                case 2 :
-//                    if( player.isSneaking() ) {
-//                        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(player.posX - 32, player.posY - 32, player.posZ - 32,
-//                                                                          player.posX + 32, player.posY + 32, player.posZ + 32);
-//                        List<EntityBait> baits = world.getEntitiesWithinAABB(EntityBait.class, aabb);
-//                        for( EntityBait bait : baits ) {
-//                            if( bait != null && bait.isEntityAlive() ) {
-//                                bait.setDead();
-//                            }
-//                        }
-//                        world.playSoundAtEntity(player, "fire.ignite", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
-//                        return stack;
-//                    } else {
-//                        world.spawnEntityInWorld(new EntityPearlMiss(world, player));
-//                    }
-//                    break;
+                case 0 :
+                    world.spawnEntityInWorld(new EntityPearlNivis(world, player));
+                    break;
+                case 1 :
+                    world.spawnEntityInWorld(new EntityPearlIgnis(world, player));
+                    break;
+                case 2 :
+                    if( player.isSneaking() ) {
+                        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(player.posX - 32, player.posY - 32, player.posZ - 32,
+                                                                          player.posX + 32, player.posY + 32, player.posZ + 32);
+                        for( Iterator<EntityBait> baitIter = world.getEntitiesWithinAABB(EntityBait.class, aabb).iterator(); baitIter.hasNext(); ) {
+                            EntityBait bait = baitIter.next();
+                            if( bait != null && bait.isEntityAlive() ) {
+                                bait.setDead();
+                                baitIter.remove();
+                            }
+                        }
+                        world.playSoundAtEntity(player, "fire.ignite", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+                        return stack;
+                    } else {
+                        world.spawnEntityInWorld(new EntityPearlMiss(world, player));
+                    }
+                    break;
                 default :
                     world.spawnEntityInWorld(new EntityEnderPearl(world, player));
             }
@@ -96,8 +103,7 @@ public class ItemCustomEnderPearl
     public void registerIcons(IIconRegister iconRegister) {
         this.icons = new IIcon[3];
 
-        this.itemIcon = iconRegister.registerIcon("enderstuffp:pearlNivis");
-        this.icons[0] = this.itemIcon;
+        this.icons[0] = iconRegister.registerIcon("enderstuffp:pearlNivis");
         this.icons[1] = iconRegister.registerIcon("enderstuffp:pearlIgnis");
         this.icons[2] = iconRegister.registerIcon("enderstuffp:pearlEndermiss");
     }

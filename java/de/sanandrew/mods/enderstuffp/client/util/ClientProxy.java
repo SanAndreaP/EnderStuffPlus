@@ -9,8 +9,11 @@ import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.enderstuffp.client.event.FovUpdateHandler;
 import de.sanandrew.mods.enderstuffp.client.event.TextureStitchHandler;
-import de.sanandrew.mods.enderstuffp.client.particle.EntityColoredPortalFX;
 import de.sanandrew.mods.enderstuffp.client.render.ItemRendererGlowTools;
+import de.sanandrew.mods.enderstuffp.entity.item.EntityBait;
+import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlIgnis;
+import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlMiss;
+import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlNivis;
 import de.sanandrew.mods.enderstuffp.network.ClientPacketHandler;
 import de.sanandrew.mods.enderstuffp.util.CommonProxy;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
@@ -18,7 +21,7 @@ import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
 import de.sanandrew.mods.enderstuffp.util.RegistryItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -37,6 +40,11 @@ public class ClientProxy
     public void init(FMLInitializationEvent event) {
         super.init(event);
         EnderStuffPlus.channel.register(new ClientPacketHandler());
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityPearlNivis.class, new RenderSnowball(RegistryItems.espPearls, 0));
+        RenderingRegistry.registerEntityRenderingHandler(EntityPearlIgnis.class, new RenderSnowball(RegistryItems.espPearls, 1));
+        RenderingRegistry.registerEntityRenderingHandler(EntityPearlMiss.class, new RenderSnowball(RegistryItems.espPearls, 2));
+        RenderingRegistry.registerEntityRenderingHandler(EntityBait.class, new RenderSnowball(RegistryItems.espPearls, 2));
     }
 
     //    @Override
@@ -99,19 +107,17 @@ public class ClientProxy
         Random random = SAPUtils.RNG;
         switch( particleType ) {
             case FX_NIOBTOOL:
-                for( int i = 0; i < 20; i++ ) {
-                    EntityFX part = new EntityColoredPortalFX(getWorld(),
-                                                              x + (random.nextDouble() - 0.5D),
-                                                              y + (random.nextDouble() - 0.25D),
-                                                              z + (random.nextDouble() - 0.5D),
-                                                              (random.nextDouble() - 0.5D) * 2.0D,
-                                                              -random.nextDouble(),
-                                                              (random.nextDouble() - 0.5D) * 2.0D,
-                                                              (float) data.getValue(0), (float) data.getValue(1), (float) data.getValue(2)
-                    );
-
-                    Minecraft.getMinecraft().effectRenderer.addEffect(part);
-                }
+                ParticleHelper.spawnPortalFX(x, y, z, random, 20, 0.5F, 0.0F, 1.0F);
+                break;
+            case FX_PEARL_BAIT:
+                ParticleHelper.spawnPortalFX(x, y, z, random, 20, 1.0F, 0.5F, 0.7F);
+                break;
+            case FX_PEARL_NIVIS:
+                ParticleHelper.spawnPortalFX(x, y, z, random, 20, 0.2F, 0.5F, 1.0F);
+                break;
+            case FX_PEARL_IGNIS:
+                ParticleHelper.spawnPortalFX(x, y, z, random, 20, 1.0F, 0.3F, 0.0F);
+                break;
         }
     }
 

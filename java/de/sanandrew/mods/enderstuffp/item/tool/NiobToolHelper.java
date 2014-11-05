@@ -1,7 +1,6 @@
 package de.sanandrew.mods.enderstuffp.item.tool;
 
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
-import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
 import de.sanandrew.mods.enderstuffp.util.RegistryItems;
@@ -92,7 +91,6 @@ public final class NiobToolHelper
         boolean shouldItemDestroy = stack.getItemDamage() + 1 > stack.getMaxDamage();
         stack.damageItem(1, player);
         if( shouldItemDestroy || stack.stackSize == 0 ) {
-            stack = null;
             player.destroyCurrentEquippedItem();
             player.inventoryContainer.detectAndSendChanges();
         }
@@ -106,6 +104,6 @@ public final class NiobToolHelper
     }
 
     private static void spawnFX(int x, int y, int z, int dimId) {
-        EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_NIOBTOOL, x + 0.5F, y, z + 0.5F, dimId, Triplet.with(0.5F, 0.0F, 1.0F));
+        EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_NIOBTOOL, x + 0.5F, y, z + 0.5F, dimId, null);
     }
 }

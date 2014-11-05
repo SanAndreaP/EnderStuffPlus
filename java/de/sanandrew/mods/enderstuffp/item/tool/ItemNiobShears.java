@@ -3,7 +3,6 @@ package de.sanandrew.mods.enderstuffp.item.tool;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
-import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.enderstuffp.util.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -119,7 +118,7 @@ public class ItemNiobShears
             stack.damageItem(1, player);
             player.addStat(StatList.mineBlockStatArray[Block.getIdFromBlock(block)], 1);    // shouldn't use this, but vanilla does it
             if( hasTransported ) {
-                EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_NIOBTOOL, x + 0.5D, y, z + 0.5D, player.dimension, Triplet.with(0.5F, 0.0F, 1.0F));
+                EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_NIOBTOOL, x + 0.5D, y, z + 0.5D, player.dimension, null);
 
                 player.inventoryContainer.detectAndSendChanges();
 
