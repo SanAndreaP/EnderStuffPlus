@@ -10,10 +10,12 @@ import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.enderstuffp.client.event.FovUpdateHandler;
 import de.sanandrew.mods.enderstuffp.client.event.TextureStitchHandler;
 import de.sanandrew.mods.enderstuffp.client.render.ItemRendererGlowTools;
+import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderNivis;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityBait;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlIgnis;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlMiss;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlNivis;
+import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderNivis;
 import de.sanandrew.mods.enderstuffp.network.ClientPacketHandler;
 import de.sanandrew.mods.enderstuffp.util.CommonProxy;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
@@ -41,6 +43,7 @@ public class ClientProxy
         super.init(event);
         EnderStuffPlus.channel.register(new ClientPacketHandler());
 
+        RenderingRegistry.registerEntityRenderingHandler(EntityEnderNivis.class, new RenderEnderNivis());
         RenderingRegistry.registerEntityRenderingHandler(EntityPearlNivis.class, new RenderSnowball(RegistryItems.espPearls, 0));
         RenderingRegistry.registerEntityRenderingHandler(EntityPearlIgnis.class, new RenderSnowball(RegistryItems.espPearls, 1));
         RenderingRegistry.registerEntityRenderingHandler(EntityPearlMiss.class, new RenderSnowball(RegistryItems.espPearls, 2));

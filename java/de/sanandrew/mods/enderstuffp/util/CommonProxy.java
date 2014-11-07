@@ -5,8 +5,10 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import de.sanandrew.core.manpack.util.javatuples.Quintet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
-import de.sanandrew.mods.enderstuffp.client.event.EntityJoinWorldHandler;
+import de.sanandrew.mods.enderstuffp.event.EntityJoinWorldHandler;
 import de.sanandrew.mods.enderstuffp.entity.item.*;
+import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderIgnis;
+import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderNivis;
 import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
 import de.sanandrew.mods.enderstuffp.network.ServerPacketHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -21,6 +23,8 @@ public class CommonProxy
         MinecraftForge.EVENT_BUS.register(new EntityJoinWorldHandler());
 
         int entityId = 0;
+        EntityRegistry.registerModEntity(EntityEnderNivis.class, "EnderNivis", entityId++, EnderStuffPlus.instance, 80, 3, true);
+        EntityRegistry.registerModEntity(EntityEnderIgnis.class, "EnderIgnis", entityId++, EnderStuffPlus.instance, 80, 3, true);
         EntityRegistry.registerModEntity(EntityPearlNivis.class, "EnderNivisPearl", entityId++, EnderStuffPlus.instance, 64, 10, true);
         EntityRegistry.registerModEntity(EntityPearlIgnis.class, "EnderIgnisPearl", entityId++, EnderStuffPlus.instance, 64, 10, true);
         EntityRegistry.registerModEntity(EntityPearlMiss.class, "EnderMissPearl", entityId++, EnderStuffPlus.instance, 64, 10, true);

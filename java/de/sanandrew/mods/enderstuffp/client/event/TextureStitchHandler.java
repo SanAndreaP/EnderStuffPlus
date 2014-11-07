@@ -4,6 +4,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.enderstuffp.client.util.TextureAvisCompass;
+import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -29,15 +30,15 @@ public class TextureStitchHandler
     @SubscribeEvent
     public void onTexStitchPre(TextureStitchEvent.Pre event) {
         if( event.map.getTextureType() == 1 ) {
-            sunIcon = event.map.registerIcon("enderstuffp:sun");
-            rainIcon = event.map.registerIcon("enderstuffp:rain");
-            thunderIcon = event.map.registerIcon("enderstuffp:thunder");
-            enderball = event.map.registerIcon("enderstuffp:enderball");
-            guiSpanner = event.map.registerIcon("enderstuffp:spanner");
-            guiActiveOn = event.map.registerIcon("enderstuffp:activeOn");
-            guiActiveOff = event.map.registerIcon("enderstuffp:activeOff");
+            sunIcon = event.map.registerIcon(EnderStuffPlus.MOD_ID + ":sun");
+            rainIcon = event.map.registerIcon(EnderStuffPlus.MOD_ID + ":rain");
+            thunderIcon = event.map.registerIcon(EnderStuffPlus.MOD_ID + ":thunder");
+            enderball = event.map.registerIcon(EnderStuffPlus.MOD_ID + ":enderball");
+            guiSpanner = event.map.registerIcon(EnderStuffPlus.MOD_ID + ":spanner");
+            guiActiveOn = event.map.registerIcon(EnderStuffPlus.MOD_ID + ":activeOn");
+            guiActiveOff = event.map.registerIcon(EnderStuffPlus.MOD_ID + ":activeOff");
 
-            event.map.setTextureEntry("enderstuffp:compass", compass);
+            event.map.setTextureEntry(EnderStuffPlus.MOD_ID + ":compass", compass);
         }
     }
 }

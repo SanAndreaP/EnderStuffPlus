@@ -1,4 +1,4 @@
-package de.sanandrew.mods.enderstuffp.client.event;
+package de.sanandrew.mods.enderstuffp.event;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityItemTantal;

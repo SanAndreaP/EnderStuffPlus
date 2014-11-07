@@ -1,6 +1,6 @@
 package de.sanandrew.mods.enderstuffp.item;
 
-import de.sanandrew.mods.enderstuffp.client.util.Textures;
+import de.sanandrew.mods.enderstuffp.client.util.EnumTextures;
 import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.RegistryItems;
@@ -31,9 +31,9 @@ public class ItemNiobArmor
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
         if( stack.getItem() == RegistryItems.niobHelmet || stack.getItem() == RegistryItems.niobPlate || stack.getItem() == RegistryItems.niobBoots ) {
-            return Textures.TEX_ARMOR_NIOBIUM_1.getTexture();
+            return EnumTextures.TEX_ARMOR_NIOBIUM_1.getTexture();
         } else if( stack.getItem() == RegistryItems.niobLegs ) {
-            return Textures.TEX_ARMOR_NIOBIUM_2.getTexture();
+            return EnumTextures.TEX_ARMOR_NIOBIUM_2.getTexture();
         }
         return super.getArmorTexture(stack, entity, slot, type);
     }

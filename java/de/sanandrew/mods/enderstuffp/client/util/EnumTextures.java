@@ -2,7 +2,8 @@ package de.sanandrew.mods.enderstuffp.client.util;
 
 import net.minecraft.util.ResourceLocation;
 
-public enum Textures {
+public enum EnumTextures
+{
     ARROW_AVIS                  ("textures/entity/avisArrow.png"),
     BIOMECHANGER_TEXTURE        ("textures/blocks/biomeChanger.png"),
     ENDERAVIS_GLOW_TEXTURE      ("textures/entity/enderAvisGlow.png"),
@@ -36,7 +37,7 @@ public enum Textures {
 
     private final ResourceLocation tex;
 
-    private Textures(String texture) {
+    private EnumTextures(String texture) {
         this.tex = new ResourceLocation("enderstuffp", texture);
     }
 

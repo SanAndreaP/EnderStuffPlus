@@ -19,8 +19,8 @@ public class RegistryRaincoats
     public static final Map<String, CoatBaseEntry> BASE_LIST = Maps.newLinkedHashMap();
     public static final Map<String, CoatColorEntry> COLOR_LIST = Maps.newLinkedHashMap();
 
-    public static final List<ItemStack> BASE_STACKS = new ArrayList<ItemStack>();
-    public static final List<ItemStack> COLOR_STACKS = new ArrayList<ItemStack>();
+    public static final List<ItemStack> BASE_STACKS = new ArrayList<>();
+    public static final List<ItemStack> COLOR_STACKS = new ArrayList<>();
 
     public static final CoatBaseEntry NULL_BASE = new CoatBaseEntry("NULL", 0, "NULL", null, null, null);
     public static final CoatColorEntry NULL_COLOR = new CoatColorEntry("NULL", 0, null, null, null);
