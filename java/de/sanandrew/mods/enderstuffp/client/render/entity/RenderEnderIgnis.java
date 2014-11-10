@@ -2,101 +2,68 @@ package de.sanandrew.mods.enderstuffp.client.render.entity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.mods.enderstuffp.client.model.ModelEnderNivis;
+import de.sanandrew.mods.enderstuffp.client.model.ModelEnderIgnis;
 import de.sanandrew.mods.enderstuffp.client.util.EnumTextures;
-import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderNivis;
-import net.minecraft.block.material.Material;
+import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderIgnis;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import java.util.Random;
 
 @SideOnly(Side.CLIENT)
-public class RenderEnderNivis
+public class RenderEnderIgnis
     extends RenderLiving
 {
-    private ModelEnderNivis nivisModel;
+    private ModelEnderIgnis ignisModel;
     private Random rnd;
 
-    public RenderEnderNivis() {
-        super(new ModelEnderNivis(), 0.7F);
+    public RenderEnderIgnis() {
+        super(new ModelEnderIgnis(), 0.7F);
         this.rnd = new Random();
-        this.nivisModel = (ModelEnderNivis) super.mainModel;
-        this.setRenderPassModel(this.nivisModel);
+        this.ignisModel = (ModelEnderIgnis) super.mainModel;
+        this.setRenderPassModel(this.ignisModel);
     }
 
-    private void applyStats(EntityEnderNivis nivis) {
-        this.nivisModel.setCarrying(nivis.func_146080_bZ().getMaterial() != Material.air);
-        this.nivisModel.setAttacking(nivis.isScreaming());
+    private void applyStats(EntityEnderIgnis ignis) {
+        this.ignisModel.setAttacking(ignis.isScreaming());
     }
 
     @Override
     public void doRender(Entity entity, double x, double y, double z, float yaw, float partTicks) {
-        EntityEnderNivis nivis = (EntityEnderNivis) entity;
+        EntityEnderIgnis ignis = (EntityEnderIgnis) entity;
 
-        if( nivis.isScreaming() ) {
+        if( ignis.isScreaming() ) {
             double multi = 0.02D;
 
             x += this.rnd.nextGaussian() * multi;
             z += this.rnd.nextGaussian() * multi;
         }
 
-        this.applyStats(nivis);
-        super.doRender(nivis, x, y, z, yaw, partTicks);
+        this.applyStats(ignis);
+        super.doRender(ignis, x, y, z, yaw, partTicks);
     }
 
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-        return EnumTextures.ENDERNIVIS_TEXTURE.getResource();
+        return EnumTextures.ENDERIGNIS_TEXTURE.getResource();
     }
 
-    private void renderCarrying(EntityEnderNivis nivis, float partTicks) {
-        super.renderEquippedItems(nivis, partTicks);
+    private void renderEquipped(EntityEnderIgnis ignis, float partTicks) {
+        super.renderEquippedItems(ignis, partTicks);
 
-        if( nivis.func_146080_bZ().getMaterial() != Material.air ) {
-            float scale = 0.5F;
-
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glPushMatrix();
-            GL11.glTranslatef(0.0F, 0.6875F, -0.75F);
-            GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-            GL11.glScalef(scale, -scale, scale);
-
-            int bright = nivis.getBrightnessForRender(partTicks);
-            int brightX = bright % 65536;
-            int brightY = bright / 65536;
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX / 1.0F, brightY / 1.0F);
-
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
-            this.bindTexture(TextureMap.locationBlocksTexture);
-            this.field_147909_c.renderBlockAsItem(nivis.func_146080_bZ(), nivis.getCarryingData(), 1.0F);
-
-            GL11.glPopMatrix();
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        }
-    }
-
-    private void renderEquipped(EntityEnderNivis nivis, float partTicks) {
-        super.renderEquippedItems(nivis, partTicks);
-
-        ItemStack heldStack = nivis.getHeldItem();
+        ItemStack heldStack = ignis.getHeldItem();
 
         if( heldStack != null ) {
             float scale = 0.575F;
 
             GL11.glPushMatrix();
 
-            this.nivisModel.rightArmPostRender();
+            this.ignisModel.rightArmPostRender();
 
             GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
             GL11.glTranslatef(0.05F, 0.5875F, -0.08F);
@@ -105,14 +72,16 @@ public class RenderEnderNivis
             GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(-20.0F, 0.0F, 0.0F, 1.0F);
 
-            int bright = nivis.getBrightnessForRender(partTicks);
+            int bright = ignis.getBrightnessForRender(partTicks);
             int brightX = bright % 65536;
             int brightY = bright / 65536;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX / 1.0F, brightY / 1.0F);
 
+            this.renderManager.itemRenderer.renderItem(ignis, heldStack, 0);
+
             int itemPasses = heldStack.getItem().getRenderPasses(heldStack.getItemDamage());
             for( int i = 0; i < itemPasses; i++ ) {
-                this.renderManager.itemRenderer.renderItem(nivis, heldStack, i);
+                this.renderManager.itemRenderer.renderItem(ignis, heldStack, i);
             }
 
             GL11.glPopMatrix();
@@ -121,13 +90,12 @@ public class RenderEnderNivis
 
     @Override
     protected void renderEquippedItems(EntityLivingBase livingBase, float partTicks) {
-        this.renderCarrying((EntityEnderNivis) livingBase, partTicks);
-        this.renderEquipped((EntityEnderNivis) livingBase, partTicks);
+        this.renderEquipped((EntityEnderIgnis) livingBase, partTicks);
     }
 
     private int renderEyes(int pass) {
         if( pass == 0 ) {
-            this.bindTexture(EnumTextures.ENDERNIVIS_GLOW_TEXTURE.getResource());
+            this.bindTexture(EnumTextures.ENDERIGNIS_GLOW_TEXTURE.getResource());
 
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_ALPHA_TEST);

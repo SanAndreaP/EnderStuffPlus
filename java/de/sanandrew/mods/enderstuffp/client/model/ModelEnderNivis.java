@@ -16,12 +16,12 @@ public class ModelEnderNivis
     private ModelRenderer head;
     private ModelRenderer jar;
     private ModelRenderer body;
+    private ModelRenderer rightArmHigh;
+    private ModelRenderer leftArmHigh;
     private ModelRenderer rightArmLow;
     private ModelRenderer leftArmLow;
     private ModelRenderer rightLeg;
     private ModelRenderer leftLeg;
-    private ModelRenderer rightArmHigh;
-    private ModelRenderer leftArmHigh;
     private int heldItemRight;
     private boolean isAttacking;
     private boolean isCarrying;
@@ -36,13 +36,12 @@ public class ModelEnderNivis
         this.head = SAPClientUtils.createNewBox(this, 0, 0, false, -4.0F, -8.0F, -4.0F, 8, 8, 8, 0.0F, -14.0F, 0.0F, 0.0F, 0.0F, 0.0F);
         this.jar = SAPClientUtils.createNewBox(this, 0, 16, false, -4.0F, -8.0F, -4.0F, 8, 8, 8, 0.0F, -14.0F, 0.0F, 0.0F, 0.0F, 0.0F);
         this.body = SAPClientUtils.createNewBox(this, 32, 16, false, -4.0F, 0.0F, -2.0F, 8, 12, 4, 0.0F, -14.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-        this.rightArmLow = SAPClientUtils.createNewBox(this, 56, 0, true, -1.0F, -2.0F, -1.0F, 2, 20, 2, -4.0F, -7.0F, 0.0F, 0.0F, 0.0F, 0.2230717F);
         this.rightArmHigh = SAPClientUtils.createNewBox(this, 56, 0, true, -1.0F, -2.0F, -1.0F, 2, 20, 2, -5.0F, -12.0F, 0.0F, 0.0F, 0.0F, 0.3490659F);
-        this.leftArmLow = SAPClientUtils.createNewBox(this, 56, 0, false, -1.0F, -2.0F, -1.0F, 2, 20, 2, 4.0F, -7.0F, 0.0F, 0.0F, 0.0F, -0.2230717F);
         this.leftArmHigh = SAPClientUtils.createNewBox(this, 56, 0, false, -1.0F, -2.0F, -1.0F, 2, 20, 2, 5.0F, -12.0F, 0.0F, 0.0F, 0.0F, -0.3490659F);
+        this.rightArmLow = SAPClientUtils.createNewBox(this, 56, 0, true, -1.0F, -2.0F, -1.0F, 2, 20, 2, -4.0F, -7.0F, 0.0F, 0.0F, 0.0F, 0.2230717F);
+        this.leftArmLow = SAPClientUtils.createNewBox(this, 56, 0, false, -1.0F, -2.0F, -1.0F, 2, 20, 2, 4.0F, -7.0F, 0.0F, 0.0F, 0.0F, -0.2230717F);
         this.rightLeg = SAPClientUtils.createNewBox(this, 56, 0, true, -1.0F, 0.0F, -1.0F, 2, 7, 2, -2.0F, -2.0F, 0.0F, -0.5235988F, 0.0F, 0.0F);
         this.leftLeg = SAPClientUtils.createNewBox(this, 56, 0, false, -1.0F, 0.0F, -1.0F, 2, 7, 2, 2.0F, -2.0F, 0.0F, -0.5235988F, 0.0F, 0.0F);
-
 
         this.rightLeg.addChild(SAPClientUtils.createNewBox(this, 56, 0, true, -1.0F, -7.0F, 6.0F,     2, 10, 2,   0.0F, 0.0F, 0.0F,   -1.570796F, 0.0F, 0.0F));
         this.rightLeg.addChild(SAPClientUtils.createNewBox(this, 56, 0, true, -1.0F, -2.0F, 5.0F,     2, 30, 2,   0.0F, 0.0F, 0.0F,   0.0F, 0.0F, 0.0F));
