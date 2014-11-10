@@ -93,7 +93,7 @@ public class EnderStuffPlus
 //        ItemEnderPetEgg.addPet(0, "EnderMiss", 0xffbbdd, 0x303030);
 //        ItemEnderPetEgg.addPet(1, "EnderAvis", 0x606060, 0xFF00FF);
 //
-//        NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
 //
         OreDictionary.registerOre("ingotNiob", new ItemStack(RegistryItems.endIngot));
 //        OreDictionary.registerOre("oreNiob", new ItemStack(ModBlockRegistry.endOre));

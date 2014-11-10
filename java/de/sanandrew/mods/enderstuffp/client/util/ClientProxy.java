@@ -11,11 +11,13 @@ import de.sanandrew.mods.enderstuffp.client.event.FovUpdateHandler;
 import de.sanandrew.mods.enderstuffp.client.event.TextureStitchHandler;
 import de.sanandrew.mods.enderstuffp.client.render.ItemRendererGlowTools;
 import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderIgnis;
+import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderMiss;
 import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderNivis;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityBait;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlIgnis;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlMiss;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlNivis;
+import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderMiss;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderIgnis;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderNivis;
 import de.sanandrew.mods.enderstuffp.network.ClientPacketHandler;
@@ -26,6 +28,8 @@ import de.sanandrew.mods.enderstuffp.util.RegistryItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -47,6 +51,7 @@ public class ClientProxy
 
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderNivis.class, new RenderEnderNivis());
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderIgnis.class, new RenderEnderIgnis());
+        RenderingRegistry.registerEntityRenderingHandler(EntityEnderMiss.class, new RenderEnderMiss());
         RenderingRegistry.registerEntityRenderingHandler(EntityPearlNivis.class, new RenderSnowball(RegistryItems.espPearls, 0));
         RenderingRegistry.registerEntityRenderingHandler(EntityPearlIgnis.class, new RenderSnowball(RegistryItems.espPearls, 1));
         RenderingRegistry.registerEntityRenderingHandler(EntityPearlMiss.class, new RenderSnowball(RegistryItems.espPearls, 2));
@@ -124,7 +129,14 @@ public class ClientProxy
             case FX_PEARL_IGNIS:
                 ParticleHelper.spawnPortalFX(x, y, z, random, 20, 1.0F, 0.3F, 0.0F);
                 break;
+            case FX_TAME:
+                ParticleHelper.spawnTameFX(x, y, z, random);
         }
+    }
+
+    @Override
+    public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+        return ClientGuiHandler.getGuiElement(id, player, world, x, y, z);
     }
 
     private static WorldClient getWorld() {

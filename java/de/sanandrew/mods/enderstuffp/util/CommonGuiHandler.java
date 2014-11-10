@@ -6,18 +6,12 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.util;
 
-public enum EnumParticleFx
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
+
+public class CommonGuiHandler
 {
-    FX_NIOBTOOL,
-    FX_PEARL_BAIT,
-    FX_PEARL_NIVIS,
-    FX_PEARL_IGNIS,
-    FX_TAME,
-    FX_REJECT;
-
-    public static final EnumParticleFx[] VALUES = values();
-
-    public final byte ordinalByte() {
-        return (byte) ordinal();
+    public static Object getGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+        return null;
     }
 }

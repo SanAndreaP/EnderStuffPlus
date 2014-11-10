@@ -11,6 +11,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.enderstuffp.client.particle.EntityColoredPortalFX;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.EntityHeartFX;
 
 import java.util.Random;
 
@@ -27,5 +28,13 @@ final class ParticleHelper
 
             Minecraft.getMinecraft().effectRenderer.addEffect(part);
         }
+    }
+
+    static void spawnTameFX(double x, double y, double z, Random rand) {
+        EntityFX part = new EntityHeartFX(Minecraft.getMinecraft().theWorld,
+                                          x + (rand.nextDouble() - 0.5D), y + (rand.nextDouble() - 0.25D), z + (rand.nextDouble() - 0.5D),
+                                          (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
+
+        Minecraft.getMinecraft().effectRenderer.addEffect(part);
     }
 }

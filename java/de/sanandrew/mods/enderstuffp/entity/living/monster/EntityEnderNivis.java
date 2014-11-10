@@ -36,7 +36,7 @@ public class EntityEnderNivis
         }
 
         if( dmgSource.isFireDamage() ) {
-            attackPts *= 5;
+            attackPts *= 5.0F;
         }
 
         return super.attackEntityFrom(dmgSource, attackPts);

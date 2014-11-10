@@ -26,7 +26,13 @@ public class ItemNiobSword
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(ItemStack stack, int pass) {
-        return pass == 1 ? this.glowMap : super.getIcon(stack, pass);
+        return this.getIconFromDamageForRenderPass(stack.getItemDamage(), pass);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconFromDamageForRenderPass(int damage, int pass) {
+        return pass == 1 ? this.glowMap : this.itemIcon;
     }
 
     @Override

@@ -26,7 +26,8 @@ import java.util.Random;
 public class ItemNiobShears
     extends ItemShears
 {
-    private List<Block> effectiveBlocks = new ArrayList<Block>();
+    private List<Block> effectiveBlocks = new ArrayList<>();
+
     @SideOnly(Side.CLIENT)
     private IIcon glowMap;
 
@@ -40,7 +41,13 @@ public class ItemNiobShears
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(ItemStack stack, int pass) {
-        return pass == 1 ? this.glowMap : super.getIcon(stack, pass);
+        return this.getIconFromDamageForRenderPass(stack.getItemDamage(), pass);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconFromDamageForRenderPass(int damage, int pass) {
+        return pass == 1 ? this.glowMap : this.itemIcon;
     }
 
     @Override
