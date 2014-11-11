@@ -24,31 +24,6 @@ public class PacketParticleFX
     public void process(ByteBufInputStream stream, ByteBuf rawData, INetHandler handler) throws IOException {
         EnderStuffPlus.proxy.handleParticle(EnumParticleFx.VALUES[stream.readByte()], stream.readDouble(), stream.readDouble(), stream.readDouble(),
                                            Tuple.readFromByteBufStream(stream));
-//        EnumParticleFx fxType = EnumParticleFx.VALUES[stream.readByte()];
-//        switch( fxType ) {
-//            case FX_DIGGING:            // FALL_THROUGH
-//            case FX_BREAK:              // FALL_THROUGH
-//            case FX_SOLDIER_DEATH:
-//                ClaySoldiersMod.proxy.spawnParticles(fxType, Quartet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(), stream.readUTF()));
-//                break;
-//            case FX_CRIT:
-//                ClaySoldiersMod.proxy.spawnParticles(fxType, Triplet.with(stream.readDouble(), stream.readDouble() + 0.1D, stream.readDouble()));
-//                break;
-//            case FX_HORSE_DEATH:        // FALL_THROUGH
-//            case FX_BUNNY_DEATH:        // FALL_THROUGH
-//            case FX_TURTLE_DEATH:
-//                ClaySoldiersMod.proxy.spawnParticles(fxType, Quartet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(), stream.readByte()));
-//                break;
-//            case FX_SPELL:
-//                ClaySoldiersMod.proxy.spawnParticles(fxType, Sextet.with(stream.readDouble(), stream.readDouble() + 0.5D, stream.readDouble(),
-//                                                                    stream.readDouble(), stream.readDouble(), stream.readDouble())
-//                );
-//                break;
-//            case FX_SHOCKWAVE:          // FALL_THROUGH
-//            case FX_MAGMAFUSE:
-//                ClaySoldiersMod.proxy.spawnParticles(fxType, Triplet.with(stream.readDouble(), stream.readDouble(), stream.readDouble()));
-//                break;
-//        }
     }
 
     @Override
@@ -58,40 +33,5 @@ public class PacketParticleFX
         stream.writeDouble((double) dataTuple.getValue(2));
         stream.writeDouble((double) dataTuple.getValue(3));
         Tuple.writeToByteBufStream((Tuple) dataTuple.getValue(4), stream);
-//        EnumParticleFx fxType = (EnumParticleFx) dataTuple.getValue(0);
-//        stream.writeByte(fxType.ordinalByte());
-//        switch( fxType ) {
-//            case FX_BREAK:          // FALL_THROUGH
-//            case FX_SOLDIER_DEATH:  // FALL_THROUGH
-//            case FX_DIGGING:
-//                stream.writeDouble((double) dataTuple.getValue(1));
-//                stream.writeDouble((double) dataTuple.getValue(2));
-//                stream.writeDouble((double) dataTuple.getValue(3));
-//                stream.writeUTF((String) dataTuple.getValue(4));
-//                break;
-//            case FX_CRIT:       // FALL_THROUGH
-//            case FX_SHOCKWAVE:  // FALL_THROUGH
-//            case FX_MAGMAFUSE:
-//                stream.writeDouble((double) dataTuple.getValue(1));
-//                stream.writeDouble((double) dataTuple.getValue(2));
-//                stream.writeDouble((double) dataTuple.getValue(3));
-//                break;
-//            case FX_HORSE_DEATH:    // FALL_THROUGH
-//            case FX_BUNNY_DEATH:    // FALL_THROUGH
-//            case FX_TURTLE_DEATH:
-//                stream.writeDouble((double) dataTuple.getValue(1));
-//                stream.writeDouble((double) dataTuple.getValue(2));
-//                stream.writeDouble((double) dataTuple.getValue(3));
-//                stream.writeByte((byte) dataTuple.getValue(4));
-//                break;
-//            case FX_SPELL:
-//                stream.writeDouble((double) dataTuple.getValue(1));
-//                stream.writeDouble((double) dataTuple.getValue(2));
-//                stream.writeDouble((double) dataTuple.getValue(3));
-//                stream.writeDouble((double) dataTuple.getValue(4));
-//                stream.writeDouble((double) dataTuple.getValue(5));
-//                stream.writeDouble((double) dataTuple.getValue(6));
-//                break;
-//        }
     }
 }

@@ -131,6 +131,10 @@ public class ClientProxy
                 break;
             case FX_TAME:
                 ParticleHelper.spawnTameFX(x, y, z, random);
+                break;
+            case FX_REJECT:
+                ParticleHelper.spawnRefuseFX(x, y, z, random);
+                break;
         }
     }
 

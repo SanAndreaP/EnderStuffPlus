@@ -31,6 +31,7 @@ import java.util.Map;
 public final class PacketProcessor
 {
     public static final short PKG_PARTICLES = 0;
+    public static final short PKG_OPEN_CLIENT_GUI = 1;
 //    public static final short PKG_SOLDIER_RENDERS = 0;
 //    public static final short PKG_SOLDIER_EFFECT_NBT = 2;
 //    public static final short PKG_SOLDIER_UPGRADE_NBT = 3;

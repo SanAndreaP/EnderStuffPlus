@@ -12,6 +12,7 @@ import de.sanandrew.mods.enderstuffp.client.particle.EntityColoredPortalFX;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntityHeartFX;
+import net.minecraft.client.particle.EntitySmokeFX;
 
 import java.util.Random;
 
@@ -31,10 +32,24 @@ final class ParticleHelper
     }
 
     static void spawnTameFX(double x, double y, double z, Random rand) {
-        EntityFX part = new EntityHeartFX(Minecraft.getMinecraft().theWorld,
-                                          x + (rand.nextDouble() - 0.5D), y + (rand.nextDouble() - 0.25D), z + (rand.nextDouble() - 0.5D),
-                                          (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
+        for( int i = 0; i < 15; i++ ) {
+            EntityFX part = new EntityHeartFX(Minecraft.getMinecraft().theWorld,
+                                              x + (rand.nextDouble() - 0.5D), y + (rand.nextDouble() * 2.9D), z + (rand.nextDouble() - 0.5D),
+                                              0.0D, 0.0D, 0.0D
+            );
 
-        Minecraft.getMinecraft().effectRenderer.addEffect(part);
+            Minecraft.getMinecraft().effectRenderer.addEffect(part);
+        }
+    }
+
+    static void spawnRefuseFX(double x, double y, double z, Random rand) {
+        for( int i = 0; i < 15; i++ ) {
+            EntityFX part = new EntitySmokeFX(Minecraft.getMinecraft().theWorld,
+                                              x + (rand.nextDouble() - 0.5D), y + (rand.nextDouble() * 2.9D), z + (rand.nextDouble() - 0.5D),
+                                              0.0D, 0.0D, 0.0D
+            );
+
+            Minecraft.getMinecraft().effectRenderer.addEffect(part);
+        }
     }
 }

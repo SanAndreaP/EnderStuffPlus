@@ -72,8 +72,4 @@ public class CommonProxy
     public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         return null;
     }
-
-    public void openGui(EntityPlayer player, EnumGui id, int x, int y, int z) {
-        FMLNetworkHandler.openGui(player, EnderStuffPlus.instance, id.ordinal(), player.worldObj, x, y, z);
-    }
 }

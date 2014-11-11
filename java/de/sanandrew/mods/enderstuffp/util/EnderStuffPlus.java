@@ -16,9 +16,11 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import de.sanandrew.mods.enderstuffp.enchantment.EnchantmentEnderChestTeleport;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -119,5 +121,13 @@ public class EnderStuffPlus
     @EventHandler
     public void postInit(FMLPostInitializationEvent evt) {
 //        channelHandler.postInitialise();
+    }
+
+    public static void openGui(EntityPlayer player, EnumGui id, int x, int y, int z, boolean clientOnly) {
+        if( !clientOnly ) {
+            FMLNetworkHandler.openGui(player, instance, id.ordinal(), player.worldObj, x, y, z);
+        } else {
+
+        }
     }
 }

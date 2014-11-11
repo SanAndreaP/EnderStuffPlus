@@ -6,6 +6,8 @@ import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
+import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats.CoatBaseEntry;
+import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats.CoatColorEntry;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,11 +35,10 @@ public class ItemRaincoat
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public void addInformation(ItemStack stack, EntityPlayer player, List infos, boolean isAdvancedInfo) {
         if( stack.hasTagCompound() ) {
-            String base = stack.getTagCompound().getString("base");
-            if( RegistryRaincoats.BASE_LIST.containsKey(base) ) {
-                RegistryRaincoats.CoatBaseEntry entry = RegistryRaincoats.BASE_LIST.get(base);
+            CoatBaseEntry entry = RegistryRaincoats.getCoatBase(stack.getTagCompound().getString("base"));
+            if( entry != RegistryRaincoats.NULL_BASE ) {
                 infos.add("\247o" + SAPUtils.translate(entry.name));
-                String[] split = entry.desc.split("\n");
+                String[] split = SAPUtils.translate(entry.desc).split("\n");
                 for( String effect : split ) {
                     infos.add("\2473" + effect);
                 }
@@ -49,12 +50,12 @@ public class ItemRaincoat
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int pass) {
         if( stack.hasTagCompound() ) {
-            String base = stack.getTagCompound().getString("base");
-            String color = stack.getTagCompound().getString("color");
-            if( pass == 0 && RegistryRaincoats.COLOR_LIST.containsKey(color) ) {
-                return RegistryRaincoats.COLOR_LIST.get(color).color;
-            } else if( pass > 0 && RegistryRaincoats.BASE_LIST.containsKey(base) ) {
-                return RegistryRaincoats.BASE_LIST.get(base).color;
+            CoatBaseEntry base = RegistryRaincoats.getCoatBase(stack.getTagCompound().getString("base"));
+            CoatColorEntry color = RegistryRaincoats.getCoatColor(stack.getTagCompound().getString("color"));
+            if( pass == 0 ) {
+                return color.color;
+            } else if( pass > 0 ) {
+                return base.color;
             }
         }
 
@@ -70,10 +71,9 @@ public class ItemRaincoat
     @Override
     public String getItemStackDisplayName(ItemStack par1ItemStack) {
         if( par1ItemStack.getTagCompound() != null ) {
-            String clr = par1ItemStack.getTagCompound().getString("color");
-            if( RegistryRaincoats.COLOR_LIST.containsKey(clr) ) {
-                return String.format(super.getItemStackDisplayName(par1ItemStack), SAPUtils.translate(RegistryRaincoats.COLOR_LIST.get(clr).name));
-            }
+            CoatColorEntry clr = RegistryRaincoats.getCoatColor(par1ItemStack.getTagCompound().getString("color"));
+
+            return String.format(super.getItemStackDisplayName(par1ItemStack), SAPUtils.translate(clr.name));
         }
         return String.format(super.getItemStackDisplayName(par1ItemStack), "[UNKNOWN]");
     }
@@ -82,8 +82,8 @@ public class ItemRaincoat
     @SideOnly(Side.CLIENT)
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
-        for( String base : RegistryRaincoats.BASE_LIST.keySet() ) {
-            for( String color : RegistryRaincoats.COLOR_LIST.keySet() ) {
+        for( String base : RegistryRaincoats.getBaseList() ) {
+            for( String color : RegistryRaincoats.getColorList() ) {
                 NBTTagCompound nbt = new NBTTagCompound();
                 ItemStack is = new ItemStack(this, 1, 0);
                 nbt.setString("base", base);

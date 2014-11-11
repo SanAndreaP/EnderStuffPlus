@@ -163,11 +163,11 @@ public class EntityEnderMiss
 
         if( this.rand.nextInt(2) == 0 ) {
             NBTTagCompound nbt = new NBTTagCompound();
-            int rndBase = this.rand.nextInt(RegistryRaincoats.BASE_LIST.size());
-            int rndColor = this.rand.nextInt(RegistryRaincoats.COLOR_LIST.size());
 
-            nbt.setString("base", SAPUtils.getArrayFromCollection(RegistryRaincoats.BASE_LIST.keySet(), String.class)[rndBase]);
-            nbt.setString("color", SAPUtils.getArrayFromCollection(RegistryRaincoats.COLOR_LIST.keySet(), String.class)[rndColor]);
+            List<String> bases = RegistryRaincoats.getBaseList();
+            List<String> colors = RegistryRaincoats.getColorList();
+            nbt.setString("base", bases.get(rand.nextInt(bases.size())));
+            nbt.setString("color", colors.get(rand.nextInt(colors.size())));
             ItemStack stack = new ItemStack(RegistryItems.rainCoat, 1, 0);
             stack.setTagCompound(nbt);
             this.setCoat(stack);
@@ -334,22 +334,19 @@ public class EntityEnderMiss
         if( player.getCurrentEquippedItem() != null ) {
             ItemStack playerItem = player.getCurrentEquippedItem();
 
-            if( SAPUtils.areItemInstEqual(playerItem, Blocks.yellow_flower) && !this.worldObj.isRemote && (!this.isTamed() || this.ownerUUID == null) ) {
+            if( !this.worldObj.isRemote && SAPUtils.areItemInstEqual(playerItem, Blocks.yellow_flower) && (!this.isTamed() || this.ownerUUID == null) ) {
                 if( this.rand.nextInt(10) == 0 ) {
                     this.setTamed(true);
                     this.ownerUUID = player.getGameProfile().getId();
 
-                    //TODO: spawnTameFX
-//                        ESPModRegistry.sendPacketAllRng("fxTameAcc", this.posX, this.posY, this.posZ, 128.0D, this.dimension,
-//                                                        this.posX, this.posY, this.posZ, this.width, this.height);
                     EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_TAME, this.posX, this.posY + this.height / 2.0F, this.posZ, this.dimension, null);
-
                     playerItem.stackSize--;
+
                     return true;
                 } else {
                     EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_REJECT, this.posX, this.posY + this.height / 2.0F, this.posZ, this.dimension, null);
-
                     playerItem.stackSize--;
+
                     return true;
                 }
             } else if( this.isTamed() && !this.isRidden() ) {
@@ -384,8 +381,6 @@ public class EntityEnderMiss
                         return true;
                     }
                 } else if( worldObj.isRemote && playerItem.getItem() == RegistryItems.enderPetStaff ) {
-                    // TODO: spawnPetGUI
-//                    PacketRegistry.sendPacketToPlayer(ESPModRegistry.MOD_ID, "showPetGui", (Player) player, this);
                     EnderStuffPlus.proxy.openGui(player, EnumGui.ENDERPET, this.getEntityId(), 0, 0);
                     return true;
                 }

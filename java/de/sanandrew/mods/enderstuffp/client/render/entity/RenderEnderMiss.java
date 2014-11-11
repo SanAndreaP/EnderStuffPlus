@@ -72,7 +72,7 @@ public class RenderEnderMiss
 
             GL11.glPushMatrix();
 
-            this.missModel.bipedRightArm.postRender(0.0625F);
+            this.missModel.rightArmPostRender();
 
             GL11.glTranslatef(-0.0625F, 1.4375F, 0.0625F);
             GL11.glTranslatef(0.25F, 0.2875F, -0.1875F);
@@ -102,7 +102,7 @@ public class RenderEnderMiss
 
                 GL11.glPushMatrix();
 
-                this.missModel.bipedLeftArm.postRender(0.0625F);
+                this.missModel.leftArmPostRender();
 
                 GL11.glTranslatef(-0.0625F, 1.4375F, 0.0625F);
                 GL11.glTranslatef(0.10F, 0.2875F, -0.1075F);
@@ -112,10 +112,6 @@ public class RenderEnderMiss
                 GL11.glRotatef(20.0F, 0.0F, 0.0F, 1.0F);
 
                 this.renderManager.itemRenderer.renderItem(miss, new ItemStack(RegistryItems.avisFeather), 0);
-
-                if( heldStack.getItem().isFull3D() ) {
-                    this.renderManager.itemRenderer.renderItem(miss, new ItemStack(RegistryItems.avisFeather), 1);
-                }
 
                 GL11.glPopMatrix();
             }
@@ -181,6 +177,10 @@ public class RenderEnderMiss
 
         super.renderModel(livingBase, limbSwing, prevLimbSwing, rotFloat, rotYaw, rotPitch, par7);
 
+        drawBow(miss, rotYaw, rotPitch);
+    }
+
+    private void drawBow(EntityEnderMiss miss, float rotYaw, float rotPitch) {
         Tessellator tess = Tessellator.instance;
         double minU = 0.352D;
         double minV = -0.0781D;
@@ -300,8 +300,7 @@ public class RenderEnderMiss
     private int renderPassSpecial(EntityEnderMiss miss, int pass, float partTicks) {
         if( pass == 0 && miss.hurtTime <= 0 ) {
             this.setRenderPassModel(this.missModel);
-            this.bindTexture(miss.isSpecial() ? EnumTextures.ENDERMISS_GLOW_TEXTURE_SPEC.getResource()
-                                              : EnumTextures.ENDERMISS_GLOW_TEXTURE.getResource());
+            this.bindTexture(miss.isSpecial() ? EnumTextures.ENDERMISS_GLOW_TEXTURE_SPEC.getResource() : EnumTextures.ENDERMISS_GLOW_TEXTURE.getResource());
 
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -330,33 +329,27 @@ public class RenderEnderMiss
 
             if( miss.hasCoat() ) {
                 CoatColorEntry coatClr = miss.getCoatColor();
-                if( coatClr != null ) {
-                    coatClr.preRender();
-                    this.bindTexture(coatClr.missTexture);
-                }
 
+                coatClr.preRender();
+                this.bindTexture(coatClr.missTexture);
                 this.setRenderPassModel(this.coatModel);
 
                 return 1;
             }
         } else if( pass == 2 && miss.hasCoat() ) {
             CoatColorEntry coatClr = miss.getCoatColor();
-            if( coatClr != null ) {
-                coatClr.postRender();
-            }
-
             CoatBaseEntry coatBse = miss.getCoatBase();
-            if( coatBse != null ) {
-                coatBse.preRender();
-                this.bindTexture(coatBse.missTexture);
-            }
+
+            coatClr.postRender();
+            coatBse.preRender();
+
+            this.bindTexture(coatBse.missTexture);
 
             return 1;
         } else if( pass == 3 && miss.hasCoat() ) {
             CoatBaseEntry coatBse = miss.getCoatBase();
-            if( coatBse != null ) {
-                coatBse.postRender();
-            }
+
+            coatBse.postRender();
 
             return 0;
         }

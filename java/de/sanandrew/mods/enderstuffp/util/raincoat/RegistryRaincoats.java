@@ -3,83 +3,121 @@ package de.sanandrew.mods.enderstuffp.util.raincoat;
 import com.google.common.collect.Maps;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.RegistryItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
-public class RegistryRaincoats
+public final class RegistryRaincoats
 {
-    public static final Map<String, CoatBaseEntry> BASE_LIST = Maps.newLinkedHashMap();
-    public static final Map<String, CoatColorEntry> COLOR_LIST = Maps.newLinkedHashMap();
+    private static final Map<String, CoatBaseEntry> BASE_LIST = Maps.newLinkedHashMap();
+    private static final Map<String, CoatColorEntry> COLOR_LIST = Maps.newLinkedHashMap();
 
     public static final List<ItemStack> BASE_STACKS = new ArrayList<>();
     public static final List<ItemStack> COLOR_STACKS = new ArrayList<>();
 
-    public static final CoatBaseEntry NULL_BASE = new CoatBaseEntry("NULL", 0, "NULL", null, null, null);
-    public static final CoatColorEntry NULL_COLOR = new CoatColorEntry("NULL", 0, null, null, null);
+    public static final CoatBaseEntry NULL_BASE = new CoatBaseEntry("NULL", 0xFFFFFF, "NULL", new ResourceLocation(""), new ResourceLocation(""), null);
+    public static final CoatColorEntry NULL_COLOR = new CoatColorEntry("NULL", 0xFFFFFF, new ResourceLocation(""), new ResourceLocation(""), null);
+
+    public static CoatBaseEntry baseGold;
+    public static CoatBaseEntry baseNiob;
+    public static CoatBaseEntry baseIron;
+    public static CoatBaseEntry baseRedstone;
+    public static CoatBaseEntry baseObsidian;
+    public static CoatBaseEntry baseTantal;
 
     public static void initialize() {
-        addBase(EnderStuffPlus.MOD_ID, 0, "item.esp:rainCoat.base.gold",     "item.esp:rainCoat.base.gold.desc",     0xFFC545, "textures/entity/enderMiss_cape/stripes_gold.png", "textures/entity/enderAvis_cape/stripes_gold.png", new ItemStack(Blocks.gold_block));
-        addBase(EnderStuffPlus.MOD_ID, 1, "item.esp:rainCoat.base.niobium",  "item.esp:rainCoat.base.niobium.desc",  0x3C408B, "textures/entity/enderMiss_cape/stripes_niob.png", "textures/entity/enderAvis_cape/stripes_niob.png", new ItemStack(/*ModBlockRegistry.endBlock*/Blocks.grass, 1, 0));
-        addBase(EnderStuffPlus.MOD_ID, 2, "item.esp:rainCoat.base.iron",     "item.esp:rainCoat.base.iron.desc",     0xA9A9A9, "textures/entity/enderMiss_cape/stripes_iron.png", "textures/entity/enderAvis_cape/stripes_iron.png", new ItemStack(Blocks.iron_block));
-        addBase(EnderStuffPlus.MOD_ID, 3, "item.esp:rainCoat.base.redstone", "item.esp:rainCoat.base.redstone.desc", 0xC62127, "textures/entity/enderMiss_cape/stripes_reds.png", "textures/entity/enderAvis_cape/stripes_reds.png", new ItemStack(Blocks.redstone_block));
-        addBase(EnderStuffPlus.MOD_ID, 4, "item.esp:rainCoat.base.obsidian", "item.esp:rainCoat.base.obsidian.desc", 0x1C1C22, "textures/entity/enderMiss_cape/stripes_obsd.png", "textures/entity/enderAvis_cape/stripes_obsd.png", new ItemStack(Blocks.obsidian));
-        addBase(EnderStuffPlus.MOD_ID, 5, "item.esp:rainCoat.base.tantalum", "item.esp:rainCoat.base.tantalum.desc", 0xFF81E8, "textures/entity/enderMiss_cape/stripes_tant.png", "textures/entity/enderAvis_cape/stripes_tant.png", new ItemStack(/*ModBlockRegistry.endBlock*/Blocks.grass, 1, 1));
+        baseGold = addBase(EnderStuffPlus.MOD_ID, "gold", 0xFFC545, "textures/entity/enderMiss_cape/stripes_gold.png",
+                           "textures/entity/enderAvis_cape/stripes_gold.png", new ItemStack(Blocks.gold_block)
+        );
+        baseNiob = addBase(EnderStuffPlus.MOD_ID, "niobium", 0x3C408B, "textures/entity/enderMiss_cape/stripes_niob.png",
+                           "textures/entity/enderAvis_cape/stripes_niob.png", new ItemStack(/*ModBlockRegistry.endBlock*/Blocks.grass, 1, 0)
+        );
+        baseIron = addBase(EnderStuffPlus.MOD_ID, "iron", 0xA9A9A9,
+                           "textures/entity/enderMiss_cape/stripes_iron.png", "textures/entity/enderAvis_cape/stripes_iron.png", new ItemStack(Blocks.iron_block)
+        );
+        baseRedstone = addBase(EnderStuffPlus.MOD_ID, "redstone", 0xC62127, "textures/entity/enderMiss_cape/stripes_reds.png",
+                               "textures/entity/enderAvis_cape/stripes_reds.png", new ItemStack(Blocks.redstone_block)
+        );
+        baseObsidian = addBase(EnderStuffPlus.MOD_ID, "obsidian", 0x1C1C22, "textures/entity/enderMiss_cape/stripes_obsd.png",
+                               "textures/entity/enderAvis_cape/stripes_obsd.png", new ItemStack(Blocks.obsidian)
+        );
+        baseTantal = addBase(EnderStuffPlus.MOD_ID, "tantalum", 0xFF81E8, "textures/entity/enderMiss_cape/stripes_tant.png",
+                             "textures/entity/enderAvis_cape/stripes_tant.png", new ItemStack(/*ModBlockRegistry.endBlock*/Blocks.grass, 1, 1)
+        );
 
-        addColor(EnderStuffPlus.MOD_ID,  0, "item.esp:rainCoat.color.black",       0x1A1515, "textures/entity/enderMiss_cape/black.png",     "textures/entity/enderAvis_cape/black.png",     new ItemStack(Blocks.wool, 1, 15));
-        addColor(EnderStuffPlus.MOD_ID,  1, "item.esp:rainCoat.color.red",         0xCF3B37, "textures/entity/enderMiss_cape/red.png",       "textures/entity/enderAvis_cape/red.png",       new ItemStack(Blocks.wool, 1, 14));
-        addColor(EnderStuffPlus.MOD_ID,  2, "item.esp:rainCoat.color.green",       0x3D591B, "textures/entity/enderMiss_cape/green.png",     "textures/entity/enderAvis_cape/green.png",     new ItemStack(Blocks.wool, 1, 13));
-        addColor(EnderStuffPlus.MOD_ID,  3, "item.esp:rainCoat.color.brown",       0x663A20, "textures/entity/enderMiss_cape/brown.png",     "textures/entity/enderAvis_cape/brown.png",     new ItemStack(Blocks.wool, 1, 12));
-        addColor(EnderStuffPlus.MOD_ID,  4, "item.esp:rainCoat.color.blue",        0x3343C6, "textures/entity/enderMiss_cape/blue.png",      "textures/entity/enderAvis_cape/blue.png",      new ItemStack(Blocks.wool, 1, 11));
-        addColor(EnderStuffPlus.MOD_ID,  5, "item.esp:rainCoat.color.purple",      0xB54AE7, "textures/entity/enderMiss_cape/purple.png",    "textures/entity/enderAvis_cape/purple.png",    new ItemStack(Blocks.wool, 1, 10));
-        addColor(EnderStuffPlus.MOD_ID,  6, "item.esp:rainCoat.color.cyan",        0x349EC1, "textures/entity/enderMiss_cape/cyan.png",      "textures/entity/enderAvis_cape/cyan.png",      new ItemStack(Blocks.wool, 1, 9));
-        addColor(EnderStuffPlus.MOD_ID,  7, "item.esp:rainCoat.color.silver",      0xD3D8D8, "textures/entity/enderMiss_cape/lightgray.png", "textures/entity/enderAvis_cape/lightgray.png", new ItemStack(Blocks.wool, 1, 8));
-        addColor(EnderStuffPlus.MOD_ID,  8, "item.esp:rainCoat.color.gray",        0x4D4D4D, "textures/entity/enderMiss_cape/gray.png",      "textures/entity/enderAvis_cape/gray.png",      new ItemStack(Blocks.wool, 1, 7));
-        addColor(EnderStuffPlus.MOD_ID,  9, "item.esp:rainCoat.color.pink",        0xF4BBD1, "textures/entity/enderMiss_cape/pink.png",      "textures/entity/enderAvis_cape/pink.png",      new ItemStack(Blocks.wool, 1, 6));
-        addColor(EnderStuffPlus.MOD_ID, 10, "item.esp:rainCoat.color.lime",        0x50E243, "textures/entity/enderMiss_cape/lime.png",      "textures/entity/enderAvis_cape/lime.png",      new ItemStack(Blocks.wool, 1, 5));
-        addColor(EnderStuffPlus.MOD_ID, 11, "item.esp:rainCoat.color.yellow",      0xE4DC2A, "textures/entity/enderMiss_cape/yellow.png",    "textures/entity/enderAvis_cape/yellow.png",    new ItemStack(Blocks.wool, 1, 4));
-        addColor(EnderStuffPlus.MOD_ID, 12, "item.esp:rainCoat.color.lightBlue",   0x98C2F1, "textures/entity/enderMiss_cape/lightblue.png", "textures/entity/enderAvis_cape/lightblue.png", new ItemStack(Blocks.wool, 1, 3));
-        addColor(EnderStuffPlus.MOD_ID, 13, "item.esp:rainCoat.color.magenta",     0xE66AEB, "textures/entity/enderMiss_cape/magenta.png",   "textures/entity/enderAvis_cape/magenta.png",   new ItemStack(Blocks.wool, 1, 2));
-        addColor(EnderStuffPlus.MOD_ID, 14, "item.esp:rainCoat.color.orange",      0xF7B24C, "textures/entity/enderMiss_cape/orange.png",    "textures/entity/enderAvis_cape/orange.png",    new ItemStack(Blocks.wool, 1, 1));
-        addColor(EnderStuffPlus.MOD_ID, 15, "item.esp:rainCoat.color.white",       0xF8F8F8, "textures/entity/enderMiss_cape/white.png",     "textures/entity/enderAvis_cape/white.png",     new ItemStack(Blocks.wool, 1, 0));
-        addColor(EnderStuffPlus.MOD_ID, 16, "item.esp:rainCoat.color.gold",        0xC5B600, "textures/entity/enderMiss_cape/gold.png",      "textures/entity/enderAvis_cape/gold.png",      new ItemStack(Items.gold_nugget));
-        addColor(EnderStuffPlus.MOD_ID, 17, "item.esp:rainCoat.color.niobium",     0x141E61, "textures/entity/enderMiss_cape/niob.png",      "textures/entity/enderAvis_cape/niob.png",      new ItemStack(RegistryItems.endNugget, 1, 0));
+        ArrayList<Triplet<String, Integer, Integer>> colors = new ArrayList<>(18);
+        colors.add(Triplet.with("black", 0x1A1515, 15));
+        colors.add(Triplet.with("red", 0xCF3B37, 14));
+        colors.add(Triplet.with("green", 0x3D591B, 13));
+        colors.add(Triplet.with("brown", 0x663A20, 12));
+        colors.add(Triplet.with("blue", 0x3343C6, 11));
+        colors.add(Triplet.with("purple", 0xB54AE7, 10));
+        colors.add(Triplet.with("cyan", 0x349EC1, 9));
+        colors.add(Triplet.with("lightgray", 0xD3D8D8, 8));
+        colors.add(Triplet.with("gray", 0x4D4D4D, 7));
+        colors.add(Triplet.with("pink", 0xF4BBD1, 6));
+        colors.add(Triplet.with("lime", 0x50E243, 5));
+        colors.add(Triplet.with("yellow", 0xE4DC2A, 4));
+        colors.add(Triplet.with("lightblue", 0x98C2F1, 3));
+        colors.add(Triplet.with("magenta", 0xE66AEB, 2));
+        colors.add(Triplet.with("orange", 0xF7B24C, 1));
+        colors.add(Triplet.with("white", 0xF8F8F8, 0));
+        for( Triplet<String, Integer, Integer> clr : colors ) {
+            addColor(EnderStuffPlus.MOD_ID, clr.getValue0(), clr.getValue1(), "textures/entity/enderMiss_cape/" + clr.getValue0() + ".png",
+                     "textures/entity/enderAvis_cape/" + clr.getValue0() + ".png", new ItemStack(Blocks.wool, 1, clr.getValue2())
+            );
+        }
+        addColor(EnderStuffPlus.MOD_ID, "gold", 0xC5B600, "textures/entity/enderMiss_cape/gold.png", "textures/entity/enderAvis_cape/gold.png",
+                 new ItemStack(Items.gold_nugget)
+        );
+        addColor(EnderStuffPlus.MOD_ID, "niobium", 0x141E61, "textures/entity/enderMiss_cape/niob.png", "textures/entity/enderAvis_cape/niob.png",
+                 new ItemStack(RegistryItems.endNugget, 1, 0)
+        );
 
-        addSpecialColor(EnderStuffPlus.MOD_ID, 18, new CoatColorTransparent("item.esp:rainCoat.color.transparent", 0xCDCDCD,
-                                                                            new ResourceLocation("enderstuffp", "textures/entity/enderMiss_cape/transp.png"),
-                                                                            new ResourceLocation("enderstuffp", "textures/entity/enderAvis_cape/transp.png"),
-                                                                            new ItemStack(Blocks.glass)));
+        addSpecialColor(EnderStuffPlus.MOD_ID, new CoatColorTransparent("transparent", 0xCDCDCD,
+                                                                        new ResourceLocation(EnderStuffPlus.MOD_ID, "textures/entity/enderMiss_cape/transp.png"),
+                                                                        new ResourceLocation(EnderStuffPlus.MOD_ID, "textures/entity/enderAvis_cape/transp.png"),
+                                                                        new ItemStack(Blocks.glass))
+        );
     }
 
-    public static void addBase(String modid, int baseId, String baseName, String baseDesc, int itemColor, String missTexture, String avisTexture,
-                               ItemStack craftingIngredient) {
-        ResourceLocation miss = new ResourceLocation(modid, missTexture);
-        ResourceLocation avis = new ResourceLocation(modid, avisTexture);
-        addSpecialBase(modid, baseId, new CoatBaseEntry(baseName, itemColor, baseDesc, miss, avis, craftingIngredient));
+    public static CoatBaseEntry addBase(String modId, String name, int color, String missTexture, String avisTexture, ItemStack ingredient) {
+        ResourceLocation miss = new ResourceLocation(modId, missTexture);
+        ResourceLocation avis = new ResourceLocation(modId, avisTexture);
+        String factoredName = "item." + EnderStuffPlus.MOD_ID + ":rainCoat.base." + name;
+        CoatBaseEntry coatBase = new CoatBaseEntry(factoredName, color, factoredName + ".desc", miss, avis, ingredient);
+
+        addSpecialBase(modId, coatBase);
+
+        return coatBase;
     }
 
-    public static void addColor(String modid, int colorId, String colorName, int itemColor, String missTexture, String avisTexture, ItemStack craftingIngredient) {
-        ResourceLocation miss = new ResourceLocation(modid, missTexture);
-        ResourceLocation avis = new ResourceLocation(modid, avisTexture);
-        addSpecialColor(modid, colorId, new CoatColorEntry(colorName, itemColor, miss, avis, craftingIngredient));
+    public static void addColor(String modId, String name, int color, String missTexture, String avisTexture, ItemStack ingredient) {
+        ResourceLocation miss = new ResourceLocation(modId, missTexture);
+        ResourceLocation avis = new ResourceLocation(modId, avisTexture);
+        String factoredName = "item." + EnderStuffPlus.MOD_ID + ":rainCoat.color." + name;
+        addSpecialColor(modId, new CoatColorEntry(factoredName, color, miss, avis, ingredient));
     }
 
-    public static void addSpecialColor(String modid, int colorId, CoatColorEntry entry) {
+    public static void addSpecialColor(String modid, CoatColorEntry entry) {
         ItemStack craftingIngredient = entry.craftingItem.copy();
-        COLOR_LIST.put(modid + String.format("_%03d", colorId), entry);
+        COLOR_LIST.put(UUID.nameUUIDFromBytes(ArrayUtils.addAll(modid.getBytes(), entry.name.getBytes())).toString(), entry);
         COLOR_STACKS.add(craftingIngredient);
     }
 
-    public static void addSpecialBase(String modid, int baseId, CoatBaseEntry entry) {
+    public static void addSpecialBase(String modid, CoatBaseEntry entry) {
         ItemStack craftingIngredient = entry.craftingItem.copy();
-        BASE_LIST.put(modid + String.format("_%03d", baseId), entry);
+        BASE_LIST.put(UUID.nameUUIDFromBytes(ArrayUtils.addAll(modid.getBytes(), entry.name.getBytes())).toString(), entry);
         BASE_STACKS.add(craftingIngredient);
     }
 
@@ -99,6 +137,14 @@ public class RegistryRaincoats
         return NULL_COLOR;
     }
 
+    public static List<String> getBaseList() {
+        return new ArrayList<>(BASE_LIST.keySet());
+    }
+
+    public static List<String> getColorList() {
+        return new ArrayList<>(COLOR_LIST.keySet());
+    }
+
     public static class CoatBaseEntry
     {
         public final int color;
@@ -108,14 +154,13 @@ public class RegistryRaincoats
         public final ResourceLocation avisTexture;
         public final ItemStack craftingItem;
 
-        public CoatBaseEntry(String baseName, int itemColor, String baseDesc, ResourceLocation baseMissTexture,
-                             ResourceLocation baseAvisTexture, ItemStack craftingIngredient) {
-            this.color = itemColor;
-            this.desc = baseDesc;
-            this.name = baseName;
-            this.missTexture = baseMissTexture;
-            this.avisTexture = baseAvisTexture;
-            this.craftingItem = craftingIngredient;
+        public CoatBaseEntry(String name, int color, String desc, ResourceLocation missTexture, ResourceLocation avisTexture, ItemStack ingredient) {
+            this.color = color;
+            this.desc = desc;
+            this.name = name;
+            this.missTexture = missTexture;
+            this.avisTexture = avisTexture;
+            this.craftingItem = ingredient;
         }
 
         @Override
@@ -128,10 +173,12 @@ public class RegistryRaincoats
         }
 
         @SideOnly(Side.CLIENT)
-        public void preRender() { }
+        public void preRender() {
+        }
 
         @SideOnly(Side.CLIENT)
-        public void postRender() { }
+        public void postRender() {
+        }
     }
 
     public static class CoatColorEntry
@@ -142,13 +189,12 @@ public class RegistryRaincoats
         public final ResourceLocation avisTexture;
         public final ItemStack craftingItem;
 
-        public CoatColorEntry(String colorName, int itemColor, ResourceLocation colorMissTexture, ResourceLocation colorAvisTexture,
-                              ItemStack craftingIngredient) {
-            this.color = itemColor;
-            this.name = colorName;
-            this.missTexture = colorMissTexture;
-            this.avisTexture = colorAvisTexture;
-            this.craftingItem = craftingIngredient;
+        public CoatColorEntry(String name, int color, ResourceLocation missTexture, ResourceLocation avisTexture, ItemStack ingredient) {
+            this.color = color;
+            this.name = name;
+            this.missTexture = missTexture;
+            this.avisTexture = avisTexture;
+            this.craftingItem = ingredient;
         }
 
         @Override
@@ -161,9 +207,11 @@ public class RegistryRaincoats
         }
 
         @SideOnly(Side.CLIENT)
-        public void preRender() { }
+        public void preRender() {
+        }
 
         @SideOnly(Side.CLIENT)
-        public void postRender() { }
+        public void postRender() {
+        }
     }
 }
