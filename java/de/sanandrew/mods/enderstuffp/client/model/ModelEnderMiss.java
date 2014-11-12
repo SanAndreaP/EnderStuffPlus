@@ -45,16 +45,16 @@ public class ModelEnderMiss
         this.body = SAPClientUtils.createNewBox(this, 32, 16, false, -4.0F, 0.0F, -2.0F, 8, 12, 4, 0.0F, -14.0F, 0.0F, 0.0F, 0.0F, 0.0F);
         this.rightArm = SAPClientUtils.createNewBox(this, 64, 0, true, -1.0F, -2.0F, -1.0F, 2, 30, 2, -3.0F, -12.0F, 0.0F, 0.0F, 0.0F, 0.0F);
         this.leftArm = SAPClientUtils.createNewBox(this, 64, 0, false, -1.0F, -2.0F, -1.0F, 2, 30, 2, 5.0F, -12.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-        this.rightLeg = SAPClientUtils.createNewBox(this, 56, 0, true, -1.0F, 0.0F, -1.0F, 2, 30, 2, -2.0F, -4.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-        this.leftLeg = SAPClientUtils.createNewBox(this, 56, 0, false, -1.0F, 0.0F, -1.0F, 2, 30, 2, 2.0F, -4.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+        this.rightLeg = SAPClientUtils.createNewBox(this, 56, 0, true, -1.0F, 0.0F, -1.0F, 2, 30, 2, -2.0F, -3.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+        this.leftLeg = SAPClientUtils.createNewBox(this, 56, 0, false, -1.0F, 0.0F, -1.0F, 2, 30, 2, 2.0F, -3.0F, 0.0F, 0.0F, 0.0F, 0.0F);
 
         float scale = 0.1F;
         this.coatHead = SAPClientUtils.createNewBox(this, 0, 0, false, -4.0F, -8.0F, -4.0F, 8, 8, 8, scale, 0.0F, -14.0F, 0.0F, 0.0F, 0.0F, 0.0F);
         this.coatBody = SAPClientUtils.createNewBox(this, 32, 16, false, -4.0F, 0.0F, -2.0F, 8, 12, 4, scale, 0.0F, -14.0F, 0.0F, 0.0F, 0.0F, 0.0F);
         this.coatRightArm = SAPClientUtils.createNewBox(this, 64, 0, true, -1.0F, -2.0F, -1.0F, 2, 30, 2, scale, -5.0F, -12.0F, 0.0F, 0.0F, 0.0F, 0.0F);
         this.coatLeftArm = SAPClientUtils.createNewBox(this, 64, 0, false, -1.0F, -2.0F, -1.0F, 2, 30, 2, scale, 5.0F, -12.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-        this.coatRightLeg = SAPClientUtils.createNewBox(this, 56, 0, true, -1.0F, 0.0F, -1.0F, 2, 30, 2, scale, -2.0F, -4.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-        this.coatLeftLeg = SAPClientUtils.createNewBox(this, 56, 0, false, -1.0F, 0.0F, -1.0F, 2, 30, 2, scale, 2.0F, -4.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+        this.coatRightLeg = SAPClientUtils.createNewBox(this, 56, 0, true, -1.0F, 0.0F, -1.0F, 2, 30, 2, scale, -2.0F, -3.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+        this.coatLeftLeg = SAPClientUtils.createNewBox(this, 56, 0, false, -1.0F, 0.0F, -1.0F, 2, 30, 2, scale, 2.0F, -3.0F, 0.0F, 0.0F, 0.0F, 0.0F);
     }
 
     private void drawSkirt() {
@@ -98,44 +98,45 @@ public class ModelEnderMiss
             tessellator.draw();
             GL11.glPopMatrix();
         } else {
+            double yShift = -1.57D;
             tessellator.startDrawingQuads();            // left side
             tessellator.setNormal(1.0F, 0.0F, 0.0F);
-            tessellator.addVertexWithUV(-0.251D, 1.45D, -0.4, 64.0 / 256.0, 80.0 / 128.0); // minU, maxV
-            tessellator.addVertexWithUV(-0.251D, 1.25D, -0.7, 72.0 / 256.0, 80.0 / 128.0); // maxU, maxV
-            tessellator.addVertexWithUV(-0.251D, 1.25D, 0.125, 72.0 / 256.0, 64.0 / 128.0); // maxU, minV
-            tessellator.addVertexWithUV(-0.251D, 1.45D, 0.125, 64.0 / 256.0, 64.0 / 128.0); // minU, minV
+            tessellator.addVertexWithUV(-0.251D, 1.45D + yShift, -0.4, 64.0 / 256.0, 80.0 / 128.0); // minU, maxV
+            tessellator.addVertexWithUV(-0.251D, 1.25D + yShift, -0.7, 72.0 / 256.0, 80.0 / 128.0); // maxU, maxV
+            tessellator.addVertexWithUV(-0.251D, 1.25D + yShift, 0.125, 72.0 / 256.0, 64.0 / 128.0); // maxU, minV
+            tessellator.addVertexWithUV(-0.251D, 1.45D + yShift, 0.125, 64.0 / 256.0, 64.0 / 128.0); // minU, minV
             tessellator.draw();
 
             tessellator.startDrawingQuads();            // top side
             tessellator.setNormal(0.0F, -1.0F, 0.0F);
-            tessellator.addVertexWithUV(-0.251D, 1.25D, -0.7D, 72.0D / 256.0D, 80.0D / 128.0D); // maxU, maxV
-            tessellator.addVertexWithUV(0.251D, 1.25D, -0.7D, 88.0D / 256.0D, 80.0D / 128.0D); // minU, maxV
-            tessellator.addVertexWithUV(0.251D, 1.25D, -0.125D, 88.0D / 256.0D, 64.0D / 128.0D); // minU, minV
-            tessellator.addVertexWithUV(-0.251D, 1.25D, -0.125D, 72.0D / 256.0D, 64.0D / 128.0D); // maxU, minV
+            tessellator.addVertexWithUV(-0.251D, 1.25D + yShift, -0.7D, 72.0D / 256.0D, 80.0D / 128.0D); // maxU, maxV
+            tessellator.addVertexWithUV(0.251D, 1.25D + yShift, -0.7D, 88.0D / 256.0D, 80.0D / 128.0D); // minU, maxV
+            tessellator.addVertexWithUV(0.251D, 1.25D + yShift, -0.125D, 88.0D / 256.0D, 64.0D / 128.0D); // minU, minV
+            tessellator.addVertexWithUV(-0.251D, 1.25D + yShift, -0.125D, 72.0D / 256.0D, 64.0D / 128.0D); // maxU, minV
             tessellator.draw();
 
             tessellator.startDrawingQuads();            // right side
             tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-            tessellator.addVertexWithUV(0.251D, 1.45D, -0.4, 64.0 / 256.0, 80.0 / 128.0); // minU, maxV
-            tessellator.addVertexWithUV(0.251D, 1.25D, -0.7, 72.0 / 256.0, 80.0 / 128.0); // maxU, maxV
-            tessellator.addVertexWithUV(0.251D, 1.25D, 0.125, 72.0 / 256.0, 64.0 / 128.0); // maxU, minV
-            tessellator.addVertexWithUV(0.251D, 1.45D, 0.125, 64.0 / 256.0, 64.0 / 128.0); // minU, minV
+            tessellator.addVertexWithUV(0.251D, 1.45D + yShift, -0.4, 64.0 / 256.0, 80.0 / 128.0); // minU, maxV
+            tessellator.addVertexWithUV(0.251D, 1.25D + yShift, -0.7, 72.0 / 256.0, 80.0 / 128.0); // maxU, maxV
+            tessellator.addVertexWithUV(0.251D, 1.25D + yShift, 0.125, 72.0 / 256.0, 64.0 / 128.0); // maxU, minV
+            tessellator.addVertexWithUV(0.251D, 1.45D + yShift, 0.125, 64.0 / 256.0, 64.0 / 128.0); // minU, minV
             tessellator.draw();
 
             tessellator.startDrawingQuads();            // back side
             tessellator.setNormal(0.0F, 0.0F, -1.0F);
-            tessellator.addVertexWithUV(0.251D, 1.45D, 0.125D, 96.0D / 256.0D, 66.0 / 128.0); // minU, maxV
-            tessellator.addVertexWithUV(-0.251D, 1.45D, 0.125D, 112.0D / 256.0D, 66.0 / 128.0); // maxU, maxV
-            tessellator.addVertexWithUV(-0.251D, 1.375D, 0.125D, 112.0D / 256.0D, 64.0 / 128.0); // maxU, minV
-            tessellator.addVertexWithUV(0.251D, 1.375D, 0.125D, 96.0D / 256.0D, 64.0 / 128.0); // minU, minV
+            tessellator.addVertexWithUV(0.251D, 1.45D + yShift, 0.125D, 96.0D / 256.0D, 66.0 / 128.0); // minU, maxV
+            tessellator.addVertexWithUV(-0.251D, 1.45D + yShift, 0.125D, 112.0D / 256.0D, 66.0 / 128.0); // maxU, maxV
+            tessellator.addVertexWithUV(-0.251D, 1.375D + yShift, 0.125D, 112.0D / 256.0D, 64.0 / 128.0); // maxU, minV
+            tessellator.addVertexWithUV(0.251D, 1.375D + yShift, 0.125D, 96.0D / 256.0D, 64.0 / 128.0); // minU, minV
             tessellator.draw();
 
             tessellator.startDrawingQuads();            // bottom side
             tessellator.setNormal(0.0F, 1.0F, 0.0F);
-            tessellator.addVertexWithUV(0.251D, 1.45D, -0.4D, 96.0 / 256.0, 80.0 / 128.0); // minU, maxV
-            tessellator.addVertexWithUV(-0.251D, 1.45D, -0.4D, 112.0 / 256.0, 80.0 / 128.0); // maxU, maxV
-            tessellator.addVertexWithUV(-0.251D, 1.45D, 0.125D, 112.0 / 256.0, 66.0 / 128.0); // maxU, minV
-            tessellator.addVertexWithUV(0.251D, 1.45D, 0.125D, 96.0 / 256.0, 66.0 / 128.0); // minU, minV
+            tessellator.addVertexWithUV(0.251D, 1.45D + yShift, -0.4D, 96.0 / 256.0, 80.0 / 128.0); // minU, maxV
+            tessellator.addVertexWithUV(-0.251D, 1.45D + yShift, -0.4D, 112.0 / 256.0, 80.0 / 128.0); // maxU, maxV
+            tessellator.addVertexWithUV(-0.251D, 1.45D + yShift, 0.125D, 112.0 / 256.0, 66.0 / 128.0); // maxU, minV
+            tessellator.addVertexWithUV(0.251D, 1.45D + yShift, 0.125D, 96.0 / 256.0, 66.0 / 128.0); // minU, minV
             tessellator.draw();
         }
     }
@@ -182,8 +183,8 @@ public class ModelEnderMiss
         this.leftArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
         this.rightArm.rotateAngleZ = 0.0F;
         this.leftArm.rotateAngleZ = 0.0F;
-        this.rightLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-        this.leftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
+        this.rightLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.0F * limbSwingAmount;
+        this.leftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.0F * limbSwingAmount;
         this.rightLeg.rotateAngleY = 0.0F;
         this.leftLeg.rotateAngleY = 0.0F;
 

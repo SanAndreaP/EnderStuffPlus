@@ -21,10 +21,7 @@ import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderMiss;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderIgnis;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderNivis;
 import de.sanandrew.mods.enderstuffp.network.ClientPacketHandler;
-import de.sanandrew.mods.enderstuffp.util.CommonProxy;
-import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
-import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
-import de.sanandrew.mods.enderstuffp.util.RegistryItems;
+import de.sanandrew.mods.enderstuffp.util.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.entity.RenderSnowball;
@@ -141,6 +138,15 @@ public class ClientProxy
     @Override
     public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         return ClientGuiHandler.getGuiElement(id, player, world, x, y, z);
+    }
+
+    @Override
+    public void openGui(EntityPlayer player, EnumGui id, int x, int y, int z) {
+        if( player == null ) {
+            player = Minecraft.getMinecraft().thePlayer;
+        }
+
+        super.openGui(player, id, x, y, z);
     }
 
     private static WorldClient getWorld() {

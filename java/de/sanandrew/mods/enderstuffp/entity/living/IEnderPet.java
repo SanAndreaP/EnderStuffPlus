@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.UUID;
 
-public interface IEnderPet
+public interface IEnderPet<E extends EntityCreature>
 {
     public CoatBaseEntry getCoatBase();
 
@@ -18,7 +18,7 @@ public interface IEnderPet
 
     public int getEggDmg();
 
-    public EntityCreature getEntity();
+    public E getEntity();
 
     public String getName();
 

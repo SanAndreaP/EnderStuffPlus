@@ -3,7 +3,11 @@ package de.sanandrew.mods.enderstuffp.client.gui;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.core.manpack.util.javatuples.Pair;
+import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.enderstuffp.entity.living.IEnderPet;
+import de.sanandrew.mods.enderstuffp.network.EnumPacket;
+import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -12,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -30,18 +35,6 @@ public class GuiEnderPet
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) {
-        if( button.id == 4 ) {
-            this.writeEntityName();
-            this.mc.thePlayer.closeScreen();
-            return;
-        }
-
-//        ESPModRegistry.sendPacketSrv("enderGuiAction", ((Entity) this.enderPet).getEntityId(), (byte) button.id);
-        this.mc.thePlayer.closeScreen();
-    }
-
-    @Override
     public boolean doesGuiPauseGame() {
         return false;
     }
@@ -53,15 +46,6 @@ public class GuiEnderPet
         String title = SAPUtils.translatePostFormat(this.enderPet.getGuiTitle(), petName);
 
         this.drawDefaultBackground();
-
-//        if( this.enderPet.getEntity() instanceof EntityEnderMiss ) {
-//            title = , petName);
-//            color = ;
-//        }
-//        else if( this.enderPet.getEntity() instanceof EntityEnderAvis ) {
-//            title = SAPUtils.translatePostFormat("enderstuffplus.guipet.title.avis", petName);
-//            color = 0xFF00FF;
-//        }
 
         this.fontRendererObj.drawString(title, (this.width - this.getRealStringWidth(title)) / 2, this.yPos + 10, color);
 
@@ -88,56 +72,35 @@ public class GuiEnderPet
     public void initGui() {
         super.initGui();
 
+        String btnName;
         String name = this.enderPet.getName();
-        boolean canMount = this.enderPet.canMount();
         int color = this.enderPet.getGuiColor();
 
         this.yPos = (this.height - 156) / 2;
+
         this.nameTxt = new GuiTextField(this.fontRendererObj, (this.width - 198) / 2, this.yPos + 30, 198, 15);
-
-        this.nameTxt.setText(name.isEmpty() ? SAPUtils.translate(EnderStuffPlus.MOD_ID + ".guipet.rename") : name);
-
-//        if( this.enderPet.getEntity() instanceof EntityEnderMiss ) {
-//            color = 0xFF9090;
-//        }
-//        else if( this.enderPet.getEntity() instanceof EntityEnderAvis ) {
-//            color = 0xFF00FF;
-//        }
+        this.nameTxt.setText(name);
 
         GuiButton mountBtn = new GuiButtonPetGUI(0, (this.width - 200) / 2, this.yPos + 55, 200, 15, SAPUtils.translate("mount"), color).setBGAlpha(128);
-
-//        if( this.enderPet.isSitting() ) {
-//            canMount = false;
-//        } else if( this.enderPet.getEntity() instanceof EntityEnderAvis && !((EntityEnderAvis) this.enderPet.getEntity()).isSaddled() ) {
-//            canMount = false;
-//        }
-
-        mountBtn.enabled = canMount;
-
+        mountBtn.enabled = this.enderPet.canMount();
         this.buttonList.add(mountBtn);
 
-        GuiButton sitStandBtn = new GuiButtonPetGUI(1, (this.width - 200) / 2, this.yPos + 71, 200, 15,
-                                             this.enderPet.isSitting() ? SAPUtils.translate(EnderStuffPlus.MOD_ID + ".guipet.standUp")
-                                                                       : SAPUtils.translate(EnderStuffPlus.MOD_ID + ".guipet.sit"),
-                                             color).setBGAlpha(128);
+        btnName = SAPUtils.translate(EnderStuffPlus.MOD_ID + (this.enderPet.isSitting() ? ".guipet.standUp" : ".guipet.sit"));
+        GuiButton sitStandBtn = new GuiButtonPetGUI(1, (this.width - 200) / 2, this.yPos + 71, 200, 15, btnName, color).setBGAlpha(128);
         this.buttonList.add(sitStandBtn);
 
-        GuiButton stayFollowBtn = new GuiButtonPetGUI(2, (this.width - 200) / 2, this.yPos + 87, 200, 15,
-                                             this.enderPet.isFollowing() ? SAPUtils.translate(EnderStuffPlus.MOD_ID + ".guipet.stay")
-                                                                         : SAPUtils.translate(EnderStuffPlus.MOD_ID + ".guipet.follow"),
-                                             color).setBGAlpha(128);
-
+        btnName = SAPUtils.translate(EnderStuffPlus.MOD_ID + (this.enderPet.isFollowing() ? ".guipet.stay" : ".guipet.follow"));
+        GuiButton stayFollowBtn = new GuiButtonPetGUI(2, (this.width - 200) / 2, this.yPos + 87, 200, 15, btnName, color).setBGAlpha(128);
         stayFollowBtn.enabled = !this.enderPet.isSitting();
-
         this.buttonList.add(stayFollowBtn);
 
-        GuiButton eggBtn = new GuiButtonPetGUI(3, (this.width - 200) / 2, this.yPos + 103, 200, 15,
-                                               SAPUtils.translate(EnderStuffPlus.MOD_ID + ".guipet.putIntoEgg"), color).setBGAlpha(128);
+        btnName = SAPUtils.translate(EnderStuffPlus.MOD_ID + ".guipet.putIntoEgg");
+        GuiButton eggBtn = new GuiButtonPetGUI(3, (this.width - 200) / 2, this.yPos + 103, 200, 15, btnName, color).setBGAlpha(128);
         eggBtn.enabled = this.owner.inventory.hasItemStack(new ItemStack(Items.egg)) || this.owner.capabilities.isCreativeMode;
         this.buttonList.add(eggBtn);
 
-        GuiButton closeBtn = new GuiButtonPetGUI(4, (this.width - 200) / 2, this.yPos + 139, 200, 15,
-                                                 SAPUtils.translate(EnderStuffPlus.MOD_ID + ".guipet.close"), 0xA0A0A0).setBGAlpha(128);
+        btnName = SAPUtils.translate(EnderStuffPlus.MOD_ID + ".guipet.close");
+        GuiButton closeBtn = new GuiButtonPetGUI(4, (this.width - 200) / 2, this.yPos + 139, 200, 15, btnName, 0xA0A0A0).setBGAlpha(128);
         this.buttonList.add(closeBtn);
     }
 
@@ -145,17 +108,33 @@ public class GuiEnderPet
     protected void keyTyped(char key, int keyCode) {
         this.nameTxt.textboxKeyTyped(key, keyCode);
 
-        if( (keyCode == 28 || keyCode == 1) && this.nameTxt.isFocused() ) {
-            this.nameTxt.setFocused(false);
-            this.writeEntityName();
-
-            if( this.nameTxt.getText().isEmpty() ) {
-                this.nameTxt.setText(SAPUtils.translate(EnderStuffPlus.MOD_ID + ".guipet.rename"));
+        if( this.nameTxt.isFocused() ) {
+            if( (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_ESCAPE) ) {
+                this.nameTxt.setFocused(false);
+                this.writeEntityName();
             }
-        } else if( (keyCode == 1 || keyCode == this.mc.gameSettings.keyBindInventory.getKeyCode())
-                   && !this.nameTxt.isFocused() ) {
-            this.writeEntityName();
-            this.mc.thePlayer.closeScreen();
+        } else {
+            if( (keyCode == Keyboard.KEY_ESCAPE || keyCode == this.mc.gameSettings.keyBindInventory.getKeyCode()) ) {
+                this.writeEntityName();
+                this.mc.thePlayer.closeScreen();
+            } else if( keyCode == Keyboard.KEY_A || keyCode == Keyboard.KEY_S || keyCode == Keyboard.KEY_D ) {
+                this.doAction(keyCode - Keyboard.KEY_A);
+                this.mc.thePlayer.closeScreen();
+            }
+        }
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) {
+        this.doAction(button.id);
+        this.mc.thePlayer.closeScreen();
+    }
+
+    private void doAction(int actionId) {
+        if( actionId == 4 ) {
+            writeEntityName();
+        } else {
+            PacketProcessor.sendToServer(EnumPacket.ENDERPET_ACTION, Pair.with(this.enderPet.getEntity().getEntityId(), (byte) actionId));
         }
     }
 
@@ -170,17 +149,14 @@ public class GuiEnderPet
         super.updateScreen();
         this.nameTxt.updateCursorCounter();
 
-        if( this.nameTxt.isFocused()
-                && this.nameTxt.getText().equals(SAPUtils.translate(EnderStuffPlus.MOD_ID + ".guipet.rename")) ) {
+        if( this.nameTxt.isFocused() && this.nameTxt.getText().equals(SAPUtils.translate(EnderStuffPlus.MOD_ID + ".guipet.rename")) ) {
             this.nameTxt.setText("");
         }
     }
 
     private void writeEntityName() {
-        if( this.nameTxt.getText().isEmpty() || this.nameTxt.getText().equals(SAPUtils.translate(EnderStuffPlus.MOD_ID + ".guipet.rename")) ) {
-            return;
+        if( !this.nameTxt.getText().isEmpty() ) {
+            PacketProcessor.sendToServer(EnumPacket.ENDERPET_ACTION, Triplet.with(this.enderPet.getEntity().getEntityId(), (byte) 4, this.nameTxt.getText()));
         }
-
-//        ESPModRegistry.sendPacketSrv("setEnderName", ((Entity) this.enderPet).getEntityId(), this.nameTxt.getText());
     }
 }

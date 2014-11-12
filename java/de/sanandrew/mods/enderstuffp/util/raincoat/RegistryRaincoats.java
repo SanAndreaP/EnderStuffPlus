@@ -25,8 +25,8 @@ public final class RegistryRaincoats
     public static final List<ItemStack> BASE_STACKS = new ArrayList<>();
     public static final List<ItemStack> COLOR_STACKS = new ArrayList<>();
 
-    public static final CoatBaseEntry NULL_BASE = new CoatBaseEntry("NULL", 0xFFFFFF, "NULL", new ResourceLocation(""), new ResourceLocation(""), null);
-    public static final CoatColorEntry NULL_COLOR = new CoatColorEntry("NULL", 0xFFFFFF, new ResourceLocation(""), new ResourceLocation(""), null);
+    public static final CoatBaseEntry NULL_BASE = new CoatBaseEntry("NULL", 0xFFFFFF, "NULL", new ResourceLocation("NULL"), new ResourceLocation("NULL"), null);
+    public static final CoatColorEntry NULL_COLOR = new CoatColorEntry("NULL", 0xFFFFFF, new ResourceLocation("NULL"), new ResourceLocation("NULL"), null);
 
     public static CoatBaseEntry baseGold;
     public static CoatBaseEntry baseNiob;

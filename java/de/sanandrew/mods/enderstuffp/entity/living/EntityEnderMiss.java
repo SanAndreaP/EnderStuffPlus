@@ -1,5 +1,6 @@
 package de.sanandrew.mods.enderstuffp.entity.living;
 
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
@@ -15,6 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -40,7 +42,7 @@ import java.util.UUID;
 
 public class EntityEnderMiss
         extends EntityCreature
-        implements IEnderPet, IEnderCreature
+        implements IEnderPet<EntityEnderMiss>, IEnderCreature
 {
     private static final AttributeModifier SPEED_TAMED = (new AttributeModifier(UUID.fromString("020E0DFB-87AE-4653-9556-831010E291A0"),
                                                             "Tamerfollowing speed boost", 6.199999809265137D, 0)).setSaved(false);
@@ -262,7 +264,7 @@ public class EntityEnderMiss
     }
 
     @Override
-    public EntityCreature getEntity() {
+    public EntityEnderMiss getEntity() {
         return this;
     }
 
@@ -339,12 +341,12 @@ public class EntityEnderMiss
                     this.setTamed(true);
                     this.ownerUUID = player.getGameProfile().getId();
 
-                    EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_TAME, this.posX, this.posY + this.height / 2.0F, this.posZ, this.dimension, null);
+                    EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_TAME, this.posX, this.posY, this.posZ, this.dimension, null);
                     playerItem.stackSize--;
 
                     return true;
                 } else {
-                    EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_REJECT, this.posX, this.posY + this.height / 2.0F, this.posZ, this.dimension, null);
+                    EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_REJECT, this.posX, this.posY, this.posZ, this.dimension, null);
                     playerItem.stackSize--;
 
                     return true;
@@ -361,28 +363,29 @@ public class EntityEnderMiss
                         coatItem.stackSize = 1;
                         this.setCoat(coatItem);
                         playerItem.stackSize--;
+
                         return true;
                     } else if( SAPUtils.areItemInstEqual(playerItem, RegistryItems.avisFeather) && this.canGetFallDmg() ) {
                         this.setCanGetFallDmg(false);
                         playerItem.stackSize--;
+
                         return true;
                     } else if( SAPUtils.areItemInstEqual(playerItem, Items.dye) && playerItem.getItemDamage() != this.getBowColor() ) {
                         this.setBowColor(playerItem.getItemDamage());
                         playerItem.stackSize--;
+
                         return true;
                     } else if( playerItem.getItem() instanceof ItemFood && this.getHealth() < this.getMaxHealth() ) {
                         this.heal(((ItemFood) playerItem.getItem()).func_150905_g(playerItem));
-
-                        if( !this.worldObj.isRemote ) {
-                            EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_TAME, this.posX, this.posY + this.height / 2.0F, this.posZ, this.dimension, null);
-                        }
-
+                        EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_TAME, this.posX, this.posY, this.posZ, this.dimension, null);
                         playerItem.stackSize--;
+
+                        return true;
+                    } else if( SAPUtils.areItemInstEqual(playerItem, RegistryItems.enderPetStaff) ) {
+                        EnderStuffPlus.proxy.openGui(player, EnumGui.ENDERPET, this.getEntityId(), 0, 0);
+
                         return true;
                     }
-                } else if( worldObj.isRemote && playerItem.getItem() == RegistryItems.enderPetStaff ) {
-                    EnderStuffPlus.proxy.openGui(player, EnumGui.ENDERPET, this.getEntityId(), 0, 0);
-                    return true;
                 }
             }
         } else if( this.isTamed() && !this.worldObj.isRemote ) {
@@ -614,6 +617,9 @@ public class EntityEnderMiss
             this.rotationYawHead = player.rotationYawHead;
 
             this.setRotation(player.rotationYaw, 0.0F);
+            this.moveStrafing = player.moveStrafing;
+            this.moveForward = player.moveForward;
+            this.isJumping = ReflectionHelper.getPrivateValue(EntityLivingBase.class, player, "isJumping");
 
             this.stepHeight = 1.0F;
         }

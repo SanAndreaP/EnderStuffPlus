@@ -12,7 +12,6 @@ import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.client.network.NetHandlerPlayClient;
 
 public class ClientPacketHandler
-        extends ServerPacketHandler
 {
     @SubscribeEvent
     public void onClientPacket(ClientCustomPacketEvent event) {
