@@ -5,10 +5,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.item.ItemRaincoat;
-import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
-import de.sanandrew.mods.enderstuffp.util.EnumGui;
-import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
-import de.sanandrew.mods.enderstuffp.util.RegistryItems;
+import de.sanandrew.mods.enderstuffp.util.*;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats.CoatBaseEntry;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats.CoatColorEntry;
@@ -115,10 +112,6 @@ public class EntityEnderMiss
                         ((EntityEnderman) entity).setTarget(dmgSource.getEntity());
                         ((EntityEnderman) entity).setScreaming(true);
                     }
-//                    else if( entity instanceof EntityEndermanESP ) {
-//                        ((EntityEndermanESP) entity).setTarget(dmgSource.getEntity());
-//                        ((EntityEndermanESP) entity).setScreaming(true);
-//                    }
                 }
             }
 
@@ -190,7 +183,7 @@ public class EntityEnderMiss
 
     @Override
     public float getAIMoveSpeed() {
-        return this.isSitting() ? 0.0F : (this.isRiddenDW() ? 0.2F + (this.getCoatBase().name.equals(EnderStuffPlus.MOD_ID + "_000") ? 0.05F : 0.0F) : 0.1F);
+        return this.isSitting() ? 0.0F : (this.isRiddenDW() ? 0.2F + (this.getCoatBase() == RegistryRaincoats.baseGold ? 0.05F : 0.0F) : 0.1F);
     }
 
     @Override
@@ -250,7 +243,7 @@ public class EntityEnderMiss
 
     @Override
     protected String getDeathSound() {
-        return "enderstuffp:endermiss.death";
+        return EnderStuffPlus.MOD_ID + ":mob.endermiss.death";
     }
 
     @Override
@@ -275,12 +268,12 @@ public class EntityEnderMiss
 
     @Override
     protected String getHurtSound() {
-        return EnderStuffPlus.MOD_ID + ":endermiss.hit";
+        return EnderStuffPlus.MOD_ID + ":mob.endermiss.hit";
     }
 
     @Override
     protected String getLivingSound() {
-        return EnderStuffPlus.MOD_ID + ":endermiss.idle";
+        return EnderStuffPlus.MOD_ID + ":mob.endermiss.idle";
     }
 
     @Override
@@ -423,7 +416,7 @@ public class EntityEnderMiss
 
     @Override
     public boolean isPotionApplicable(PotionEffect effect) {
-        return !this.getCoatBase().name.equals(EnderStuffPlus.MOD_ID + "_001") || !Potion.potionTypes[effect.getPotionID()].isBadEffect();
+        return this.getCoatBase() != RegistryRaincoats.baseNiob || !Potion.potionTypes[effect.getPotionID()].isBadEffect();
     }
 
     public boolean isRidden() {
@@ -486,7 +479,7 @@ public class EntityEnderMiss
                 this.motionY += (this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F;
             }
 
-            if( this.getCoatBase().name.equals(EnderStuffPlus.MOD_ID + "_003") ) {
+            if( this.getCoatBase() == RegistryRaincoats.baseRedstone ) {
                 this.motionY += 0.1F;
             }
 
@@ -532,7 +525,7 @@ public class EntityEnderMiss
 
         if( !this.worldObj.isRemote ) {
             if( this.prevCoatBase != this.getCoat() ) {
-                if( this.hasCoat() && this.getCoat().getTagCompound().getString("base").equals(EnderStuffPlus.MOD_ID + "_004") ) {
+                if( this.hasCoat() && RegistryRaincoats.getCoatBase(this.getCoat().getTagCompound().getString("base")) == RegistryRaincoats.baseObsidian ) {
                     this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(60.0D);
                 } else {
                     this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
@@ -647,15 +640,15 @@ public class EntityEnderMiss
 
         this.setTamed(nbt.getBoolean("tamed"));
 
-        if( nbt.hasKey("coatItem") ) {
+        if( nbt.hasKey(EnumEnderPetEggInfo.NBT_COAT) ) {
             this.setCoat(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("coatItem")));
         } else {
             this.setCoat(null);
         }
 
-        this.setCanGetFallDmg(nbt.getBoolean("fallDmg"));
+        this.setCanGetFallDmg(nbt.getBoolean(EnumEnderPetEggInfo.NBT_MISS_FALLDMG));
         this.setSitting(nbt.getBoolean("sitting"));
-        this.setSpecial(nbt.getBoolean("special"));
+        this.setSpecial(nbt.getBoolean(EnumEnderPetEggInfo.NBT_MISS_SPECIAL));
         this.setFollowing(nbt.getBoolean("follow"));
         if( nbt.hasKey("bowColor") ) {
             this.setBowColor(nbt.getByte("bowColor"));
@@ -790,7 +783,8 @@ public class EntityEnderMiss
                 this.setPosition(this.posX, this.posY, this.posZ);
 
                 if( this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty()
-                    && (!this.worldObj.isAnyLiquid(this.boundingBox) || this.isImmuneToWater()) ) {
+                    && (!this.worldObj.isAnyLiquid(this.boundingBox) || this.isImmuneToWater()) )
+                {
                     teleportSucceed = true;
                 }
             }
@@ -856,26 +850,28 @@ public class EntityEnderMiss
 
     @Override
     public void writePetToNBT(NBTTagCompound nbt) {
-        nbt.setByte("petID", (byte)0);
-        nbt.setFloat("health", this.getHealth());
+        nbt.setByte(EnumEnderPetEggInfo.NBT_ID, (byte) EnumEnderPetEggInfo.ENDERMISS_INFO.ordinal());
+        nbt.setFloat(EnumEnderPetEggInfo.NBT_HEALTH, this.getHealth());
+        nbt.setFloat(EnumEnderPetEggInfo.NBT_MAX_HEALTH, this.getMaxHealth());
         nbt.setInteger("bowColor", this.getBowColor());
-        nbt.setBoolean("fallDmg", this.canGetFallDmg());
-        nbt.setBoolean("special", this.isSpecial());
+        nbt.setBoolean(EnumEnderPetEggInfo.NBT_MISS_FALLDMG, this.canGetFallDmg());
+        nbt.setBoolean(EnumEnderPetEggInfo.NBT_MISS_SPECIAL, this.isSpecial());
 
         if( this.getCoat().getItem() != Item.getItemFromBlock(Blocks.air) ) {
             NBTTagCompound item = new NBTTagCompound();
             this.getCoat().writeToNBT(item);
-            nbt.setTag("coat", item);
+            nbt.setTag(EnumEnderPetEggInfo.NBT_COAT, item);
         }
     }
 
     @Override
     public void readPetFromNBT(NBTTagCompound nbt) {
-        this.setHealth(nbt.getFloat("health"));
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(nbt.getFloat(EnumEnderPetEggInfo.NBT_MAX_HEALTH));
+        this.setHealth(nbt.getFloat(EnumEnderPetEggInfo.NBT_HEALTH));
         this.setBowColor(nbt.getInteger("bowColor"));
-        this.setCanGetFallDmg(nbt.getBoolean("fallDmg"));
-        this.setSpecial(nbt.getBoolean("special"));
-        if( nbt.hasKey("coat") ) {
+        this.setCanGetFallDmg(nbt.getBoolean(EnumEnderPetEggInfo.NBT_MISS_FALLDMG));
+        this.setSpecial(nbt.getBoolean(EnumEnderPetEggInfo.NBT_MISS_SPECIAL));
+        if( nbt.hasKey(EnumEnderPetEggInfo.NBT_COAT) ) {
             this.setCoat(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("coat")));
         } else {
             this.setCoat(new ItemStack(Blocks.air));
@@ -887,9 +883,9 @@ public class EntityEnderMiss
         super.writeEntityToNBT(par1nbtTagCompound);
 
         par1nbtTagCompound.setBoolean("tamed", this.isTamed());
-        par1nbtTagCompound.setBoolean("fallDmg", this.canGetFallDmg());
+        par1nbtTagCompound.setBoolean(EnumEnderPetEggInfo.NBT_MISS_FALLDMG, this.canGetFallDmg());
         par1nbtTagCompound.setBoolean("sitting", this.isSitting());
-        par1nbtTagCompound.setBoolean("special", this.isSpecial());
+        par1nbtTagCompound.setBoolean(EnumEnderPetEggInfo.NBT_MISS_SPECIAL, this.isSpecial());
         par1nbtTagCompound.setBoolean("follow", this.isFollowing());
         par1nbtTagCompound.setByte("bowColor", (byte)this.getBowColor());
         if( this.ownerUUID != null ) {
@@ -898,7 +894,7 @@ public class EntityEnderMiss
 
         NBTTagCompound coatItem = new NBTTagCompound();
         this.getCoat().writeToNBT(coatItem);
-        par1nbtTagCompound.setTag("coatItem", coatItem);
+        par1nbtTagCompound.setTag(EnumEnderPetEggInfo.NBT_COAT, coatItem);
     }
 
     public UUID getOwner() {
@@ -923,23 +919,5 @@ public class EntityEnderMiss
     @Override
     public boolean canMount() {
         return !this.isSitting();
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static void getEggInfo(ItemStack stack, EntityPlayer player, List<String> infos, boolean hasAdvancedInfo) {
-        if( stack.hasTagCompound() ) {
-            NBTTagCompound nbt = stack.getTagCompound();
-            infos.add(String.format("%s: \2473%s", SAPUtils.translate(EnderStuffPlus.MOD_ID + ".petegg.health"),
-                                    (int) (nbt.getFloat("health") / 40.0F * 100.0F) + "%"));
-            infos.add(String.format("%s: \2473%s", SAPUtils.translate(EnderStuffPlus.MOD_ID + ".petegg.hasSpecSkin"),
-                                    nbt.getBoolean("special") ? SAPUtils.translate(EnderStuffPlus.MOD_ID + ".petegg.true")
-                                                              : SAPUtils.translate(EnderStuffPlus.MOD_ID + ".petegg.false")));
-            infos.add(String.format("%s: \2473%s", SAPUtils.translate(EnderStuffPlus.MOD_ID + ".petegg.immuneToH2O"),
-                                    nbt.hasKey("coat") ? SAPUtils.translate(EnderStuffPlus.MOD_ID + ".petegg.true")
-                                                       : SAPUtils.translate(EnderStuffPlus.MOD_ID + ".petegg.false")));
-            infos.add(String.format("%s: \2473%s", SAPUtils.translate(EnderStuffPlus.MOD_ID + ".petegg.fallDmg"),
-                                    nbt.getBoolean("fallDmg") ? SAPUtils.translate(EnderStuffPlus.MOD_ID + ".petegg.true")
-                                                              : SAPUtils.translate(EnderStuffPlus.MOD_ID + ".petegg.false")));
-        }
     }
 }

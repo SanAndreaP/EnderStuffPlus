@@ -9,12 +9,17 @@ package de.sanandrew.mods.enderstuffp.network.packet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.enderstuffp.entity.living.IEnderPet;
 import de.sanandrew.mods.enderstuffp.network.IPacket;
+import de.sanandrew.mods.enderstuffp.util.RegistryItems;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.util.ChatComponentText;
 
 import java.io.IOException;
 
@@ -40,7 +45,23 @@ public class PacketEnderPetGuiAction
                     break;
                 case 3:
                     {
-                        //TODO: put pet into egg
+                        if( playerMP.inventory.hasItem(Items.egg) || playerMP.capabilities.isCreativeMode ) {
+                            ItemStack stack = new ItemStack(RegistryItems.enderPetEgg, 1);
+                            NBTTagCompound nbt = new NBTTagCompound();
+                            pet.writePetToNBT(nbt);
+                            stack.setTagCompound(nbt);
+                            if( playerMP.inventory.addItemStackToInventory(stack) ) {
+                                playerMP.inventory.consumeInventoryItem(Items.egg);
+                                playerMP.inventoryContainer.detectAndSendChanges();
+                                pet.getEntity().setDead();
+                            } else {
+                                //TODO: use translation string
+                                playerMP.addChatMessage(new ChatComponentText("You don't have enough inventory space to do this!"));
+                            }
+                        } else {
+                            //TODO: use translation string
+                            playerMP.addChatMessage(new ChatComponentText("You don't have the required egg!"));
+                        }
                     }
                     break;
                 case 4:

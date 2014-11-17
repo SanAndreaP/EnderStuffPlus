@@ -1,15 +1,17 @@
 package de.sanandrew.mods.enderstuffp.item;
 
-import com.google.common.collect.Maps;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.mods.enderstuffp.entity.living.IEnderPet;
 import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
+import de.sanandrew.mods.enderstuffp.util.EnumEnderPetEggInfo;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -21,15 +23,13 @@ import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 //import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderAvis;
 
 public class ItemEnderPetEgg
     extends Item
 {
-    private static final HashMap<Integer, Object[]> PETS = Maps.newHashMap();
-
     public ItemEnderPetEgg() {
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":enderPetEgg");
         this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
@@ -37,60 +37,45 @@ public class ItemEnderPetEgg
         this.setMaxStackSize(1);
     }
 
-    public static void addPet(int petID, String petName, int frgColor, int bkgColor) {
-        PETS.put(petID, new Object[] { petName, frgColor, bkgColor });
-    }
-
-    public static boolean spawnEnderPet(World world, ItemStack stack, String entityName, double posX, double posY, double posZ,
-                                        String playerName) {
-        if( !PETS.containsKey(stack.getItemDamage()) ) {
+    public static boolean spawnEnderPet(World world, ItemStack stack, double posX, double posY, double posZ, UUID playerId) {
+        if( !SAPUtils.isIndexInRange(EnumEnderPetEggInfo.VALUES, stack.getItemDamage()) ) {
             return false;
         } else {
-            Entity entity = EntityList.createEntityByName(entityName, world);
             NBTTagCompound nbt = stack.getTagCompound();
+            if( nbt != null && nbt.hasKey(EnumEnderPetEggInfo.NBT_ID) ) {
+                Class<? extends EntityCreature> clazz = EnumEnderPetEggInfo.getEntityClass(EnumEnderPetEggInfo.getInfo(nbt.getByte(EnumEnderPetEggInfo.NBT_ID)));
+                Entity entity = EntityList.createEntityByName((String) EntityList.classToStringMapping.get(clazz), world);
 
-            // todo reimplement entity spawning
-//            if( entity instanceof IEnderPet && nbt != null && nbt.hasKey("petID") ) {
-//                IEnderPet pet = (IEnderPet) entity;
-//
-//                entity.setLocationAndAngles(posX, posY, posZ, world.rand.nextFloat() * 360.0F, 0.0F);
-//                pet.readPetFromNBT(nbt);
-//                pet.setTamed(true);
-//                pet.setOwnerName(playerName);
-//                world.spawnEntityInWorld(entity);
-//                ((EntityLiving) pet).playLivingSound();
-//
-//            }
+                if( entity instanceof IEnderPet ) {
+                    IEnderPet pet = IEnderPet.class.cast(entity);
 
-            return entity != null;
+                    entity.setLocationAndAngles(posX, posY, posZ, world.rand.nextFloat() * 360.0F, 0.0F);
+                    pet.readPetFromNBT(nbt);
+                    pet.setTamed(true);
+                    pet.setOwner(playerId);
+                    world.spawnEntityInWorld(entity);
+                    pet.getEntity().playLivingSound();
+                }
+
+                return entity != null;
+            }
+
+            return false;
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings("unchecked")
     public void addInformation(ItemStack stack, EntityPlayer player, List infos, boolean isAdvancedInfo) {
-        if( stack.getItemDamage() == 0 ) {
-//            EntityEnderMiss.getEggInfo(stack, player, infos, isAdvancedInfo);
-        } else if( stack.getItemDamage() == 1 ) {
-//            EntityEnderAvis.getEggInfo(stack, player, infos, isAdvancedInfo);
-        }
+        EnumEnderPetEggInfo.addInformation(EnumEnderPetEggInfo.getInfo(stack.getItemDamage()), stack, infos, isAdvancedInfo);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        int par1 = stack.getItemDamage();
-        return (Integer) (PETS.containsKey(par1) ? (pass == 0 ? PETS.get(par1)[1] : PETS.get(par1)[2]) : 0xFFFFFF);
-    }
-
-    private static String getEnderPetName(ItemStack stack) {
-        int petID = stack.getItemDamage();
-        if( !PETS.containsKey(petID) ) {
-            return "";
-        }
-
-        return (String) PETS.get(petID)[0];
+        EnumEnderPetEggInfo info = EnumEnderPetEggInfo.getInfo(stack.getItemDamage());
+        return pass == 0 ? info.foreColor : info.backColor;
     }
 
     @Override
@@ -100,43 +85,27 @@ public class ItemEnderPetEgg
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public String getItemStackDisplayName(ItemStack stack) {
-        String itemName = (SAPUtils.translate(this.getUnlocalizedName() + ".name")).trim();
-        String petName = getEnderPetName(stack);
-
-        if( petName != null ) {
-            itemName = itemName + ' ' + SAPUtils.translate("entity." + petName + ".name");
-        }
-
-        return itemName;
-    }
-
-    @Override
-    public boolean getShareTag() {
-        return true;
-    }
-
-    @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void getSubItems(Item item, CreativeTabs tab, List stacks) {
-        ItemStack pet = new ItemStack(this, 1, 0);
+        ItemStack pet = new ItemStack(this, 1);
         NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setByte("petID", (byte) 0);
-        nbt.setFloat("health", 40.0F);
-        nbt.setBoolean("fallDmg", false);
-        nbt.setBoolean("special", false);
+        nbt.setByte(EnumEnderPetEggInfo.NBT_ID, (byte) EnumEnderPetEggInfo.ENDERMISS_INFO.ordinal());
+        nbt.setFloat(EnumEnderPetEggInfo.NBT_HEALTH, 40.0F);
+        nbt.setFloat(EnumEnderPetEggInfo.NBT_MAX_HEALTH, 40.0F);
+        nbt.setBoolean(EnumEnderPetEggInfo.NBT_MISS_FALLDMG, false);
+        nbt.setBoolean(EnumEnderPetEggInfo.NBT_MISS_SPECIAL, false);
         pet.setTagCompound(nbt);
         stacks.add(pet.copy());
-        nbt.setBoolean("special", true);
-        pet.setTagCompound(nbt);
+
+        nbt.setBoolean(EnumEnderPetEggInfo.NBT_MISS_SPECIAL, true);
         stacks.add(pet.copy());
-        pet = new ItemStack(this, 1, 1);
+
         nbt = new NBTTagCompound();
-        nbt.setByte("petID", (byte) 1);
-        nbt.setFloat("health", 40.0F);
-        nbt.setFloat("condition", 10.0F);
-        nbt.setBoolean("saddled", false);
+        nbt.setByte(EnumEnderPetEggInfo.NBT_ID, (byte) 1);
+        nbt.setFloat(EnumEnderPetEggInfo.NBT_HEALTH, 40.0F);
+        nbt.setFloat(EnumEnderPetEggInfo.NBT_MAX_HEALTH, 40.0F);
+        nbt.setFloat(EnumEnderPetEggInfo.NBT_AVIS_STAMINA, 10.0F);
+        nbt.setBoolean(EnumEnderPetEggInfo.NBT_AVIS_SADDLED, false);
         pet.setTagCompound(nbt);
         stacks.add(pet.copy());
     }
@@ -148,8 +117,7 @@ public class ItemEnderPetEgg
     }
 
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float offX, float offY,
-                             float offZ) {
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float offX, float offY, float offZ) {
         if( world.isRemote ) {
             return true;
         } else {
@@ -163,7 +131,7 @@ public class ItemEnderPetEgg
                 yOffset = 0.5D;
             }
 
-            if( spawnEnderPet(world, stack, getEnderPetName(stack), x + 0.5D, y + yOffset, z + 0.5D, player.getCommandSenderName()) ) {
+            if( spawnEnderPet(world, stack, x + 0.5D, y + yOffset, z + 0.5D, player.getGameProfile().getId()) ) {
                 --stack.stackSize;
             }
 

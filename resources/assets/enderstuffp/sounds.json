@@ -1,0 +1,122 @@
+{
+    "mob.enderavis.idle": {
+        "category": "neutral",
+        "sounds": [
+            "mob/enderavis/idle1",
+            "mob/enderavis/idle2"
+        ]
+    },
+    "mob.enderavis.hurt": {
+        "category": "neutral",
+        "sounds": [
+            "mob/enderavis/hit"
+        ]
+    },
+
+    "mob.enderignis.idle": {
+        "category": "hostile",
+        "sounds": [
+            "mob/enderignis/idle1",
+            "mob/enderignis/idle2",
+            "mob/enderignis/idle3",
+            "mob/enderignis/idle4",
+            "mob/enderignis/idle5"
+        ]
+    },
+    "mob.enderignis.hurt": {
+        "category": "hostile",
+        "sounds": [
+            "mob/enderignis/hit1",
+            "mob/enderignis/hit2",
+            "mob/enderignis/hit3",
+            "mob/enderignis/hit4"
+        ]
+    },
+    "mob.enderignis.death": {
+        "category": "hostile",
+        "sounds": [
+            "mob/enderignis/death"
+        ]
+    },
+
+    "mob.endermiss.idle": {
+        "category": "neutral",
+        "sounds": [
+            "mob/endermiss/idle1",
+            "mob/endermiss/idle2",
+            "mob/endermiss/idle3",
+            "mob/endermiss/idle4",
+            "mob/endermiss/idle5"
+        ]
+    },
+    "mob.endermiss.hurt": {
+        "category": "neutral",
+        "sounds": [
+            "mob/endermiss/hit1",
+            "mob/endermiss/hit2",
+            "mob/endermiss/hit3",
+            "mob/endermiss/hit4"
+        ]
+    },
+    "mob.endermiss.death": {
+        "category": "neutral",
+        "sounds": [
+            "mob/endermiss/death"
+        ]
+    },
+
+    "mob.endernivis.idle": {
+        "category": "hostile",
+        "sounds": [
+            "mob/endernivis/idle1",
+            "mob/endernivis/idle2",
+            "mob/endernivis/idle3",
+            "mob/endernivis/idle4",
+            "mob/endernivis/idle5"
+        ]
+    },
+    "mob.endernivis.hurt": {
+        "category": "hostile",
+        "sounds": [
+            "mob/endernivis/scream1",
+            "mob/endernivis/scream2",
+            "mob/endernivis/scream3",
+            "mob/endernivis/scream4"
+        ]
+    },
+    "mob.endernivis.death": {
+        "category": "hostile",
+        "sounds": [
+            "mob/endernivis/death"
+        ]
+    },
+
+    "mob.enderray.idle": {
+        "category": "hostile",
+        "sounds": [
+            "mob/enderray/moan1",
+            "mob/enderray/moan2"
+        ]
+    },
+    "mob.enderray.hurt": {
+        "category": "hostile",
+        "sounds": [
+            "mob/enderray/scream1",
+            "mob/enderray/scream2",
+            "mob/enderray/scream3",
+            "mob/enderray/scream4"
+        ]
+    },
+    "mob.enderray.death": {
+        "category": "hostile",
+        "sounds": [
+            "mob/enderray/death"
+        ]
+    },
+    "mob.enderray.charge": {
+        "category": "hostile",
+        "sounds": [
+            "mob/enderray/charge"
+        ]
+    }
+}
