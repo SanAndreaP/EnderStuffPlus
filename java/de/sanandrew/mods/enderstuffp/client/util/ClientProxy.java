@@ -134,6 +134,12 @@ public class ClientProxy
             case FX_REJECT:
                 ParticleHelper.spawnRefuseFX(x, y, z, random);
                 break;
+            case FX_MISS_BODY:
+                ParticleHelper.spawnEnderBodyFX(x, y, z, random, 1.0F, 0.5F, 0.7F, (Boolean)data.getValue(0));
+                break;
+            case FX_MISS_TELEPORT:
+                ParticleHelper.spawnEnderTeleportFX(x, y, z, random, 1.0F, 0.5F, 0.7F, (Double)data.getValue(0), (Double)data.getValue(1), (Double)data.getValue(2));
+                break;
         }
     }
 

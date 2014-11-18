@@ -29,7 +29,7 @@ public class ItemCustomEnderPearl
 
     public ItemCustomEnderPearl() {
         super();
-        this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":espPearls");
+        this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":enderPearls");
         this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
@@ -52,7 +52,7 @@ public class ItemCustomEnderPearl
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName() + stack.getItemDamage();
+        return super.getUnlocalizedName() + '.' + stack.getItemDamage();
     }
 
     @Override
@@ -64,7 +64,6 @@ public class ItemCustomEnderPearl
 
         if( !world.isRemote ) {
             switch( stack.getItemDamage() ){
-                // TODO spawn pearl entities
                 case 0 :
                     world.spawnEntityInWorld(new EntityPearlNivis(world, player));
                     break;

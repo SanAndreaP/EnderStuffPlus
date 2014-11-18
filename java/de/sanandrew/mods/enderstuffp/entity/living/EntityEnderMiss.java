@@ -2,6 +2,8 @@ package de.sanandrew.mods.enderstuffp.entity.living;
 
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.core.manpack.util.javatuples.Triplet;
+import de.sanandrew.core.manpack.util.javatuples.Unit;
 import de.sanandrew.mods.enderstuffp.item.ItemRaincoat;
 import de.sanandrew.mods.enderstuffp.util.*;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
@@ -581,8 +583,7 @@ public class EntityEnderMiss
 
         this.entityToAttack = null;
 
-        // TODO: spawn particles
-//        this.spawnParticle("livingUpd", this.posX, this.posY, this.posZ);
+        EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_MISS_BODY, this.posX, this.posY, this.posZ, this.dimension, Unit.with(this.isSitting()));
 
         if( this.worldObj.isDaytime() && !this.worldObj.isRemote && !this.isTamed() ) {
             float bright = this.getBrightness(1.0F);
@@ -782,19 +783,8 @@ public class EntityEnderMiss
 
             return false;
         } else {
-            short partCnt = 128;
-
-            for( int i = 0; i < partCnt; i++ ) {
-                double posMulti = i / (partCnt - 1.0D);
-                double partX = prevPosX + (this.posX - prevPosX) * posMulti + (this.rand.nextDouble() - 0.5D)
-                               * this.width * 2.0D;
-                double partY = prevPosY + (this.posY - prevPosY) * posMulti + this.rand.nextDouble() * this.height;
-                double partZ = prevPosZ + (this.posZ - prevPosZ) * posMulti + (this.rand.nextDouble() - 0.5D)
-                               * this.width * 2.0D;
-
-                //TODO: spawn particle
-//                this.spawnParticle("teleport", partX, partY, partZ);
-            }
+            EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_MISS_TELEPORT, this.posX, this.posY, this.posZ, this.dimension,
+                                               Triplet.with(prevPosX, prevPosY, prevPosZ));
 
             this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "mob.endermen.portal", 1.0F, 1.0F);
             this.worldObj.playSoundAtEntity(this, "mob.endermen.portal", 1.0F, 1.0F);

@@ -13,7 +13,9 @@ public enum EnumParticleFx
     FX_PEARL_NIVIS,
     FX_PEARL_IGNIS,
     FX_TAME,
-    FX_REJECT;
+    FX_REJECT,
+    FX_MISS_BODY,
+    FX_MISS_TELEPORT;
 
     public static final EnumParticleFx[] VALUES = values();
 

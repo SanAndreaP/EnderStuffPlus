@@ -33,9 +33,9 @@ item.enderstuffp:niobShears.name=Niobium Shears
 item.enderstuffp:niobNugget.name=Niobium Nugget
 item.enderstuffp:doorNiob.name=Niobium Door
 item.enderstuffp:enderStick.name=Endertree Stick
-item.enderstuffp:enderstuffpPearls0.name=Nivis Pearl
-item.enderstuffp:enderstuffpPearls1.name=Ignis Pearl
-item.enderstuffp:enderstuffpPearls2.name=Endermiss Pearl
+item.enderstuffp:enderPearls.0.name=Nivis Pearl
+item.enderstuffp:enderPearls.1.name=Ignis Pearl
+item.enderstuffp:enderPearls.2.name=Endermiss Pearl
 
 item.enderstuffp:rainCoat.name=Enderpet Raincoat
 item.enderstuffp:rainCoat.color.black=Black

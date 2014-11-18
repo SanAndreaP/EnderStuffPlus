@@ -52,4 +52,32 @@ final class ParticleHelper
             Minecraft.getMinecraft().effectRenderer.addEffect(part);
         }
     }
+
+    static void spawnEnderBodyFX(double x, double y, double z, Random rand, float red, float green, float blue, boolean isSitting) {
+        for( int i = 0; i < 1; i++ ) {
+            EntityFX part = new EntityColoredPortalFX(Minecraft.getMinecraft().theWorld, x + (rand.nextDouble() - 0.5D),
+                                                      y + (rand.nextDouble() * (isSitting ? 0.9D : 2.9D)), z + (rand.nextDouble() - 0.5D),
+                                                      (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D,
+                                                      red, green, blue
+            );
+
+            Minecraft.getMinecraft().effectRenderer.addEffect(part);
+        }
+    }
+
+    static void spawnEnderTeleportFX(double x, double y, double z, Random rand, float red, float green, float blue, double prevPosX, double prevPosY, double prevPosZ) {
+        for( int i = 0; i < 128; i++ ) {
+            double posMulti = i / 127.0D;
+            double partX = prevPosX + (x - prevPosX) * posMulti + (rand.nextDouble() - 0.5D) * 2.0D;
+            double partY = prevPosY + (y - prevPosY) * posMulti + rand.nextDouble() * 2.9D;
+            double partZ = prevPosZ + (z - prevPosZ) * posMulti + (rand.nextDouble() - 0.5D) * 2.0D;
+
+            EntityFX part = new EntityColoredPortalFX(Minecraft.getMinecraft().theWorld, partX, partY, partZ,
+                                                      (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D,
+                                                      red, green, blue
+            );
+
+            Minecraft.getMinecraft().effectRenderer.addEffect(part);
+        }
+    }
 }

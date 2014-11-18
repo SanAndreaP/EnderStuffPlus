@@ -34,6 +34,8 @@ public class ModelEnderMiss
     private ModelRenderer coatRightLeg;
     private ModelRenderer coatLeftLeg;
 
+    private double maxSkirtStrech = 0.0F;
+
     public ModelEnderMiss(boolean hasCape) {
         this.isCaped = hasCape;
 
@@ -64,6 +66,7 @@ public class ModelEnderMiss
             GL11.glPushMatrix();
             GL11.glRotatef(this.body.rotateAngleY * 180.0F / (float) Math.PI, 0.0F, 1.0F, 0.0F);
             double skirtStretch = Math.max(this.rightLeg.rotateAngleX, this.leftLeg.rotateAngleX) * 1.6D + 0.3D;
+            this.maxSkirtStrech = skirtStretch = Math.max(this.maxSkirtStrech, skirtStretch);
 
             tessellator.startDrawingQuads();            // left side
             tessellator.setNormal(1.0F, 0.0F, 0.0F);
@@ -139,6 +142,8 @@ public class ModelEnderMiss
             tessellator.addVertexWithUV(0.251D, 1.45D + yShift, 0.125D, 96.0 / 256.0, 66.0 / 128.0); // minU, minV
             tessellator.draw();
         }
+
+        this.maxSkirtStrech *= 0.97F;
     }
 
     @Override
