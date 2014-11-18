@@ -1,10 +1,7 @@
 package de.sanandrew.mods.enderstuffp.entity.living;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats.CoatBaseEntry;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats.CoatColorEntry;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -29,9 +26,6 @@ public interface IEnderPet<E extends EntityCreature>
     public boolean isFollowing();
 
     public boolean isSitting();
-
-    @SideOnly(Side.CLIENT)
-    public void processRiding(EntityPlayerSP player);
 
     public void setFollowing(boolean b);
 

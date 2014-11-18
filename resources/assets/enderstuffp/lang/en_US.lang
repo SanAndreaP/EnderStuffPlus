@@ -11,15 +11,33 @@ tile.enderstuffp:oreEnd_0.name=Niobium Ore
 tile.enderstuffp:oreEnd_1.name=Tantalum Ore
 tile.enderstuffp:blockEndOre_0.name=Block of Niobium
 tile.enderstuffp:blockEndOre_1.name=Block of Tantalum
+
 item.enderstuffp:enderFlesh.name=Ender Flesh
 item.enderstuffp:avisFeather.name=Avis Feather
 item.enderstuffp:avisArrow.name=Avis Arrow
 item.enderstuffp:avisCompass.name=Avis Compass
-item.enderstuffp:enderPetEgg.name=Spawn tamed
+item.enderstuffp:enderPetEgg.name=Enderpet Egg
 item.enderstuffp:petStaff.name=Enderpet Staff
 item.enderstuffp:niobIngot.name=Niobium Ingot
 item.enderstuffp:bowNiob.name=Niobium Bow
-item.enderstuffp:rainCoat.name=%1$s Ender-Raincoat
+item.enderstuffp:niobHelmet.name=Niobium Helmet
+item.enderstuffp:niobChestplate.name=Niobium Chestplate
+item.enderstuffp:niobLeggings.name=Niobium Leggins
+item.enderstuffp:niobBoots.name=Niobium Boots
+item.enderstuffp:niobPick.name=Niobium Pickaxe
+item.enderstuffp:niobShovel.name=Niobium Shovel
+item.enderstuffp:niobAxe.name=Niobium Axe
+item.enderstuffp:niobHoe.name=Niobium Hoe
+item.enderstuffp:niobSword.name=Niobium Sword
+item.enderstuffp:niobShears.name=Niobium Shears
+item.enderstuffp:niobNugget.name=Niobium Nugget
+item.enderstuffp:doorNiob.name=Niobium Door
+item.enderstuffp:enderStick.name=Endertree Stick
+item.enderstuffp:enderstuffpPearls0.name=Nivis Pearl
+item.enderstuffp:enderstuffpPearls1.name=Ignis Pearl
+item.enderstuffp:enderstuffpPearls2.name=Endermiss Pearl
+
+item.enderstuffp:rainCoat.name=Enderpet Raincoat
 item.enderstuffp:rainCoat.color.black=Black
 item.enderstuffp:rainCoat.color.red=Red
 item.enderstuffp:rainCoat.color.green=Green
@@ -50,37 +68,22 @@ item.enderstuffp:rainCoat.base.redstone.desc=+50% pet jump boost
 item.enderstuffp:rainCoat.base.obsidian=Obsidian based
 item.enderstuffp:rainCoat.base.obsidian.desc=+33% pet health
 item.enderstuffp:rainCoat.base.tantalum=Tantalum based
-item.enderstuffp:rainCoat.base.tantalum.desc=protection from bad potion effects\nimmunity to fire and lava
-item.enderstuffp:niobHelmet.name=Niobium Helmet
-item.enderstuffp:niobChestplate.name=Niobium Chestplate
-item.enderstuffp:niobLeggings.name=Niobium Leggins
-item.enderstuffp:niobBoots.name=Niobium Boots
-item.enderstuffp:niobPick.name=Niobium Pickaxe
-item.enderstuffp:niobShovel.name=Niobium Shovel
-item.enderstuffp:niobAxe.name=Niobium Axe
-item.enderstuffp:niobHoe.name=Niobium Hoe
-item.enderstuffp:niobSword.name=Niobium Sword
-item.enderstuffp:niobShears.name=Niobium Shears
-item.enderstuffp:niobNugget.name=Niobium Nugget
-item.enderstuffp:doorNiob.name=Niobium Door
-item.enderstuffp:enderStick.name=Endertree Stick
-item.enderstuffp:enderstuffpPearls0.name=Nivis Pearl
-item.enderstuffp:enderstuffpPearls1.name=Ignis Pearl
-item.enderstuffp:enderstuffpPearls2.name=Endermiss Pearl
+item.enderstuffp:rainCoat.base.tantalum.desc=protection from bad potion effects<BREAK>immunity to fire and lava
+
 entity.enderstuffp.EnderNivis.name=Ender Nivis
 entity.enderstuffp.EnderIgnis.name=Ender Ignis
 entity.enderstuffp.EnderRay.name=Ender Ray
 entity.enderstuffp.EnderMiss.name=Ender Miss
 entity.enderstuffp.EnderAvis.name=Ender Avis
 entity.enderstuffp.EnderNemesis.name=Ender Nemesis
+
 enderstuffp.petegg.health=Health
-enderstuffp.petegg.hasSpecSkin=Special Skin
-enderstuffp.petegg.immuneToH2O=Raincoat
-enderstuffp.petegg.fallDmg=Get Fall Damage
-enderstuffp.petegg.condition=Condition
-enderstuffp.petegg.saddle=Saddled
-enderstuffp.petegg.true=yes
-enderstuffp.petegg.false=no
+enderstuffp.petegg.hasCoat=Has a raincoat
+enderstuffp.petegg.miss.isSpecial=Has a special skin
+enderstuffp.petegg.miss.noFallDmg=Has Avis feather
+enderstuffp.petegg.avis.stamina=Stamina
+enderstuffp.petegg.avis.saddled=Is saddled
+
 enderstuffp.guipet.title.miss=I am %s, the Ender Miss
 enderstuffp.guipet.title.avis=I am %s, the Ender Avis
 enderstuffp.guipet.mount=mount
@@ -92,10 +95,21 @@ enderstuffp.guipet.putIntoEgg=put me into an egg
 enderstuffp.guipet.close=Done
 enderstuffp.guipet.rename=Rename me!
 enderstuffp.guipet.name=Name:
+
 enderstuffp.chat.name=My name is %s.
 enderstuffp.chat.missFriend=I have %s%% Health and you are my friend.
 enderstuffp.chat.avisFriend=I have %s%% Health, %s%% stamina and you are my friend.
-enderstuffp.chat.stranger=My friend is %s
+
+enderstuffp.chat.stranger.msgCount=8
+enderstuffp.chat.stranger.1=Hello.
+enderstuffp.chat.stranger.2=Who are you?
+enderstuffp.chat.stranger.3=I already have a friend.
+enderstuffp.chat.stranger.4=Do I know you?
+enderstuffp.chat.stranger.5=I won't carry you. Take a train!
+enderstuffp.chat.stranger.6=Have you considered §kgetting a car$r?
+enderstuffp.chat.stranger.7=Go watch some §kanime$r!
+enderstuffp.chat.stranger.8=I'm made out of bytes. Think about it.
+
 enderstuffp.biomeChanger.gui1.range=Range
 enderstuffp.biomeChanger.gui3.blocks=Change blocks
 enderstuffp.biomeChanger.gui3.periform=Form of the area:
@@ -105,14 +119,19 @@ enderstuffp.biomeChanger.gui3.form3=Square
 enderstuffp.biomeChanger.gui3.stats=Statistics:
 enderstuffp.biomeChanger.gui3.remain=Remaining: %s
 enderstuffp.biomeChanger.gui3.processed=Processed: %s
+
 enderstuffp.duplicator.insertXP=Insert XP-Levels
 enderstuffp.duplicator.storedXP=stored XP-Levels
 enderstuffp.duplicator.neededXP=needed XP-Levels
+
 enderstuffp.weatherAltar.duration=Duration
 enderstuffp.weatherAltar.sun=Sun
 enderstuffp.weatherAltar.rain=Rain
 enderstuffp.weatherAltar.thunder=Thunder
+
 itemGroup.enderstuffp:creativeTab=EnderStuff+ Items
 itemGroup.enderstuffp:creativeTabCoats=EnderStuff+ Ender Raincoats
+
 enchantment.enderChestTel=Ender Chest Teleporter
+
 death.attack.enderstuffp:endAcid=%1$s was corroded by plasmatic ender gas

@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
 import java.util.List;
@@ -35,12 +36,16 @@ public class ItemRaincoat
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public void addInformation(ItemStack stack, EntityPlayer player, List infos, boolean isAdvancedInfo) {
         if( stack.hasTagCompound() ) {
+            CoatColorEntry clr = RegistryRaincoats.getCoatColor(stack.getTagCompound().getString("color"));
+            infos.add(EnumChatFormatting.BOLD + SAPUtils.translate(clr.name));
+
+
             CoatBaseEntry entry = RegistryRaincoats.getCoatBase(stack.getTagCompound().getString("base"));
             if( entry != RegistryRaincoats.NULL_BASE ) {
-                infos.add("\247o" + SAPUtils.translate(entry.name));
-                String[] split = SAPUtils.translate(entry.desc).split("\n");
+                infos.add(EnumChatFormatting.ITALIC + SAPUtils.translate(entry.name));
+                String[] split = SAPUtils.translate(entry.desc).split("<BREAK>");
                 for( String effect : split ) {
-                    infos.add("\2473" + effect);
+                    infos.add(EnumChatFormatting.DARK_AQUA + effect);
                 }
             }
         }
@@ -66,16 +71,6 @@ public class ItemRaincoat
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamageForRenderPass(int damage, int pass) {
         return pass == 0 ? this.itemIcon : this.iconOver;
-    }
-
-    @Override
-    public String getItemStackDisplayName(ItemStack par1ItemStack) {
-        if( par1ItemStack.getTagCompound() != null ) {
-            CoatColorEntry clr = RegistryRaincoats.getCoatColor(par1ItemStack.getTagCompound().getString("color"));
-
-            return String.format(super.getItemStackDisplayName(par1ItemStack), SAPUtils.translate(clr.name));
-        }
-        return String.format(super.getItemStackDisplayName(par1ItemStack), "[UNKNOWN]");
     }
 
     @Override

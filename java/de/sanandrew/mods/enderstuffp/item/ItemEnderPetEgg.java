@@ -22,10 +22,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 import java.util.UUID;
-//import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderAvis;
 
 public class ItemEnderPetEgg
     extends Item
@@ -68,14 +68,14 @@ public class ItemEnderPetEgg
     @SideOnly(Side.CLIENT)
     @SuppressWarnings("unchecked")
     public void addInformation(ItemStack stack, EntityPlayer player, List infos, boolean isAdvancedInfo) {
-        EnumEnderPetEggInfo.addInformation(EnumEnderPetEggInfo.getInfo(stack.getItemDamage()), stack, infos, isAdvancedInfo);
+        EnumEnderPetEggInfo.addInformation(EnumEnderPetEggInfo.getInfo(stack.getItemDamage()), stack, infos, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int pass) {
         EnumEnderPetEggInfo info = EnumEnderPetEggInfo.getInfo(stack.getItemDamage());
-        return pass == 0 ? info.foreColor : info.backColor;
+        return pass == 0 ? info.backColorw : info.foreColor;
     }
 
     @Override
@@ -85,14 +85,14 @@ public class ItemEnderPetEgg
     }
 
     @Override
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings("unchecked")
     public void getSubItems(Item item, CreativeTabs tab, List stacks) {
         ItemStack pet = new ItemStack(this, 1);
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setByte(EnumEnderPetEggInfo.NBT_ID, (byte) EnumEnderPetEggInfo.ENDERMISS_INFO.ordinal());
         nbt.setFloat(EnumEnderPetEggInfo.NBT_HEALTH, 40.0F);
         nbt.setFloat(EnumEnderPetEggInfo.NBT_MAX_HEALTH, 40.0F);
-        nbt.setBoolean(EnumEnderPetEggInfo.NBT_MISS_FALLDMG, false);
+        nbt.setBoolean(EnumEnderPetEggInfo.NBT_MISS_AVISFEATHER, false);
         nbt.setBoolean(EnumEnderPetEggInfo.NBT_MISS_SPECIAL, false);
         pet.setTagCompound(nbt);
         stacks.add(pet.copy());

@@ -23,12 +23,12 @@ public enum EnumEnderPetEggInfo
     ENDERAVIS_INFO(0x606060, 0xFF00FF),
     NULL_INFO(0x0, 0x0);
 
+    public final int backColorw;
     public final int foreColor;
-    public final int backColor;
 
-    private EnumEnderPetEggInfo(int fgColor, int bgColor) {
+    private EnumEnderPetEggInfo(int bgColor, int fgColor) {
+        this.backColorw = bgColor;
         this.foreColor = fgColor;
-        this.backColor = bgColor;
     }
 
     public static final String NBT_ID = "petId";
@@ -37,7 +37,7 @@ public enum EnumEnderPetEggInfo
     public static final String NBT_COAT = "coat";
 
     public static final String NBT_MISS_SPECIAL = "special";
-    public static final String NBT_MISS_FALLDMG = "fallDmg";
+    public static final String NBT_MISS_AVISFEATHER = "hasAvisFeather";
 
     public static final String NBT_AVIS_STAMINA = "stamina";
     public static final String NBT_AVIS_SADDLED = "saddled";
@@ -65,28 +65,28 @@ public enum EnumEnderPetEggInfo
             infos.add(SAPUtils.translatePreFormat("entity.%s.name", entityName));
 
             if( advancedInfo ) {
-                infos.add(String.format("%s: %s%.1f HP / %.1f HP", EnumChatFormatting.DARK_AQUA + EnderStuffPlus.MOD_ID + ".petegg.health",
+                infos.add(String.format("%s: %s%.1f HP / %.1f HP", EnumChatFormatting.DARK_AQUA + SAPUtils.translate(EnderStuffPlus.MOD_ID + ".petegg.health"),
                                         EnumChatFormatting.AQUA, nbt.getFloat(NBT_HEALTH), nbt.getFloat(NBT_MAX_HEALTH))
                 );
 
                 if( nbt.hasKey(NBT_COAT) ) {
-                    infos.add(EnumChatFormatting.DARK_AQUA +  EnderStuffPlus.MOD_ID + ".petegg.hasCoat");
+                    infos.add(EnumChatFormatting.DARK_AQUA + SAPUtils.translate(EnderStuffPlus.MOD_ID + ".petegg.hasCoat"));
                 }
 
                 switch( type ) {
                     case ENDERMISS_INFO:
                         if( nbt.getBoolean(NBT_MISS_SPECIAL) ) {
-                            infos.add(EnumChatFormatting.DARK_AQUA + EnderStuffPlus.MOD_ID + ".petegg.miss.isSpecial");
+                            infos.add(EnumChatFormatting.DARK_AQUA + SAPUtils.translate(EnderStuffPlus.MOD_ID + ".petegg.miss.isSpecial"));
                         }
-                        if( !nbt.getBoolean(NBT_MISS_FALLDMG) ) {
-                            infos.add(EnumChatFormatting.DARK_AQUA + EnderStuffPlus.MOD_ID + ".petegg.miss.noFallDmg");
+                        if( nbt.getBoolean(NBT_MISS_AVISFEATHER) ) {
+                            infos.add(EnumChatFormatting.DARK_AQUA + SAPUtils.translate(EnderStuffPlus.MOD_ID + ".petegg.miss.noFallDmg"));
                         }
                         break;
                     case ENDERAVIS_INFO:
-                        infos.add(String.format("%s: %s%.1f SP", EnumChatFormatting.DARK_AQUA + EnderStuffPlus.MOD_ID + ".petegg.avis.stamina",
+                        infos.add(String.format("%s: %s%.1f SP", EnumChatFormatting.DARK_AQUA + SAPUtils.translate(EnderStuffPlus.MOD_ID + ".petegg.avis.stamina"),
                                   EnumChatFormatting.AQUA, nbt.getFloat(NBT_AVIS_STAMINA)));
                         if( nbt.getBoolean(NBT_AVIS_SADDLED) ) {
-                            infos.add(EnumChatFormatting.DARK_AQUA + EnderStuffPlus.MOD_ID + ".petegg.avis.saddled");
+                            infos.add(EnumChatFormatting.DARK_AQUA + SAPUtils.translate(EnderStuffPlus.MOD_ID + ".petegg.avis.saddled"));
                         }
                         break;
                 }

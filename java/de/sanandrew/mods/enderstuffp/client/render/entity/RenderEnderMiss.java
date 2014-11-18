@@ -60,11 +60,11 @@ public class RenderEnderMiss
 
     @Override
     protected void renderEquippedItems(EntityLivingBase livingBase, float partTicks) {
-        this.renderFlower((EntityEnderMiss) livingBase, partTicks);
+        this.renderHeldStuff((EntityEnderMiss) livingBase, partTicks);
         super.renderEquippedItems(livingBase, partTicks);
     }
 
-    private void renderFlower(EntityEnderMiss miss, float partTicks) {
+    private void renderHeldStuff(EntityEnderMiss miss, float partTicks) {
         ItemStack heldStack = miss.getHeldItem();
 
         if( heldStack != null ) {
@@ -97,7 +97,7 @@ public class RenderEnderMiss
 
             GL11.glPopMatrix();
 
-            if( !miss.canGetFallDmg() ) {
+            if( miss.hasAvisFeather() ) {
                 scale = 0.22F;
 
                 GL11.glPushMatrix();

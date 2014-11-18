@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.enderstuffp.client.event.FovUpdateHandler;
+import de.sanandrew.mods.enderstuffp.client.event.RenderGameOverlayHandler;
 import de.sanandrew.mods.enderstuffp.client.event.TextureStitchHandler;
 import de.sanandrew.mods.enderstuffp.client.render.ItemRendererGlowTools;
 import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderIgnis;
@@ -95,6 +96,7 @@ public class ClientProxy
 
         MinecraftForge.EVENT_BUS.register(new FovUpdateHandler());
         MinecraftForge.EVENT_BUS.register(new TextureStitchHandler());
+        MinecraftForge.EVENT_BUS.register(new RenderGameOverlayHandler());
 
     }
 
