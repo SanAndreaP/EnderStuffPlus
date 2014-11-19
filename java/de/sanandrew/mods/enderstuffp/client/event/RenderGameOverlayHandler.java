@@ -35,7 +35,7 @@ public class RenderGameOverlayHandler
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
                 this.mc.getTextureManager().bindTexture(EnumTextures.GUI_INGAMEICONS.getResource());
-                this.renderEnderStats(pet.getPetHealth(), pet.getPetMaxHealth(), scaledWdt / 2 + 91, scaledHgt - 39, 9);
+                this.renderEnderStats(pet.getEntity().getHealth(), pet.getEntity().getMaxHealth(), scaledWdt / 2 + 91, scaledHgt - 39, 9);
 
 //                if( this.mc.thePlayer.ridingEntity instanceof EntityEnderAvis ) {
 //                    this.renderEnderStats(((EntityEnderAvis) pet).getCurrFlightCondInt(), 20, scaledWdt / 2 + 91, scaledHgt - 49, 0);

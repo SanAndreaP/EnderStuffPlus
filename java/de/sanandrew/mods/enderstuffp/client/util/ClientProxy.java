@@ -11,6 +11,7 @@ import de.sanandrew.mods.enderstuffp.client.event.FovUpdateHandler;
 import de.sanandrew.mods.enderstuffp.client.event.RenderGameOverlayHandler;
 import de.sanandrew.mods.enderstuffp.client.event.TextureStitchHandler;
 import de.sanandrew.mods.enderstuffp.client.render.ItemRendererGlowTools;
+import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderAvis;
 import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderIgnis;
 import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderMiss;
 import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderNivis;
@@ -18,6 +19,7 @@ import de.sanandrew.mods.enderstuffp.entity.item.EntityBait;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlIgnis;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlMiss;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlNivis;
+import de.sanandrew.mods.enderstuffp.entity.living.AEntityEnderAvis;
 import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderMiss;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderIgnis;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderNivis;
@@ -50,6 +52,7 @@ public class ClientProxy
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderNivis.class, new RenderEnderNivis());
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderIgnis.class, new RenderEnderIgnis());
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderMiss.class, new RenderEnderMiss());
+        RenderingRegistry.registerEntityRenderingHandler(AEntityEnderAvis.class, new RenderEnderAvis());
         RenderingRegistry.registerEntityRenderingHandler(EntityPearlNivis.class, new RenderSnowball(RegistryItems.espPearls, 0));
         RenderingRegistry.registerEntityRenderingHandler(EntityPearlIgnis.class, new RenderSnowball(RegistryItems.espPearls, 1));
         RenderingRegistry.registerEntityRenderingHandler(EntityPearlMiss.class, new RenderSnowball(RegistryItems.espPearls, 2));
@@ -135,10 +138,10 @@ public class ClientProxy
                 ParticleHelper.spawnRefuseFX(x, y, z, random);
                 break;
             case FX_MISS_BODY:
-                ParticleHelper.spawnEnderBodyFX(x, y, z, random, 1.0F, 0.5F, 0.7F, (Boolean)data.getValue(0));
+                ParticleHelper.spawnEnderBodyFX(x, y, z, random, 1.0F, 0.5F, 0.7F, (Boolean) data.getValue(0));
                 break;
             case FX_MISS_TELEPORT:
-                ParticleHelper.spawnEnderTeleportFX(x, y, z, random, 1.0F, 0.5F, 0.7F, (Double)data.getValue(0), (Double)data.getValue(1), (Double)data.getValue(2));
+                ParticleHelper.spawnEnderTeleportFX(x, y, z, random, 1.0F, 0.5F, 0.7F, (Double) data.getValue(0), (Double) data.getValue(1), (Double) data.getValue(2));
                 break;
         }
     }

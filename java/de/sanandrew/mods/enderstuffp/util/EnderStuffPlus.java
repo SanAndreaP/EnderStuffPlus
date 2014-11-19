@@ -16,9 +16,11 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import de.sanandrew.core.manpack.util.SAPReflectionHelper;
 import de.sanandrew.mods.enderstuffp.enchantment.EnchantmentEnderChestTeleport;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -116,5 +118,10 @@ public class EnderStuffPlus
     @EventHandler
     public void postInit(FMLPostInitializationEvent evt) {
 //        channelHandler.postInitialise();
+    }
+
+    //TODO: check the MCP name for its correctness before release!
+    public static boolean isJumping(EntityLivingBase livingBase) {
+        return SAPReflectionHelper.getCachedFieldValue(EntityLivingBase.class, livingBase, "isJumping", "field_70703_bu");
     }
 }

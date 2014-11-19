@@ -13,15 +13,13 @@ public interface IEnderPet<E extends EntityCreature>
 
     public CoatColorEntry getCoatColor();
 
-    public int getEggDmg();
-
     public E getEntity();
 
     public String getName();
 
-    public float getPetHealth();
-
-    public float getPetMaxHealth();
+//    public float getPetHealth();
+//
+//    public float getPetMaxHealth();
 
     public boolean isFollowing();
 
@@ -30,10 +28,6 @@ public interface IEnderPet<E extends EntityCreature>
     public void setFollowing(boolean b);
 
     public void setName(String name);
-
-    public void setPetMoveForward(float f);
-
-    public void setPetMoveStrafe(float f);
 
     public void setSitting(boolean b);
 

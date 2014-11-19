@@ -1,6 +1,5 @@
 package de.sanandrew.mods.enderstuffp.entity.living;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.core.manpack.util.javatuples.Unit;
@@ -12,7 +11,6 @@ import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats.CoatColorEn
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -183,7 +181,7 @@ public class EntityEnderMiss
 
     @Override
     public float getAIMoveSpeed() {
-        return this.isSitting() ? 0.0F : (this.isRiddenDW() ? 0.2F + (this.getCoatBase() == RegistryRaincoats.baseGold ? 0.05F : 0.0F) : 0.1F);
+        return this.isSitting() ? 0.0F : (this.isRidden() ? 0.2F + (this.getCoatBase() == RegistryRaincoats.baseGold ? 0.05F : 0.0F) : 0.1F);
     }
 
     @Override
@@ -252,11 +250,6 @@ public class EntityEnderMiss
     }
 
     @Override
-    public int getEggDmg() {
-        return 0;
-    }
-
-    @Override
     public EntityEnderMiss getEntity() {
         return this;
     }
@@ -315,91 +308,84 @@ public class EntityEnderMiss
     }
 
     @Override
-    public float getPetHealth() {
-        return this.getHealth();
-    }
-
-    @Override
-    public float getPetMaxHealth() {
-        return this.getMaxHealth();
-    }
-
-    @Override
     public boolean interact(EntityPlayer player) {
-        if( player.getCurrentEquippedItem() != null ) {
-            ItemStack playerItem = player.getCurrentEquippedItem();
+        if( !worldObj.isRemote ) {
+            if( player.getCurrentEquippedItem() != null ) {
+                ItemStack playerItem = player.getCurrentEquippedItem();
 
-            if( !this.worldObj.isRemote && SAPUtils.areItemInstEqual(playerItem, Blocks.yellow_flower) && (!this.isTamed() || this.ownerUUID == null) ) {
-                if( this.rand.nextInt(10) == 0 ) {
-                    this.setTamed(true);
-                    this.ownerUUID = player.getGameProfile().getId();
+                if( SAPUtils.areItemInstEqual(playerItem, Blocks.yellow_flower) && (!this.isTamed() || this.ownerUUID == null) ) {
+                    if( this.rand.nextInt(10) == 0 ) {
+                        this.setTamed(true);
+                        this.ownerUUID = player.getGameProfile().getId();
 
-                    EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_TAME, this.posX, this.posY, this.posZ, this.dimension, null);
-                    playerItem.stackSize--;
-
-                    return true;
-                } else {
-                    EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_REJECT, this.posX, this.posY, this.posZ, this.dimension, null);
-                    playerItem.stackSize--;
-
-                    return true;
-                }
-            } else if( this.isTamed() && !this.isRidden() ) {
-                if( !this.worldObj.isRemote && this.ownerUUID.equals(player.getGameProfile().getId()) ) {
-                    if( this.isCoatApplicable(playerItem) ) {
-                        if( this.hasCoat() && !player.capabilities.isCreativeMode ) {
-                            player.inventory.addItemStackToInventory(this.getCoat().copy());
-                        }
-
-                        player.inventoryContainer.detectAndSendChanges();
-                        ItemStack coatItem = playerItem.copy();
-                        coatItem.stackSize = 1;
-                        this.setCoat(coatItem);
-                        playerItem.stackSize--;
-
-                        return true;
-                    } else if( SAPUtils.areItemInstEqual(playerItem, RegistryItems.avisFeather) && !this.hasAvisFeather() ) {
-                        this.setAvisFeather(true);
-                        playerItem.stackSize--;
-
-                        return true;
-                    } else if( SAPUtils.areItemInstEqual(playerItem, Items.dye) && playerItem.getItemDamage() != this.getBowColor() ) {
-                        this.setBowColor(playerItem.getItemDamage());
-                        playerItem.stackSize--;
-
-                        return true;
-                    } else if( playerItem.getItem() instanceof ItemFood && this.getHealth() < this.getMaxHealth() ) {
-                        this.heal(((ItemFood) playerItem.getItem()).func_150905_g(playerItem));
                         EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_TAME, this.posX, this.posY, this.posZ, this.dimension, null);
                         playerItem.stackSize--;
 
                         return true;
-                    } else if( SAPUtils.areItemInstEqual(playerItem, RegistryItems.enderPetStaff) ) {
-                        EnderStuffPlus.proxy.openGui(player, EnumGui.ENDERPET, this.getEntityId(), 0, 0);
+                    } else {
+                        EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_REJECT, this.posX, this.posY, this.posZ, this.dimension, null);
+                        playerItem.stackSize--;
 
                         return true;
                     }
-                }
-            }
-        } else if( this.isTamed() && !this.worldObj.isRemote ) {
-            if( this.ownerUUID.equals(player.getGameProfile().getId()) ) {
-                String s1 = String.format("%s[%s]%s %s", EnumChatFormatting.LIGHT_PURPLE, SAPUtils.translate("entity." + EnderStuffPlus.MOD_ID + ".EnderMiss.name"),
-                                          EnumChatFormatting.WHITE, SAPUtils.translate(EnderStuffPlus.MOD_ID + ".chat.name"));
-                String s2 = this.getName().isEmpty() ? EnumChatFormatting.OBFUSCATED + "RANDOM" + EnumChatFormatting.RESET
-                                                     : this.getName();
-                player.addChatMessage(new ChatComponentText(String.format(s1, s2)));
+                } else if( this.isTamed() && !this.isRidden() ) {
+                    if( !this.worldObj.isRemote && this.ownerUUID.equals(player.getGameProfile().getId()) ) {
+                        if( this.isCoatApplicable(playerItem) ) {
+                            if( this.hasCoat() && !player.capabilities.isCreativeMode ) {
+                                player.inventory.addItemStackToInventory(this.getCoat().copy());
+                            }
 
-                int percHealth = (int) (this.getHealth() / this.getMaxHealth() * 100.0F);
-                player.addChatMessage(new ChatComponentText("  " + SAPUtils.translatePostFormat(EnderStuffPlus.MOD_ID + ".chat.missFriend", percHealth)));
-            } else {
-                String s = SAPUtils.translate(EnderStuffPlus.MOD_ID + ".chat.stranger.msgCount");
-                if( StringUtils.isNumeric(s) ) {
-                    int cnt = Integer.parseInt(s);
-                    player.addChatMessage(new ChatComponentText(SAPUtils.translate(EnderStuffPlus.MOD_ID + ".chat.stranger." + (this.rand.nextInt(cnt) + 1))));
-                }
-            }
+                            player.inventoryContainer.detectAndSendChanges();
+                            ItemStack coatItem = playerItem.copy();
+                            coatItem.stackSize = 1;
+                            this.setCoat(coatItem);
+                            playerItem.stackSize--;
 
-            return true;
+                            return true;
+                        } else if( SAPUtils.areItemInstEqual(playerItem, RegistryItems.avisFeather) && !this.hasAvisFeather() ) {
+                            this.setAvisFeather(true);
+                            playerItem.stackSize--;
+
+                            return true;
+                        } else if( SAPUtils.areItemInstEqual(playerItem, Items.dye) && playerItem.getItemDamage() != this.getBowColor() ) {
+                            this.setBowColor(playerItem.getItemDamage());
+                            playerItem.stackSize--;
+
+                            return true;
+                        } else if( playerItem.getItem() instanceof ItemFood && this.getHealth() < this.getMaxHealth() ) {
+                            this.heal(((ItemFood) playerItem.getItem()).func_150905_g(playerItem));
+                            EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_TAME, this.posX, this.posY, this.posZ, this.dimension, null);
+                            playerItem.stackSize--;
+
+                            return true;
+                        } else if( SAPUtils.areItemInstEqual(playerItem, RegistryItems.enderPetStaff) ) {
+                            EnderStuffPlus.proxy.openGui(player, EnumGui.ENDERPET, this.getEntityId(), 0, 0);
+
+                            return true;
+                        }
+                    }
+                }
+            } else if( this.isTamed() ) {
+                if( this.ownerUUID.equals(player.getGameProfile().getId()) ) {
+                    String s1 = String.format("%s[%s]%s %s", EnumChatFormatting.LIGHT_PURPLE, SAPUtils.translate("entity." + EnderStuffPlus.MOD_ID + ".EnderMiss.name"),
+                                              EnumChatFormatting.WHITE, SAPUtils.translate(EnderStuffPlus.MOD_ID + ".chat.name")
+                    );
+                    String s2 = this.getName().isEmpty() ? EnumChatFormatting.OBFUSCATED + "RANDOM" + EnumChatFormatting.RESET
+                                                         : this.getName();
+                    player.addChatMessage(new ChatComponentText(String.format(s1, s2)));
+
+                    int percHealth = (int) (this.getHealth() / this.getMaxHealth() * 100.0F);
+                    player.addChatMessage(new ChatComponentText("  " + SAPUtils.translatePostFormat(EnderStuffPlus.MOD_ID + ".chat.missFriend", percHealth)));
+                } else {
+                    String s = SAPUtils.translate(EnderStuffPlus.MOD_ID + ".chat.stranger.msgCount");
+                    if( StringUtils.isNumeric(s) ) {
+                        int cnt = Integer.parseInt(s);
+                        player.addChatMessage(new ChatComponentText(SAPUtils.translate(EnderStuffPlus.MOD_ID + ".chat.stranger." + (this.rand.nextInt(cnt) + 1))));
+                    }
+                }
+
+                return true;
+            }
         }
 
         return false;
@@ -408,10 +394,6 @@ public class EntityEnderMiss
     @Override
     public boolean isFollowing() {
         return (this.dataWatcher.getWatchableObjectByte(DW_BOOLEANS) & 64) == 64;
-    }
-
-    public boolean isImmuneToWater() {
-        return this.hasCoat();
     }
 
     @Override
@@ -426,14 +408,6 @@ public class EntityEnderMiss
 
     public boolean isRidden() {
         return this.isTamed() && this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer;
-    }
-
-    public boolean isRiddenDW() {
-        try {
-            return (this.dataWatcher.getWatchableObjectByte(DW_BOOLEANS) & 32) == 32;
-        } catch( NullPointerException e ) {
-            return false;
-        }
     }
 
     @Override
@@ -478,7 +452,7 @@ public class EntityEnderMiss
     @Override
     protected void jump() {
         if( !this.isSitting() && this.isJumping ) {
-            this.motionY = 0.41999998688697815D * (this.isRiddenDW() ? 1.4D : 1.0D);
+            this.motionY = 0.41999998688697815D * (this.isRidden() ? 1.4D : 1.0D);
 
             if( this.isPotionActive(Potion.jump) ) {
                 this.motionY += (this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F;
@@ -523,7 +497,6 @@ public class EntityEnderMiss
 
     @Override
     public void onLivingUpdate() {
-
         if( this.jumpTicks > 0 ) {
             this.jumpTicks--;
         }
@@ -539,8 +512,6 @@ public class EntityEnderMiss
 
                 this.prevCoatBase = this.getCoat();
             }
-
-            this.setRiddenDW(this.isRidden());
         }
 
         if( this.teleportTimer > 0 ) {
@@ -564,7 +535,7 @@ public class EntityEnderMiss
         attributeinstance.removeModifier(SPEED_TAMED);
 
         if( this.isTamed() && !this.isSitting() && !this.isRidden() && ep != null && this.getDistanceToEntity(ep) > 2.0F && this.isFollowing() ) {
-            this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 24.0F, false, false, !this.isImmuneToWater(), !this.isImmuneToWater()));
+            this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 24.0F, false, false, !this.hasCoat(), !this.hasCoat()));
             attributeinstance.applyModifier(SPEED_TAMED);
 
             if( this.getDistanceToEntity(ep) > 10.0F && this.teleportTimer <= 0 && Math.abs(ep.posY - this.posY) < 6.0F ) {
@@ -574,10 +545,10 @@ public class EntityEnderMiss
                    && ep.getCurrentEquippedItem().getItem() instanceof ItemFood && this.getDistanceToEntity(ep) > 2.0F && this.needFood() && !this.isSitting() )
         {
             attributeinstance.applyModifier(SPEED_TAMED);
-            this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 8.0F, false, false, !this.isImmuneToWater(), !this.isImmuneToWater()));
+            this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 8.0F, false, false, !this.hasCoat(), !this.hasCoat()));
         }
 
-        if( this.isWet() && !this.isImmuneToWater() ) {
+        if( this.isWet() && !this.hasCoat() ) {
             this.attackEntityFrom(DamageSource.drown, 1);
         }
 
@@ -606,7 +577,7 @@ public class EntityEnderMiss
 
         super.onLivingUpdate();
 
-        if( this.isRiddenDW() && this.riddenByEntity != null ) {
+        if( this.isRidden() ) {
             attributeinstance.applyModifier(SPEED_TAMED);
 
             this.jumpMovementFactor = (this.getAIMoveSpeed() * 1.6F) / 5.0F;
@@ -616,7 +587,7 @@ public class EntityEnderMiss
             this.setRotation(player.rotationYaw, 0.0F);
             this.moveStrafing = player.moveStrafing;
             this.moveForward = player.moveForward;
-            this.isJumping = ReflectionHelper.getPrivateValue(EntityLivingBase.class, player, "isJumping");
+            this.isJumping = EnderStuffPlus.isJumping(player);
 
             this.stepHeight = 1.0F;
         }
@@ -684,20 +655,6 @@ public class EntityEnderMiss
     @Override
     public void setName(String name) {
         this.setCustomNameTag(name);
-    }
-
-    @Override
-    public void setPetMoveForward(float f) {
-        this.moveForward = f;
-    }
-
-    @Override
-    public void setPetMoveStrafe(float f) {
-        this.moveStrafing = f;
-    }
-
-    public void setRiddenDW(boolean b) {
-        this.setBoolean(b, 32, DW_BOOLEANS);
     }
 
     @Override
@@ -771,7 +728,7 @@ public class EntityEnderMiss
                 this.setPosition(this.posX, this.posY, this.posZ);
 
                 if( this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty()
-                    && (!this.worldObj.isAnyLiquid(this.boundingBox) || this.isImmuneToWater()) )
+                    && (!this.worldObj.isAnyLiquid(this.boundingBox) || this.hasCoat()) )
                 {
                     teleportSucceed = true;
                 }
@@ -819,7 +776,7 @@ public class EntityEnderMiss
             this.setTarget(null);
         }
 
-        if( !this.isRiddenDW() ) {
+        if( !this.isRidden() ) {
             this.jumpMovementFactor = (this.getAIMoveSpeed() * 1.6F) / 5.0F;
             super.updateEntityActionState();
         }

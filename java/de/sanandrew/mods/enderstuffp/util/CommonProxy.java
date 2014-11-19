@@ -8,6 +8,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import de.sanandrew.core.manpack.util.javatuples.Quartet;
 import de.sanandrew.core.manpack.util.javatuples.Quintet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
+import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderAvisPet;
 import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderMiss;
 import de.sanandrew.mods.enderstuffp.event.EntityJoinWorldHandler;
 import de.sanandrew.mods.enderstuffp.entity.item.*;
@@ -35,6 +36,7 @@ public class CommonProxy
         EntityRegistry.registerModEntity(EntityEnderNivis.class, "EnderNivis", entityId++, EnderStuffPlus.instance, 80, 1, true);
         EntityRegistry.registerModEntity(EntityEnderIgnis.class, "EnderIgnis", entityId++, EnderStuffPlus.instance, 80, 1, true);
         EntityRegistry.registerModEntity(EntityEnderMiss.class, "EnderMiss", entityId++, EnderStuffPlus.instance, 80, 1, true);
+        EntityRegistry.registerModEntity(EntityEnderAvisPet.class, "EnderAvisPet", entityId++, EnderStuffPlus.instance, 80, 1, true);
         EntityRegistry.registerModEntity(EntityPearlNivis.class, "EnderNivisPearl", entityId++, EnderStuffPlus.instance, 64, 10, true);
         EntityRegistry.registerModEntity(EntityPearlIgnis.class, "EnderIgnisPearl", entityId++, EnderStuffPlus.instance, 64, 10, true);
         EntityRegistry.registerModEntity(EntityPearlMiss.class, "EnderMissPearl", entityId++, EnderStuffPlus.instance, 64, 10, true);
