@@ -35,7 +35,9 @@ public class PacketEnderPetGuiAction
 
             switch( stream.readByte() ) {
                 case 0:
-                    playerMP.mountEntity(pet.getEntity());
+                    if( pet.canMount() ) {
+                        playerMP.mountEntity(pet.getEntity());
+                    }
                     break;
                 case 1:
                     pet.setSitting(!pet.isSitting());

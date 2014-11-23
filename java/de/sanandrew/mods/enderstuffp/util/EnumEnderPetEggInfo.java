@@ -7,6 +7,7 @@
 package de.sanandrew.mods.enderstuffp.util;
 
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderAvisPet;
 import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderMiss;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
@@ -47,7 +48,7 @@ public enum EnumEnderPetEggInfo
     public static Class<? extends EntityCreature> getEntityClass(EnumEnderPetEggInfo type) {
         switch( type ) {
             case ENDERMISS_INFO: return EntityEnderMiss.class;
-            case ENDERAVIS_INFO: return EntityEnderMiss.class; //TODO: correct class when avis is implemented!
+            case ENDERAVIS_INFO: return EntityEnderAvisPet.class;
         }
 
         return EntityEnderman.class;
@@ -60,7 +61,7 @@ public enum EnumEnderPetEggInfo
             String entityName = "";
             switch( type ) {
                 case ENDERMISS_INFO: entityName = (String) EntityList.classToStringMapping.get(EntityEnderMiss.class); break;
-                case ENDERAVIS_INFO: entityName = (String) EntityList.classToStringMapping.get(EntityEnderMiss.class); break; //TODO: correct class when avis is implemented!
+                case ENDERAVIS_INFO: entityName = (String) EntityList.classToStringMapping.get(EntityEnderAvisPet.class); break;
             }
             infos.add(SAPUtils.translatePreFormat("entity.%s.name", entityName));
 

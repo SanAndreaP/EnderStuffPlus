@@ -166,7 +166,7 @@ public class RenderEnderMiss
     }
 
     @Override
-    protected void renderModel(EntityLivingBase livingBase, float limbSwing, float prevLimbSwing, float rotFloat, float rotYaw, float rotPitch, float par7) {
+    protected void renderModel(EntityLivingBase livingBase, float limbSwing, float prevLimbSwing, float rotFloat, float rotYaw, float rotPitch, float partTicks) {
         EntityEnderMiss miss = (EntityEnderMiss) livingBase;
 
         if( !miss.isSitting() ) {
@@ -175,7 +175,7 @@ public class RenderEnderMiss
             GL11.glTranslatef(0.0F, 1.625F, 0.0F);
         }
 
-        super.renderModel(livingBase, limbSwing, prevLimbSwing, rotFloat, rotYaw, rotPitch, par7);
+        super.renderModel(livingBase, limbSwing, prevLimbSwing, rotFloat, rotYaw, rotPitch, partTicks);
 
         drawBow(miss, rotYaw, rotPitch);
     }
@@ -192,11 +192,7 @@ public class RenderEnderMiss
         GL11.glPushMatrix();
         GL11.glColor3f(bowClr[0], bowClr[1], bowClr[2]);
 
-//        if( miss.isSitting() ) {
-//            GL11.glTranslated(0.0F, 0.625F, 0.0F);
-//        } else {
-            GL11.glTranslated(0.0F, -0.84F, 0.0F);
-//        }
+        GL11.glTranslated(0.0F, -0.84F, 0.0F);
 
         GL11.glRotatef(rotYaw, 0.0F, 1.0F, 0);
         GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);

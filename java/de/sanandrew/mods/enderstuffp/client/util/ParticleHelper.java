@@ -9,11 +9,15 @@ package de.sanandrew.mods.enderstuffp.client.util;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.enderstuffp.client.particle.EntityColoredPortalFX;
+import de.sanandrew.mods.enderstuffp.client.particle.EntityWeatherAltarFX;
+import de.sanandrew.mods.enderstuffp.tileentity.TileEntityWeatherAltar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntityHeartFX;
 import net.minecraft.client.particle.EntitySmokeFX;
+import net.minecraft.world.World;
 
+import java.util.List;
 import java.util.Random;
 
 @SideOnly(Side.CLIENT)
@@ -78,6 +82,22 @@ final class ParticleHelper
             );
 
             Minecraft.getMinecraft().effectRenderer.addEffect(part);
+        }
+    }
+
+    static void spawnWeatherAltarFX(double x, double y, double z, Random rand, World world) {
+        TileEntityWeatherAltar altar = (TileEntityWeatherAltar) world.getTileEntity((int) x, (int) y, (int) z);
+        List<Integer[]> blockCoords = altar.getSurroundingPillars();
+
+        for( Integer[] coords : blockCoords ) {
+            if( rand.nextInt(8) == 0 ) {
+                EntityFX particle = new EntityWeatherAltarFX(world, x + 0.5D, y + 2.0D, z + 0.5D, coords[0] - x + rand.nextFloat() - 0.5D,
+                                                             coords[1] - y - rand.nextFloat() - 1.0F, coords[2] - z + rand.nextFloat() - 0.5D);
+
+                particle.setParticleTextureIndex(66);
+                particle.setRBGColorF(0.25F + rand.nextFloat() * 0.25F, 0.0F, 1.0F);
+                Minecraft.getMinecraft().effectRenderer.addEffect(particle);
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package de.sanandrew.mods.enderstuffp.client.util;
 
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -11,10 +12,12 @@ import de.sanandrew.mods.enderstuffp.client.event.FovUpdateHandler;
 import de.sanandrew.mods.enderstuffp.client.event.RenderGameOverlayHandler;
 import de.sanandrew.mods.enderstuffp.client.event.TextureStitchHandler;
 import de.sanandrew.mods.enderstuffp.client.render.ItemRendererGlowTools;
+import de.sanandrew.mods.enderstuffp.client.render.ItemRendererWeatherAltar;
 import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderAvis;
 import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderIgnis;
 import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderMiss;
 import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderNivis;
+import de.sanandrew.mods.enderstuffp.client.render.tileentity.RenderTileEntityWeatherAltar;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityBait;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlIgnis;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlMiss;
@@ -24,11 +27,13 @@ import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderMiss;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderIgnis;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderNivis;
 import de.sanandrew.mods.enderstuffp.network.ClientPacketHandler;
+import de.sanandrew.mods.enderstuffp.tileentity.TileEntityWeatherAltar;
 import de.sanandrew.mods.enderstuffp.util.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
@@ -57,6 +62,10 @@ public class ClientProxy
         RenderingRegistry.registerEntityRenderingHandler(EntityPearlIgnis.class, new RenderSnowball(RegistryItems.espPearls, 1));
         RenderingRegistry.registerEntityRenderingHandler(EntityPearlMiss.class, new RenderSnowball(RegistryItems.espPearls, 2));
         RenderingRegistry.registerEntityRenderingHandler(EntityBait.class, new RenderSnowball(RegistryItems.espPearls, 2));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWeatherAltar.class, new RenderTileEntityWeatherAltar());
+
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegistryBlocks.weatherAltar), new ItemRendererWeatherAltar());
     }
 
     //    @Override
@@ -142,6 +151,12 @@ public class ClientProxy
                 break;
             case FX_MISS_TELEPORT:
                 ParticleHelper.spawnEnderTeleportFX(x, y, z, random, 1.0F, 0.5F, 0.7F, (Double) data.getValue(0), (Double) data.getValue(1), (Double) data.getValue(2));
+                break;
+            case FX_AVIS_EGG:
+                ParticleHelper.spawnPortalFX(x, y, z, random, 5, 0.5F, 0.0F, 1.0F);
+                break;
+            case FX_WEATHER_ALTAR:
+                ParticleHelper.spawnWeatherAltarFX(x, y, z, random, getWorld());
                 break;
         }
     }

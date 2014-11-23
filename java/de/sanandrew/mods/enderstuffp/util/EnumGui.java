@@ -8,7 +8,8 @@ package de.sanandrew.mods.enderstuffp.util;
 
 public enum EnumGui
 {
-    ENDERPET;
+    ENDERPET,
+    WEATHERALTAR;
 
     public static final EnumGui[] VALUES = values();
 }

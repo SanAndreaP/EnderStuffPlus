@@ -806,7 +806,7 @@ public class EntityEnderMiss
         this.setAvisFeather(nbt.getBoolean(EnumEnderPetEggInfo.NBT_MISS_AVISFEATHER));
         this.setSpecial(nbt.getBoolean(EnumEnderPetEggInfo.NBT_MISS_SPECIAL));
         if( nbt.hasKey(EnumEnderPetEggInfo.NBT_COAT) ) {
-            this.setCoat(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("coat")));
+            this.setCoat(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag(EnumEnderPetEggInfo.NBT_COAT)));
         } else {
             this.setCoat(new ItemStack(Blocks.air));
         }

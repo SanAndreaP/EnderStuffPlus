@@ -59,6 +59,7 @@ public class EnderStuffPlus
 //        };
 //
 //        ModBlockRegistry.initialize();
+        RegistryBlocks.initialize();
         RegistryItems.initialize();
 //        ModEntityRegistry.initialize();
 //

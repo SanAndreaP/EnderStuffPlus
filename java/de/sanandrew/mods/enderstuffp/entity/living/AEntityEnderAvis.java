@@ -14,7 +14,9 @@ import de.sanandrew.mods.enderstuffp.util.RegistryItems;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats.CoatBaseEntry;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats.CoatColorEntry;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -26,6 +28,8 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+
+import java.util.UUID;
 
 public abstract class AEntityEnderAvis
     extends EntityCreature implements IEnderPet<AEntityEnderAvis>, IEnderCreature
@@ -67,6 +71,34 @@ public abstract class AEntityEnderAvis
         this.dataWatcher.addObject(DW_CURR_FLIGHT_COND, 20.0F);
         this.dataWatcher.addObject(DW_COLLAR_CLR, (byte) this.rand.nextInt(ItemDye.field_150922_c.length));
         this.dataWatcher.addObject(DW_COAT, EMPTY_COAT_SLOT);
+    }
+
+    @Override
+    protected void attackEntity(Entity entity, float distance) {
+        if( this.attackTime <= 0 && distance < 2.0F /*&& entity.boundingBox.maxY > this.boundingBox.minY && entity.boundingBox.minY < this.boundingBox.maxY*/ ) {
+            this.attackTime = 20;
+            this.attackEntityAsMob(entity);
+        }
+    }
+
+    @Override
+    public boolean attackEntityAsMob(Entity entity) {
+        float damage = 5F;
+
+        if( this.isPotionActive(Potion.damageBoost) ) {
+            damage += 3 << this.getActivePotionEffect(Potion.damageBoost).getAmplifier();
+        }
+
+        if( this.isPotionActive(Potion.weakness) ) {
+            damage -= 2 << this.getActivePotionEffect(Potion.weakness).getAmplifier();
+        }
+
+        if( entity instanceof EntityLivingBase ) {
+            ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.confusion.id, 300, 0));
+            ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.poison.id, 300, 0));
+        }
+
+        return entity.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
     }
 
     public ItemStack getCoat() {
@@ -151,7 +183,7 @@ public abstract class AEntityEnderAvis
         return EnderStuffPlus.MOD_ID + ":mob.enderavis.idle";
     }
 
-    private void setFlightCondition(float condition) {
+    protected void setFlightCondition(float condition) {
         this.dataWatcher.updateObject(DW_CURR_FLIGHT_COND, condition);
     }
 
@@ -191,32 +223,50 @@ public abstract class AEntityEnderAvis
             this.attackEntityFrom(DamageSource.drown, 1);
         }
 
-        this.prevWingRot = this.wingRot;
-        this.prevDestPos = this.destPos;
-        this.prevWingSpread = this.wingSpread;
+//        this.prevWingRot = this.wingRot;
+//        this.prevWingSpread = this.wingSpread;
 
-        this.destPos = Math.max(0.0F, Math.min(1.0F, (float) (this.destPos + (this.onGround ? -1 : 4) * 0.3D)));
+        if( !this.onGround ) {
+            this.wingRot += 0.261799388F * (this.motionY > 0.0F ? 4.0F : 1.0F);
 
-        if( !this.onGround && this.wingSpread < 1.0F ) {
-            this.wingSpread = 1.0F;
+            if( this.wingSpread > 0.0F ) {
+                this.wingSpread = Math.max(0.0F, this.wingSpread - 0.785398163F);
+            }
+
+            if( this.wingRot >= 6.283185307F ) {
+                this.prevWingRot -= 6.283185307F;
+                this.wingRot -= 6.283185307F;
+            }
+        } else if( this.wingRot > 0.0F ) {
+            this.wingRot *= 0.2F;
+
+            if( this.wingSpread < 1.570796327F ) {
+                this.wingSpread = Math.min(1.570796327F, this.wingSpread + 0.785398163F);
+            }
         }
 
-        this.wingSpread = (float) (this.wingSpread * 0.9D);
-
+//        this.destPos = Math.max(0.0F, Math.min(1.0F, (float) (this.destPos + (this.onGround ? -1 : 4) * 0.3D)));
+//
+//        if( !this.onGround && this.wingSpread < 1.0F ) {
+//            this.wingSpread = 1.0F;
+//        }
+//
+//        this.wingSpread = (float) (this.wingSpread * 0.9D);
+//
         if( !this.onGround ) {
             if( this.motionY < 0.0F && !(this.isRidden() && this.riddenByEntity.isSneaking()) && (this.canFly() || !this.isTamed()) ) {
                 this.motionY *= 0.6D;
             }
-            if( this.ticksFlying < 5 ) {
-                this.ticksFlying++;
-            }
-        } else {
-            if( this.ticksFlying > 0 ) {
-                this.ticksFlying--;
-            }
-        }
-
-        this.wingRot += this.wingSpread * 2.0F;
+//            if( this.ticksFlying < 5 ) {
+//                this.ticksFlying++;
+//            }
+        } //else {
+//            if( this.ticksFlying > 0 ) {
+//                this.ticksFlying--;
+//            }
+//        }
+//
+//        this.wingRot += this.wingSpread * 2.0F;
 
 //        if( this.isRidden() && this.riddenByEntity.isDead && this.isTamed() ) {
 //            this.setSitting(true);
@@ -299,8 +349,8 @@ public abstract class AEntityEnderAvis
             this.setCoat(new ItemStack(Items.iron_shovel));
         }
 
-//        this.setSitting(par1nbtTagCompound.getBoolean("isSitting"));
-//        this.setFollowing(par1nbtTagCompound.getBoolean("isFollowing"));
+        this.setSitting(par1nbtTagCompound.getBoolean("isSitting"));
+        this.setFollowing(par1nbtTagCompound.getBoolean("isFollowing"));
         if( par1nbtTagCompound.hasKey(EnumEnderPetEggInfo.NBT_AVIS_STAMINA) )
         this.setFlightCondition(par1nbtTagCompound.getFloat(EnumEnderPetEggInfo.NBT_AVIS_STAMINA));
 //        this.ownerName = par1nbtTagCompound.getString("owner");
@@ -323,8 +373,8 @@ public abstract class AEntityEnderAvis
         this.getCoat().writeToNBT(coatItem);
         par1nbtTagCompound.setTag(EnumEnderPetEggInfo.NBT_COAT, coatItem);
 
-//        par1nbtTagCompound.setBoolean("isSitting", this.isSitting());
-//        par1nbtTagCompound.setBoolean("isFollowing", this.isFollowing());
+        par1nbtTagCompound.setBoolean("isSitting", this.isSitting());
+        par1nbtTagCompound.setBoolean("isFollowing", this.isFollowing());
         par1nbtTagCompound.setFloat(EnumEnderPetEggInfo.NBT_AVIS_STAMINA, this.getFlightCondition());
 //        par1nbtTagCompound.setString("owner", this.ownerName);
     }
@@ -332,5 +382,52 @@ public abstract class AEntityEnderAvis
     protected void setBoolean(boolean b, int flag, int dwId) {
         byte prevByte = this.dataWatcher.getWatchableObjectByte(dwId);
         this.dataWatcher.updateObject(dwId, (byte) (b ? prevByte | flag : prevByte & ~flag));
+    }
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public boolean isFollowing() {
+        return false;
+    }
+
+    @Override
+    public boolean isSitting() {
+        return false;
+    }
+
+    @Override
+    public void setFollowing(boolean b) { }
+
+    @Override
+    public void setName(String name) { }
+
+    @Override
+    public void setSitting(boolean b) { }
+
+    @Override
+    public void readPetFromNBT(NBTTagCompound nbt) { }
+
+    @Override
+    public void writePetToNBT(NBTTagCompound nbt) { }
+
+    @Override
+    public void setOwner(UUID owner) { }
+
+    @Override
+    public String getGuiTitle() {
+        return null;
+    }
+
+    @Override
+    public int getGuiColor() {
+        return 0;
+    }
+
+    @Override
+    public boolean canMount() {
+        return false;
     }
 }

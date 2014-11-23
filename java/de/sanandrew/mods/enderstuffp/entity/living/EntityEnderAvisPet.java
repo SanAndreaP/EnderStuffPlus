@@ -8,17 +8,13 @@ package de.sanandrew.mods.enderstuffp.entity.living;
 
 import de.sanandrew.core.manpack.util.UsedByReflection;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
-import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
-import de.sanandrew.mods.enderstuffp.util.EnumGui;
-import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
-import de.sanandrew.mods.enderstuffp.util.RegistryItems;
+import de.sanandrew.mods.enderstuffp.util.*;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
@@ -34,8 +30,8 @@ import java.util.UUID;
 public class EntityEnderAvisPet
         extends AEntityEnderAvis
 {
-    private static final AttributeModifier SPEED_TAMED = (new AttributeModifier(UUID.fromString("8856E883-562A-4A2F-85D0-D34D70BD8AB2"),
-                                                                                "Tamerfollowing speed boost", 6.2D, 0)).setSaved(false);
+//    private static final AttributeModifier SPEED_TAMED = (new AttributeModifier(UUID.fromString("8856E883-562A-4A2F-85D0-D34D70BD8AB2"),
+//                                                                                "Tamerfollowing speed boost", 6.2D, 0)).setSaved(false);
     private UUID ownerUUID = null;
     /**
      * buffer for the getOwningPlayer method to prevent iterating through the
@@ -84,7 +80,7 @@ public class EntityEnderAvisPet
     }
 
     public boolean isSaddled() {
-        return (this.dataWatcher.getWatchableObjectByte(15) & 2) == 2;
+        return (this.dataWatcher.getWatchableObjectByte(DW_BOOLEANS) & 2) == 2;
     }
 
     public void setSaddled(boolean b) {
@@ -143,16 +139,6 @@ public class EntityEnderAvisPet
     }
 
     @Override
-    public void readPetFromNBT(NBTTagCompound nbt) {
-
-    }
-
-    @Override
-    public void writePetToNBT(NBTTagCompound nbt) {
-
-    }
-
-    @Override
     public void setOwner(UUID owner) {
         this.ownerUUID = owner;
     }
@@ -164,12 +150,12 @@ public class EntityEnderAvisPet
 
     @Override
     public int getGuiColor() {
-        return 0;
+        return 0x8040FF;
     }
 
     @Override
     public boolean canMount() {
-        return !this.isSitting() && !this.isSaddled();
+        return !this.isSitting() && this.isSaddled();
     }
 
     @Override
@@ -287,7 +273,14 @@ public class EntityEnderAvisPet
 
     @Override
     public void onLivingUpdate() {
-        super.onLivingUpdate();
+        if( this.riddenByEntity != null && !this.isSaddled() ) {
+            this.riddenByEntity.mountEntity(null);
+        }
+
+        if( !this.worldObj.isRemote && this.ownerUUID == null ) {
+            this.setDead();
+            return;
+        }
 
         if( this.isRidden() && this.riddenByEntity.isDead ) {
             this.setSitting(true);
@@ -301,13 +294,13 @@ public class EntityEnderAvisPet
 
         EntityPlayer ep = this.getOwningPlayerInRng(25.0F);
 
-        IAttributeInstance attributeinstance = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+//        IAttributeInstance attributeinstance = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
 
-        attributeinstance.removeModifier(SPEED_TAMED);
+//        attributeinstance.removeModifier(SPEED_TAMED);
 
         if( !this.isSitting() && !this.isRidden() && ep != null && this.getDistanceToEntity(ep) > 2.0F && this.isFollowing() ) {
             this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 24.0F, false, false, !this.hasCoat(), !this.hasCoat()));
-            attributeinstance.applyModifier(SPEED_TAMED);
+//            attributeinstance.applyModifier(SPEED_TAMED);
 
             if( this.getDistanceToEntity(ep) > 10.0F && Math.abs(ep.posY - this.posY) < 6.0F ) {
                 this.teleportToEntity(ep);
@@ -315,7 +308,7 @@ public class EntityEnderAvisPet
         } else if( !this.isRidden() && ep != null && ep.getCurrentEquippedItem() != null
                 && ep.getCurrentEquippedItem().getItem() instanceof ItemFood && this.getDistanceToEntity(ep) > 2.0F && this.needFood() && !this.isSitting() )
         {
-            attributeinstance.applyModifier(SPEED_TAMED);
+//            attributeinstance.applyModifier(SPEED_TAMED);
             this.setPathToEntity(this.worldObj.getPathEntityToEntity(this, ep, 8.0F, false, false, !this.hasCoat(), !this.hasCoat()));
         }
 
@@ -323,8 +316,10 @@ public class EntityEnderAvisPet
             this.attackEntityFrom(DamageSource.drown, 1);
         }
 
+        super.onLivingUpdate();
+
         if( this.isRidden() ) {
-            attributeinstance.applyModifier(SPEED_TAMED);
+//            attributeinstance.applyModifier(SPEED_TAMED);
             this.jumpMovementFactor = (this.getAIMoveSpeed() * 1.6F) / 5.0F;
             EntityPlayer player = (EntityPlayer) this.riddenByEntity;
             this.rotationYawHead = player.rotationYawHead;
@@ -332,10 +327,9 @@ public class EntityEnderAvisPet
             this.setRotation(player.rotationYaw, 0.0F);
             this.moveStrafing = player.moveStrafing;
             this.moveForward = player.moveForward;
-            this.isJumping = EnderStuffPlus.isJumping(player);
 
-            if( EnderStuffPlus.isJumping(player) && this.posY < 253.0D ) {
-                if( this.canFly() ) {
+            if( EnderStuffPlus.isJumping(player) ) {
+                if( this.canFly() && this.posY < 253.0D ) {
                     this.jumpMovementFactor = (this.getAIMoveSpeed() * 1.6F) / 3.0F;
                     this.motionY = 0.4D;
 
@@ -345,8 +339,10 @@ public class EntityEnderAvisPet
 
                     this.increaseFlightCondition(-0.02F);
                 } else {
-                    this.jumpMovementFactor = (this.getAIMoveSpeed() * 1.6F) / 5.0F;
+                    this.isJumping = true;
                 }
+            } else {
+                this.isJumping = false;
             }
         }
     }
@@ -430,5 +426,59 @@ public class EntityEnderAvisPet
     @Override
     protected boolean isTamed() {
         return true;
+    }
+
+    @Override
+    public void writeEntityToNBT(NBTTagCompound nbt) {
+        super.writeEntityToNBT(nbt);
+
+        nbt.setBoolean(EnumEnderPetEggInfo.NBT_AVIS_SADDLED, this.isSaddled());
+        nbt.setString("owner", this.ownerUUID.toString());
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound nbt) {
+        super.readEntityFromNBT(nbt);
+
+        this.setSaddled(nbt.getBoolean(EnumEnderPetEggInfo.NBT_AVIS_SADDLED));
+        this.ownerUUID = UUID.fromString(nbt.getString("owner"));
+    }
+
+    @Override
+    protected void updateEntityActionState() {
+        if( !this.isRidden() ) {
+            this.jumpMovementFactor = (this.getAIMoveSpeed() * 1.6F) / 5.0F;
+            super.updateEntityActionState();
+        }
+    }
+
+    @Override
+    public void writePetToNBT(NBTTagCompound nbt) {
+        nbt.setByte(EnumEnderPetEggInfo.NBT_ID, (byte) EnumEnderPetEggInfo.ENDERAVIS_INFO.ordinal());
+        nbt.setFloat(EnumEnderPetEggInfo.NBT_HEALTH, this.getHealth());
+        nbt.setFloat(EnumEnderPetEggInfo.NBT_MAX_HEALTH, this.getMaxHealth());
+        nbt.setInteger("collarColor", this.getCollarColor());
+        nbt.setBoolean(EnumEnderPetEggInfo.NBT_AVIS_SADDLED, this.isSaddled());
+        nbt.setFloat(EnumEnderPetEggInfo.NBT_AVIS_STAMINA, this.getFlightCondition());
+
+        if( this.hasCoat() ) {
+            NBTTagCompound item = new NBTTagCompound();
+            this.getCoat().writeToNBT(item);
+            nbt.setTag(EnumEnderPetEggInfo.NBT_COAT, item);
+        }
+    }
+
+    @Override
+    public void readPetFromNBT(NBTTagCompound nbt) {
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(nbt.getFloat(EnumEnderPetEggInfo.NBT_MAX_HEALTH));
+        this.setHealth(nbt.getFloat(EnumEnderPetEggInfo.NBT_HEALTH));
+        this.setCollarColor(nbt.getInteger("collarColor"));
+        this.setSaddled(nbt.getBoolean(EnumEnderPetEggInfo.NBT_AVIS_SADDLED));
+        this.setFlightCondition(nbt.getFloat(EnumEnderPetEggInfo.NBT_AVIS_STAMINA));
+        if( nbt.hasKey(EnumEnderPetEggInfo.NBT_COAT) ) {
+            this.setCoat(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag(EnumEnderPetEggInfo.NBT_COAT)));
+        } else {
+            this.setCoat(new ItemStack(Blocks.air));
+        }
     }
 }

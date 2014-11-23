@@ -68,13 +68,15 @@ public class ItemEnderPetEgg
     @SideOnly(Side.CLIENT)
     @SuppressWarnings("unchecked")
     public void addInformation(ItemStack stack, EntityPlayer player, List infos, boolean isAdvancedInfo) {
-        EnumEnderPetEggInfo.addInformation(EnumEnderPetEggInfo.getInfo(stack.getItemDamage()), stack, infos, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT));
+        int id = stack.hasTagCompound() ? stack.getTagCompound().getByte(EnumEnderPetEggInfo.NBT_ID) : 0;
+        EnumEnderPetEggInfo.addInformation(EnumEnderPetEggInfo.getInfo(id), stack, infos, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        EnumEnderPetEggInfo info = EnumEnderPetEggInfo.getInfo(stack.getItemDamage());
+        int id = stack.hasTagCompound() ? stack.getTagCompound().getByte(EnumEnderPetEggInfo.NBT_ID) : 0;
+        EnumEnderPetEggInfo info = EnumEnderPetEggInfo.getInfo(id);
         return pass == 0 ? info.backColorw : info.foreColor;
     }
 

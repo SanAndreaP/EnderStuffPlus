@@ -4,14 +4,13 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.enderstuffp.client.util.EnumTextures;
+import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderAvisPet;
 import de.sanandrew.mods.enderstuffp.entity.living.IEnderPet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import org.lwjgl.opengl.GL11;
-
-//import de.sanandrew.mods.enderstuffplus.entity.living.EntityEnderAvis;
 
 @SideOnly(Side.CLIENT)
 public class RenderGameOverlayHandler
@@ -37,20 +36,21 @@ public class RenderGameOverlayHandler
                 this.mc.getTextureManager().bindTexture(EnumTextures.GUI_INGAMEICONS.getResource());
                 this.renderEnderStats(pet.getEntity().getHealth(), pet.getEntity().getMaxHealth(), scaledWdt / 2 + 91, scaledHgt - 39, 9);
 
-//                if( this.mc.thePlayer.ridingEntity instanceof EntityEnderAvis ) {
-//                    this.renderEnderStats(((EntityEnderAvis) pet).getCurrFlightCondInt(), 20, scaledWdt / 2 + 91, scaledHgt - 49, 0);
-//                }
+                if( this.mc.thePlayer.ridingEntity instanceof EntityEnderAvisPet ) {
+                    this.renderEnderStats(((EntityEnderAvisPet) pet).getFlightCondition(), 20.0F, scaledWdt / 2 + 91, scaledHgt - 54, 0);
+                }
+
                 event.setCanceled(true);
             }
         }
     }
 
     private void renderEnderStats(float currStat, float maxStat, int posX, int posY, int texYOff) {
-        int currStatHalf = (int) (Math.floor(currStat / 2.0F) + 0.1F);
-        int maxStatHalf = (int) (Math.floor(maxStat / 2.0F) + 0.1F);
+        int currStatHalf = (int) (Math.floor(currStat) / 2.0F + 0.1F);
+        int maxStatHalf = (int) (Math.floor(maxStat) / 2.0F + 0.1F);
 
-        boolean addHalfCurrStat = currStat % 2 != 0;
-        boolean addHalfMaxStat = maxStat % 2 != 0;
+        boolean addHalfCurrStat = Math.floor(currStat) % 2 != 0;
+        boolean addHalfMaxStat = Math.floor(maxStat) % 2 != 0;
 
         for( int i = maxStatHalf - 1; i >= 0; i-- ) {
             int shiftedPosX = posX - i * 8 - 9 + 80 * (i / 10);

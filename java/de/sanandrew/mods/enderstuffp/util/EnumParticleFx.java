@@ -15,7 +15,9 @@ public enum EnumParticleFx
     FX_TAME,
     FX_REJECT,
     FX_MISS_BODY,
-    FX_MISS_TELEPORT;
+    FX_MISS_TELEPORT,
+    FX_AVIS_EGG,
+    FX_WEATHER_ALTAR;
 
     public static final EnumParticleFx[] VALUES = values();
 
