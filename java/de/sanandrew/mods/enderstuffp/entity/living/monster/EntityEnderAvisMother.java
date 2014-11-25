@@ -34,7 +34,7 @@ public class EntityEnderAvisMother
 
     @Override
     public boolean attackEntityAsMob(Entity entity) {
-        float damage = 10F;
+        float damage = 10.0F;
 
         if( this.isPotionActive(Potion.damageBoost) ) {
             damage += 3 << this.getActivePotionEffect(Potion.damageBoost).getAmplifier();

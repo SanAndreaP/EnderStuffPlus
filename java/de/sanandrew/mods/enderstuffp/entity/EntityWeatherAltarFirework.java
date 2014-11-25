@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 public class EntityWeatherAltarFirework
     extends EntityFireworkRocket
 {
-
     public EntityWeatherAltarFirework(World world) {
         super(world);
     }

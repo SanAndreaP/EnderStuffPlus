@@ -128,8 +128,8 @@ public final class RegistryBlocks
         SAPUtils.registerBlocks(avisEgg, weatherAltar, blockEndDoor);
 
 //        GameRegistry.registerBlock(enderLeaves, ItemEndLeaves.class, ESPModRegistry.MOD_ID + ":blockEndLeaves");
-        GameRegistry.registerBlock(endOre, ItemBlockNamedMeta.class, EnderStuffPlus.MOD_ID + ":blockEndOre");
-        GameRegistry.registerBlock(endBlock, ItemBlockNamedMeta.class, EnderStuffPlus.MOD_ID + ":blockEndStorg");
+        GameRegistry.registerBlock(endOre, ItemBlockNamedMeta.class, "blockEndOre");
+        GameRegistry.registerBlock(endBlock, ItemBlockNamedMeta.class, "blockEndStorg");
 
         endOre.setHarvestLevel("pickaxe", 2, 0);
     }

@@ -13,11 +13,13 @@ import de.sanandrew.mods.enderstuffp.client.event.RenderGameOverlayHandler;
 import de.sanandrew.mods.enderstuffp.client.event.TextureStitchHandler;
 import de.sanandrew.mods.enderstuffp.client.render.ItemRendererGlowTools;
 import de.sanandrew.mods.enderstuffp.client.render.ItemRendererWeatherAltar;
+import de.sanandrew.mods.enderstuffp.client.render.RenderWeatherAltarFirework;
 import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderAvis;
 import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderIgnis;
 import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderMiss;
 import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderNivis;
 import de.sanandrew.mods.enderstuffp.client.render.tileentity.RenderTileEntityWeatherAltar;
+import de.sanandrew.mods.enderstuffp.entity.EntityWeatherAltarFirework;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityBait;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlIgnis;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlMiss;
@@ -62,6 +64,7 @@ public class ClientProxy
         RenderingRegistry.registerEntityRenderingHandler(EntityPearlIgnis.class, new RenderSnowball(RegistryItems.espPearls, 1));
         RenderingRegistry.registerEntityRenderingHandler(EntityPearlMiss.class, new RenderSnowball(RegistryItems.espPearls, 2));
         RenderingRegistry.registerEntityRenderingHandler(EntityBait.class, new RenderSnowball(RegistryItems.espPearls, 2));
+        RenderingRegistry.registerEntityRenderingHandler(EntityWeatherAltarFirework.class, new RenderWeatherAltarFirework());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWeatherAltar.class, new RenderTileEntityWeatherAltar());
 
