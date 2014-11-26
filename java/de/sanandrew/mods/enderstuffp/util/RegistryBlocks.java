@@ -5,6 +5,8 @@ import de.sanandrew.core.manpack.item.ItemBlockNamedMeta;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.block.*;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityAvisEgg;
+import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
+import de.sanandrew.mods.enderstuffp.tileentity.TileEntityOreGenerator;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityWeatherAltar;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -27,6 +29,7 @@ public final class RegistryBlocks
     public static Block weatherAltar;
     public static BlockEnderDoor blockEndDoor;
 //    public static BlockSaplingEndTree sapEndTree;
+    public static Block oreGenerator;
 
     public static void initialize() {
         initRegisterFluids();
@@ -41,7 +44,7 @@ public final class RegistryBlocks
         avisEgg       = new BlockAvisEgg();
         endOre        = new BlockEndOre();
         endBlock      = new BlockEndStorage();
-//        biomeChanger  = new BlockBiomeChanger(Material.rock);
+        biomeChanger  = new BlockBiomeChanger(Material.rock);
 //        duplicator    = new BlockDuplicator();
         weatherAltar  = new BlockWeatherAltar();
         blockEndDoor  = new BlockEnderDoor(Material.iron);
@@ -51,6 +54,7 @@ public final class RegistryBlocks
 //        enderPlanks   = new BlockEnderWood();
 //        corruptES     = new BlockCorruptEndStone();
 //        endFluidBlock = new BlockEndFluid(endFluid, Material.water);
+        oreGenerator  = new BlockOreGenerator();
 
         avisEgg.setBlockName(EnderStuffPlus.MOD_ID + ":avisEgg")
                .setCreativeTab(CreativeTabsEnderStuff.ESP_TAB)
@@ -66,9 +70,9 @@ public final class RegistryBlocks
                 .setHardness(5.0F)
                 .setResistance(10.0F)
                 .setStepSound(Block.soundTypeMetal);
-//        biomeChanger.setBlockName(ESPModRegistry.MOD_ID + ":biomeChanger")
-//                    .setCreativeTab(ESPModRegistry.espTab)
-//                    .setHardness(1.0F);
+        biomeChanger.setBlockName(EnderStuffPlus.MOD_ID + ":biomeChanger")
+                    .setCreativeTab(CreativeTabsEnderStuff.ESP_TAB)
+                    .setHardness(1.0F);
 //        duplicator.setBlockName(ESPModRegistry.MOD_ID + ":duplicator")
 //                  .setCreativeTab(ESPModRegistry.espTab)
 //                  .setHardness(1.0F);
@@ -105,6 +109,10 @@ public final class RegistryBlocks
 //                 .setHardness(3.0F)
 //                 .setResistance(15.0F)
 //                 .setStepSound(Block.soundTypePiston);
+        oreGenerator.setBlockName(EnderStuffPlus.MOD_ID + ":oreGenerator")
+                    .setCreativeTab(CreativeTabsEnderStuff.ESP_TAB)
+                    .setHardness(5.0F)
+                    .setStepSound(Block.soundTypeMetal);
 //
 //        endFluid.setBlock(endFluidBlock);
     }
@@ -118,14 +126,15 @@ public final class RegistryBlocks
 
     private static void registerBlocks() {
         GameRegistry.registerTileEntity(TileEntityAvisEgg.class, "avisEggTile");
-//        GameRegistry.registerTileEntity(TileEntityBiomeChanger.class, "biomeChangerTE");
+        GameRegistry.registerTileEntity(TileEntityBiomeChanger.class, "biomeChangerTile");
 //        GameRegistry.registerTileEntity(TileEntityDuplicator.class, "duplicatorTE");
         GameRegistry.registerTileEntity(TileEntityWeatherAltar.class, "weatherAltarTile");
+        GameRegistry.registerTileEntity(TileEntityOreGenerator.class, "oreGeneratorTile");
 
 //        SAPUtils.registerBlocks(avisEgg, biomeChanger, duplicator, weatherAltar, blockEndDoor, enderLog, sapEndTree, enderPlanks,
 //                                corruptES, endFluidBlock);
 
-        SAPUtils.registerBlocks(avisEgg, weatherAltar, blockEndDoor);
+        SAPUtils.registerBlocks(avisEgg, biomeChanger, weatherAltar, blockEndDoor, oreGenerator);
 
 //        GameRegistry.registerBlock(enderLeaves, ItemEndLeaves.class, ESPModRegistry.MOD_ID + ":blockEndLeaves");
         GameRegistry.registerBlock(endOre, ItemBlockNamedMeta.class, "blockEndOre");

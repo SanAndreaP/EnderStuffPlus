@@ -1,7 +1,6 @@
 package de.sanandrew.mods.enderstuffp.util;
 
 import com.google.common.collect.Maps;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
 
@@ -10,16 +9,16 @@ import java.util.Map.Entry;
 
 public class RegistryBiomeChanger
 {
-    private static final List<Integer> disabledBiomesList = new ArrayList<Integer>();
+    private static final List<Integer> disabledBiomesList = new ArrayList<>();
     private static final HashMap<Integer, Entry<ItemStack, Integer>> fuelList = Maps.newHashMap();
 
     public static void initialize() {
-        addNewFuel(new ItemStack(Items.diamond), 1);
-        addNewFuel(new ItemStack(RegistryItems.endIngot, 1, 0), 2);
-        addNewFuel(new ItemStack(Items.gold_ingot), 2);
-        addNewFuel(new ItemStack(Items.emerald), 4);
-        addNewFuel(new ItemStack(Items.iron_ingot), 8);
-        addNewFuel(new ItemStack(Items.redstone), 16);
+//        addNewFuel(new ItemStack(Items.diamond), 1);
+//        addNewFuel(new ItemStack(RegistryItems.endIngot, 1, 0), 2);
+//        addNewFuel(new ItemStack(Items.gold_ingot), 2);
+//        addNewFuel(new ItemStack(Items.emerald), 4);
+//        addNewFuel(new ItemStack(Items.iron_ingot), 8);
+//        addNewFuel(new ItemStack(Items.redstone), 16);
 
         disableBiome(BiomeGenBase.ocean.biomeID);
         disableBiome(BiomeGenBase.river.biomeID);
@@ -55,7 +54,7 @@ public class RegistryBiomeChanger
     }
 
     public static List<Integer> getDisabledBiomes() {
-        return new ArrayList<Integer>(disabledBiomesList);
+        return new ArrayList<>(disabledBiomesList);
     }
 
     public static HashMap<Integer, Entry<ItemStack, Integer>> getFuelList() {

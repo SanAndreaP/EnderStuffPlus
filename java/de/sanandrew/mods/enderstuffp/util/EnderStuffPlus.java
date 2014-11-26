@@ -22,7 +22,6 @@ import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashMap;
 
@@ -95,7 +94,7 @@ public class EnderStuffPlus
 //
         NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
 //
-        OreDictionary.registerOre("ingotNiob", new ItemStack(RegistryItems.endIngot));
+//        OreDictionary.registerOre("ingotNiob", new ItemStack(RegistryItems.endIngot));
 //        OreDictionary.registerOre("oreNiob", new ItemStack(ModBlockRegistry.endOre));
 //        OreDictionary.registerOre("blockNiob", new ItemStack(ModBlockRegistry.endBlock));
 //        OreDictionary.registerOre("logWood", new ItemStack(ModBlockRegistry.enderLog, 1, OreDictionary.WILDCARD_VALUE));

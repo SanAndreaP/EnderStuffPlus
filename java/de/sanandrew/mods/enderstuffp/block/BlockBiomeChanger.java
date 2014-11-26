@@ -3,20 +3,18 @@ package de.sanandrew.mods.enderstuffp.block;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
-import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
-import de.sanandrew.mods.enderstuffp.util.RegistryBiomeChanger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockBiomeChanger
     extends BlockContainer
@@ -32,31 +30,31 @@ public class BlockBiomeChanger
         if( (tileEntity instanceof TileEntityBiomeChanger) && !world.isRemote ) {
             TileEntityBiomeChanger teBiomeChager = (TileEntityBiomeChanger) tileEntity;
 
-            for( int i = 0; i < teBiomeChager.getSizeInventory(); i++ ) {
-                ItemStack stack = teBiomeChager.getStackInSlot(i);
+//            for( int i = 0; i < teBiomeChager.getSizeInventory(); i++ ) {
+//                ItemStack stack = teBiomeChager.getStackInSlot(i);
+//
+//                if( (stack != null) && (stack.stackSize > 0) ) {
+//                    world.spawnEntityInWorld(new EntityItem(world, x + 0.5F, y + 0.5F, z + 0.5F, stack));
+//                }
+//            }
 
-                if( (stack != null) && (stack.stackSize > 0) ) {
-                    world.spawnEntityInWorld(new EntityItem(world, x + 0.5F, y + 0.5F, z + 0.5F, stack));
-                }
-            }
-
-            if( teBiomeChager.getPrevFuelItem() != null ) {
-                int itemCnt = (teBiomeChager.getMaxRange() - teBiomeChager.getCurrRange())
-                             * RegistryBiomeChanger.getMultiFromStack(teBiomeChager.getPrevFuelItem());
-
-                while( itemCnt > 0 ) {
-                    ItemStack stack = teBiomeChager.getPrevFuelItem().copy();
-
-                    if( itemCnt > teBiomeChager.getPrevFuelItem().getMaxStackSize() ) {
-                        itemCnt -= stack.stackSize = teBiomeChager.getPrevFuelItem().getMaxStackSize();
-                    } else {
-                        stack.stackSize = itemCnt;
-                        itemCnt = 0;
-                    }
-
-                    world.spawnEntityInWorld(new EntityItem(world, x + 0.5F, y + 0.5F, z + 0.5F, stack));
-                }
-            }
+//            if( teBiomeChager.getPrevFuelItem() != null ) {
+//                int itemCnt = (teBiomeChager.getMaxRange() - teBiomeChager.getCurrRange())
+//                             * RegistryBiomeChanger.getMultiFromStack(teBiomeChager.getPrevFuelItem());
+//
+//                while( itemCnt > 0 ) {
+//                    ItemStack stack = teBiomeChager.getPrevFuelItem().copy();
+//
+//                    if( itemCnt > teBiomeChager.getPrevFuelItem().getMaxStackSize() ) {
+//                        itemCnt -= stack.stackSize = teBiomeChager.getPrevFuelItem().getMaxStackSize();
+//                    } else {
+//                        stack.stackSize = itemCnt;
+//                        itemCnt = 0;
+//                    }
+//
+//                    world.spawnEntityInWorld(new EntityItem(world, x + 0.5F, y + 0.5F, z + 0.5F, stack));
+//                }
+//            }
 
             tileEntity.invalidate();
         }
@@ -91,16 +89,18 @@ public class BlockBiomeChanger
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xOffset,
-                                    float yOffset, float zOffset) {
-        int id = 1;
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xOffset, float yOffset, float zOffset) {
+//        int id = 1;
+        TileEntityBiomeChanger tileEntity = (TileEntityBiomeChanger) world.getTileEntity(x, y, z);
 
-        if( (tileEntity instanceof TileEntityBiomeChanger) && ((TileEntityBiomeChanger) tileEntity).isActive() ) {
-            id = 3;
-        }
+//        if( (tileEntity instanceof TileEntityBiomeChanger) && ((TileEntityBiomeChanger) tileEntity).isActive() ) {
+//            id = 3;
+//        }
 
-        player.openGui(EnderStuffPlus.instance, id, world, x, y, z);
+//        player.openGui(EnderStuffPlus.instance, id, world, x, y, z);
+
+        player.addChatMessage(new ChatComponentText(Integer.toString(tileEntity.getEnergyStored(ForgeDirection.UP))));
+
         return true;
     }
 
@@ -117,6 +117,6 @@ public class BlockBiomeChanger
 
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z) {
-        this.setBlockBounds(0.0625F, 0F, 0.0625F, 0.9375F, 0.5625F, 0.9375F);
+        this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.5625F, 0.9375F);
     }
 }
