@@ -29,6 +29,8 @@ import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderMiss;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderIgnis;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderNivis;
 import de.sanandrew.mods.enderstuffp.network.ClientPacketHandler;
+import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
+import de.sanandrew.mods.enderstuffp.tileentity.TileEntityOreGenerator;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityWeatherAltar;
 import de.sanandrew.mods.enderstuffp.util.*;
 import net.minecraft.client.Minecraft;
@@ -36,6 +38,7 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
@@ -161,6 +164,17 @@ public class ClientProxy
             case FX_WEATHER_ALTAR:
                 ParticleHelper.spawnWeatherAltarFX(x, y, z, random, getWorld());
                 break;
+        }
+    }
+
+    @Override
+    public void syncFlux(int tileX, int tileY, int tileZ, int flux) {
+        TileEntity tile = getWorld().getTileEntity(tileX, tileY, tileZ);
+
+        if( tile instanceof TileEntityBiomeChanger ) {
+            ((TileEntityBiomeChanger) tile).fluxAmount = flux;
+        } else if( tile instanceof TileEntityOreGenerator ) {
+            ((TileEntityOreGenerator) tile).fluxAmount = flux;
         }
     }
 

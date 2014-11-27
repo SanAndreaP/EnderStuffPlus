@@ -1,9 +1,11 @@
 package de.sanandrew.mods.enderstuffp.tileentity;
 
 import cofh.api.energy.IEnergyReceiver;
-import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.core.manpack.util.javatuples.Unit;
+import de.sanandrew.mods.enderstuffp.network.EnumPacket;
+import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -17,7 +19,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
-@Optional.Interface(modid="CoFHCore", iface="cofh.api.energy.IEnergyReceiver")
 public class TileEntityBiomeChanger
     extends TileEntity
     implements IEnergyReceiver
@@ -29,13 +30,14 @@ public class TileEntityBiomeChanger
     private boolean isReplacingBlocks = false;
     private byte maxRange = 16;
     private boolean prevIsActive = false;
-    private int fluxAmount = 25_000;
     private Random rand = new Random();
     private long ticksExisted = 0;
-
     private float renderBeamAngle = 360.0F;
     private float renderBeamHeight = 0.0F;
     private int currentRenderPass = 0;
+
+    public int fluxAmount = 25_000;
+    private int prevFluxAmount = 25_000;
 
     public TileEntityBiomeChanger() {}
 
@@ -137,7 +139,7 @@ public class TileEntityBiomeChanger
         nbt.setByte("BiomeID", this.biomeID);
         nbt.setByte("RadForm", this.getRadForm());
         nbt.setBoolean("IsActive", this.isActive);
-        nbt.setBoolean("PrevActiveState", this.prevIsActive);
+        nbt.setInteger("FluxAmount", this.fluxAmount);
 
         return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
     }
@@ -151,7 +153,7 @@ public class TileEntityBiomeChanger
         this.biomeID = nbt.getByte("BiomeID");
         this.form = EnumPerimForm.VALUES[nbt.getByte("RadForm")];
         this.isActive = nbt.getBoolean("IsActive");
-        this.prevIsActive = nbt.getBoolean("PrevActiveState");
+        this.fluxAmount = nbt.getInteger("FluxAmount");
     }
 
     public String getName() {
@@ -280,6 +282,11 @@ public class TileEntityBiomeChanger
                     this.renderBeamHeight -= 1.0F;
                 }
             }
+        }
+
+        if( !worldObj.isRemote && this.prevFluxAmount != this.fluxAmount ) {
+            this.prevFluxAmount = this.fluxAmount;
+            PacketProcessor.sendToAllAround(EnumPacket.FLUX_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F, Unit.with(this));
         }
     }
 

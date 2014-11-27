@@ -8,32 +8,37 @@ package de.sanandrew.mods.enderstuffp.network.packet;
 
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.enderstuffp.network.IPacket;
+import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
+import de.sanandrew.mods.enderstuffp.tileentity.TileEntityOreGenerator;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
-import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.network.INetHandler;
+import net.minecraft.tileentity.TileEntity;
 
 import java.io.IOException;
 
-public class PacketParticleFX
+public class PacketFluxSync
         implements IPacket
 {
     @Override
     public void process(ByteBufInputStream stream, ByteBuf rawData, INetHandler handler) throws IOException {
-        EnderStuffPlus.proxy.handleParticle(EnumParticleFx.VALUES[stream.readByte()], stream.readDouble(), stream.readDouble(), stream.readDouble(),
-                                           Tuple.readFromByteBufStream(stream));
+        EnderStuffPlus.proxy.syncFlux(stream.readInt(), stream.readInt(), stream.readInt(), stream.readInt());
     }
 
     @Override
     public void writeData(ByteBufOutputStream stream, Tuple dataTuple) throws IOException {
+        TileEntity tile = (TileEntity) dataTuple.getValue(0);
 
+        stream.writeInt(tile.xCoord);
+        stream.writeInt(tile.yCoord);
+        stream.writeInt(tile.zCoord);
 
-        stream.writeByte((byte) dataTuple.getValue(0));
-        stream.writeDouble((double) dataTuple.getValue(1));
-        stream.writeDouble((double) dataTuple.getValue(2));
-        stream.writeDouble((double) dataTuple.getValue(3));
-        Tuple.writeToByteBufStream((Tuple) dataTuple.getValue(4), stream);
+        if( tile instanceof TileEntityBiomeChanger ) {
+            stream.writeInt(((TileEntityBiomeChanger) tile).fluxAmount);
+        } else if( tile instanceof TileEntityOreGenerator ) {
+            stream.writeInt(((TileEntityOreGenerator) tile).fluxAmount);
+        }
     }
 }

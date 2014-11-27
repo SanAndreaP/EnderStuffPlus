@@ -45,7 +45,10 @@ public class BlockWeatherAltar
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xOffset, float yOffset, float zOffset) {
-        EnderStuffPlus.proxy.openGui(player, EnumGui.WEATHERALTAR, x, y, z);
+        if( !world.isRemote ) {
+            EnderStuffPlus.proxy.openGui(player, EnumGui.WEATHERALTAR, x, y, z);
+        }
+
         return true;
     }
 

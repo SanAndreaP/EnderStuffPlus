@@ -7,6 +7,10 @@
 package de.sanandrew.mods.enderstuffp.tileentity;
 
 import cofh.api.energy.IEnergyProvider;
+import cofh.api.energy.IEnergyReceiver;
+import de.sanandrew.core.manpack.util.javatuples.Unit;
+import de.sanandrew.mods.enderstuffp.network.EnumPacket;
+import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -14,14 +18,52 @@ public class TileEntityOreGenerator
         extends TileEntity
         implements IEnergyProvider
 {
-    private int storedFlux = 25_000;
+    public int fluxAmount = 25_000;
+    private int prevFluxAmount = -1;
+    private static final int MAX_EXTRACTABLE_RFLUX = 10;
+
+    @Override
+    public void updateEntity() {
+        if( !this.worldObj.isRemote ) {
+            if( this.fluxAmount > 0 ) {
+                int maxExtractable = MAX_EXTRACTABLE_RFLUX;
+                for( ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS ) {
+                    TileEntity te = this.worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
+
+                    if( te instanceof IEnergyReceiver ) {
+                        IEnergyReceiver receiver = (IEnergyReceiver) te;
+
+                        if( !receiver.canConnectEnergy(direction.getOpposite()) ) {
+                            continue;
+                        }
+
+                        int extractable = this.extractEnergy(direction, maxExtractable, true);
+                        int receivable = receiver.receiveEnergy(direction.getOpposite(), extractable, false);
+
+                        maxExtractable -= receivable;
+                        this.extractEnergy(direction, receivable, false);
+                    }
+
+                    if( maxExtractable == 0 ) {
+                        break;
+                    }
+                }
+            }
+
+            if( this.prevFluxAmount != this.fluxAmount ) {
+                this.prevFluxAmount = this.fluxAmount;
+                PacketProcessor.sendToAllAround(EnumPacket.FLUX_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F,
+                                                Unit.with(this));
+            }
+        }
+    }
 
     @Override
     public int extractEnergy(ForgeDirection forgeDirection, int maxExtract, boolean checkSize) {
-        int energyExtracted = Math.min(this.storedFlux, Math.min(10, maxExtract));
+        int energyExtracted = Math.min(this.fluxAmount, Math.min(10, maxExtract));
 
         if (!checkSize) {
-            this.storedFlux -= energyExtracted;
+            this.fluxAmount -= energyExtracted;
         }
 
         return energyExtracted;
@@ -29,7 +71,7 @@ public class TileEntityOreGenerator
 
     @Override
     public int getEnergyStored(ForgeDirection forgeDirection) {
-        return this.storedFlux;
+        return this.fluxAmount;
     }
 
     @Override

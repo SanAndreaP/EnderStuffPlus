@@ -6,11 +6,9 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.util;
 
-public enum EnumGui
-{
-    ENDERPET,
-    WEATHERALTAR,
-    BIOMECHANGER;
+import net.minecraftforge.common.util.ForgeDirection;
 
-    public static final EnumGui[] VALUES = values();
+public interface IRedstoneFluxSetter
+{
+    public void setFluxAmount(ForgeDirection direction, int amount);
 }

@@ -6,9 +6,11 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.client.util;
 
+import de.sanandrew.mods.enderstuffp.client.gui.GuiBiomeChanger;
 import de.sanandrew.mods.enderstuffp.client.gui.GuiEnderPet;
 import de.sanandrew.mods.enderstuffp.client.gui.GuiWeatherAltar;
 import de.sanandrew.mods.enderstuffp.entity.living.IEnderPet;
+import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityWeatherAltar;
 import de.sanandrew.mods.enderstuffp.util.EnumGui;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +24,8 @@ public class ClientGuiHandler
                 return new GuiEnderPet((IEnderPet) world.getEntityByID(x), player);
             case WEATHERALTAR:
                 return new GuiWeatherAltar((TileEntityWeatherAltar) world.getTileEntity(x, y, z));
+            case BIOMECHANGER:
+                return new GuiBiomeChanger((TileEntityBiomeChanger) world.getTileEntity(x, y, z));
         }
         return null;
     }

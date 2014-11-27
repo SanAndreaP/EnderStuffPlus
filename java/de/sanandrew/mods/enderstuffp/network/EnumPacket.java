@@ -6,17 +6,15 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.network;
 
-import de.sanandrew.mods.enderstuffp.network.packet.PacketEnderPetGuiAction;
-import de.sanandrew.mods.enderstuffp.network.packet.PacketParticleFX;
-import de.sanandrew.mods.enderstuffp.network.packet.PacketRemoteOpenGui;
-import de.sanandrew.mods.enderstuffp.network.packet.PacketSetWeather;
+import de.sanandrew.mods.enderstuffp.network.packet.*;
 
 public enum EnumPacket
 {
     PKG_PARTICLES(PacketParticleFX.class),
     PKG_OPEN_CLIENT_GUI(PacketRemoteOpenGui.class),
     ENDERPET_ACTION(PacketEnderPetGuiAction.class),
-    WEATHERALTAR_SET(PacketSetWeather.class);
+    WEATHERALTAR_SET(PacketSetWeather.class),
+    FLUX_SYNC(PacketFluxSync.class);
 
     public static final EnumPacket[] VALUES = values();
 

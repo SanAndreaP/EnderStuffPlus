@@ -72,6 +72,8 @@ public class CommonProxy
         PacketProcessor.sendToAllAround(EnumPacket.PKG_PARTICLES, dimensionId, x, y, z, 64.0D, Quintet.with(particleType.ordinalByte(), x, y, z, data));
     }
 
+    public void syncFlux(int tileX, int tileY, int tileZ, int flux) { }
+
     @Override
     public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         return CommonGuiHandler.getGuiElement(id, player, world, x, y, z);
@@ -84,6 +86,7 @@ public class CommonProxy
 
     public void openGui(EntityPlayer player, EnumGui id, int x, int y, int z) {
         int guiId = id.ordinal();
+
         if( player instanceof EntityPlayerMP && getServerGuiElement(guiId, player, player.worldObj, x, y, z) == null ) {
             PacketProcessor.sendToPlayer(EnumPacket.PKG_OPEN_CLIENT_GUI, (EntityPlayerMP) player, Quartet.with((byte) guiId, x, y, z));
         } else {

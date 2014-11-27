@@ -3,6 +3,8 @@ package de.sanandrew.mods.enderstuffp.block;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
+import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
+import de.sanandrew.mods.enderstuffp.util.EnumGui;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -11,10 +13,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockBiomeChanger
     extends BlockContainer
@@ -91,7 +91,7 @@ public class BlockBiomeChanger
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xOffset, float yOffset, float zOffset) {
 //        int id = 1;
-        TileEntityBiomeChanger tileEntity = (TileEntityBiomeChanger) world.getTileEntity(x, y, z);
+//        TileEntityBiomeChanger tileEntity = (TileEntityBiomeChanger) world.getTileEntity(x, y, z);
 
 //        if( (tileEntity instanceof TileEntityBiomeChanger) && ((TileEntityBiomeChanger) tileEntity).isActive() ) {
 //            id = 3;
@@ -99,7 +99,11 @@ public class BlockBiomeChanger
 
 //        player.openGui(EnderStuffPlus.instance, id, world, x, y, z);
 
-        player.addChatMessage(new ChatComponentText(Integer.toString(tileEntity.getEnergyStored(ForgeDirection.UP))));
+//        player.addChatMessage(new ChatComponentText(Integer.toString(tileEntity.getEnergyStored(ForgeDirection.UP))));
+
+        if( !world.isRemote ) {
+            EnderStuffPlus.proxy.openGui(player, EnumGui.BIOMECHANGER, x, y, z);
+        }
 
         return true;
     }
