@@ -4,10 +4,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import de.sanandrew.core.manpack.item.ItemBlockNamedMeta;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.block.*;
-import de.sanandrew.mods.enderstuffp.tileentity.TileEntityAvisEgg;
-import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
-import de.sanandrew.mods.enderstuffp.tileentity.TileEntityOreGenerator;
-import de.sanandrew.mods.enderstuffp.tileentity.TileEntityWeatherAltar;
+import de.sanandrew.mods.enderstuffp.tileentity.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;
@@ -30,6 +27,7 @@ public final class RegistryBlocks
     public static BlockEnderDoor blockEndDoor;
 //    public static BlockSaplingEndTree sapEndTree;
     public static Block oreGenerator;
+    public static Block biomeDataCrystal;
 
     public static void initialize() {
         initRegisterFluids();
@@ -41,20 +39,21 @@ public final class RegistryBlocks
     }
 
     private static void initBlocks() {
-        avisEgg       = new BlockAvisEgg();
-        endOre        = new BlockEndOre();
-        endBlock      = new BlockEndStorage();
-        biomeChanger  = new BlockBiomeChanger(Material.rock);
+        avisEgg = new BlockAvisEgg();
+        endOre = new BlockEndOre();
+        endBlock = new BlockEndStorage();
+        biomeChanger = new BlockBiomeChanger(Material.rock);
 //        duplicator    = new BlockDuplicator();
-        weatherAltar  = new BlockWeatherAltar();
-        blockEndDoor  = new BlockEnderDoor(Material.iron);
+        weatherAltar = new BlockWeatherAltar();
+        blockEndDoor = new BlockEnderDoor(Material.iron);
 //        enderLeaves   = new BlockEndLeaves();
 //        enderLog      = new BlockEndLog();
 //        sapEndTree    = new BlockSaplingEndTree();
 //        enderPlanks   = new BlockEnderWood();
 //        corruptES     = new BlockCorruptEndStone();
 //        endFluidBlock = new BlockEndFluid(endFluid, Material.water);
-        oreGenerator  = new BlockOreGenerator();
+        oreGenerator = new BlockOreGenerator();
+        biomeDataCrystal = new BlockBiomeDataCrystal();
 
         avisEgg.setBlockName(EnderStuffPlus.MOD_ID + ":avisEgg")
                .setCreativeTab(CreativeTabsEnderStuff.ESP_TAB)
@@ -113,6 +112,11 @@ public final class RegistryBlocks
                     .setCreativeTab(CreativeTabsEnderStuff.ESP_TAB)
                     .setHardness(5.0F)
                     .setStepSound(Block.soundTypeMetal);
+        biomeDataCrystal.setBlockName(EnderStuffPlus.MOD_ID + ":biomeDataCrystal")
+                        .setBlockTextureName(EnderStuffPlus.MOD_ID + ":biome_crystal")
+                        .setCreativeTab(CreativeTabsEnderStuff.ESP_TAB)
+                        .setHardness(5.0F)
+                        .setStepSound(Block.soundTypeMetal);
 //
 //        endFluid.setBlock(endFluidBlock);
     }
@@ -125,16 +129,17 @@ public final class RegistryBlocks
     }
 
     private static void registerBlocks() {
-        GameRegistry.registerTileEntity(TileEntityAvisEgg.class, "avisEggTile");
-        GameRegistry.registerTileEntity(TileEntityBiomeChanger.class, "biomeChangerTile");
+        GameRegistry.registerTileEntity(TileEntityAvisEgg.class, EnderStuffPlus.MOD_ID + ":avisEggTile");
+        GameRegistry.registerTileEntity(TileEntityBiomeChanger.class, EnderStuffPlus.MOD_ID + ":biomeChangerTile");
 //        GameRegistry.registerTileEntity(TileEntityDuplicator.class, "duplicatorTE");
-        GameRegistry.registerTileEntity(TileEntityWeatherAltar.class, "weatherAltarTile");
-        GameRegistry.registerTileEntity(TileEntityOreGenerator.class, "oreGeneratorTile");
+        GameRegistry.registerTileEntity(TileEntityWeatherAltar.class, EnderStuffPlus.MOD_ID + ":weatherAltarTile");
+        GameRegistry.registerTileEntity(TileEntityOreGenerator.class, EnderStuffPlus.MOD_ID + ":oreGeneratorTile");
+        GameRegistry.registerTileEntity(TileEntityBiomeDataCrystal.class, EnderStuffPlus.MOD_ID + ":biomeDataCrystalTile");
 
 //        SAPUtils.registerBlocks(avisEgg, biomeChanger, duplicator, weatherAltar, blockEndDoor, enderLog, sapEndTree, enderPlanks,
 //                                corruptES, endFluidBlock);
 
-        SAPUtils.registerBlocks(avisEgg, biomeChanger, weatherAltar, blockEndDoor, oreGenerator);
+        SAPUtils.registerBlocks(avisEgg, biomeChanger, weatherAltar, blockEndDoor, oreGenerator, biomeDataCrystal);
 
 //        GameRegistry.registerBlock(enderLeaves, ItemEndLeaves.class, ESPModRegistry.MOD_ID + ":blockEndLeaves");
         GameRegistry.registerBlock(endOre, ItemBlockNamedMeta.class, "blockEndOre");

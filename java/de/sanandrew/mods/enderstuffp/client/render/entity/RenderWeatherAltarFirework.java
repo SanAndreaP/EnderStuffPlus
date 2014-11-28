@@ -1,4 +1,4 @@
-package de.sanandrew.mods.enderstuffp.client.render;
+package de.sanandrew.mods.enderstuffp.client.render.entity;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;

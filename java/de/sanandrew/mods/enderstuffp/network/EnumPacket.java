@@ -14,7 +14,7 @@ public enum EnumPacket
     PKG_OPEN_CLIENT_GUI(PacketRemoteOpenGui.class),
     ENDERPET_ACTION(PacketEnderPetGuiAction.class),
     WEATHERALTAR_SET(PacketSetWeather.class),
-    FLUX_SYNC(PacketFluxSync.class);
+    TILE_ENERGY_SYNC(PacketTileEnergySync.class);
 
     public static final EnumPacket[] VALUES = values();
 

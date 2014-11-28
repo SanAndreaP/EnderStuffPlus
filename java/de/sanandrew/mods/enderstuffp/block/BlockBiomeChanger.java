@@ -5,7 +5,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EnumGui;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -21,45 +20,6 @@ public class BlockBiomeChanger
 {
     public BlockBiomeChanger(Material material) {
         super(material);
-    }
-
-    @Override
-    public void breakBlock(World world, int x, int y, int z, Block oldBlock, int oldMeta) {
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
-
-        if( (tileEntity instanceof TileEntityBiomeChanger) && !world.isRemote ) {
-            TileEntityBiomeChanger teBiomeChager = (TileEntityBiomeChanger) tileEntity;
-
-//            for( int i = 0; i < teBiomeChager.getSizeInventory(); i++ ) {
-//                ItemStack stack = teBiomeChager.getStackInSlot(i);
-//
-//                if( (stack != null) && (stack.stackSize > 0) ) {
-//                    world.spawnEntityInWorld(new EntityItem(world, x + 0.5F, y + 0.5F, z + 0.5F, stack));
-//                }
-//            }
-
-//            if( teBiomeChager.getPrevFuelItem() != null ) {
-//                int itemCnt = (teBiomeChager.getMaxRange() - teBiomeChager.getCurrRange())
-//                             * RegistryBiomeChanger.getMultiFromStack(teBiomeChager.getPrevFuelItem());
-//
-//                while( itemCnt > 0 ) {
-//                    ItemStack stack = teBiomeChager.getPrevFuelItem().copy();
-//
-//                    if( itemCnt > teBiomeChager.getPrevFuelItem().getMaxStackSize() ) {
-//                        itemCnt -= stack.stackSize = teBiomeChager.getPrevFuelItem().getMaxStackSize();
-//                    } else {
-//                        stack.stackSize = itemCnt;
-//                        itemCnt = 0;
-//                    }
-//
-//                    world.spawnEntityInWorld(new EntityItem(world, x + 0.5F, y + 0.5F, z + 0.5F, stack));
-//                }
-//            }
-
-            tileEntity.invalidate();
-        }
-
-        super.breakBlock(world, x, y, z, oldBlock, oldMeta);
     }
 
     @Override
@@ -90,17 +50,6 @@ public class BlockBiomeChanger
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xOffset, float yOffset, float zOffset) {
-//        int id = 1;
-//        TileEntityBiomeChanger tileEntity = (TileEntityBiomeChanger) world.getTileEntity(x, y, z);
-
-//        if( (tileEntity instanceof TileEntityBiomeChanger) && ((TileEntityBiomeChanger) tileEntity).isActive() ) {
-//            id = 3;
-//        }
-
-//        player.openGui(EnderStuffPlus.instance, id, world, x, y, z);
-
-//        player.addChatMessage(new ChatComponentText(Integer.toString(tileEntity.getEnergyStored(ForgeDirection.UP))));
-
         if( !world.isRemote ) {
             EnderStuffPlus.proxy.openGui(player, EnumGui.BIOMECHANGER, x, y, z);
         }

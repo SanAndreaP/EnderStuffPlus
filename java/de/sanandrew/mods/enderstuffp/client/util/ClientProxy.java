@@ -11,13 +11,15 @@ import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.enderstuffp.client.event.FovUpdateHandler;
 import de.sanandrew.mods.enderstuffp.client.event.RenderGameOverlayHandler;
 import de.sanandrew.mods.enderstuffp.client.event.TextureStitchHandler;
+import de.sanandrew.mods.enderstuffp.client.render.ItemRendererBiomeChanger;
 import de.sanandrew.mods.enderstuffp.client.render.ItemRendererGlowTools;
 import de.sanandrew.mods.enderstuffp.client.render.ItemRendererWeatherAltar;
-import de.sanandrew.mods.enderstuffp.client.render.RenderWeatherAltarFirework;
+import de.sanandrew.mods.enderstuffp.client.render.entity.RenderWeatherAltarFirework;
 import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderAvis;
 import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderIgnis;
 import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderMiss;
 import de.sanandrew.mods.enderstuffp.client.render.entity.RenderEnderNivis;
+import de.sanandrew.mods.enderstuffp.client.render.tileentity.RenderTileEntityBiomeChanger;
 import de.sanandrew.mods.enderstuffp.client.render.tileentity.RenderTileEntityWeatherAltar;
 import de.sanandrew.mods.enderstuffp.entity.EntityWeatherAltarFirework;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityBait;
@@ -30,6 +32,7 @@ import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderIgnis;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderNivis;
 import de.sanandrew.mods.enderstuffp.network.ClientPacketHandler;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
+import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeDataCrystal;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityOreGenerator;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityWeatherAltar;
 import de.sanandrew.mods.enderstuffp.util.*;
@@ -69,8 +72,10 @@ public class ClientProxy
         RenderingRegistry.registerEntityRenderingHandler(EntityBait.class, new RenderSnowball(RegistryItems.espPearls, 2));
         RenderingRegistry.registerEntityRenderingHandler(EntityWeatherAltarFirework.class, new RenderWeatherAltarFirework());
 
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBiomeChanger.class, new RenderTileEntityBiomeChanger());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWeatherAltar.class, new RenderTileEntityWeatherAltar());
 
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegistryBlocks.biomeChanger), new ItemRendererBiomeChanger());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegistryBlocks.weatherAltar), new ItemRendererWeatherAltar());
     }
 
@@ -168,13 +173,15 @@ public class ClientProxy
     }
 
     @Override
-    public void syncFlux(int tileX, int tileY, int tileZ, int flux) {
+    public void syncTileEnergy(int tileX, int tileY, int tileZ, int flux) {
         TileEntity tile = getWorld().getTileEntity(tileX, tileY, tileZ);
 
         if( tile instanceof TileEntityBiomeChanger ) {
             ((TileEntityBiomeChanger) tile).fluxAmount = flux;
         } else if( tile instanceof TileEntityOreGenerator ) {
             ((TileEntityOreGenerator) tile).fluxAmount = flux;
+        } else if( tile instanceof TileEntityBiomeDataCrystal ) {
+            ((TileEntityBiomeDataCrystal) tile).dataProgress = flux;
         }
     }
 

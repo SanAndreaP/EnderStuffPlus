@@ -9,6 +9,7 @@ package de.sanandrew.mods.enderstuffp.network.packet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.enderstuffp.network.IPacket;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
+import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeDataCrystal;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityOreGenerator;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import io.netty.buffer.ByteBuf;
@@ -19,12 +20,12 @@ import net.minecraft.tileentity.TileEntity;
 
 import java.io.IOException;
 
-public class PacketFluxSync
+public class PacketTileEnergySync
         implements IPacket
 {
     @Override
     public void process(ByteBufInputStream stream, ByteBuf rawData, INetHandler handler) throws IOException {
-        EnderStuffPlus.proxy.syncFlux(stream.readInt(), stream.readInt(), stream.readInt(), stream.readInt());
+        EnderStuffPlus.proxy.syncTileEnergy(stream.readInt(), stream.readInt(), stream.readInt(), stream.readInt());
     }
 
     @Override
@@ -39,6 +40,8 @@ public class PacketFluxSync
             stream.writeInt(((TileEntityBiomeChanger) tile).fluxAmount);
         } else if( tile instanceof TileEntityOreGenerator ) {
             stream.writeInt(((TileEntityOreGenerator) tile).fluxAmount);
+        } else if( tile instanceof TileEntityBiomeDataCrystal ) {
+            stream.writeInt(((TileEntityBiomeDataCrystal) tile).dataProgress);
         }
     }
 }

@@ -36,8 +36,8 @@ public class TileEntityBiomeChanger
     private float renderBeamHeight = 0.0F;
     private int currentRenderPass = 0;
 
-    public int fluxAmount = 25_000;
-    private int prevFluxAmount = 25_000;
+    public int fluxAmount = 0;
+    private int prevFluxAmount = -1;
 
     public TileEntityBiomeChanger() {}
 
@@ -170,10 +170,6 @@ public class TileEntityBiomeChanger
         return 16384.0D;
     }
 
-    public int getNeededIngotFuel() {
-        return (this.maxRange & 255) * 4;
-    }
-
     public byte getRadForm() {
         return (byte) this.form.ordinal();
     }
@@ -189,29 +185,31 @@ public class TileEntityBiomeChanger
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1nbtTagCompound) {
-        super.readFromNBT(par1nbtTagCompound);
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
 
-        this.setMaxRange(par1nbtTagCompound.getShort("maxRange"));
-        this.biomeID = par1nbtTagCompound.getByte("biomeID");
-        this.setCurrRange(par1nbtTagCompound.getShort("currRange"));
-        this.form = EnumPerimForm.VALUES[par1nbtTagCompound.getByte("radiusForm")];
-        this.isActive = par1nbtTagCompound.getBoolean("isActive");
-        this.prevIsActive = par1nbtTagCompound.getBoolean("prevActive");
-        this.isReplacingBlocks = par1nbtTagCompound.getBoolean("IsReplacingBlocks");
+        this.setMaxRange(nbt.getShort("maxRange"));
+        this.biomeID = nbt.getByte("biomeID");
+        this.setCurrRange(nbt.getShort("currRange"));
+        this.form = EnumPerimForm.VALUES[nbt.getByte("radiusForm")];
+        this.isActive = nbt.getBoolean("isActive");
+        this.prevIsActive = nbt.getBoolean("prevActive");
+        this.isReplacingBlocks = nbt.getBoolean("IsReplacingBlocks");
+        this.fluxAmount = nbt.getInteger("fluxAmount");
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1nbtTagCompound) {
-        super.writeToNBT(par1nbtTagCompound);
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
 
-        par1nbtTagCompound.setShort("currRange", this.getCurrRange());
-        par1nbtTagCompound.setShort("maxRange", this.getMaxRange());
-        par1nbtTagCompound.setByte("biomeID", this.biomeID);
-        par1nbtTagCompound.setByte("radiusForm", this.getRadForm());
-        par1nbtTagCompound.setBoolean("isActive", this.isActive);
-        par1nbtTagCompound.setBoolean("prevActive", this.prevIsActive);
-        par1nbtTagCompound.setBoolean("IsReplacingBlocks", this.isReplacingBlocks);
+        nbt.setShort("currRange", this.getCurrRange());
+        nbt.setShort("maxRange", this.getMaxRange());
+        nbt.setByte("biomeID", this.biomeID);
+        nbt.setByte("radiusForm", this.getRadForm());
+        nbt.setBoolean("isActive", this.isActive);
+        nbt.setBoolean("prevActive", this.prevIsActive);
+        nbt.setBoolean("IsReplacingBlocks", this.isReplacingBlocks);
+        nbt.setInteger("fluxAmount", this.fluxAmount);
     }
 
     public void activate() {
@@ -220,14 +218,6 @@ public class TileEntityBiomeChanger
 
     public void deactivate() {
         this.isActive = false;
-    }
-
-    public void setBiomeID(int par1BiomeID) {
-        if( par1BiomeID > 255 || par1BiomeID < 0 ) {
-            return;
-        }
-
-        this.biomeID = (byte) (par1BiomeID & 255);
     }
 
     public void setCurrRange(int par1CurrRange) {
@@ -286,7 +276,8 @@ public class TileEntityBiomeChanger
 
         if( !worldObj.isRemote && this.prevFluxAmount != this.fluxAmount ) {
             this.prevFluxAmount = this.fluxAmount;
-            PacketProcessor.sendToAllAround(EnumPacket.FLUX_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F, Unit.with(this));
+            PacketProcessor.sendToAllAround(EnumPacket.TILE_ENERGY_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F,
+                                            Unit.with(this));
         }
     }
 
@@ -309,6 +300,10 @@ public class TileEntityBiomeChanger
         return pass <= 1;
     }
 
+    public int getRenderPass() {
+        return this.currentRenderPass;
+    }
+
     public void replaceBlocks(boolean isReplacingBlocks) {
         this.isReplacingBlocks = isReplacingBlocks;
     }
@@ -317,7 +312,7 @@ public class TileEntityBiomeChanger
     public int receiveEnergy(ForgeDirection forgeDirection, int maxReceive, boolean checkSize) {
         int energyReceived = Math.min(this.getMaxEnergyStored(forgeDirection) - this.fluxAmount, Math.min(10, maxReceive));
 
-        if (!checkSize) {
+        if( !checkSize ) {
             this.fluxAmount += energyReceived;
         }
 
@@ -336,7 +331,7 @@ public class TileEntityBiomeChanger
 
     @Override
     public boolean canConnectEnergy(ForgeDirection forgeDirection) {
-        return forgeDirection != ForgeDirection.UP;
+        return forgeDirection != ForgeDirection.UP && forgeDirection != ForgeDirection.DOWN;
     }
 
     public static enum EnumPerimForm

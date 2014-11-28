@@ -52,7 +52,7 @@ public class TileEntityOreGenerator
 
             if( this.prevFluxAmount != this.fluxAmount ) {
                 this.prevFluxAmount = this.fluxAmount;
-                PacketProcessor.sendToAllAround(EnumPacket.FLUX_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F,
+                PacketProcessor.sendToAllAround(EnumPacket.TILE_ENERGY_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F,
                                                 Unit.with(this));
             }
         }

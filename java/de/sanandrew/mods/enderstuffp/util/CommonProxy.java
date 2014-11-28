@@ -72,7 +72,7 @@ public class CommonProxy
         PacketProcessor.sendToAllAround(EnumPacket.PKG_PARTICLES, dimensionId, x, y, z, 64.0D, Quintet.with(particleType.ordinalByte(), x, y, z, data));
     }
 
-    public void syncFlux(int tileX, int tileY, int tileZ, int flux) { }
+    public void syncTileEnergy(int tileX, int tileY, int tileZ, int flux) { }
 
     @Override
     public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
