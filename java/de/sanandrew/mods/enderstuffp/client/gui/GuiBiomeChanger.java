@@ -31,6 +31,8 @@ public class GuiBiomeChanger
     public void initGui() {
         this.posX = (this.width - WIDTH) / 2;
         this.posY = (this.height - HEIGHT) / 2;
+
+        this.buttonList.add(new GuiButtonBiomeChanger(0, this.posX + 10, this.posY + 73, 155, "activate"));
     }
 
     @Override
@@ -58,9 +60,9 @@ public class GuiBiomeChanger
         this.mc.fontRenderer.drawString(String.format("%d / %d RF", currFlux, maxFlux), 38, 53, 0xFF000000);
 //        this.mc.fontRenderer.drawString(Integer.toString(biomeChanger.getEnergyStored(ForgeDirection.UNKNOWN)), 0, 0, 0xFFFFFFFF);
 
-        super.drawScreen(mouseX, mouseY, partTicks);
-
         GL11.glPopMatrix();
+
+        super.drawScreen(mouseX, mouseY, partTicks);
     }
 
     @Override
