@@ -57,6 +57,10 @@ public class RegistryBiomeChanger
         return new ArrayList<>(disabledBiomesList);
     }
 
+    public static boolean isBiomeDisabled(BiomeGenBase biome) {
+        return disabledBiomesList.contains(biome.biomeID);
+    }
+
     public static HashMap<Integer, Entry<ItemStack, Integer>> getFuelList() {
         return Maps.newHashMap(fuelList);
     }

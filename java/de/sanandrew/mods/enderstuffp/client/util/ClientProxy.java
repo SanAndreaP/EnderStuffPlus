@@ -12,10 +12,12 @@ import de.sanandrew.mods.enderstuffp.client.event.FovUpdateHandler;
 import de.sanandrew.mods.enderstuffp.client.event.RenderGameOverlayHandler;
 import de.sanandrew.mods.enderstuffp.client.event.TextureStitchHandler;
 import de.sanandrew.mods.enderstuffp.client.render.ItemRendererBiomeChanger;
+import de.sanandrew.mods.enderstuffp.client.render.ItemRendererBiomeDataCrystal;
 import de.sanandrew.mods.enderstuffp.client.render.ItemRendererGlowTools;
 import de.sanandrew.mods.enderstuffp.client.render.ItemRendererWeatherAltar;
 import de.sanandrew.mods.enderstuffp.client.render.entity.*;
 import de.sanandrew.mods.enderstuffp.client.render.tileentity.RenderTileEntityBiomeChanger;
+import de.sanandrew.mods.enderstuffp.client.render.tileentity.RenderTileEntityBiomeDataCrystal;
 import de.sanandrew.mods.enderstuffp.client.render.tileentity.RenderTileEntityWeatherAltar;
 import de.sanandrew.mods.enderstuffp.entity.EntityWeatherAltarFirework;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityBait;
@@ -70,9 +72,18 @@ public class ClientProxy
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBiomeChanger.class, new RenderTileEntityBiomeChanger());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWeatherAltar.class, new RenderTileEntityWeatherAltar());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBiomeDataCrystal.class, new RenderTileEntityBiomeDataCrystal());
+
+        MinecraftForgeClient.registerItemRenderer(RegistryItems.niobSword, new ItemRendererGlowTools());
+        MinecraftForgeClient.registerItemRenderer(RegistryItems.niobPick, new ItemRendererGlowTools());
+        MinecraftForgeClient.registerItemRenderer(RegistryItems.niobAxe, new ItemRendererGlowTools());
+        MinecraftForgeClient.registerItemRenderer(RegistryItems.niobHoe, new ItemRendererGlowTools());
+        MinecraftForgeClient.registerItemRenderer(RegistryItems.niobShovel, new ItemRendererGlowTools());
+        MinecraftForgeClient.registerItemRenderer(RegistryItems.niobShears, new ItemRendererGlowTools());
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegistryBlocks.biomeChanger), new ItemRendererBiomeChanger());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegistryBlocks.weatherAltar), new ItemRendererWeatherAltar());
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegistryBlocks.biomeDataCrystal), new ItemRendererBiomeDataCrystal());
     }
 
     //    @Override
@@ -105,13 +116,6 @@ public class ClientProxy
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
-
-        MinecraftForgeClient.registerItemRenderer(RegistryItems.niobSword, new ItemRendererGlowTools());
-        MinecraftForgeClient.registerItemRenderer(RegistryItems.niobPick, new ItemRendererGlowTools());
-        MinecraftForgeClient.registerItemRenderer(RegistryItems.niobAxe, new ItemRendererGlowTools());
-        MinecraftForgeClient.registerItemRenderer(RegistryItems.niobHoe, new ItemRendererGlowTools());
-        MinecraftForgeClient.registerItemRenderer(RegistryItems.niobShovel, new ItemRendererGlowTools());
-        MinecraftForgeClient.registerItemRenderer(RegistryItems.niobShears, new ItemRendererGlowTools());
 
         MinecraftForge.EVENT_BUS.register(new FovUpdateHandler());
         MinecraftForge.EVENT_BUS.register(new TextureStitchHandler());
@@ -164,6 +168,9 @@ public class ClientProxy
                 break;
             case FX_WEATHER_ALTAR:
                 ParticleHelper.spawnWeatherAltarFX(x, y, z, random, getWorld());
+                break;
+            case FX_BIOME_DATA:
+                ParticleHelper.spawnBiomeDataFX(x, y, z, random, (Short) data.getValue(0));
                 break;
         }
     }

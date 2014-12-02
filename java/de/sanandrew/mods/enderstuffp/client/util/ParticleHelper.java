@@ -8,6 +8,8 @@ package de.sanandrew.mods.enderstuffp.client.util;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.mods.enderstuffp.client.particle.EntityBiomeDataFX;
 import de.sanandrew.mods.enderstuffp.client.particle.EntityColoredPortalFX;
 import de.sanandrew.mods.enderstuffp.client.particle.EntityWeatherAltarFX;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityWeatherAltar;
@@ -16,6 +18,7 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntityHeartFX;
 import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 
 import java.util.List;
 import java.util.Random;
@@ -98,6 +101,20 @@ final class ParticleHelper
                 particle.setRBGColorF(0.25F + rand.nextFloat() * 0.25F, 0.0F, 1.0F);
                 Minecraft.getMinecraft().effectRenderer.addEffect(particle);
             }
+        }
+    }
+
+    static void spawnBiomeDataFX(double x, double y, double z, Random rand, int biomeId) {
+        float[] colors = SAPUtils.getRgbaFromColorInt(BiomeGenBase.getBiome(biomeId).color).getColorFloatArray();
+
+        for( int i = 0; i < 20; i++ ) {
+            EntityFX part = new EntityBiomeDataFX(Minecraft.getMinecraft().theWorld,
+                                                  x + (rand.nextDouble() - 0.5D), y + (rand.nextDouble() - 0.25D), z + (rand.nextDouble() - 0.5D),
+                                                  (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D,
+                                                  colors[0], colors[1], colors[2]
+            );
+
+            Minecraft.getMinecraft().effectRenderer.addEffect(part);
         }
     }
 }

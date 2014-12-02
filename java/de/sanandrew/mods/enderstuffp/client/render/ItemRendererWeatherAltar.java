@@ -38,7 +38,7 @@ public class ItemRendererWeatherAltar
     }
 
     private void renderWeatherAltar(float x, float y, float z) {
-        Minecraft.getMinecraft().getTextureManager().bindTexture(EnumTextures.WEATHERALTAR_TEXTURE.getResource());
+        Minecraft.getMinecraft().getTextureManager().bindTexture(EnumTextures.WEATHERALTAR.getResource());
 
         GL11.glPushMatrix();
         GL11.glTranslatef(x, y + 1.57F, z);

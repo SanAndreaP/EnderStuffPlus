@@ -1,12 +1,15 @@
 package de.sanandrew.mods.enderstuffp.client.util;
 
+import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.util.ResourceLocation;
 
 public enum EnumTextures
 {
     ARROW_AVIS                  ("textures/entity/avisArrow.png"),
-    BIOMECHANGER_TEXTURE        ("textures/blocks/biomeChanger.png"),
-    ENDERAVIS_GLOW_TEXTURE      ("textures/entity/enderAvisGlow.png"),
+    BIOMECHANGER                ("textures/blocks/biomeChanger.png"),
+    WEATHERALTAR                ("textures/blocks/weatherAltar.png"),
+    BIOMECRYSTAL_CORE           ("textures/entity/tile/biome_crystal_core.png"),
+    ENDERAVIS_GLOW              ("textures/entity/enderAvisGlow.png"),
     ENDERAVIS_TEXTURE           ("textures/entity/enderAvis.png"),
     ENDERAVIS_TEXTURE_SADDLE    ("textures/entity/enderAvisSaddle.png"),
     ENDERIGNIS_GLOW_TEXTURE     ("textures/entity/enderIgnisGlow.png"),
@@ -34,13 +37,15 @@ public enum EnumTextures
     GUI_INGAMEICONS             ("textures/gui/hud_icons.png"),
     GUI_WEATHERALTAR            ("textures/gui/weather_altar.png"),
     TEX_ARMOR_NIOBIUM_1         ("textures/models/armor/niob_1.png"),
-    TEX_ARMOR_NIOBIUM_2         ("textures/models/armor/niob_2.png"),
-    WEATHERALTAR_TEXTURE        ("textures/blocks/weatherAltar.png");
+    TEX_ARMOR_NIOBIUM_2         ("textures/models/armor/niob_2.png");
+
+    public static final ResourceLocation GLASS_TEXTURE = new ResourceLocation("textures/blocks/glass.png");
+    public static final ResourceLocation BIOMECRYSTAL_BLOCKTEXTURE = new ResourceLocation(EnderStuffPlus.MOD_ID, "textures/blocks/biome_crystal.png");
 
     private final ResourceLocation tex;
 
     private EnumTextures(String texture) {
-        this.tex = new ResourceLocation("enderstuffp", texture);
+        this.tex = new ResourceLocation(EnderStuffPlus.MOD_ID, texture);
     }
 
     public ResourceLocation getResource() {

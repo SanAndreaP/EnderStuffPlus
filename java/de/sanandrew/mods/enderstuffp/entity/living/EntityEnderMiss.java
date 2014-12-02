@@ -223,7 +223,7 @@ public class EntityEnderMiss
             String base = coat.getTagCompound().getString("base");
             String color = coat.getTagCompound().getString("color");
 
-            return !this.getCoatColor().name.equals(color) || !this.getCoatBase().name.equals(base);
+            return !this.getCoatColor().getUUID().equals(color) || !this.getCoatBase().getUUID().equals(base);
         }
 
         return false;
@@ -231,12 +231,12 @@ public class EntityEnderMiss
 
     @Override
     public CoatBaseEntry getCoatBase() {
-        return this.hasCoat() ? RegistryRaincoats.getCoatBase(this.getCoat().getTagCompound().getString("base")) : RegistryRaincoats.NULL_BASE;
+        return this.hasCoat() ? RegistryRaincoats.getBase(this.getCoat().getTagCompound().getString("base")) : RegistryRaincoats.NULL_BASE;
     }
 
     @Override
     public CoatColorEntry getCoatColor() {
-        return this.hasCoat() ? RegistryRaincoats.getCoatColor(this.getCoat().getTagCompound().getString("color")) : RegistryRaincoats.NULL_COLOR;
+        return this.hasCoat() ? RegistryRaincoats.getColor(this.getCoat().getTagCompound().getString("color")) : RegistryRaincoats.NULL_COLOR;
     }
 
     @Override
@@ -503,7 +503,7 @@ public class EntityEnderMiss
 
         if( !this.worldObj.isRemote ) {
             if( this.prevCoatBase != this.getCoat() ) {
-                if( this.hasCoat() && RegistryRaincoats.getCoatBase(this.getCoat().getTagCompound().getString("base")) == RegistryRaincoats.baseObsidian ) {
+                if( this.hasCoat() && RegistryRaincoats.getBase(this.getCoat().getTagCompound().getString("base")) == RegistryRaincoats.baseObsidian ) {
                     this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(60.0D);
                 } else {
                     this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);

@@ -25,7 +25,7 @@ public final class RegistryRaincoats
     public static final List<ItemStack> BASE_STACKS = new ArrayList<>();
     public static final List<ItemStack> COLOR_STACKS = new ArrayList<>();
 
-    public static final CoatBaseEntry NULL_BASE = new CoatBaseEntry("NULL", 0xFFFFFF, "NULL", new ResourceLocation("NULL"), new ResourceLocation("NULL"), null);
+    public static final CoatBaseEntry NULL_BASE = new CoatBaseEntry("NULL", 0xFFFFFF, new ResourceLocation("NULL"), new ResourceLocation("NULL"), null);
     public static final CoatColorEntry NULL_COLOR = new CoatColorEntry("NULL", 0xFFFFFF, new ResourceLocation("NULL"), new ResourceLocation("NULL"), null);
 
     public static CoatBaseEntry baseGold;
@@ -89,13 +89,15 @@ public final class RegistryRaincoats
                                                                         new ResourceLocation(EnderStuffPlus.MOD_ID, "textures/entity/enderAvis_cape/transp.png"),
                                                                         new ItemStack(Blocks.glass))
         );
+
+        NULL_BASE.uuid = "NULL";
+        NULL_COLOR.uuid = "NULL";
     }
 
     public static CoatBaseEntry addBase(String modId, String name, int color, String missTexture, String avisTexture, ItemStack ingredient) {
         ResourceLocation miss = new ResourceLocation(modId, missTexture);
         ResourceLocation avis = new ResourceLocation(modId, avisTexture);
-        String factoredName = "item." + EnderStuffPlus.MOD_ID + ":rainCoat.base." + name;
-        CoatBaseEntry coatBase = new CoatBaseEntry(factoredName, color, factoredName + ".desc", miss, avis, ingredient);
+        CoatBaseEntry coatBase = new CoatBaseEntry(name, color, miss, avis, ingredient);
 
         addSpecialBase(modId, coatBase);
 
@@ -105,33 +107,54 @@ public final class RegistryRaincoats
     public static void addColor(String modId, String name, int color, String missTexture, String avisTexture, ItemStack ingredient) {
         ResourceLocation miss = new ResourceLocation(modId, missTexture);
         ResourceLocation avis = new ResourceLocation(modId, avisTexture);
-        String factoredName = "item." + EnderStuffPlus.MOD_ID + ":rainCoat.color." + name;
-        addSpecialColor(modId, new CoatColorEntry(factoredName, color, miss, avis, ingredient));
+        addSpecialColor(modId, new CoatColorEntry(name, color, miss, avis, ingredient));
     }
 
     public static void addSpecialColor(String modid, CoatColorEntry entry) {
         ItemStack craftingIngredient = entry.craftingItem.copy();
-        COLOR_LIST.put(UUID.nameUUIDFromBytes(ArrayUtils.addAll(modid.getBytes(), entry.name.getBytes())).toString(), entry);
+        String uuid = UUID.nameUUIDFromBytes(ArrayUtils.addAll(modid.getBytes(), entry.name.getBytes())).toString();
+        entry.uuid = uuid;
+        COLOR_LIST.put(uuid, entry);
         COLOR_STACKS.add(craftingIngredient);
     }
 
     public static void addSpecialBase(String modid, CoatBaseEntry entry) {
         ItemStack craftingIngredient = entry.craftingItem.copy();
-        BASE_LIST.put(UUID.nameUUIDFromBytes(ArrayUtils.addAll(modid.getBytes(), entry.name.getBytes())).toString(), entry);
+        String uuid = UUID.nameUUIDFromBytes(ArrayUtils.addAll(modid.getBytes(), entry.name.getBytes())).toString();
+        entry.uuid = uuid;
+        BASE_LIST.put(uuid, entry);
         BASE_STACKS.add(craftingIngredient);
     }
 
-    public static CoatBaseEntry getCoatBase(String baseName) {
-        if( BASE_LIST.containsKey(baseName) ) {
-            return BASE_LIST.get(baseName);
+    public static CoatBaseEntry getBase(String uuid) {
+        if( BASE_LIST.containsKey(uuid) ) {
+            return BASE_LIST.get(uuid);
         }
 
         return NULL_BASE;
     }
 
-    public static CoatColorEntry getCoatColor(String baseName) {
-        if( COLOR_LIST.containsKey(baseName) ) {
-            return COLOR_LIST.get(baseName);
+    public static CoatColorEntry getColor(String uuid) {
+        if( COLOR_LIST.containsKey(uuid) ) {
+            return COLOR_LIST.get(uuid);
+        }
+
+        return NULL_COLOR;
+    }
+
+    public static CoatBaseEntry getBase(String modId, String name) {
+        String uuid = UUID.nameUUIDFromBytes(ArrayUtils.addAll(modId.getBytes(), name.getBytes())).toString();
+        if( BASE_LIST.containsKey(uuid) ) {
+            return BASE_LIST.get(uuid);
+        }
+
+        return NULL_BASE;
+    }
+
+    public static CoatColorEntry getColor(String modId, String name) {
+        String uuid = UUID.nameUUIDFromBytes(ArrayUtils.addAll(modId.getBytes(), name.getBytes())).toString();
+        if( COLOR_LIST.containsKey(uuid) ) {
+            return COLOR_LIST.get(uuid);
         }
 
         return NULL_COLOR;
@@ -150,17 +173,28 @@ public final class RegistryRaincoats
         public final int color;
         public final String desc;
         public final String name;
+        private final String unlocName;
+        private String uuid;
         public final ResourceLocation missTexture;
         public final ResourceLocation avisTexture;
         public final ItemStack craftingItem;
 
-        public CoatBaseEntry(String name, int color, String desc, ResourceLocation missTexture, ResourceLocation avisTexture, ItemStack ingredient) {
+        public CoatBaseEntry(String name, int color, ResourceLocation missTexture, ResourceLocation avisTexture, ItemStack ingredient) {
             this.color = color;
-            this.desc = desc;
             this.name = name;
+            this.unlocName = "item." + EnderStuffPlus.MOD_ID + ":rainCoat.base." + name;
+            this.desc = unlocName + ".desc";
             this.missTexture = missTexture;
             this.avisTexture = avisTexture;
             this.craftingItem = ingredient;
+        }
+
+        public String getUUID() {
+            return this.uuid;
+        }
+
+        public String getUnlocalizedName() {
+            return this.unlocName;
         }
 
         @Override
@@ -184,7 +218,9 @@ public final class RegistryRaincoats
     public static class CoatColorEntry
     {
         public final int color;
-        public final String name;
+        private final String name;
+        private final String unlocName;
+        private String uuid;
         public final ResourceLocation missTexture;
         public final ResourceLocation avisTexture;
         public final ItemStack craftingItem;
@@ -192,9 +228,18 @@ public final class RegistryRaincoats
         public CoatColorEntry(String name, int color, ResourceLocation missTexture, ResourceLocation avisTexture, ItemStack ingredient) {
             this.color = color;
             this.name = name;
+            this.unlocName = "item." + EnderStuffPlus.MOD_ID + ":rainCoat.color." + name;
             this.missTexture = missTexture;
             this.avisTexture = avisTexture;
             this.craftingItem = ingredient;
+        }
+
+        public String getUUID() {
+            return this.uuid;
+        }
+
+        public String getUnlocalizedName() {
+            return this.unlocName;
         }
 
         @Override

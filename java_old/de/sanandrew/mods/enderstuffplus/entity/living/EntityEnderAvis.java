@@ -163,7 +163,7 @@ public class EntityEnderAvis
 //    @Override
 //    public float getAIMoveSpeed() {
 //        return this.isSitting() ? 0.0F : (this.entityToAttack != null || this.isRiddenDW()
-//                                                ? 0.175F + (this.getCoatBase().equals(ESPModRegistry.MOD_ID + "_000") ? 0.05F : 0F)
+//                                                ? 0.175F + (this.getBase().equals(ESPModRegistry.MOD_ID + "_000") ? 0.05F : 0F)
 //                                                : 0.1F);
 //    }
 
@@ -183,20 +183,20 @@ public class EntityEnderAvis
 //            String base = coat.getTagCompound().getString("base");
 //            String color = coat.getTagCompound().getString("color");
 //
-//            return !this.getCoatColor().equals(color) || !this.getCoatBase().equals(base);
+//            return !this.getColor().equals(color) || !this.getBase().equals(base);
 //        }
 //
 //        return false;
 //    }
 //
 //    @Override
-//    public CoatBaseEntry getCoatBase() {
-//        return this.hasCoat() ? RegistryRaincoats.getCoatBase(this.getCoat().getTagCompound().getString("base")) : RegistryRaincoats.NULL_BASE;
+//    public CoatBaseEntry getBase() {
+//        return this.hasCoat() ? RegistryRaincoats.getBase(this.getCoat().getTagCompound().getString("base")) : RegistryRaincoats.NULL_BASE;
 //    }
 //
 //    @Override
-//    public CoatColorEntry getCoatColor() {
-//        return this.hasCoat() ? RegistryRaincoats.getCoatColor(this.getCoat().getTagCompound().getString("color")) : RegistryRaincoats.NULL_COLOR;
+//    public CoatColorEntry getColor() {
+//        return this.hasCoat() ? RegistryRaincoats.getColor(this.getCoat().getTagCompound().getString("color")) : RegistryRaincoats.NULL_COLOR;
 //    }
 //
 //    public boolean hasCoat() {
@@ -418,7 +418,7 @@ public class EntityEnderAvis
 
 //    @Override
 //    public boolean isPotionApplicable(PotionEffect effect) {
-//        return !this.getCoatBase().equals(ESPModRegistry.MOD_ID + "_001") || !Potion.potionTypes[effect.getPotionID()].isBadEffect();
+//        return !this.getBase().equals(ESPModRegistry.MOD_ID + "_001") || !Potion.potionTypes[effect.getPotionID()].isBadEffect();
 //    }
 
 //    public boolean isRidden() {
@@ -602,7 +602,7 @@ public class EntityEnderAvis
 //                if( this.canFly() ) {
 //                    this.jumpMovementFactor = (this.getAIMoveSpeed() * 1.6F) / 3.0F;
 //                    this.motionY = 0.4D;
-//                    if( this.getCoatBase().equals(ESPModRegistry.MOD_ID + "_003") ) {
+//                    if( this.getBase().equals(ESPModRegistry.MOD_ID + "_003") ) {
 //                        this.motionY += 0.1F;
 //                    }
 //

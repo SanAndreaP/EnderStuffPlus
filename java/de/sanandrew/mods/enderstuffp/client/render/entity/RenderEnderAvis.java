@@ -84,7 +84,7 @@ public class RenderEnderAvis
     private int renderPassSpecial(AEntityEnderAvis avis, int pass, float partTicks) {
         if( pass == 0 ) {
             this.setRenderPassModel(this.avisModel);
-            this.bindTexture(EnumTextures.ENDERAVIS_GLOW_TEXTURE.getResource());
+            this.bindTexture(EnumTextures.ENDERAVIS_GLOW.getResource());
 
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_ALPHA_TEST);

@@ -11,6 +11,7 @@ tile.enderstuffp:oreEnd_0.name=Niobium Ore
 tile.enderstuffp:oreEnd_1.name=Tantalum Ore
 tile.enderstuffp:blockEndOre_0.name=Block of Niobium
 tile.enderstuffp:blockEndOre_1.name=Block of Tantalum
+tile.enderstuffp:biomeDataCrystal.name=Biome Data Crystal
 
 item.enderstuffp:enderFlesh.name=Ender Flesh
 item.enderstuffp:avisFeather.name=Avis Feather

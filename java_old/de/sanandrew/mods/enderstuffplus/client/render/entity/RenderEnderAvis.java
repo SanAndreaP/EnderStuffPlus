@@ -76,7 +76,7 @@ public class RenderEnderAvis
 //    private int renderPassSpecial(EntityEnderAvis avis, int pass, float partTicks) {
 //        if( pass == 0 ) {
 //            this.setRenderPassModel(this.avisModel);
-//            this.bindTexture(Textures.ENDERAVIS_GLOW_TEXTURE.getResource());
+//            this.bindTexture(Textures.ENDERAVIS_GLOW.getResource());
 //
 //            GL11.glEnable(GL11.GL_BLEND);
 //            GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -106,7 +106,7 @@ public class RenderEnderAvis
 //            this.setRenderPassModel(this.coatModel);
 //
 //            if( avis.hasCoat() ) {
-//                CoatColorEntry coatClr = avis.getCoatColor();
+//                CoatColorEntry coatClr = avis.getColor();
 //                if( coatClr != null ) {
 //                    coatClr.preRender();
 //                    this.bindTexture(coatClr.avisTexture);
@@ -115,12 +115,12 @@ public class RenderEnderAvis
 //                return 1;
 //            }
 //        } else if( pass == 2 && avis.hasCoat() ) {
-//            CoatColorEntry coatClr = avis.getCoatColor();
+//            CoatColorEntry coatClr = avis.getColor();
 //            if( coatClr != null ) {
 //                coatClr.postRender();
 //            }
 //
-//            CoatBaseEntry coatBse = avis.getCoatBase();
+//            CoatBaseEntry coatBse = avis.getBase();
 //            if( coatBse != null ) {
 //                coatBse.preRender();
 //                this.bindTexture(coatBse.avisTexture);
@@ -128,7 +128,7 @@ public class RenderEnderAvis
 //
 //            return 1;
 //        } else if( pass == 3 && avis.isSaddled() ) {
-//            CoatBaseEntry coatBse = avis.getCoatBase();
+//            CoatBaseEntry coatBse = avis.getBase();
 //            if( coatBse != null ) {
 //                coatBse.postRender();
 //            }

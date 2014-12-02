@@ -36,13 +36,13 @@ public class ItemRaincoat
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public void addInformation(ItemStack stack, EntityPlayer player, List infos, boolean isAdvancedInfo) {
         if( stack.hasTagCompound() ) {
-            CoatColorEntry clr = RegistryRaincoats.getCoatColor(stack.getTagCompound().getString("color"));
-            infos.add(EnumChatFormatting.BOLD + SAPUtils.translate(clr.name));
+            CoatColorEntry clr = RegistryRaincoats.getColor(stack.getTagCompound().getString("color"));
+            infos.add(EnumChatFormatting.BOLD + SAPUtils.translate(clr.getUnlocalizedName()));
 
 
-            CoatBaseEntry entry = RegistryRaincoats.getCoatBase(stack.getTagCompound().getString("base"));
+            CoatBaseEntry entry = RegistryRaincoats.getBase(stack.getTagCompound().getString("base"));
             if( entry != RegistryRaincoats.NULL_BASE ) {
-                infos.add(EnumChatFormatting.ITALIC + SAPUtils.translate(entry.name));
+                infos.add(EnumChatFormatting.ITALIC + SAPUtils.translate(entry.getUnlocalizedName()));
                 String[] split = SAPUtils.translate(entry.desc).split("<BREAK>");
                 for( String effect : split ) {
                     infos.add(EnumChatFormatting.DARK_AQUA + effect);
@@ -55,8 +55,8 @@ public class ItemRaincoat
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int pass) {
         if( stack.hasTagCompound() ) {
-            CoatBaseEntry base = RegistryRaincoats.getCoatBase(stack.getTagCompound().getString("base"));
-            CoatColorEntry color = RegistryRaincoats.getCoatColor(stack.getTagCompound().getString("color"));
+            CoatBaseEntry base = RegistryRaincoats.getBase(stack.getTagCompound().getString("base"));
+            CoatColorEntry color = RegistryRaincoats.getColor(stack.getTagCompound().getString("color"));
             if( pass == 0 ) {
                 return color.color;
             } else if( pass > 0 ) {

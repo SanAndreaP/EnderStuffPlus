@@ -4,6 +4,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import de.sanandrew.core.manpack.item.ItemBlockNamedMeta;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.block.*;
+import de.sanandrew.mods.enderstuffp.item.ItemBlockBiomeDataCrystal;
 import de.sanandrew.mods.enderstuffp.tileentity.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -114,7 +115,7 @@ public final class RegistryBlocks
                     .setStepSound(Block.soundTypeMetal);
         biomeDataCrystal.setBlockName(EnderStuffPlus.MOD_ID + ":biomeDataCrystal")
                         .setBlockTextureName(EnderStuffPlus.MOD_ID + ":biome_crystal")
-                        .setCreativeTab(CreativeTabsEnderStuff.ESP_TAB)
+                        .setCreativeTab(CreativeTabsEnderStuff.ESP_TAB_BIOMEDC)
                         .setHardness(5.0F)
                         .setStepSound(Block.soundTypeMetal);
 //
@@ -139,9 +140,10 @@ public final class RegistryBlocks
 //        SAPUtils.registerBlocks(avisEgg, biomeChanger, duplicator, weatherAltar, blockEndDoor, enderLog, sapEndTree, enderPlanks,
 //                                corruptES, endFluidBlock);
 
-        SAPUtils.registerBlocks(avisEgg, biomeChanger, weatherAltar, blockEndDoor, oreGenerator, biomeDataCrystal);
+        SAPUtils.registerBlocks(avisEgg, biomeChanger, weatherAltar, blockEndDoor, oreGenerator);
 
 //        GameRegistry.registerBlock(enderLeaves, ItemEndLeaves.class, ESPModRegistry.MOD_ID + ":blockEndLeaves");
+        GameRegistry.registerBlock(biomeDataCrystal, ItemBlockBiomeDataCrystal.class, "biomeDataCrystal");
         GameRegistry.registerBlock(endOre, ItemBlockNamedMeta.class, "blockEndOre");
         GameRegistry.registerBlock(endBlock, ItemBlockNamedMeta.class, "blockEndStorg");
 
