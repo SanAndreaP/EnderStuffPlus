@@ -35,10 +35,10 @@ import de.sanandrew.mods.enderstuffp.tileentity.TileEntityOreGenerator;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityWeatherAltar;
 import de.sanandrew.mods.enderstuffp.util.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.network.INetHandler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -167,7 +167,7 @@ public class ClientProxy
                 ParticleHelper.spawnPortalFX(x, y, z, random, 5, 0.5F, 0.0F, 1.0F);
                 break;
             case FX_WEATHER_ALTAR:
-                ParticleHelper.spawnWeatherAltarFX(x, y, z, random, getWorld());
+                ParticleHelper.spawnWeatherAltarFX(x, y, z, random, this.getWorld(null));
                 break;
             case FX_BIOME_DATA:
                 ParticleHelper.spawnBiomeDataFX(x, y, z, random, (Short) data.getValue(0));
@@ -177,7 +177,7 @@ public class ClientProxy
 
     @Override
     public void syncTileEnergy(int tileX, int tileY, int tileZ, int flux) {
-        TileEntity tile = getWorld().getTileEntity(tileX, tileY, tileZ);
+        TileEntity tile = this.getWorld(null).getTileEntity(tileX, tileY, tileZ);
 
         if( tile instanceof TileEntityBiomeChanger ) {
             ((TileEntityBiomeChanger) tile).fluxAmount = flux;
@@ -202,7 +202,13 @@ public class ClientProxy
         super.openGui(player, id, x, y, z);
     }
 
-    private static WorldClient getWorld() {
-        return Minecraft.getMinecraft().theWorld;
+    @Override
+    public World getWorld(INetHandler handler) {
+        World commonWorld = super.getWorld(handler);
+        if( commonWorld == null ) {
+            return Minecraft.getMinecraft().theWorld;
+        }
+
+        return commonWorld;
     }
 }

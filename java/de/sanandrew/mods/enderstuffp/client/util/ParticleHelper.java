@@ -8,12 +8,14 @@ package de.sanandrew.mods.enderstuffp.client.util;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.core.manpack.util.SAPReflectionHelper;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.client.particle.EntityBiomeDataFX;
 import de.sanandrew.mods.enderstuffp.client.particle.EntityColoredPortalFX;
 import de.sanandrew.mods.enderstuffp.client.particle.EntityWeatherAltarFX;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityWeatherAltar;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.particle.EntityHeartFX;
 import net.minecraft.client.particle.EntitySmokeFX;
@@ -114,7 +116,12 @@ final class ParticleHelper
                                                   colors[0], colors[1], colors[2]
             );
 
-            Minecraft.getMinecraft().effectRenderer.addEffect(part);
+
+//            this.fxLayers[i].add(p_78873_1_);
+//            Minecraft.getMinecraft().effectRenderer.addEffect(part);
+            //TODO:
+            List[] fxLayers = SAPReflectionHelper.getCachedFieldValue(EffectRenderer.class, Minecraft.getMinecraft().effectRenderer, "fxLayers", "");
+            fxLayers[0].add(part);
         }
     }
 }

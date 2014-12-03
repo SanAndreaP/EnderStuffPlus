@@ -6,6 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.item;
 
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeDataCrystal;
 import de.sanandrew.mods.enderstuffp.util.RegistryBlocks;
 import net.minecraft.block.Block;
@@ -66,7 +67,7 @@ public class ItemBlockBiomeDataCrystal
         if( super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata) ) {
             TileEntityBiomeDataCrystal crystal = (TileEntityBiomeDataCrystal) world.getTileEntity(x, y, z);
 
-            crystal.biomeID = (short) (stack.hasTagCompound() ? stack.getTagCompound().getShort(NBT_BIOME) : -1);
+            crystal.biomeID = stack.hasTagCompound() ? stack.getTagCompound().getShort(NBT_BIOME) : -1;
             crystal.dataProgress = stack.hasTagCompound() ? stack.getTagCompound().getInteger(NBT_DATAPROG) : 0;
 
             return true;
@@ -75,15 +76,15 @@ public class ItemBlockBiomeDataCrystal
         }
     }
 
-    //TODO: add translation
     @Override
+    @SuppressWarnings("unchecked")
     public void addInformation(ItemStack stack, EntityPlayer player, List infos, boolean advancedInfo) {
         int biomeID = stack.hasTagCompound() ? stack.getTagCompound().getShort(NBT_BIOME) : -1;
         int dataProgress = stack.hasTagCompound() ? stack.getTagCompound().getInteger(NBT_DATAPROG) : 0;
 
-        infos.add(String.format("%s", biomeID < 0 ? "Empty" : BiomeGenBase.getBiome(biomeID).biomeName));
+        infos.add(String.format("%s", biomeID < 0 ? SAPUtils.translate(this.getUnlocalizedName() + ".empty") : BiomeGenBase.getBiome(biomeID).biomeName));
         if( biomeID >= 0 ) {
-            infos.add(String.format("%d%% full", dataProgress * 10));
+            infos.add(SAPUtils.translatePostFormat(this.getUnlocalizedName() + ".percentage", dataProgress * 10));
         }
 
         super.addInformation(stack, player, infos, advancedInfo);

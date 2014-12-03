@@ -6,6 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.network;
 
+import com.google.common.collect.Maps;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
@@ -25,16 +26,23 @@ import org.apache.logging.log4j.Level;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.EnumMap;
 
 public final class PacketProcessor
 {
+    private static final EnumMap<EnumPacket, IPacket> PACKET_INST_BUFFER = Maps.newEnumMap(EnumPacket.class);
+
     public static void processPacket(ByteBuf data, Side side, INetHandler handler) {
         short packetId = -1;
         try( ByteBufInputStream bbis = new ByteBufInputStream(data) ) {
             packetId = bbis.readShort();
             if( SAPUtils.isIndexInRange(EnumPacket.VALUES, packetId) ) {
-                IPacket pktInst = EnumPacket.VALUES[packetId].packetCls.getConstructor().newInstance();
-                pktInst.process(bbis, data, handler);
+                EnumPacket pktType = EnumPacket.VALUES[packetId];
+                if( !PACKET_INST_BUFFER.containsKey(pktType) ) {
+                    PACKET_INST_BUFFER.put(pktType, pktType.packetCls.getConstructor().newInstance());
+                }
+
+                PACKET_INST_BUFFER.get(pktType).process(bbis, data, handler);
             }
         } catch( IOException ioe ) {
             FMLLog.log(EnderStuffPlus.MOD_LOG, Level.ERROR, "The packet with the ID %d cannot be processed!", packetId);

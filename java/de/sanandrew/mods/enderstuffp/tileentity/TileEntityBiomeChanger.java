@@ -1,11 +1,16 @@
 package de.sanandrew.mods.enderstuffp.tileentity;
 
+import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.javatuples.Unit;
 import de.sanandrew.mods.enderstuffp.network.EnumPacket;
 import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
+import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions;
+import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions.EnumAction;
+import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
+import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -23,7 +28,6 @@ public class TileEntityBiomeChanger
     extends TileEntity
     implements IEnergyReceiver
 {
-    private byte biomeID = (byte) BiomeGenBase.plains.biomeID;
     private byte currRange = 0;
     private EnumPerimForm form = EnumPerimForm.CIRCLE;
     private boolean isActive = false;
@@ -31,10 +35,11 @@ public class TileEntityBiomeChanger
     private byte maxRange = 16;
     private boolean prevIsActive = false;
     private Random rand = new Random();
-    private long ticksExisted = 0;
+    private long ticksActive = 0;
     private float renderBeamAngle = 360.0F;
     private float renderBeamHeight = 0.0F;
     private int currentRenderPass = 0;
+    private int usedFlux = 0;
 
     public int fluxAmount = 0;
     private int prevFluxAmount = -1;
@@ -96,35 +101,29 @@ public class TileEntityBiomeChanger
 
         Chunk chunk = this.worldObj.getChunkFromBlockCoords(x1, z1);
         byte[] biomeArray = chunk.getBiomeArray();
+        int currBiome = this.getBiomeId();
 
         if( this.isReplacingBlocks && !this.worldObj.isRemote ) {
-            byte prevBiomeID = biomeArray[(z1 & 0xF) << 4 | (x1 & 0xF)];
+            BiomeGenBase prevBiome = BiomeGenBase.getBiome(biomeArray[(z1 & 0xF) << 4 | (x1 & 0xF)] & 255);
 
-            if( this.worldObj.getBlock(x1, y - 1, z1) == BiomeGenBase.getBiome(prevBiomeID).topBlock && this.worldObj.canBlockSeeTheSky(x1, y, z1) ) {
-                this.worldObj.setBlock(x1, y - 1, z1, BiomeGenBase.getBiome(this.biomeID).topBlock, 0, 3);
+            if( this.worldObj.getBlock(x1, y - 1, z1) == prevBiome.topBlock && this.worldObj.canBlockSeeTheSky(x1, y, z1) ) {
+                BiomeGenBase biome = BiomeGenBase.getBiome(currBiome);
+                this.worldObj.setBlock(x1, y - 1, z1, biome.topBlock, biome.field_150604_aj, 3);
                 for( int i = 0; i < 5 && y - 1 - i >= 0; i++ ) {
-                    if( this.worldObj.getBlock(x1, y - 1 - i, z1) == BiomeGenBase.getBiome(prevBiomeID).fillerBlock ) {
-                        this.worldObj.setBlock(x1, y - 1 - i, z1, BiomeGenBase.getBiome(this.biomeID).fillerBlock, 0, 3);
+                    if( this.worldObj.getBlock(x1, y - 1 - i, z1) == prevBiome.fillerBlock ) {
+                        this.worldObj.setBlock(x1, y - 1 - i, z1, biome.fillerBlock, 0, 3);
                     }
                 }
             }
         }
 
-        biomeArray[(z1 & 0xF) << 4 | (x1 & 0xF)] = this.biomeID;
-//        for( int i = 0; i < 8; i++ ) {
-//            float partX = x + this.xCoord + this.rand.nextFloat();
-//            float partZ = z + this.zCoord + this.rand.nextFloat();
-//            float partY = y + 0.2F + this.rand.nextFloat() * 0.5F;
-//            this.worldObj.spawnParticle("reddust", partX, partY, partZ, -1.0F, 0.0F, 0.0F);
-//        }
+        biomeArray[(z1 & 0xF) << 4 | (x1 & 0xF)] = (byte) currBiome;
+        EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_BIOME_DATA, x1 + 0.5F, y, z1 + 0.5D,
+                                           this.worldObj.provider.dimensionId, Unit.with((short) currBiome));
 
         chunk.setBiomeArray(biomeArray);
         chunk.setChunkModified();
         this.worldObj.markBlockForUpdate(x1, y, z1);
-    }
-
-    public short getBiomeID() {
-        return (short) (this.biomeID & 255);
     }
 
     public short getCurrRange() {
@@ -134,12 +133,12 @@ public class TileEntityBiomeChanger
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setShort("CurrRange", this.getCurrRange());
-        nbt.setShort("MaxRange", this.getMaxRange());
-        nbt.setByte("BiomeID", this.biomeID);
-        nbt.setByte("RadForm", this.getRadForm());
-        nbt.setBoolean("IsActive", this.isActive);
-        nbt.setInteger("FluxAmount", this.fluxAmount);
+        nbt.setShort("currRange", this.getCurrRange());
+        nbt.setShort("maxRange", this.getMaxRange());
+        nbt.setByte("radForm", this.getRadForm());
+        nbt.setBoolean("isActive", this.isActive);
+        nbt.setBoolean("isReplacingBlocks", this.isActive);
+        nbt.setInteger("fluxAmount", this.fluxAmount);
 
         return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
     }
@@ -148,12 +147,12 @@ public class TileEntityBiomeChanger
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         NBTTagCompound nbt = pkt.func_148857_g();
 
-        this.setCurrRange(nbt.getShort("CurrRange"));
-        this.setMaxRange(nbt.getShort("MaxRange"));
-        this.biomeID = nbt.getByte("BiomeID");
-        this.form = EnumPerimForm.VALUES[nbt.getByte("RadForm")];
-        this.isActive = nbt.getBoolean("IsActive");
-        this.fluxAmount = nbt.getInteger("FluxAmount");
+        this.setCurrRange(nbt.getShort("currRange"));
+        this.setMaxRange(nbt.getShort("maxRange"));
+        this.form = EnumPerimForm.VALUES[nbt.getByte("radForm")];
+        this.isActive = nbt.getBoolean("isActive");
+        this.isReplacingBlocks = nbt.getBoolean("isReplacingBlocks");
+        this.fluxAmount = nbt.getInteger("fluxAmount");
     }
 
     public String getName() {
@@ -189,13 +188,13 @@ public class TileEntityBiomeChanger
         super.readFromNBT(nbt);
 
         this.setMaxRange(nbt.getShort("maxRange"));
-        this.biomeID = nbt.getByte("biomeID");
         this.setCurrRange(nbt.getShort("currRange"));
         this.form = EnumPerimForm.VALUES[nbt.getByte("radiusForm")];
         this.isActive = nbt.getBoolean("isActive");
         this.prevIsActive = nbt.getBoolean("prevActive");
-        this.isReplacingBlocks = nbt.getBoolean("IsReplacingBlocks");
+        this.isReplacingBlocks = nbt.getBoolean("isReplacingBlocks");
         this.fluxAmount = nbt.getInteger("fluxAmount");
+        this.usedFlux = nbt.getInteger("usedFlux");
     }
 
     @Override
@@ -204,20 +203,33 @@ public class TileEntityBiomeChanger
 
         nbt.setShort("currRange", this.getCurrRange());
         nbt.setShort("maxRange", this.getMaxRange());
-        nbt.setByte("biomeID", this.biomeID);
         nbt.setByte("radiusForm", this.getRadForm());
         nbt.setBoolean("isActive", this.isActive);
         nbt.setBoolean("prevActive", this.prevIsActive);
-        nbt.setBoolean("IsReplacingBlocks", this.isReplacingBlocks);
+        nbt.setBoolean("isReplacingBlocks", this.isReplacingBlocks);
         nbt.setInteger("fluxAmount", this.fluxAmount);
+        nbt.setInteger("usedFlux", this.usedFlux);
     }
 
     public void activate() {
-        this.isActive = true;
+        if( !this.worldObj.isRemote ) {
+            if( this.getBiomeId() >= 0 && this.fluxAmount > 0 ) {
+                this.isActive = true;
+                PacketBiomeChangerActions.sendPacketClient(this, EnumAction.ACTIVATE, null);
+            }
+        } else {
+            this.isActive = true;
+        }
     }
 
     public void deactivate() {
-        this.isActive = false;
+        if( !this.worldObj.isRemote ) {
+            this.isActive = false;
+            this.ticksActive = 0;
+            PacketBiomeChangerActions.sendPacketClient(this, EnumAction.DEACTIVATE, null);
+        } else {
+            this.isActive = false;
+        }
     }
 
     public void setCurrRange(int par1CurrRange) {
@@ -242,42 +254,74 @@ public class TileEntityBiomeChanger
 
     @Override
     public void updateEntity() {
-        this.ticksExisted++;
-
         if( this.isActive ) {
+//            this.ticksActive++;
             if( !this.worldObj.isRemote ) {
-                this.changeBiome();
-                this.currRange++;
+                int fluxUsage = this.getFluxUsage();
 
                 if( this.currRange >= this.maxRange ) {
-                    this.isActive = false;
+                    this.deactivate();
+                    this.currRange = 0;
+                } else if( fluxUsage > 0 && this.fluxAmount > 0 ) {
+                    if( this.usedFlux >= fluxUsage * 20 ) {
+                        this.changeBiome();
+                        PacketBiomeChangerActions.sendPacketClient(this, EnumAction.CHANGE_BIOME, null);
+                        this.currRange++;
+                        this.usedFlux -= fluxUsage * 20;
+                    } else {
+                        int subtract = Math.min(fluxUsage, this.fluxAmount);
+                        this.usedFlux += subtract;
+                        this.fluxAmount -= subtract;
+                    }
                 }
             } else {
-                this.renderBeamAngle += 10.0F;
+                this.renderBeamAngle += 2.0F;
                 if( this.renderBeamAngle > 360.0F ) {
                     this.renderBeamAngle -= 360.0F;
                 }
 
                 if( this.renderBeamHeight < 10.0F ) {
-                    this.renderBeamHeight += 1.0F;
+                    this.renderBeamHeight += 0.5F;
                 }
             }
         } else {
             if( this.worldObj.isRemote ) {
-                if( this.renderBeamAngle <= 360.0F ) {
-                    this.renderBeamAngle += 10.0F;
+                if( this.renderBeamAngle < 360.0F ) {
+                    this.renderBeamAngle += 2.0F;
                 }
 
                 if( this.renderBeamHeight > 0 ) {
-                    this.renderBeamHeight -= 1.0F;
+                    this.renderBeamHeight -= 0.5F;
                 }
             }
         }
 
-        if( !worldObj.isRemote && this.prevFluxAmount != this.fluxAmount ) {
-            this.prevFluxAmount = this.fluxAmount;
-            PacketProcessor.sendToAllAround(EnumPacket.TILE_ENERGY_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F,
-                                            Unit.with(this));
+        if( !worldObj.isRemote ) {
+            if( this.fluxAmount < this.getMaxEnergyStored(ForgeDirection.UNKNOWN) ) {
+                for( ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS ) {
+                    TileEntity te = this.worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
+
+                    if( te instanceof IEnergyProvider ) {
+                        IEnergyProvider provider = (IEnergyProvider) te;
+
+                        if( !provider.canConnectEnergy(direction.getOpposite()) ) {
+                            continue;
+                        }
+
+                        int extractable = provider.extractEnergy(direction, this.getMaxEnergyStored(ForgeDirection.UNKNOWN) - this.fluxAmount, true);
+                        int receivable = this.receiveEnergy(direction.getOpposite(), extractable, false);
+
+                        provider.extractEnergy(direction, receivable, false);
+                    }
+                }
+            }
+
+            if( this.prevFluxAmount != this.fluxAmount ) {
+                this.prevFluxAmount = this.fluxAmount;
+                PacketProcessor.sendToAllAround(EnumPacket.TILE_ENERGY_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F,
+                                                Unit.with(this)
+                );
+            }
         }
     }
 
@@ -310,7 +354,7 @@ public class TileEntityBiomeChanger
 
     @Override
     public int receiveEnergy(ForgeDirection forgeDirection, int maxReceive, boolean checkSize) {
-        int energyReceived = Math.min(this.getMaxEnergyStored(forgeDirection) - this.fluxAmount, Math.min(10, maxReceive));
+        int energyReceived = Math.min(this.getMaxEnergyStored(forgeDirection) - this.fluxAmount, Math.min(500, maxReceive));
 
         if( !checkSize ) {
             this.fluxAmount += energyReceived;
@@ -326,12 +370,25 @@ public class TileEntityBiomeChanger
 
     @Override
     public int getMaxEnergyStored(ForgeDirection forgeDirection) {
-        return 50_000;
+        return 51_200;
     }
 
     @Override
     public boolean canConnectEnergy(ForgeDirection forgeDirection) {
         return forgeDirection != ForgeDirection.UP && forgeDirection != ForgeDirection.DOWN;
+    }
+
+    public int getFluxUsage() {
+        return this.isActive ? 20 * (this.isReplacingBlocks ? 4 : 1) : 0;
+    }
+
+    public int getBiomeId() {
+        TileEntity te = this.worldObj.getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
+        if( te instanceof TileEntityBiomeDataCrystal ) {
+            return ((TileEntityBiomeDataCrystal) te).biomeID;
+        }
+
+        return -1;
     }
 
     public static enum EnumPerimForm

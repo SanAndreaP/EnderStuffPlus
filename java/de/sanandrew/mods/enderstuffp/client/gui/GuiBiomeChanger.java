@@ -7,9 +7,13 @@
 package de.sanandrew.mods.enderstuffp.client.gui;
 
 import de.sanandrew.mods.enderstuffp.client.util.EnumTextures;
+import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions;
+import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions.EnumAction;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 public class GuiBiomeChanger
@@ -23,16 +27,27 @@ public class GuiBiomeChanger
     private int posX;
     private int posY;
 
+    private GuiButton btnActivate;
+    private GuiButton btnDeactivate;
+
+    private GuiButton btnEnableBlockReplace;
+    private GuiButton btnDisableBlockReplace;
+
     public GuiBiomeChanger(TileEntityBiomeChanger bChanger) {
         this.biomeChanger = bChanger;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void initGui() {
         this.posX = (this.width - WIDTH) / 2;
         this.posY = (this.height - HEIGHT) / 2;
 
-        this.buttonList.add(new GuiButtonBiomeChanger(0, this.posX + 10, this.posY + 73, 155, "activate"));
+        this.buttonList.add(this.btnActivate = new GuiButtonBiomeChanger(0, this.posX + 10, this.posY + 73, 156, "activate"));
+        this.buttonList.add(this.btnDeactivate = new GuiButtonBiomeChanger(0, this.posX + 10, this.posY + 73, 156, "deactivate"));
+
+        this.buttonList.add(this.btnEnableBlockReplace = new GuiButtonBiomeChanger(0, this.posX + 10, this.posY + 93, 78, "enable"));
+        this.buttonList.add(this.btnDisableBlockReplace = new GuiButtonBiomeChanger(0, this.posX + 88, this.posY + 93, 78, "disable"));
     }
 
     @Override
@@ -55,14 +70,43 @@ public class GuiBiomeChanger
         this.drawTexturedModalRect(10, 21 + fluxScale, 14, 11 + fluxScale, 14, 40 - fluxScale);
 
         this.mc.fontRenderer.drawString("Power Usage:", 28, 21, 0xFF555555);
-        this.mc.fontRenderer.drawString("0 RF/t", 38, 31, 0xFF000000);
+        this.mc.fontRenderer.drawString(String.format("%d RF/t", this.biomeChanger.getFluxUsage()), 38, 31, 0xFF000000);
         this.mc.fontRenderer.drawString("Stored Energy:", 28, 43, 0xFF555555);
         this.mc.fontRenderer.drawString(String.format("%d / %d RF", currFlux, maxFlux), 38, 53, 0xFF000000);
-//        this.mc.fontRenderer.drawString(Integer.toString(biomeChanger.getEnergyStored(ForgeDirection.UNKNOWN)), 0, 0, 0xFFFFFFFF);
 
         GL11.glPopMatrix();
 
+        this.btnDeactivate.visible = this.biomeChanger.isActive();
+        this.btnActivate.visible = !this.biomeChanger.isActive();
+        this.btnDisableBlockReplace.enabled = this.biomeChanger.isReplacingBlocks() && !this.biomeChanger.isActive();
+        this.btnEnableBlockReplace.enabled = !this.biomeChanger.isReplacingBlocks() && !this.biomeChanger.isActive();
+
         super.drawScreen(mouseX, mouseY, partTicks);
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) {
+        if( button == this.btnActivate ) {
+            PacketBiomeChangerActions.sendPacketServer(this.biomeChanger, EnumAction.ACTIVATE, null);
+            this.mc.displayGuiScreen(null);
+            this.mc.setIngameFocus();
+        } else if( button == this.btnDeactivate ) {
+            PacketBiomeChangerActions.sendPacketServer(this.biomeChanger, EnumAction.DEACTIVATE, null);
+            this.mc.displayGuiScreen(null);
+            this.mc.setIngameFocus();
+        } else if( button == this.btnEnableBlockReplace || button == this.btnDisableBlockReplace ) {
+            PacketBiomeChangerActions.sendPacketServer(this.biomeChanger, EnumAction.REPLACE_BLOCKS, button == this.btnEnableBlockReplace);
+        }
+
+        super.actionPerformed(button);
+    }
+
+    @Override
+    protected void keyTyped(char keyChar, int keyCode) {
+        if( keyCode == Keyboard.KEY_ESCAPE || keyCode == this.mc.gameSettings.keyBindInventory.getKeyCode() ) {
+            this.mc.displayGuiScreen(null);
+            this.mc.setIngameFocus();
+        }
     }
 
     @Override

@@ -8,19 +8,21 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import de.sanandrew.core.manpack.util.javatuples.Quartet;
 import de.sanandrew.core.manpack.util.javatuples.Quintet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
+import de.sanandrew.mods.enderstuffp.entity.item.*;
 import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderAvisPet;
 import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderMiss;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderAvisMother;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderAvisWild;
-import de.sanandrew.mods.enderstuffp.event.EntityJoinWorldHandler;
-import de.sanandrew.mods.enderstuffp.entity.item.*;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderIgnis;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderNivis;
+import de.sanandrew.mods.enderstuffp.event.EntityJoinWorldHandler;
 import de.sanandrew.mods.enderstuffp.network.EnumPacket;
 import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
 import de.sanandrew.mods.enderstuffp.network.ServerPacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.INetHandler;
+import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -92,5 +94,13 @@ public class CommonProxy
         } else {
             FMLNetworkHandler.openGui(player, EnderStuffPlus.instance, guiId, player.worldObj, x, y, z);
         }
+    }
+
+    public World getWorld(INetHandler handler) {
+        if( handler instanceof NetHandlerPlayServer ) {
+            return ((NetHandlerPlayServer) handler).playerEntity.worldObj;
+        }
+
+        return null;
     }
 }

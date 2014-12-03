@@ -1,0 +1,104 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
+package de.sanandrew.mods.enderstuffp.network.packet;
+
+import de.sanandrew.core.manpack.util.javatuples.Pair;
+import de.sanandrew.core.manpack.util.javatuples.Tuple;
+import de.sanandrew.mods.enderstuffp.network.EnumPacket;
+import de.sanandrew.mods.enderstuffp.network.IPacket;
+import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
+import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
+import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
+import net.minecraft.network.INetHandler;
+import net.minecraft.world.World;
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.io.IOException;
+
+public class PacketBiomeChangerActions
+        implements IPacket
+{
+    @Override
+    public void process(ByteBufInputStream stream, ByteBuf rawData, INetHandler handler) throws IOException {
+        EnumAction action = EnumAction.VALUES[stream.readByte()];
+        World world = EnderStuffPlus.proxy.getWorld(handler);
+        TileEntityBiomeChanger biomeChanger = (TileEntityBiomeChanger) world.getTileEntity(stream.readInt(), stream.readInt(), stream.readInt());
+
+        if( biomeChanger == null ) {
+            return;
+        }
+
+        switch( action ) {
+            case ACTIVATE:
+                biomeChanger.activate();
+                break;
+            case DEACTIVATE:
+                biomeChanger.deactivate();
+                break;
+            case CHANGE_BIOME:
+                biomeChanger.setCurrRange(stream.readByte());
+                biomeChanger.changeBiome();
+                break;
+            case REPLACE_BLOCKS:
+                biomeChanger.replaceBlocks(stream.readBoolean());
+                break;
+        }
+    }
+
+    @Override
+    public void writeData(ByteBufOutputStream stream, Tuple dataTuple) throws IOException {
+        EnumAction action = (EnumAction) dataTuple.getValue(0);
+        TileEntityBiomeChanger biomeChangerTile = (TileEntityBiomeChanger) dataTuple.getValue(1);
+
+        stream.writeByte(action.ordinal());
+        stream.writeInt(biomeChangerTile.xCoord);
+        stream.writeInt(biomeChangerTile.yCoord);
+        stream.writeInt(biomeChangerTile.zCoord);
+
+        switch( action ) {
+            case CHANGE_BIOME:
+                stream.writeByte(biomeChangerTile.getCurrRange());
+                break;
+            case REPLACE_BLOCKS:
+                biomeChangerTile.replaceBlocks((Boolean) dataTuple.getValue(2));
+                stream.writeBoolean(biomeChangerTile.isReplacingBlocks());
+                break;
+        }
+    }
+
+    public static void sendPacketClient(TileEntityBiomeChanger tile, EnumAction action, Object... additionalData) {
+        Tuple data = Tuple.from(Pair.with(action, tile).toArray());
+
+        if( additionalData != null ) {
+            data = Tuple.from(ArrayUtils.addAll(data.toArray(), additionalData));
+        }
+
+        PacketProcessor.sendToAllAround(EnumPacket.BIOME_CHANGER_ACTIONS, tile.getWorldObj().provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, 64.0D, data);
+    }
+
+    public static void sendPacketServer(TileEntityBiomeChanger tile, EnumAction action, Object... additionalData) {
+        Tuple data = Tuple.from(Pair.with(action, tile).toArray());
+
+        if( additionalData != null ) {
+            data = Tuple.from(ArrayUtils.addAll(data.toArray(), additionalData));
+        }
+
+        PacketProcessor.sendToServer(EnumPacket.BIOME_CHANGER_ACTIONS, data);
+    }
+
+    public static enum EnumAction {
+        ACTIVATE,
+        DEACTIVATE,
+        CHANGE_BIOME,
+        REPLACE_BLOCKS;
+
+        public static final EnumAction[] VALUES = values();
+    }
+}
