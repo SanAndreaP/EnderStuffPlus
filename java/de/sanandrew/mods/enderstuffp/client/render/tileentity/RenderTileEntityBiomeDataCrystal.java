@@ -50,8 +50,8 @@ public class RenderTileEntityBiomeDataCrystal
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, prevBrightX, prevBrightY);
         }
 
-        minCore -= 0.0001D;
-        maxCore += 0.0001D;
+        minCore -= 0.01D;
+        maxCore += 0.01D;
         Minecraft.getMinecraft().renderEngine.bindTexture(EnumTextures.GLASS_TEXTURE);
         SAPClientUtils.drawTexturedSquareYPos(x + minCore, z + minCore, x + maxCore, z + maxCore, y + maxCore, 0.0D, 0.0D, 1.0D, 1.0D);
         SAPClientUtils.drawTexturedSquareYNeg(x + minCore, z + minCore, x + maxCore, z + maxCore, y + minCore, 0.0D, 0.0D, 1.0D, 1.0D);

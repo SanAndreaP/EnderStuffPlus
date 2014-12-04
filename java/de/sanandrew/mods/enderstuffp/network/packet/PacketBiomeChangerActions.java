@@ -49,6 +49,9 @@ public class PacketBiomeChangerActions
             case REPLACE_BLOCKS:
                 biomeChanger.replaceBlocks(stream.readBoolean());
                 break;
+            case CHNG_MAX_RANGE:
+                biomeChanger.setMaxRange(stream.readShort());
+                break;
         }
     }
 
@@ -67,8 +70,10 @@ public class PacketBiomeChangerActions
                 stream.writeByte(biomeChangerTile.getCurrRange());
                 break;
             case REPLACE_BLOCKS:
-                biomeChangerTile.replaceBlocks((Boolean) dataTuple.getValue(2));
                 stream.writeBoolean(biomeChangerTile.isReplacingBlocks());
+                break;
+            case CHNG_MAX_RANGE:
+                stream.writeShort(biomeChangerTile.getMaxRange());
                 break;
         }
     }
@@ -80,7 +85,7 @@ public class PacketBiomeChangerActions
             data = Tuple.from(ArrayUtils.addAll(data.toArray(), additionalData));
         }
 
-        PacketProcessor.sendToAllAround(EnumPacket.BIOME_CHANGER_ACTIONS, tile.getWorldObj().provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, 64.0D, data);
+        PacketProcessor.sendToAllAround(EnumPacket.BIOME_CHANGER_ACTIONS, tile.getWorldObj().provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, 256.0D, data);
     }
 
     public static void sendPacketServer(TileEntityBiomeChanger tile, EnumAction action, Object... additionalData) {
@@ -97,7 +102,8 @@ public class PacketBiomeChangerActions
         ACTIVATE,
         DEACTIVATE,
         CHANGE_BIOME,
-        REPLACE_BLOCKS;
+        REPLACE_BLOCKS,
+        CHNG_MAX_RANGE;
 
         public static final EnumAction[] VALUES = values();
     }

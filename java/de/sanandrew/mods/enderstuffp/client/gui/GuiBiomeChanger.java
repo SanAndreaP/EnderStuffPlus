@@ -33,6 +33,8 @@ public class GuiBiomeChanger
     private GuiButton btnEnableBlockReplace;
     private GuiButton btnDisableBlockReplace;
 
+    private GuiButton sldRange;
+
     public GuiBiomeChanger(TileEntityBiomeChanger bChanger) {
         this.biomeChanger = bChanger;
     }
@@ -44,10 +46,12 @@ public class GuiBiomeChanger
         this.posY = (this.height - HEIGHT) / 2;
 
         this.buttonList.add(this.btnActivate = new GuiButtonBiomeChanger(0, this.posX + 10, this.posY + 73, 156, "activate"));
-        this.buttonList.add(this.btnDeactivate = new GuiButtonBiomeChanger(0, this.posX + 10, this.posY + 73, 156, "deactivate"));
+        this.buttonList.add(this.btnDeactivate = new GuiButtonBiomeChanger(1, this.posX + 10, this.posY + 73, 156, "deactivate"));
 
-        this.buttonList.add(this.btnEnableBlockReplace = new GuiButtonBiomeChanger(0, this.posX + 10, this.posY + 93, 78, "enable"));
-        this.buttonList.add(this.btnDisableBlockReplace = new GuiButtonBiomeChanger(0, this.posX + 88, this.posY + 93, 78, "disable"));
+        this.buttonList.add(this.btnEnableBlockReplace = new GuiButtonBiomeChanger(2, this.posX + 10, this.posY + 93, 78, "enable"));
+        this.buttonList.add(this.btnDisableBlockReplace = new GuiButtonBiomeChanger(3, this.posX + 88, this.posY + 93, 78, "disable"));
+
+        this.buttonList.add(this.sldRange = new GuiBiomeChangerSlider(4, this.posX + 10, this.posY + 113, this.biomeChanger, "Range"));
     }
 
     @Override
@@ -57,6 +61,8 @@ public class GuiBiomeChanger
         int fluxScale = 40 - (int) (currFlux / (float) maxFlux * 40.0F);
 
         this.drawDefaultBackground();
+
+        GL11.glColor3f(1.0F, 1.0F, 1.0F);
 
         GL11.glPushMatrix();
         GL11.glTranslatef(this.posX, this.posY, 0.0F);
@@ -80,6 +86,7 @@ public class GuiBiomeChanger
         this.btnActivate.visible = !this.biomeChanger.isActive();
         this.btnDisableBlockReplace.enabled = this.biomeChanger.isReplacingBlocks() && !this.biomeChanger.isActive();
         this.btnEnableBlockReplace.enabled = !this.biomeChanger.isReplacingBlocks() && !this.biomeChanger.isActive();
+        this.sldRange.enabled = !this.biomeChanger.isActive();
 
         super.drawScreen(mouseX, mouseY, partTicks);
     }
@@ -95,7 +102,8 @@ public class GuiBiomeChanger
             this.mc.displayGuiScreen(null);
             this.mc.setIngameFocus();
         } else if( button == this.btnEnableBlockReplace || button == this.btnDisableBlockReplace ) {
-            PacketBiomeChangerActions.sendPacketServer(this.biomeChanger, EnumAction.REPLACE_BLOCKS, button == this.btnEnableBlockReplace);
+            this.biomeChanger.replaceBlocks(button == this.btnEnableBlockReplace);
+            PacketBiomeChangerActions.sendPacketServer(this.biomeChanger, EnumAction.REPLACE_BLOCKS, null);
         }
 
         super.actionPerformed(button);

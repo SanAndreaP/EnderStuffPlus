@@ -20,7 +20,7 @@ public class TileEntityOreGenerator
 {
     public int fluxAmount = 25_000;
     private int prevFluxAmount = -1;
-    private static final int MAX_EXTRACTABLE_RFLUX = 10;
+    private static final int MAX_EXTRACTABLE_RFLUX = 40;
 
     @Override
     public void updateEntity() {
@@ -37,11 +37,11 @@ public class TileEntityOreGenerator
                             continue;
                         }
 
-                        int extractable = this.extractEnergy(direction, maxExtractable, true);
-                        int receivable = receiver.receiveEnergy(direction.getOpposite(), extractable, false);
+                        int extractable = this.extractEnergy(direction.getOpposite(), maxExtractable, true);
+                        int receivable = receiver.receiveEnergy(direction, extractable, false);
 
                         maxExtractable -= receivable;
-                        this.extractEnergy(direction, receivable, false);
+                        this.extractEnergy(direction.getOpposite(), receivable, false);
                     }
 
                     if( maxExtractable == 0 ) {
@@ -60,7 +60,7 @@ public class TileEntityOreGenerator
 
     @Override
     public int extractEnergy(ForgeDirection forgeDirection, int maxExtract, boolean checkSize) {
-        int energyExtracted = Math.min(this.fluxAmount, Math.min(10, maxExtract));
+        int energyExtracted = Math.min(this.fluxAmount, Math.min(MAX_EXTRACTABLE_RFLUX, maxExtract));
 
         if (!checkSize) {
             this.fluxAmount -= energyExtracted;
