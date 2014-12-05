@@ -21,20 +21,15 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.Random;
-
 public class TileEntityBiomeChanger
     extends TileEntity
     implements IEnergyHandler
 {
     private short currRange = 0;
-    private EnumPerimForm form = EnumPerimForm.CIRCLE;
     private boolean isActive = false;
     private boolean isReplacingBlocks = false;
     private short maxRange = 16;
     private boolean prevIsActive = false;
-    private Random rand = new Random();
-    private long ticksActive = 0;
     private float renderBeamAngle = 360.0F;
     private float renderBeamHeight = 0.0F;
     private int currentRenderPass = 0;
@@ -42,6 +37,7 @@ public class TileEntityBiomeChanger
 
     public int fluxAmount = 0;
     private int prevFluxAmount = -1;
+    public EnumPerimForm perimForm = EnumPerimForm.CIRCLE;
 
     public TileEntityBiomeChanger() {}
 
@@ -51,56 +47,62 @@ public class TileEntityBiomeChanger
     }
 
     public void changeBiome() {
-        switch( this.form ){
+        int currBiome = this.getBiomeId();
+
+        if( currBiome < 0 ) {
+            return;
+        }
+
+        switch( this.perimForm ){
             case SQUARE :
-                this.changeBiomeSquare();
+                this.changeBiomeSquare(currBiome);
                 break;
             case RHOMBUS :
-                this.changeBiomeRhombus();
+                this.changeBiomeRhombus(currBiome);
                 break;
             default :
-                this.changeBiomeCircle();
+                this.changeBiomeCircle(currBiome);
         }
     }
 
-    private void changeBiomeCircle() {
+    private void changeBiomeCircle(int currBiome) {
         for( int x = -this.currRange; x <= this.currRange; x++ ) {
             for( int z = -this.currRange; z <= this.currRange; z++ ) {
-                if( Math.sqrt(x * x + z * z) + 0.5F < this.currRange && Math.sqrt(x * x + z * z) + 1.5D > this.currRange ) {
-                    this.changeBiomeBlock(x, z);
+                double radius = Math.sqrt(x * x + z * z);
+                if( radius < this.currRange + 0.5F && radius > this.currRange - 0.5F ) {
+                    this.changeBiomeBlock(x, z, currBiome);
                 }
             }
         }
     }
 
-    private void changeBiomeRhombus() {
+    private void changeBiomeRhombus(int currBiome) {
         for( int x = -this.currRange; x <= this.currRange; x++ ) {
             for( int z = -this.currRange; z <= this.currRange; z++ ) {
                 if( MathHelper.abs_int(x) + MathHelper.abs_int(z) == this.currRange ) {
-                    this.changeBiomeBlock(x, z);
+                    this.changeBiomeBlock(x, z, currBiome);
                 }
             }
         }
     }
 
-    private void changeBiomeSquare() {
+    private void changeBiomeSquare(int currBiome) {
         for( int x = -this.currRange; x <= this.currRange; x++ ) {
             for( int z = -this.currRange; z <= this.currRange; z++ ) {
                 if( MathHelper.abs_int(x) == this.currRange || MathHelper.abs_int(z) == this.currRange ) {
-                    this.changeBiomeBlock(x, z);
+                    this.changeBiomeBlock(x, z, currBiome);
                 }
             }
         }
     }
 
-    private void changeBiomeBlock(int x, int z) {
+    private void changeBiomeBlock(int x, int z, int currBiome) {
         int x1 = x + this.xCoord;
         int z1 = z + this.zCoord;
         int y = this.worldObj.getTopSolidOrLiquidBlock(x1, z1);
 
         Chunk chunk = this.worldObj.getChunkFromBlockCoords(x1, z1);
         byte[] biomeArray = chunk.getBiomeArray();
-        int currBiome = this.getBiomeId();
 
         if( this.isReplacingBlocks && !this.worldObj.isRemote ) {
             BiomeGenBase prevBiome = BiomeGenBase.getBiome(biomeArray[(z1 & 0xF) << 4 | (x1 & 0xF)] & 255);
@@ -133,7 +135,7 @@ public class TileEntityBiomeChanger
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setShort("currRange", this.getCurrRange());
         nbt.setShort("maxRange", this.getMaxRange());
-        nbt.setByte("radForm", this.getRadForm());
+        nbt.setByte("radForm", (byte) this.perimForm.ordinal());
         nbt.setBoolean("isActive", this.isActive);
         nbt.setBoolean("isReplacingBlocks", this.isActive);
         nbt.setInteger("fluxAmount", this.fluxAmount);
@@ -147,7 +149,7 @@ public class TileEntityBiomeChanger
 
         this.setCurrRange(nbt.getShort("currRange"));
         this.setMaxRange(nbt.getShort("maxRange"));
-        this.form = EnumPerimForm.VALUES[nbt.getByte("radForm")];
+        this.perimForm = EnumPerimForm.VALUES[nbt.getByte("radForm")];
         this.isActive = nbt.getBoolean("isActive");
         this.isReplacingBlocks = nbt.getBoolean("isReplacingBlocks");
         this.fluxAmount = nbt.getInteger("fluxAmount");
@@ -167,10 +169,6 @@ public class TileEntityBiomeChanger
         return 16384.0D;
     }
 
-    public byte getRadForm() {
-        return (byte) this.form.ordinal();
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
@@ -187,7 +185,7 @@ public class TileEntityBiomeChanger
 
         this.setMaxRange(nbt.getShort("maxRange"));
         this.setCurrRange(nbt.getShort("currRange"));
-        this.form = EnumPerimForm.VALUES[nbt.getByte("radiusForm")];
+        this.perimForm = EnumPerimForm.VALUES[nbt.getByte("radiusForm")];
         this.isActive = nbt.getBoolean("isActive");
         this.prevIsActive = nbt.getBoolean("prevActive");
         this.isReplacingBlocks = nbt.getBoolean("isReplacingBlocks");
@@ -201,7 +199,7 @@ public class TileEntityBiomeChanger
 
         nbt.setShort("currRange", this.getCurrRange());
         nbt.setShort("maxRange", this.getMaxRange());
-        nbt.setByte("radiusForm", this.getRadForm());
+        nbt.setByte("radiusForm", (byte) this.perimForm.ordinal());
         nbt.setBoolean("isActive", this.isActive);
         nbt.setBoolean("prevActive", this.prevIsActive);
         nbt.setBoolean("isReplacingBlocks", this.isReplacingBlocks);
@@ -213,7 +211,7 @@ public class TileEntityBiomeChanger
         if( !this.worldObj.isRemote ) {
             if( this.getBiomeId() >= 0 && this.fluxAmount > 0 ) {
                 this.isActive = true;
-                PacketBiomeChangerActions.sendPacketClient(this, EnumAction.ACTIVATE, null);
+                PacketBiomeChangerActions.sendPacketClient(this, EnumAction.ACTIVATE);
             }
         } else {
             this.isActive = true;
@@ -224,8 +222,7 @@ public class TileEntityBiomeChanger
         this.isActive = false;
         this.currRange = 0;
         if( !this.worldObj.isRemote ) {
-            this.ticksActive = 0;
-            PacketBiomeChangerActions.sendPacketClient(this, EnumAction.DEACTIVATE, null);
+            PacketBiomeChangerActions.sendPacketClient(this, EnumAction.DEACTIVATE);
         }
     }
 
@@ -245,23 +242,18 @@ public class TileEntityBiomeChanger
         this.maxRange = (short) par1MaxRange;
     }
 
-    public void setRadForm(EnumPerimForm form) {
-        this.form = form;
-    }
-
     @Override
     public void updateEntity() {
         if( this.isActive ) {
-//            this.ticksActive++;
             if( !this.worldObj.isRemote ) {
                 int fluxUsage = this.getFluxUsage();
 
-                if( this.currRange >= this.maxRange ) {
+                if( this.currRange >= this.maxRange || this.getBiomeId() < 0 ) {
                     this.deactivate();
                 } else if( fluxUsage > 0 && this.fluxAmount > 0 ) {
                     if( this.usedFlux >= fluxUsage * 20 ) {
                         this.changeBiome();
-                        PacketBiomeChangerActions.sendPacketClient(this, EnumAction.CHANGE_BIOME, null);
+                        PacketBiomeChangerActions.sendPacketClient(this, EnumAction.CHANGE_BIOME);
                         this.currRange++;
                         this.usedFlux -= fluxUsage * 20;
                     } else {
@@ -375,6 +367,6 @@ public class TileEntityBiomeChanger
     {
         CIRCLE, RHOMBUS, SQUARE;
 
-        private static EnumPerimForm[] VALUES = values();
+        public static EnumPerimForm[] VALUES = values();
     }
 }

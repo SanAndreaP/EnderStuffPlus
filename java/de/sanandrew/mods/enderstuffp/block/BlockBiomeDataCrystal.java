@@ -15,8 +15,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 
 import java.util.ArrayList;
 
@@ -46,6 +48,21 @@ public class BlockBiomeDataCrystal
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntityBiomeDataCrystal();
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+        if( !world.isRemote ) {
+            TileEntityBiomeDataCrystal crystalTile = (TileEntityBiomeDataCrystal) world.getTileEntity(x, y, z);
+
+            if( crystalTile != null && crystalTile.getBiomeID() >= 0 ) {
+                player.addChatMessage(new ChatComponentText(String.format("Biome: %s", BiomeGenBase.getBiome(crystalTile.getBiomeID()).biomeName)));
+            } else {
+                player.addChatMessage(new ChatComponentText("Empty"));
+            }
+        }
+
+        return true;
     }
 
     @Override

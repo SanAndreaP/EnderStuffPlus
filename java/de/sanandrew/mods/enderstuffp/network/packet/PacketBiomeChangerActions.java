@@ -12,13 +12,13 @@ import de.sanandrew.mods.enderstuffp.network.EnumPacket;
 import de.sanandrew.mods.enderstuffp.network.IPacket;
 import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
+import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger.EnumPerimForm;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.network.INetHandler;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.IOException;
 
@@ -45,12 +45,16 @@ public class PacketBiomeChangerActions
             case CHANGE_BIOME:
                 biomeChanger.setCurrRange(stream.readByte());
                 biomeChanger.changeBiome();
+                biomeChanger.setCurrRange(biomeChanger.getCurrRange() + 1);
                 break;
             case REPLACE_BLOCKS:
                 biomeChanger.replaceBlocks(stream.readBoolean());
                 break;
             case CHNG_MAX_RANGE:
                 biomeChanger.setMaxRange(stream.readShort());
+                break;
+            case CHNG_PERIM_FORM:
+                biomeChanger.perimForm = EnumPerimForm.VALUES[stream.readByte()];
                 break;
         }
     }
@@ -75,25 +79,27 @@ public class PacketBiomeChangerActions
             case CHNG_MAX_RANGE:
                 stream.writeShort(biomeChangerTile.getMaxRange());
                 break;
+            case CHNG_PERIM_FORM:
+                stream.writeByte(biomeChangerTile.perimForm.ordinal());
         }
     }
 
-    public static void sendPacketClient(TileEntityBiomeChanger tile, EnumAction action, Object... additionalData) {
+    public static void sendPacketClient(TileEntityBiomeChanger tile, EnumAction action) {
         Tuple data = Tuple.from(Pair.with(action, tile).toArray());
 
-        if( additionalData != null ) {
-            data = Tuple.from(ArrayUtils.addAll(data.toArray(), additionalData));
-        }
+//        if( additionalData != null ) {
+//            data = Tuple.from(ArrayUtils.addAll(data.toArray(), additionalData));
+//        }
 
         PacketProcessor.sendToAllAround(EnumPacket.BIOME_CHANGER_ACTIONS, tile.getWorldObj().provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, 256.0D, data);
     }
 
-    public static void sendPacketServer(TileEntityBiomeChanger tile, EnumAction action, Object... additionalData) {
+    public static void sendPacketServer(TileEntityBiomeChanger tile, EnumAction action) {
         Tuple data = Tuple.from(Pair.with(action, tile).toArray());
 
-        if( additionalData != null ) {
-            data = Tuple.from(ArrayUtils.addAll(data.toArray(), additionalData));
-        }
+//        if( additionalData != null ) {
+//            data = Tuple.from(ArrayUtils.addAll(data.toArray(), additionalData));
+//        }
 
         PacketProcessor.sendToServer(EnumPacket.BIOME_CHANGER_ACTIONS, data);
     }
@@ -103,7 +109,8 @@ public class PacketBiomeChangerActions
         DEACTIVATE,
         CHANGE_BIOME,
         REPLACE_BLOCKS,
-        CHNG_MAX_RANGE;
+        CHNG_MAX_RANGE,
+        CHNG_PERIM_FORM;
 
         public static final EnumAction[] VALUES = values();
     }

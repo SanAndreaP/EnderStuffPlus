@@ -6,18 +6,23 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.client.gui;
 
+import com.google.common.collect.Maps;
 import de.sanandrew.mods.enderstuffp.client.util.EnumTextures;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions.EnumAction;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
+import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger.EnumPerimForm;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.IReloadableResourceManager;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+
+import java.util.Map;
 
 public class GuiBiomeChanger
         extends GuiScreen
@@ -30,13 +35,16 @@ public class GuiBiomeChanger
     private int posX;
     private int posY;
 
-    private GuiButton btnActivate;
-    private GuiButton btnDeactivate;
+    private static final int BTN_ACTIVATE = 0;
+    private static final int BTN_DEACTIVATE = 1;
+    private static final int BTN_BLOCKREPL_ENABLE = 2;
+    private static final int BTN_BLOCKREPL_DISABLE = 3;
+    private static final int BTN_SLIDER_RANGE = 4;
+    private static final int BTN_PERIM_SQUARE = 5;
+    private static final int BTN_PERIM_CIRCLE = 6;
+    private static final int BTN_PERIM_RHOMBUS = 7;
 
-    private GuiButton btnEnableBlockReplace;
-    private GuiButton btnDisableBlockReplace;
-
-    private GuiButton sldRange;
+    private Map<Integer, GuiButton> buttons = Maps.newHashMap();
 
     private static FontRenderer numberFont;
 
@@ -55,13 +63,19 @@ public class GuiBiomeChanger
             ((IReloadableResourceManager) this.mc.getResourceManager()).registerReloadListener(numberFont);
         }
 
-        this.buttonList.add(this.btnActivate = new GuiButtonBiomeChanger(0, this.posX + 10, this.posY + 220, 156, "activate"));
-        this.buttonList.add(this.btnDeactivate = new GuiButtonBiomeChanger(1, this.posX + 10, this.posY + 220, 156, "deactivate"));
+        this.buttons.put(BTN_PERIM_SQUARE, new GuiButtonBiomeChanger(BTN_PERIM_SQUARE, this.posX + 14, this.posY + 98, 148, "Rectangular"));
+        this.buttons.put(BTN_PERIM_CIRCLE, new GuiButtonBiomeChanger(BTN_PERIM_CIRCLE, this.posX + 14, this.posY + 112, 148, "Round"));
+        this.buttons.put(BTN_PERIM_RHOMBUS, new GuiButtonBiomeChanger(BTN_PERIM_RHOMBUS, this.posX + 14, this.posY + 126, 148, "Rhombic"));
 
-        this.buttonList.add(this.btnEnableBlockReplace = new GuiButtonBiomeChanger(2, this.posX + 10, this.posY + 200, 78, "enable"));
-        this.buttonList.add(this.btnDisableBlockReplace = new GuiButtonBiomeChanger(3, this.posX + 88, this.posY + 200, 78, "disable"));
+        this.buttons.put(BTN_SLIDER_RANGE, new GuiBiomeChangerSlider(BTN_SLIDER_RANGE, this.posX + 14, this.posY + 143, this.biomeChanger, "Range"));
 
-        this.buttonList.add(this.sldRange = new GuiBiomeChangerSlider(4, this.posX + 10, this.posY + 175, this.biomeChanger, "Range"));
+        this.buttons.put(BTN_BLOCKREPL_ENABLE, new GuiButtonBiomeChanger(BTN_BLOCKREPL_ENABLE, this.posX + 10, this.posY + 189, 78, "enable"));
+        this.buttons.put(BTN_BLOCKREPL_DISABLE, new GuiButtonBiomeChanger(BTN_BLOCKREPL_DISABLE, this.posX + 88, this.posY + 189, 78, "disable"));
+
+        this.buttons.put(BTN_ACTIVATE, new GuiButtonBiomeChanger(BTN_ACTIVATE, this.posX + 10, this.posY + 215, 156, "activate"));
+        this.buttons.put(BTN_DEACTIVATE, new GuiButtonBiomeChanger(BTN_DEACTIVATE, this.posX + 10, this.posY + 215, 156, "deactivate"));
+
+        this.buttonList.addAll(this.buttons.values());
     }
 
     @Override
@@ -84,41 +98,76 @@ public class GuiBiomeChanger
         this.mc.renderEngine.bindTexture(EnumTextures.GUI_SCALES.getResource());
         this.drawTexturedModalRect(10, 20, 0, 10, 14, 42);
         this.drawTexturedModalRect(10, 21 + fluxScale, 14, 11 + fluxScale, 14, 40 - fluxScale);
-        this.drawTexturedModalRect(7, 70, 0, 0, 161, 5);
-        this.drawTexturedModalRect(7, 70, 0, 5, Math.round(161.0F * (this.biomeChanger.getCurrRange() / (float) this.biomeChanger.getMaxRange())), 5);
+        this.drawTexturedModalRect(7, 75, 0, 0, 161, 5);
+        this.drawTexturedModalRect(7, 75, 0, 5, Math.round(161.0F * (this.biomeChanger.getCurrRange() / (float) this.biomeChanger.getMaxRange())), 5);
 
+        //TODO: add translations
+        this.mc.fontRenderer.drawString("Biome Changer", 8, 6, 0x404040);
+
+        this.mc.fontRenderer.drawString("Power Usage:", 28, 21, 0x707070);
+        this.mc.fontRenderer.drawString(String.format("%d RF/t", this.biomeChanger.getFluxUsage()), 38, 31, 0x000000);
+        this.mc.fontRenderer.drawString("Stored Energy:", 28, 43, 0x707070);
+        this.mc.fontRenderer.drawString(String.format("%d / %d RF", currFlux, maxFlux), 38, 53, 0x000000);
+
+        this.mc.fontRenderer.drawString("Progress:", 10, 66, 0x404040);
         String s = String.format("%d / %d", this.biomeChanger.getCurrRange(), this.biomeChanger.getMaxRange());
-        drawOutlinedString(s, 7 + (161 - numberFont.getStringWidth(s)) / 2, 69, 0xFFA080F2, 0xFF000000);
+        drawOutlinedString(numberFont, s, 7 + (161 - numberFont.getStringWidth(s)) / 2, 74, 0xA090FF, 0x000000);
 
-        this.mc.fontRenderer.drawString("Power Usage:", 28, 21, 0xFF555555);
-        this.mc.fontRenderer.drawString(String.format("%d RF/t", this.biomeChanger.getFluxUsage()), 38, 31, 0xFF000000);
-        this.mc.fontRenderer.drawString("Stored Energy:", 28, 43, 0xFF555555);
-        this.mc.fontRenderer.drawString(String.format("%d / %d RF", currFlux, maxFlux), 38, 53, 0xFF000000);
+        s = "Perimeter";
+        drawRect(14, 88, 17 + this.mc.fontRenderer.getStringWidth(s), 88 + this.mc.fontRenderer.FONT_HEIGHT, 0xFFC6C6C6);
+        this.mc.fontRenderer.drawString(s, 16, 88, 0x404040);
+
+        s = String.format("Replace Biome Blocks: %s", this.biomeChanger.isReplacingBlocks() ? EnumChatFormatting.DARK_GREEN + "enabled"
+                                                                                            : EnumChatFormatting.DARK_RED + "disabled");
+        this.mc.fontRenderer.drawString(s, 10, 179, 0x404040);
 
         GL11.glPopMatrix();
 
-        this.btnDeactivate.visible = this.biomeChanger.isActive();
-        this.btnActivate.visible = !this.biomeChanger.isActive();
-        this.btnDisableBlockReplace.enabled = this.biomeChanger.isReplacingBlocks() && !this.biomeChanger.isActive();
-        this.btnEnableBlockReplace.enabled = !this.biomeChanger.isReplacingBlocks() && !this.biomeChanger.isActive();
-        this.sldRange.enabled = !this.biomeChanger.isActive();
+        this.buttons.get(BTN_DEACTIVATE).visible = this.biomeChanger.isActive();
+        this.buttons.get(BTN_ACTIVATE).visible = !this.biomeChanger.isActive();
+
+        this.buttons.get(BTN_BLOCKREPL_DISABLE).enabled = this.biomeChanger.isReplacingBlocks() && !this.biomeChanger.isActive();
+        this.buttons.get(BTN_BLOCKREPL_ENABLE).enabled = !this.biomeChanger.isReplacingBlocks() && !this.biomeChanger.isActive();
+
+        this.buttons.get(BTN_SLIDER_RANGE).enabled = !this.biomeChanger.isActive();
+
+        this.buttons.get(BTN_PERIM_CIRCLE).enabled = this.biomeChanger.perimForm != EnumPerimForm.CIRCLE && !this.biomeChanger.isActive();
+        this.buttons.get(BTN_PERIM_RHOMBUS).enabled = this.biomeChanger.perimForm != EnumPerimForm.RHOMBUS && !this.biomeChanger.isActive();
+        this.buttons.get(BTN_PERIM_SQUARE).enabled = this.biomeChanger.perimForm != EnumPerimForm.SQUARE && !this.biomeChanger.isActive();
 
         super.drawScreen(mouseX, mouseY, partTicks);
+
+        if( this.biomeChanger.isActive() ) {
+            drawRect(this.posX + 10, this.posY + 88, this.posX + 170, this.posY + 210, 0x80C6C6C6);
+        }
     }
 
     @Override
     protected void actionPerformed(GuiButton button) {
-        if( button == this.btnActivate ) {
-            PacketBiomeChangerActions.sendPacketServer(this.biomeChanger, EnumAction.ACTIVATE, null);
-            this.mc.displayGuiScreen(null);
-            this.mc.setIngameFocus();
-        } else if( button == this.btnDeactivate ) {
-            PacketBiomeChangerActions.sendPacketServer(this.biomeChanger, EnumAction.DEACTIVATE, null);
-            this.mc.displayGuiScreen(null);
-            this.mc.setIngameFocus();
-        } else if( button == this.btnEnableBlockReplace || button == this.btnDisableBlockReplace ) {
-            this.biomeChanger.replaceBlocks(button == this.btnEnableBlockReplace);
-            PacketBiomeChangerActions.sendPacketServer(this.biomeChanger, EnumAction.REPLACE_BLOCKS, null);
+        switch( button.id ) {
+            case BTN_ACTIVATE:      //FALL-THROUGH
+            case BTN_DEACTIVATE:
+                PacketBiomeChangerActions.sendPacketServer(this.biomeChanger, button.id == BTN_ACTIVATE ? EnumAction.ACTIVATE : EnumAction.DEACTIVATE);
+                this.mc.displayGuiScreen(null);
+                this.mc.setIngameFocus();
+                return;
+            case BTN_BLOCKREPL_ENABLE:      //FALL-THROUGH
+            case BTN_BLOCKREPL_DISABLE:
+                this.biomeChanger.replaceBlocks(button.id == BTN_BLOCKREPL_ENABLE);
+                PacketBiomeChangerActions.sendPacketServer(this.biomeChanger, EnumAction.REPLACE_BLOCKS);
+                return;
+            case BTN_PERIM_CIRCLE:
+                this.biomeChanger.perimForm = EnumPerimForm.CIRCLE;
+                PacketBiomeChangerActions.sendPacketServer(this.biomeChanger, EnumAction.CHNG_PERIM_FORM);
+                return;
+            case BTN_PERIM_RHOMBUS:
+                this.biomeChanger.perimForm = EnumPerimForm.RHOMBUS;
+                PacketBiomeChangerActions.sendPacketServer(this.biomeChanger, EnumAction.CHNG_PERIM_FORM);
+                return;
+            case BTN_PERIM_SQUARE:
+                this.biomeChanger.perimForm = EnumPerimForm.SQUARE;
+                PacketBiomeChangerActions.sendPacketServer(this.biomeChanger, EnumAction.CHNG_PERIM_FORM);
+                return;
         }
 
         super.actionPerformed(button);
@@ -137,11 +186,24 @@ public class GuiBiomeChanger
         return false;
     }
 
-    private static void drawOutlinedString(String s, int x, int y, int foreColor, int frameColor) {
-        numberFont.drawString(s, x - 1, y, frameColor);
-        numberFont.drawString(s, x + 1, y, frameColor);
-        numberFont.drawString(s, x, y - 1, frameColor);
-        numberFont.drawString(s, x, y + 1, frameColor);
-        numberFont.drawString(s, x, y, foreColor);
+    private static void drawOutlinedString(FontRenderer renderer, String s, int x, int y, int foreColor, int frameColor) {
+        if( renderer.getUnicodeFlag() ) {
+            GL11.glTranslatef(0.0F, 0.5F, 0.0F);
+            renderer.drawString(s, x, y, frameColor);
+            GL11.glTranslatef(0.0F, -1.0F, 0.0F);
+            renderer.drawString(s, x, y, frameColor);
+            GL11.glTranslatef(0.5F, 0.5F, 0.0F);
+            renderer.drawString(s, x, y, frameColor);
+            GL11.glTranslatef(-1.0F, 0.0F, 0.0F);
+            renderer.drawString(s, x, y, frameColor);
+            GL11.glTranslatef(0.5F, 0.0F, 0.0F);
+        } else {
+            renderer.drawString(s, x - 1, y, frameColor);
+            renderer.drawString(s, x + 1, y, frameColor);
+            renderer.drawString(s, x, y - 1, frameColor);
+            renderer.drawString(s, x, y + 1, frameColor);
+        }
+
+        renderer.drawString(s, x, y, foreColor);
     }
 }

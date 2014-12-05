@@ -18,7 +18,7 @@ public class GuiBiomeChangerSlider
     private String title = "";
 
     public GuiBiomeChangerSlider(int id, int x, int y, TileEntityBiomeChanger tileBiomeChanger, String label) {
-        super(id, x, y, 156, 20, label + ": " + tileBiomeChanger.getMaxRange());
+        super(id, x, y, 148, 20, label + ": " + tileBiomeChanger.getMaxRange());
 
         this.title = label;
         this.biomeChanger = tileBiomeChanger;
@@ -62,7 +62,7 @@ public class GuiBiomeChangerSlider
     @Override
     public void mouseReleased(int mouseX, int mouseY) {
         this.biomeChanger.setMaxRange(MathHelper.floor_float(this.sliderVal * 128.0F));
-        PacketBiomeChangerActions.sendPacketServer(this.biomeChanger, EnumAction.CHNG_MAX_RANGE, null);
+        PacketBiomeChangerActions.sendPacketServer(this.biomeChanger, EnumAction.CHNG_MAX_RANGE);
         this.isDragging = false;
     }
 }
