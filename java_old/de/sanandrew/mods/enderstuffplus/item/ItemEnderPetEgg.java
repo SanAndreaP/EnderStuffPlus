@@ -3,7 +3,7 @@ package de.sanandrew.mods.enderstuffplus.item;
 import com.google.common.collect.Maps;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.client.SAPClientUtils;
+import de.sanandrew.core.manpack.util.client.helpers.SAPClientUtils;
 import de.sanandrew.mods.enderstuffplus.entity.living.IEnderPet;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;

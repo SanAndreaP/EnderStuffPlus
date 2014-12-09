@@ -25,7 +25,7 @@ public class PacketTileEnergySync
 {
     @Override
     public void process(ByteBufInputStream stream, ByteBuf rawData, INetHandler handler) throws IOException {
-        EnderStuffPlus.proxy.syncTileEnergy(stream.readInt(), stream.readInt(), stream.readInt(), stream.readInt());
+        EnderStuffPlus.proxy.syncTileEnergy(stream.readInt(), stream.readInt(), stream.readInt(), stream);
     }
 
     @Override
@@ -38,6 +38,7 @@ public class PacketTileEnergySync
 
         if( tile instanceof TileEntityBiomeChanger ) {
             stream.writeInt(((TileEntityBiomeChanger) tile).fluxAmount);
+            stream.writeInt(((TileEntityBiomeChanger) tile).usedFlux);
         } else if( tile instanceof TileEntityOreGenerator ) {
             stream.writeInt(((TileEntityOreGenerator) tile).fluxAmount);
         } else if( tile instanceof TileEntityBiomeDataCrystal ) {

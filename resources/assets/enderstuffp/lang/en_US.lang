@@ -1,5 +1,22 @@
 tile.enderstuffp:avisEgg.name=Avis Egg
+
 tile.enderstuffp:biomeChanger.name=Biome Changer
+tile.enderstuffp:biomeChanger.gui.flux.usage=Power Usage
+tile.enderstuffp:biomeChanger.gui.flux.stored=Stored Energy
+tile.enderstuffp:biomeChanger.gui.progress=Progress
+tile.enderstuffp:biomeChanger.gui.perim=Perimeter
+tile.enderstuffp:biomeChanger.gui.perim.rectangle=Rectangular
+tile.enderstuffp:biomeChanger.gui.perim.circle=Circular
+tile.enderstuffp:biomeChanger.gui.perim.rhombus=Rhombic
+tile.enderstuffp:biomeChanger.gui.perim.range=Range
+tile.enderstuffp:biomeChanger.gui.blockrepl=Replace Biome Blocks: %s
+tile.enderstuffp:biomeChanger.gui.blockrepl.btn.enable=enable
+tile.enderstuffp:biomeChanger.gui.blockrepl.btn.disable=disable
+tile.enderstuffp:biomeChanger.gui.blockrepl.label.enabled=enabled
+tile.enderstuffp:biomeChanger.gui.blockrepl.label.disabled=disabled
+tile.enderstuffp:biomeChanger.gui.activate=activate
+tile.enderstuffp:biomeChanger.gui.deactivate=deactivate
+
 tile.enderstuffp:duplicator.name=Duplicator
 tile.enderstuffp:weatherAltar.name=Weather Altar
 tile.enderstuffp:enderLeaves.name=Endertree Leaves
@@ -11,9 +28,11 @@ tile.enderstuffp:oreEnd_0.name=Niobium Ore
 tile.enderstuffp:oreEnd_1.name=Tantalum Ore
 tile.enderstuffp:blockEndOre_0.name=Block of Niobium
 tile.enderstuffp:blockEndOre_1.name=Block of Tantalum
+
 tile.enderstuffp:biomeDataCrystal.name=Biome Data Crystal
 tile.enderstuffp:biomeDataCrystal.empty=Empty
 tile.enderstuffp:biomeDataCrystal.percentage=%d%% full
+tile.enderstuffp:biomeDataCrystal.used=Used
 
 item.enderstuffp:enderFlesh.name=Ender Flesh
 item.enderstuffp:avisFeather.name=Avis Feather

@@ -114,12 +114,7 @@ final class ParticleHelper
                                                   colors[0], colors[1], colors[2]
             );
 
-
-//            this.fxLayers[i].add(p_78873_1_);
             Minecraft.getMinecraft().effectRenderer.addEffect(part);
-//            //TODO:
-//            List[] fxLayers = SAPReflectionHelper.getCachedFieldValue(EffectRenderer.class, Minecraft.getMinecraft().effectRenderer, "fxLayers", "");
-//            fxLayers[0].add(part);
         }
     }
 }

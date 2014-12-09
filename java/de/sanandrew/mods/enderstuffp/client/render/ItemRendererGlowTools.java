@@ -2,7 +2,7 @@ package de.sanandrew.mods.enderstuffp.client.render;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
+import de.sanandrew.core.manpack.util.client.helpers.ItemRenderHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;

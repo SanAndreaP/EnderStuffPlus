@@ -1,6 +1,6 @@
 package de.sanandrew.mods.enderstuffp.client.model;
 
-import de.sanandrew.core.manpack.util.client.SAPClientUtils;
+import de.sanandrew.core.manpack.util.client.helpers.SAPClientUtils;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;

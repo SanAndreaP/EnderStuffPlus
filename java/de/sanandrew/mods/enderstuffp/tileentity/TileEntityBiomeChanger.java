@@ -10,6 +10,7 @@ import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions.EnumAction;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
+import de.sanandrew.mods.enderstuffp.util.RegistryBlocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -33,11 +34,13 @@ public class TileEntityBiomeChanger
     private float renderBeamAngle = 360.0F;
     private float renderBeamHeight = 0.0F;
     private int currentRenderPass = 0;
-    private int usedFlux = 0;
-
-    public int fluxAmount = 0;
+    private int prevUsedFlux = 0;
     private int prevFluxAmount = -1;
+
+    public int usedFlux = 0;
+    public int fluxAmount = 0;
     public EnumPerimForm perimForm = EnumPerimForm.CIRCLE;
+    public String customName = null;
 
     public TileEntityBiomeChanger() {}
 
@@ -139,6 +142,10 @@ public class TileEntityBiomeChanger
         nbt.setBoolean("isActive", this.isActive);
         nbt.setBoolean("isReplacingBlocks", this.isActive);
         nbt.setInteger("fluxAmount", this.fluxAmount);
+        nbt.setInteger("usedFlux", this.usedFlux);
+        if( this.customName != null ) {
+            nbt.setString("customName", this.customName);
+        }
 
         return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
     }
@@ -153,10 +160,14 @@ public class TileEntityBiomeChanger
         this.isActive = nbt.getBoolean("isActive");
         this.isReplacingBlocks = nbt.getBoolean("isReplacingBlocks");
         this.fluxAmount = nbt.getInteger("fluxAmount");
+        this.usedFlux = nbt.getInteger("usedFlux");
+        if( nbt.hasKey("customName") ) {
+            this.customName = nbt.getString("customName");
+        }
     }
 
     public String getName() {
-        return "tile.biomeChanger.name";
+        return this.customName != null ? this.customName : RegistryBlocks.biomeChanger.getUnlocalizedName() + ".name";
     }
 
     public short getMaxRange() {
@@ -191,6 +202,9 @@ public class TileEntityBiomeChanger
         this.isReplacingBlocks = nbt.getBoolean("isReplacingBlocks");
         this.fluxAmount = nbt.getInteger("fluxAmount");
         this.usedFlux = nbt.getInteger("usedFlux");
+        if( nbt.hasKey("customName") ) {
+            this.customName = nbt.getString("customName");
+        }
     }
 
     @Override
@@ -205,6 +219,9 @@ public class TileEntityBiomeChanger
         nbt.setBoolean("isReplacingBlocks", this.isReplacingBlocks);
         nbt.setInteger("fluxAmount", this.fluxAmount);
         nbt.setInteger("usedFlux", this.usedFlux);
+        if( this.customName != null ) {
+            nbt.setString("customName", this.customName);
+        }
     }
 
     public void activate() {
@@ -221,6 +238,7 @@ public class TileEntityBiomeChanger
     public void deactivate() {
         this.isActive = false;
         this.currRange = 0;
+        this.usedFlux = 0;
         if( !this.worldObj.isRemote ) {
             PacketBiomeChangerActions.sendPacketClient(this, EnumAction.DEACTIVATE);
         }
@@ -256,11 +274,11 @@ public class TileEntityBiomeChanger
                         PacketBiomeChangerActions.sendPacketClient(this, EnumAction.CHANGE_BIOME);
                         this.currRange++;
                         this.usedFlux -= fluxUsage * 20;
-                    } else {
-                        int subtract = Math.min(fluxUsage, this.fluxAmount);
-                        this.usedFlux += subtract;
-                        this.fluxAmount -= subtract;
                     }
+
+                    int subtract = Math.min(fluxUsage, this.fluxAmount);
+                    this.usedFlux += subtract;
+                    this.fluxAmount -= subtract;
                 }
             } else {
                 this.renderBeamAngle += this.fluxAmount == 0 ? 0.5F : 2.0F;
@@ -284,8 +302,9 @@ public class TileEntityBiomeChanger
             }
         }
 
-        if( !worldObj.isRemote && this.prevFluxAmount != this.fluxAmount ) {
+        if( !worldObj.isRemote && (this.prevFluxAmount != this.fluxAmount || this.prevUsedFlux != this.usedFlux ) ) {
             this.prevFluxAmount = this.fluxAmount;
+            this.prevUsedFlux = this.usedFlux;
             PacketProcessor.sendToAllAround(EnumPacket.TILE_ENERGY_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F,
                                             Unit.with(this)
             );
@@ -367,6 +386,6 @@ public class TileEntityBiomeChanger
     {
         CIRCLE, RHOMBUS, SQUARE;
 
-        public static EnumPerimForm[] VALUES = values();
+        public static final EnumPerimForm[] VALUES = values();
     }
 }

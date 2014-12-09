@@ -7,11 +7,14 @@
 package de.sanandrew.mods.enderstuffp.client.gui;
 
 import com.google.common.collect.Maps;
+import de.sanandrew.core.manpack.util.client.helpers.GuiUtils;
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.client.util.EnumTextures;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions.EnumAction;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger.EnumPerimForm;
+import de.sanandrew.mods.enderstuffp.util.RegistryBlocks;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -47,6 +50,7 @@ public class GuiBiomeChanger
     private Map<Integer, GuiButton> buttons = Maps.newHashMap();
 
     private static FontRenderer numberFont;
+    private static FontRenderer unicodeFont;
 
     public GuiBiomeChanger(TileEntityBiomeChanger bChanger) {
         this.biomeChanger = bChanger;
@@ -62,27 +66,42 @@ public class GuiBiomeChanger
             numberFont = new FontRenderer(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.renderEngine, false);
             ((IReloadableResourceManager) this.mc.getResourceManager()).registerReloadListener(numberFont);
         }
+        if( unicodeFont == null ) {
+            unicodeFont = new FontRenderer(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.renderEngine, true);
+            ((IReloadableResourceManager) this.mc.getResourceManager()).registerReloadListener(unicodeFont);
+        }
 
-        this.buttons.put(BTN_PERIM_SQUARE, new GuiButtonBiomeChanger(BTN_PERIM_SQUARE, this.posX + 14, this.posY + 98, 148, "Rectangular"));
-        this.buttons.put(BTN_PERIM_CIRCLE, new GuiButtonBiomeChanger(BTN_PERIM_CIRCLE, this.posX + 14, this.posY + 112, 148, "Round"));
-        this.buttons.put(BTN_PERIM_RHOMBUS, new GuiButtonBiomeChanger(BTN_PERIM_RHOMBUS, this.posX + 14, this.posY + 126, 148, "Rhombic"));
+        String s = RegistryBlocks.biomeChanger.getUnlocalizedName() + ".gui.";
+        this.buttons.put(BTN_PERIM_SQUARE, new GuiButtonBiomeChanger(BTN_PERIM_SQUARE, this.posX + 14, this.posY + 98, 148,
+                                                                     SAPUtils.translate(s + "perim.rectangle")));
+        this.buttons.put(BTN_PERIM_CIRCLE, new GuiButtonBiomeChanger(BTN_PERIM_CIRCLE, this.posX + 14, this.posY + 112, 148,
+                                                                     SAPUtils.translate(s + "perim.circle")));
+        this.buttons.put(BTN_PERIM_RHOMBUS, new GuiButtonBiomeChanger(BTN_PERIM_RHOMBUS, this.posX + 14, this.posY + 126, 148,
+                                                                      SAPUtils.translate(s + "perim.rhombus")));
 
-        this.buttons.put(BTN_SLIDER_RANGE, new GuiBiomeChangerSlider(BTN_SLIDER_RANGE, this.posX + 14, this.posY + 143, this.biomeChanger, "Range"));
+        this.buttons.put(BTN_SLIDER_RANGE, new GuiBiomeChangerSlider(BTN_SLIDER_RANGE, this.posX + 14, this.posY + 143, this.biomeChanger,
+                                                                     SAPUtils.translate(s + "perim.range")));
 
-        this.buttons.put(BTN_BLOCKREPL_ENABLE, new GuiButtonBiomeChanger(BTN_BLOCKREPL_ENABLE, this.posX + 10, this.posY + 189, 78, "enable"));
-        this.buttons.put(BTN_BLOCKREPL_DISABLE, new GuiButtonBiomeChanger(BTN_BLOCKREPL_DISABLE, this.posX + 88, this.posY + 189, 78, "disable"));
+        this.buttons.put(BTN_BLOCKREPL_ENABLE, new GuiButtonBiomeChanger(BTN_BLOCKREPL_ENABLE, this.posX + 10, this.posY + 189, 78,
+                                                                         SAPUtils.translate(s + "blockrepl.btn.enable")));
+        this.buttons.put(BTN_BLOCKREPL_DISABLE, new GuiButtonBiomeChanger(BTN_BLOCKREPL_DISABLE, this.posX + 88, this.posY + 189, 78,
+                                                                          SAPUtils.translate(s + "blockrepl.btn.disable")));
 
-        this.buttons.put(BTN_ACTIVATE, new GuiButtonBiomeChanger(BTN_ACTIVATE, this.posX + 10, this.posY + 215, 156, "activate"));
-        this.buttons.put(BTN_DEACTIVATE, new GuiButtonBiomeChanger(BTN_DEACTIVATE, this.posX + 10, this.posY + 215, 156, "deactivate"));
+        this.buttons.put(BTN_ACTIVATE, new GuiButtonBiomeChanger(BTN_ACTIVATE, this.posX + 10, this.posY + 215, 156, SAPUtils.translate(s + "activate")));
+        this.buttons.put(BTN_DEACTIVATE, new GuiButtonBiomeChanger(BTN_DEACTIVATE, this.posX + 10, this.posY + 215, 156, SAPUtils.translate(s + "deactivate")));
 
         this.buttonList.addAll(this.buttons.values());
     }
 
+    private long drawCycles = 0;
     @Override
     public void drawScreen(int mouseX, int mouseY, float partTicks) {
+
         int currFlux = this.biomeChanger.getEnergyStored(ForgeDirection.UNKNOWN);
         int maxFlux = this.biomeChanger.getMaxEnergyStored(ForgeDirection.UNKNOWN);
+        int fluxUsage = this.biomeChanger.getFluxUsage();
         int fluxScale = 40 - (int) (currFlux / (float) maxFlux * 40.0F);
+        int bufferScale = fluxUsage > 0 ? 40 - (int) (this.biomeChanger.usedFlux / (fluxUsage * 20.0F) * 40.0F) : 40;
 
         this.drawDefaultBackground();
 
@@ -95,30 +114,42 @@ public class GuiBiomeChanger
 
         this.drawTexturedModalRect(0, 0, 0, 0, WIDTH, HEIGHT);
 
-        this.mc.renderEngine.bindTexture(EnumTextures.GUI_SCALES.getResource());
-        this.drawTexturedModalRect(10, 20, 0, 10, 14, 42);
-        this.drawTexturedModalRect(10, 21 + fluxScale, 14, 11 + fluxScale, 14, 40 - fluxScale);
-        this.drawTexturedModalRect(7, 75, 0, 0, 161, 5);
-        this.drawTexturedModalRect(7, 75, 0, 5, Math.round(161.0F * (this.biomeChanger.getCurrRange() / (float) this.biomeChanger.getMaxRange())), 5);
+        this.drawTexturedModalRect(10, 20, 176, 0, 14, 42);
+        this.drawTexturedModalRect(14, 21 + fluxScale, 194, 1 + fluxScale, 9, 40 - fluxScale);
+        this.drawTexturedModalRect(11, 21 + bufferScale, 191, 1 + bufferScale, 3, 40 - bufferScale);
+        this.drawTexturedModalRect(7, 75, 0, 240, 161, 5);
+        this.drawTexturedModalRect(7, 75, 0, 245, Math.round(161.0F * (this.biomeChanger.getCurrRange() / (float) this.biomeChanger.getMaxRange())), 5);
 
-        //TODO: add translations
-        this.mc.fontRenderer.drawString("Biome Changer", 8, 6, 0x404040);
+        drawCycles++;
+        for( int i = 0; i < 80; i++ ) {
+            float yShift = (float) (Math.sin((drawCycles * ((i + 50) * (1.0F / 80.0F))) / 20.0D * Math.PI) * 6.0D);
+            GL11.glPushMatrix();
+            GL11.glTranslatef(i + 3, yShift + 9.0F, 0.0F);
+            drawRect(0, 0, 1, 1, 0xFFFFFFFF);
+            GL11.glPopMatrix();
+        }
 
-        this.mc.fontRenderer.drawString("Power Usage:", 28, 21, 0x707070);
-        this.mc.fontRenderer.drawString(String.format("%d RF/t", this.biomeChanger.getFluxUsage()), 38, 31, 0x000000);
-        this.mc.fontRenderer.drawString("Stored Energy:", 28, 43, 0x707070);
-        this.mc.fontRenderer.drawString(String.format("%d / %d RF", currFlux, maxFlux), 38, 53, 0x000000);
+        this.mc.fontRenderer.drawString(SAPUtils.translate(this.biomeChanger.getName()), 8, 6, 0x404040);
 
-        this.mc.fontRenderer.drawString("Progress:", 10, 66, 0x404040);
+        String unlocName = RegistryBlocks.biomeChanger.getUnlocalizedName() + ".gui.";
+
+        this.mc.fontRenderer.drawString(SAPUtils.translate(unlocName + "flux.usage"), 28, 21, 0x707070);
+        this.mc.fontRenderer.drawString(String.format("%d RF/t", fluxUsage), 33, 31, 0x000000);
+        this.mc.fontRenderer.drawString(SAPUtils.translate(unlocName + "flux.stored"), 28, 43, 0x707070);
+        this.mc.fontRenderer.drawString(String.format("%d %s(+%d)%s / %d RF", currFlux, EnumChatFormatting.DARK_GREEN, this.biomeChanger.usedFlux,
+                                                      EnumChatFormatting.RESET, maxFlux), 33, 53, 0x000000);
+
+        this.mc.fontRenderer.drawString(SAPUtils.translate(unlocName + "progress"), 10, 66, 0x404040);
         String s = String.format("%d / %d", this.biomeChanger.getCurrRange(), this.biomeChanger.getMaxRange());
-        drawOutlinedString(numberFont, s, 7 + (161 - numberFont.getStringWidth(s)) / 2, 74, 0xA090FF, 0x000000);
+        GuiUtils.drawOutlinedString(numberFont, s, 7 + (161 - numberFont.getStringWidth(s)) / 2, 74, 0xA090FF, 0x000000);
 
-        s = "Perimeter";
+        s = SAPUtils.translate(unlocName + "perim");
         drawRect(14, 88, 17 + this.mc.fontRenderer.getStringWidth(s), 88 + this.mc.fontRenderer.FONT_HEIGHT, 0xFFC6C6C6);
         this.mc.fontRenderer.drawString(s, 16, 88, 0x404040);
 
-        s = String.format("Replace Biome Blocks: %s", this.biomeChanger.isReplacingBlocks() ? EnumChatFormatting.DARK_GREEN + "enabled"
-                                                                                            : EnumChatFormatting.DARK_RED + "disabled");
+        s = SAPUtils.translatePostFormat(unlocName + "blockrepl", this.biomeChanger.isReplacingBlocks()
+                                                                        ? EnumChatFormatting.DARK_GREEN + SAPUtils.translate(unlocName + "blockrepl.label.enabled")
+                                                                        : EnumChatFormatting.DARK_RED + SAPUtils.translate(unlocName + "blockrepl.label.disabled"));
         this.mc.fontRenderer.drawString(s, 10, 179, 0x404040);
 
         GL11.glPopMatrix();
@@ -184,26 +215,5 @@ public class GuiBiomeChanger
     @Override
     public boolean doesGuiPauseGame() {
         return false;
-    }
-
-    private static void drawOutlinedString(FontRenderer renderer, String s, int x, int y, int foreColor, int frameColor) {
-        if( renderer.getUnicodeFlag() ) {
-            GL11.glTranslatef(0.0F, 0.5F, 0.0F);
-            renderer.drawString(s, x, y, frameColor);
-            GL11.glTranslatef(0.0F, -1.0F, 0.0F);
-            renderer.drawString(s, x, y, frameColor);
-            GL11.glTranslatef(0.5F, 0.5F, 0.0F);
-            renderer.drawString(s, x, y, frameColor);
-            GL11.glTranslatef(-1.0F, 0.0F, 0.0F);
-            renderer.drawString(s, x, y, frameColor);
-            GL11.glTranslatef(0.5F, 0.0F, 0.0F);
-        } else {
-            renderer.drawString(s, x - 1, y, frameColor);
-            renderer.drawString(s, x + 1, y, frameColor);
-            renderer.drawString(s, x, y - 1, frameColor);
-            renderer.drawString(s, x, y + 1, frameColor);
-        }
-
-        renderer.drawString(s, x, y, foreColor);
     }
 }

@@ -8,8 +8,10 @@ import de.sanandrew.mods.enderstuffp.util.EnumGui;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
@@ -71,5 +73,13 @@ public class BlockBiomeChanger
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z) {
         this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.5625F, 0.9375F);
+    }
+
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase placer, ItemStack stack) {
+        super.onBlockPlacedBy(world, x, y, z, placer, stack);
+        if( stack.hasDisplayName() ) {
+            ((TileEntityBiomeChanger) world.getTileEntity(x, y, z)).customName = stack.getDisplayName();
+        }
     }
 }

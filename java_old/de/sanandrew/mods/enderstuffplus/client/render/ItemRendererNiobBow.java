@@ -2,7 +2,7 @@ package de.sanandrew.mods.enderstuffplus.client.render;
 
 import org.lwjgl.opengl.GL11;
 
-import de.sanandrew.core.manpack.util.client.ItemRenderHelper;
+import de.sanandrew.core.manpack.util.client.helpers.ItemRenderHelper;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;

@@ -34,6 +34,7 @@ import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeDataCrystal;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityOreGenerator;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityWeatherAltar;
 import de.sanandrew.mods.enderstuffp.util.*;
+import io.netty.buffer.ByteBufInputStream;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,6 +45,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
+import java.io.IOException;
 import java.util.Random;
 
 @SideOnly(Side.CLIENT)
@@ -176,15 +178,16 @@ public class ClientProxy
     }
 
     @Override
-    public void syncTileEnergy(int tileX, int tileY, int tileZ, int flux) {
+    public void syncTileEnergy(int tileX, int tileY, int tileZ, ByteBufInputStream stream) throws IOException {
         TileEntity tile = this.getWorld(null).getTileEntity(tileX, tileY, tileZ);
 
         if( tile instanceof TileEntityBiomeChanger ) {
-            ((TileEntityBiomeChanger) tile).fluxAmount = flux;
+            ((TileEntityBiomeChanger) tile).fluxAmount = stream.readInt();
+            ((TileEntityBiomeChanger) tile).usedFlux = stream.readInt();
         } else if( tile instanceof TileEntityOreGenerator ) {
-            ((TileEntityOreGenerator) tile).fluxAmount = flux;
+            ((TileEntityOreGenerator) tile).fluxAmount = stream.readInt();
         } else if( tile instanceof TileEntityBiomeDataCrystal ) {
-            ((TileEntityBiomeDataCrystal) tile).dataProgress = flux;
+            ((TileEntityBiomeDataCrystal) tile).dataProgress = stream.readInt();
         }
     }
 

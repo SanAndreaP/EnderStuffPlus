@@ -1,5 +1,25 @@
 TODO-LIST
 
-- make Ender Miss wear swords and let them attack (intelligently, e.g. run away if creeper charges up) other mobs
-- make custom loot chests which require a key and a minigame (like in "Dust: An Elysian Tail") to open it
-  * keys are dropped from Ender Nemesis
+FIXME
+
+NEEDED
+    - add Ore Generator GUI, functinality and model
+    - re-add avis nest
+    - re-add Ender Nemesis and Ender Leak
+    - re-add Duplicator
+    - re-add end islands
+    - re-add end trees
+    - re-add end ore generation
+    - refine Ender Avis boss
+    - re-add Ender Ray
+    - re-add spawning of ender creatures
+CONSIDER
+    - Chunk Repopulator
+    - Crocoite as possible end mineral
+    - Scolecite as possible end mineral
+    - Ender Miss wear swords and let them attack (intelligently, e.g. run away if creeper charges up) other mobs
+    - custom loot chests which require a key and a minigame (like in "Dust: An Elysian Tail") to open it
+        * keys are dropped from Ender Nemesis
+    - stairs and slabs out of end stone
+    - smooth and chiseled end stone
+    - End Tree door

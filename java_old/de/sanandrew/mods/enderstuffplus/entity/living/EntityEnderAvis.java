@@ -1,25 +1,18 @@
 package de.sanandrew.mods.enderstuffp.entity.living.monster;
 
-import de.sanandrew.core.manpack.util.client.SAPClientUtils;
 import de.sanandrew.mods.enderstuffp.entity.living.IEnderCreature;
 import de.sanandrew.mods.enderstuffp.entity.living.IEnderPet;
 import ibxm.Player;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.UUID;
 
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,10 +21,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.World;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 import de.sanandrew.mods.enderstuffplus.item.ItemRaincoat;
 import de.sanandrew.mods.enderstuffplus.registry.ESPModRegistry;

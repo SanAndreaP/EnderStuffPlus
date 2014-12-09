@@ -6,7 +6,7 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.client.render;
 
-import de.sanandrew.core.manpack.util.client.SAPClientUtils;
+import de.sanandrew.core.manpack.util.client.helpers.SAPClientUtils;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.client.util.EnumTextures;
 import de.sanandrew.mods.enderstuffp.item.ItemBlockBiomeDataCrystal;

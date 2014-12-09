@@ -19,12 +19,15 @@ import de.sanandrew.mods.enderstuffp.event.EntityJoinWorldHandler;
 import de.sanandrew.mods.enderstuffp.network.EnumPacket;
 import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
 import de.sanandrew.mods.enderstuffp.network.ServerPacketHandler;
+import io.netty.buffer.ByteBufInputStream;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+
+import java.io.IOException;
 
 public class CommonProxy
         implements IGuiHandler
@@ -74,7 +77,7 @@ public class CommonProxy
         PacketProcessor.sendToAllAround(EnumPacket.PKG_PARTICLES, dimensionId, x, y, z, 64.0D, Quintet.with(particleType.ordinalByte(), x, y, z, data));
     }
 
-    public void syncTileEnergy(int tileX, int tileY, int tileZ, int flux) { }
+    public void syncTileEnergy(int tileX, int tileY, int tileZ, ByteBufInputStream stream) throws IOException { }
 
     @Override
     public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {

@@ -2,7 +2,7 @@ package de.sanandrew.mods.enderstuffp.client.model;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.client.SAPClientUtils;
+import de.sanandrew.core.manpack.util.client.helpers.SAPClientUtils;
 import de.sanandrew.mods.enderstuffp.entity.living.AEntityEnderAvis;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;

@@ -2,7 +2,7 @@ package de.sanandrew.mods.enderstuffplus.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.client.SAPClientUtils;
+import de.sanandrew.core.manpack.util.client.helpers.SAPClientUtils;
 import de.sanandrew.mods.enderstuffplus.registry.raincoat.RegistryRaincoats;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
