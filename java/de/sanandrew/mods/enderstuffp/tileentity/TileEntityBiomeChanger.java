@@ -126,7 +126,7 @@ public class TileEntityBiomeChanger
 
         chunk.setBiomeArray(biomeArray);
         chunk.setChunkModified();
-//        this.worldObj.markBlockForUpdate(x1, y, z1);
+        this.worldObj.markBlockForUpdate(x1, y - 1, z1);
     }
 
     public short getCurrRange() {

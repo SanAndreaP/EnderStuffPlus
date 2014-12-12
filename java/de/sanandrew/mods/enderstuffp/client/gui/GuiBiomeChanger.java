@@ -93,7 +93,6 @@ public class GuiBiomeChanger
         this.buttonList.addAll(this.buttons.values());
     }
 
-    private long drawCycles = 0;
     @Override
     public void drawScreen(int mouseX, int mouseY, float partTicks) {
 
@@ -119,15 +118,6 @@ public class GuiBiomeChanger
         this.drawTexturedModalRect(11, 21 + bufferScale, 191, 1 + bufferScale, 3, 40 - bufferScale);
         this.drawTexturedModalRect(7, 75, 0, 240, 161, 5);
         this.drawTexturedModalRect(7, 75, 0, 245, Math.round(161.0F * (this.biomeChanger.getCurrRange() / (float) this.biomeChanger.getMaxRange())), 5);
-
-        drawCycles++;
-        for( int i = 0; i < 80; i++ ) {
-            float yShift = (float) (Math.sin((drawCycles * ((i + 50) * (1.0F / 80.0F))) / 20.0D * Math.PI) * 6.0D);
-            GL11.glPushMatrix();
-            GL11.glTranslatef(i + 3, yShift + 9.0F, 0.0F);
-            drawRect(0, 0, 1, 1, 0xFFFFFFFF);
-            GL11.glPopMatrix();
-        }
 
         this.mc.fontRenderer.drawString(SAPUtils.translate(this.biomeChanger.getName()), 8, 6, 0x404040);
 

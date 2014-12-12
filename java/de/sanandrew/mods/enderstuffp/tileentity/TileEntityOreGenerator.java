@@ -21,6 +21,7 @@ public class TileEntityOreGenerator
     public int fluxAmount = 25_000;
     private int prevFluxAmount = -1;
     private static final int MAX_EXTRACTABLE_RFLUX = 40;
+    public long drawCycles = 0;
 
     @Override
     public void updateEntity() {

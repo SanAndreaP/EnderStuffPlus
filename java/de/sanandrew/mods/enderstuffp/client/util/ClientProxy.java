@@ -18,6 +18,7 @@ import de.sanandrew.mods.enderstuffp.client.render.ItemRendererWeatherAltar;
 import de.sanandrew.mods.enderstuffp.client.render.entity.*;
 import de.sanandrew.mods.enderstuffp.client.render.tileentity.RenderTileEntityBiomeChanger;
 import de.sanandrew.mods.enderstuffp.client.render.tileentity.RenderTileEntityBiomeDataCrystal;
+import de.sanandrew.mods.enderstuffp.client.render.tileentity.RenderTileEntityOreGenerator;
 import de.sanandrew.mods.enderstuffp.client.render.tileentity.RenderTileEntityWeatherAltar;
 import de.sanandrew.mods.enderstuffp.entity.EntityWeatherAltarFirework;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityBait;
@@ -75,6 +76,7 @@ public class ClientProxy
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBiomeChanger.class, new RenderTileEntityBiomeChanger());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWeatherAltar.class, new RenderTileEntityWeatherAltar());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBiomeDataCrystal.class, new RenderTileEntityBiomeDataCrystal());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOreGenerator.class, new RenderTileEntityOreGenerator());
 
         MinecraftForgeClient.registerItemRenderer(RegistryItems.niobSword, new ItemRendererGlowTools());
         MinecraftForgeClient.registerItemRenderer(RegistryItems.niobPick, new ItemRendererGlowTools());

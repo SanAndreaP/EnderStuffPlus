@@ -8,6 +8,7 @@ public enum EnumTextures
     ARROW_AVIS                  ("textures/entity/avisArrow.png"),
     BIOMECHANGER                ("textures/blocks/biomeChanger.png"),
     WEATHERALTAR                ("textures/blocks/weatherAltar.png"),
+    ORE_GENERATOR               ("textures/entity/tile/ore_generator.png"),
     BIOMECRYSTAL_CORE           ("textures/entity/tile/biome_crystal_core.png"),
     ENDERAVIS_GLOW              ("textures/entity/enderAvisGlow.png"),
     ENDERAVIS_TEXTURE           ("textures/entity/enderAvis.png"),

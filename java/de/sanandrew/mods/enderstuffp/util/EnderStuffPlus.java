@@ -16,11 +16,14 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import de.sanandrew.core.manpack.util.SAPReflectionHelper;
 import de.sanandrew.mods.enderstuffp.enchantment.EnchantmentEnderChestTeleport;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import java.util.HashMap;
@@ -113,6 +116,7 @@ public class EnderStuffPlus
 //        FurnaceRecipes.smelting().func_151394_a(new ItemStack(ModBlockRegistry.endOre, 1, 0),
 //                                                new ItemStack(ModItemRegistry.endIngot, 1, 0), 0.85F);
 //        CraftingRegistry.initialize();
+        GameRegistry.addRecipe(new ItemStack(Items.stone_sword, 1), "XX", 'X', Blocks.sand);
     }
 
     @EventHandler

@@ -59,7 +59,7 @@ public class RenderTileEntityWeatherAltar
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
         GL11.glRotatef(180F, 1F, 0F, 0F);
-        GL11.glRotatef(te.blockMetadata * 90F, 0F, 1F, 0F);
+        GL11.glRotatef(te.getWorldObj().getBlockMetadata(te.xCoord, te.yCoord, te.zCoord) * 90F, 0F, 1F, 0F);
 
         this.modelBlock.renderBlock();
 
