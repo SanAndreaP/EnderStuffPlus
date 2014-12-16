@@ -32,6 +32,7 @@ public enum EnumTextures
 //    GUI_BIOMECHANGER_III        ("textures/gui/BiomeChangerGUI/biomeChanger_config.png"),
 //    GUI_BIOMECHANGER_TABS       ("textures/gui/BiomeChangerGUI/biomeChanger_tabs.png"),
     GUI_BIOMECHANGER            ("textures/gui/biome_changer.png"),
+    GUI_ORE_GENERATOR            ("textures/gui/ore_generator.png"),
     GUI_SCALES                  ("textures/gui/scales.png"),
     GUI_BUTTONS                 ("textures/gui/buttons.png"),
     GUI_DUPLICATOR              ("textures/gui/duplicatorGui.png"),

@@ -67,10 +67,10 @@ public class ClientProxy
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderIgnis.class, new RenderEnderIgnis());
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderMiss.class, new RenderEnderMiss());
         RenderingRegistry.registerEntityRenderingHandler(AEntityEnderAvis.class, new RenderEnderAvis());
-        RenderingRegistry.registerEntityRenderingHandler(EntityPearlNivis.class, new RenderSnowball(RegistryItems.espPearls, 0));
-        RenderingRegistry.registerEntityRenderingHandler(EntityPearlIgnis.class, new RenderSnowball(RegistryItems.espPearls, 1));
-        RenderingRegistry.registerEntityRenderingHandler(EntityPearlMiss.class, new RenderSnowball(RegistryItems.espPearls, 2));
-        RenderingRegistry.registerEntityRenderingHandler(EntityBait.class, new RenderSnowball(RegistryItems.espPearls, 2));
+        RenderingRegistry.registerEntityRenderingHandler(EntityPearlNivis.class, new RenderSnowball(EspItems.espPearls, 0));
+        RenderingRegistry.registerEntityRenderingHandler(EntityPearlIgnis.class, new RenderSnowball(EspItems.espPearls, 1));
+        RenderingRegistry.registerEntityRenderingHandler(EntityPearlMiss.class, new RenderSnowball(EspItems.espPearls, 2));
+        RenderingRegistry.registerEntityRenderingHandler(EntityBait.class, new RenderSnowball(EspItems.espPearls, 2));
         RenderingRegistry.registerEntityRenderingHandler(EntityWeatherAltarFirework.class, new RenderWeatherAltarFirework());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBiomeChanger.class, new RenderTileEntityBiomeChanger());
@@ -78,16 +78,16 @@ public class ClientProxy
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBiomeDataCrystal.class, new RenderTileEntityBiomeDataCrystal());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOreGenerator.class, new RenderTileEntityOreGenerator());
 
-        MinecraftForgeClient.registerItemRenderer(RegistryItems.niobSword, new ItemRendererGlowTools());
-        MinecraftForgeClient.registerItemRenderer(RegistryItems.niobPick, new ItemRendererGlowTools());
-        MinecraftForgeClient.registerItemRenderer(RegistryItems.niobAxe, new ItemRendererGlowTools());
-        MinecraftForgeClient.registerItemRenderer(RegistryItems.niobHoe, new ItemRendererGlowTools());
-        MinecraftForgeClient.registerItemRenderer(RegistryItems.niobShovel, new ItemRendererGlowTools());
-        MinecraftForgeClient.registerItemRenderer(RegistryItems.niobShears, new ItemRendererGlowTools());
+        MinecraftForgeClient.registerItemRenderer(EspItems.niobSword, new ItemRendererGlowTools());
+        MinecraftForgeClient.registerItemRenderer(EspItems.niobPick, new ItemRendererGlowTools());
+        MinecraftForgeClient.registerItemRenderer(EspItems.niobAxe, new ItemRendererGlowTools());
+        MinecraftForgeClient.registerItemRenderer(EspItems.niobHoe, new ItemRendererGlowTools());
+        MinecraftForgeClient.registerItemRenderer(EspItems.niobShovel, new ItemRendererGlowTools());
+        MinecraftForgeClient.registerItemRenderer(EspItems.niobShears, new ItemRendererGlowTools());
 
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegistryBlocks.biomeChanger), new ItemRendererBiomeChanger());
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegistryBlocks.weatherAltar), new ItemRendererWeatherAltar());
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegistryBlocks.biomeDataCrystal), new ItemRendererBiomeDataCrystal());
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EspBlocks.biomeChanger), new ItemRendererBiomeChanger());
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EspBlocks.weatherAltar), new ItemRendererWeatherAltar());
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EspBlocks.biomeDataCrystal), new ItemRendererBiomeDataCrystal());
     }
 
     //    @Override

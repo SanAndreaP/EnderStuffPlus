@@ -8,7 +8,7 @@ import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.util.EnumHelper;
 
-public class RegistryItems
+public class EspItems
 {
     public static ArmorMaterial armorNiobium;
     public static ToolMaterial toolNiobium;
@@ -56,7 +56,7 @@ public class RegistryItems
         avisCompass   = new ItemAvisCompass();
         enderPetEgg   = new ItemEnderPetEgg();
         enderPetStaff = new ItemStandard("petStaff");
-        endIngot      = new ItemStandard("niobIngot");
+        endIngot      = new ItemEnderIngot();
         niobBow       = new ItemNiobBow();
         rainCoat      = new ItemRaincoat();
         niobHelmet    = new ItemNiobArmor("niobHelmet", armorNiobium, 0);

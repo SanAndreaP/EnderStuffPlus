@@ -3,7 +3,7 @@ package de.sanandrew.mods.enderstuffp.client.render.entity;
 import de.sanandrew.mods.enderstuffp.client.model.ModelEnderMiss;
 import de.sanandrew.mods.enderstuffp.client.util.EnumTextures;
 import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderMiss;
-import de.sanandrew.mods.enderstuffp.util.RegistryItems;
+import de.sanandrew.mods.enderstuffp.util.EspItems;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats.CoatBaseEntry;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats.CoatColorEntry;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -111,7 +111,7 @@ public class RenderEnderMiss
                 GL11.glRotatef(-110.0F, 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef(20.0F, 0.0F, 0.0F, 1.0F);
 
-                this.renderManager.itemRenderer.renderItem(miss, new ItemStack(RegistryItems.avisFeather), 0);
+                this.renderManager.itemRenderer.renderItem(miss, new ItemStack(EspItems.avisFeather), 0);
 
                 GL11.glPopMatrix();
             }

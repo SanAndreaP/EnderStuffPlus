@@ -2,7 +2,7 @@ package de.sanandrew.mods.enderstuffp.entity.living.monster;
 
 import de.sanandrew.mods.enderstuffp.entity.living.IEnderCreature;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
-import de.sanandrew.mods.enderstuffp.util.RegistryItems;
+import de.sanandrew.mods.enderstuffp.util.EspItems;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -51,7 +51,7 @@ public class EntityEnderIgnis
         if( lootingLvl > 0 ) {
             j += this.rand.nextInt(lootingLvl + 1);
         }
-        this.entityDropItem(new ItemStack(RegistryItems.espPearls, j, 1), 0.0F);
+        this.entityDropItem(new ItemStack(EspItems.espPearls, j, 1), 0.0F);
     }
 
     @Override

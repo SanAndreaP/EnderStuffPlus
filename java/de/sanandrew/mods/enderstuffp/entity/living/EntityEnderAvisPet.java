@@ -389,7 +389,7 @@ public class EntityEnderAvisPet
                             playerItem.stackSize--;
 
                             return true;
-                        } else if( SAPUtils.areItemInstEqual(playerItem, RegistryItems.enderPetStaff) ) {
+                        } else if( SAPUtils.areItemInstEqual(playerItem, EspItems.enderPetStaff) ) {
                             EnderStuffPlus.proxy.openGui(player, EnumGui.ENDERPET, this.getEntityId(), 0, 0);
 
                             return true;

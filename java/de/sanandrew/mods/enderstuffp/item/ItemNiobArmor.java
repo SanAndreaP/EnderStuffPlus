@@ -3,7 +3,7 @@ package de.sanandrew.mods.enderstuffp.item;
 import de.sanandrew.mods.enderstuffp.client.util.EnumTextures;
 import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
-import de.sanandrew.mods.enderstuffp.util.RegistryItems;
+import de.sanandrew.mods.enderstuffp.util.EspItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
@@ -30,9 +30,9 @@ public class ItemNiobArmor
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-        if( stack.getItem() == RegistryItems.niobHelmet || stack.getItem() == RegistryItems.niobPlate || stack.getItem() == RegistryItems.niobBoots ) {
+        if( stack.getItem() == EspItems.niobHelmet || stack.getItem() == EspItems.niobPlate || stack.getItem() == EspItems.niobBoots ) {
             return EnumTextures.TEX_ARMOR_NIOBIUM_1.getTexture();
-        } else if( stack.getItem() == RegistryItems.niobLegs ) {
+        } else if( stack.getItem() == EspItems.niobLegs ) {
             return EnumTextures.TEX_ARMOR_NIOBIUM_2.getTexture();
         }
         return super.getArmorTexture(stack, entity, slot, type);
@@ -40,7 +40,7 @@ public class ItemNiobArmor
 
     @Override
     public boolean getIsRepairable(ItemStack brokenItem, ItemStack repairItem) {
-        return repairItem.getItem() == RegistryItems.endIngot || super.getIsRepairable(brokenItem, repairItem);
+        return repairItem.getItem() == EspItems.endIngot || super.getIsRepairable(brokenItem, repairItem);
     }
 
     @Override

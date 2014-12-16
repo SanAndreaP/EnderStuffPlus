@@ -20,7 +20,7 @@ public final class CreativeTabsEnderStuff
             new CreativeTabs(EnderStuffPlus.MOD_ID + ":creativeTab") {
                 @Override
                 public Item getTabIconItem() {
-                    return RegistryItems.niobPick;
+                    return EspItems.niobPick;
                 }
             };
 
@@ -36,7 +36,7 @@ public final class CreativeTabsEnderStuff
                 @Override
                 public ItemStack getIconItemStack() {
                     if( this.stack == null ) {
-                        this.stack = new ItemStack(RegistryItems.rainCoat);
+                        this.stack = new ItemStack(EspItems.rainCoat);
                         NBTTagCompound nbt = new NBTTagCompound();
                         nbt.setString("base", RegistryRaincoats.baseGold.getUUID());
                         nbt.setString("color", RegistryRaincoats.getColor(EnderStuffPlus.MOD_ID, "purple").getUUID());
@@ -59,7 +59,7 @@ public final class CreativeTabsEnderStuff
                 @Override
                 public ItemStack getIconItemStack() {
                     if( this.stack == null ) {
-                        this.stack = new ItemStack(RegistryBlocks.biomeDataCrystal);
+                        this.stack = new ItemStack(EspBlocks.biomeDataCrystal);
                         NBTTagCompound nbt = new NBTTagCompound();
                         nbt.setShort(ItemBlockBiomeDataCrystal.NBT_BIOME, (short) BiomeGenBase.mushroomIsland.biomeID);
                         nbt.setInteger(ItemBlockBiomeDataCrystal.NBT_DATAPROG, 10);

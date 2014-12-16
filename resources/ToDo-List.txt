@@ -24,3 +24,5 @@ CONSIDER
     - smooth and chiseled end stone
     - End Tree door
 	- carminite as possible end mineral
+    - add compatibility for Thermal Expansion Pulverizer
+    - add compatibility for Tinkers Construct

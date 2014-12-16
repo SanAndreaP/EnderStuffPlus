@@ -14,7 +14,7 @@ import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions.EnumAction;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger.EnumPerimForm;
-import de.sanandrew.mods.enderstuffp.util.RegistryBlocks;
+import de.sanandrew.mods.enderstuffp.util.EspBlocks;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -71,7 +71,7 @@ public class GuiBiomeChanger
             ((IReloadableResourceManager) this.mc.getResourceManager()).registerReloadListener(unicodeFont);
         }
 
-        String s = RegistryBlocks.biomeChanger.getUnlocalizedName() + ".gui.";
+        String s = EspBlocks.biomeChanger.getUnlocalizedName() + ".gui.";
         this.buttons.put(BTN_PERIM_SQUARE, new GuiButtonBiomeChanger(BTN_PERIM_SQUARE, this.posX + 14, this.posY + 98, 148,
                                                                      SAPUtils.translate(s + "perim.rectangle")));
         this.buttons.put(BTN_PERIM_CIRCLE, new GuiButtonBiomeChanger(BTN_PERIM_CIRCLE, this.posX + 14, this.posY + 112, 148,
@@ -95,7 +95,6 @@ public class GuiBiomeChanger
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partTicks) {
-
         int currFlux = this.biomeChanger.getEnergyStored(ForgeDirection.UNKNOWN);
         int maxFlux = this.biomeChanger.getMaxEnergyStored(ForgeDirection.UNKNOWN);
         int fluxUsage = this.biomeChanger.getFluxUsage();
@@ -121,7 +120,7 @@ public class GuiBiomeChanger
 
         this.mc.fontRenderer.drawString(SAPUtils.translate(this.biomeChanger.getName()), 8, 6, 0x404040);
 
-        String unlocName = RegistryBlocks.biomeChanger.getUnlocalizedName() + ".gui.";
+        String unlocName = EspBlocks.biomeChanger.getUnlocalizedName() + ".gui.";
 
         this.mc.fontRenderer.drawString(SAPUtils.translate(unlocName + "flux.usage"), 28, 21, 0x707070);
         this.mc.fontRenderer.drawString(String.format("%d RF/t", fluxUsage), 33, 31, 0x000000);

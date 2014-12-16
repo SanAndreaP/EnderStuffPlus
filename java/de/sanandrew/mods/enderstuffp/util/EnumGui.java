@@ -9,8 +9,9 @@ package de.sanandrew.mods.enderstuffp.util;
 public enum EnumGui
 {
     ENDERPET,
-    WEATHERALTAR,
-    BIOMECHANGER;
+    WEATHER_ALTAR,
+    BIOME_CHANGER,
+    ORE_GENERATOR;
 
     public static final EnumGui[] VALUES = values();
 }

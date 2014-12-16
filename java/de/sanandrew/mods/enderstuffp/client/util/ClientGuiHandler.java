@@ -8,9 +8,11 @@ package de.sanandrew.mods.enderstuffp.client.util;
 
 import de.sanandrew.mods.enderstuffp.client.gui.GuiBiomeChanger;
 import de.sanandrew.mods.enderstuffp.client.gui.GuiEnderPet;
+import de.sanandrew.mods.enderstuffp.client.gui.GuiOreGenerator;
 import de.sanandrew.mods.enderstuffp.client.gui.GuiWeatherAltar;
 import de.sanandrew.mods.enderstuffp.entity.living.IEnderPet;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
+import de.sanandrew.mods.enderstuffp.tileentity.TileEntityOreGenerator;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityWeatherAltar;
 import de.sanandrew.mods.enderstuffp.util.EnumGui;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,10 +24,12 @@ public class ClientGuiHandler
         switch( EnumGui.VALUES[id] ) {
             case ENDERPET:
                 return new GuiEnderPet((IEnderPet) world.getEntityByID(x), player);
-            case WEATHERALTAR:
+            case WEATHER_ALTAR:
                 return new GuiWeatherAltar((TileEntityWeatherAltar) world.getTileEntity(x, y, z));
-            case BIOMECHANGER:
+            case BIOME_CHANGER:
                 return new GuiBiomeChanger((TileEntityBiomeChanger) world.getTileEntity(x, y, z));
+            case ORE_GENERATOR:
+                return new GuiOreGenerator(player.inventory, (TileEntityOreGenerator) world.getTileEntity(x, y, z));
         }
         return null;
     }

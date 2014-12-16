@@ -8,7 +8,7 @@ package de.sanandrew.mods.enderstuffp.item;
 
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeDataCrystal;
-import de.sanandrew.mods.enderstuffp.util.RegistryBlocks;
+import de.sanandrew.mods.enderstuffp.util.EspBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,7 +38,7 @@ public class ItemBlockBiomeDataCrystal
 
         for( BiomeGenBase biome : BiomeGenBase.getBiomeGenArray() ) {
             if( biome != null /*&& !RegistryBiomeChanger.isBiomeDisabled(biome)*/ ) {
-                ItemStack stack = new ItemStack(RegistryBlocks.biomeDataCrystal, 1, 0);
+                ItemStack stack = new ItemStack(EspBlocks.biomeDataCrystal, 1, 0);
                 NBTTagCompound nbt = new NBTTagCompound();
 
                 nbt.setShort(NBT_BIOME, (short) biome.biomeID);

@@ -161,7 +161,7 @@ public class EntityEnderMiss
             List<String> colors = RegistryRaincoats.getColorList();
             nbt.setString("base", bases.get(rand.nextInt(bases.size())));
             nbt.setString("color", colors.get(rand.nextInt(colors.size())));
-            ItemStack stack = new ItemStack(RegistryItems.rainCoat, 1, 0);
+            ItemStack stack = new ItemStack(EspItems.rainCoat, 1, 0);
             stack.setTagCompound(nbt);
             this.setCoat(stack);
         }
@@ -213,7 +213,7 @@ public class EntityEnderMiss
     }
 
     public boolean hasCoat() {
-        return this.getCoat().hasTagCompound() && this.getCoat().getItem() == RegistryItems.rainCoat;
+        return this.getCoat().hasTagCompound() && this.getCoat().getItem() == EspItems.rainCoat;
     }
 
     public boolean isCoatApplicable(ItemStack coat) {
@@ -246,7 +246,7 @@ public class EntityEnderMiss
 
     @Override
     protected Item getDropItem() {
-        return RegistryItems.espPearls;
+        return EspItems.espPearls;
     }
 
     @Override
@@ -342,7 +342,7 @@ public class EntityEnderMiss
                             playerItem.stackSize--;
 
                             return true;
-                        } else if( SAPUtils.areItemInstEqual(playerItem, RegistryItems.avisFeather) && !this.hasAvisFeather() ) {
+                        } else if( SAPUtils.areItemInstEqual(playerItem, EspItems.avisFeather) && !this.hasAvisFeather() ) {
                             this.setAvisFeather(true);
                             playerItem.stackSize--;
 
@@ -358,7 +358,7 @@ public class EntityEnderMiss
                             playerItem.stackSize--;
 
                             return true;
-                        } else if( SAPUtils.areItemInstEqual(playerItem, RegistryItems.enderPetStaff) ) {
+                        } else if( SAPUtils.areItemInstEqual(playerItem, EspItems.enderPetStaff) ) {
                             EnderStuffPlus.proxy.openGui(player, EnumGui.ENDERPET, this.getEntityId(), 0, 0);
 
                             return true;
@@ -636,7 +636,7 @@ public class EntityEnderMiss
     }
 
     public void setCoat(ItemStack stack) {
-        if( stack == null || stack.getItem() != RegistryItems.rainCoat ) {
+        if( stack == null || stack.getItem() != EspItems.rainCoat ) {
             stack = EMPTY_COAT_SLOT;
         }
 

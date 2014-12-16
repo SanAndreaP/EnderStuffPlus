@@ -10,7 +10,7 @@ import de.sanandrew.core.manpack.util.UsedByReflection;
 import de.sanandrew.mods.enderstuffp.item.ItemRaincoat;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EnumEnderPetEggInfo;
-import de.sanandrew.mods.enderstuffp.util.RegistryItems;
+import de.sanandrew.mods.enderstuffp.util.EspItems;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats.CoatBaseEntry;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats.CoatColorEntry;
@@ -106,7 +106,7 @@ public abstract class AEntityEnderAvis
     }
 
     public void setCoat(ItemStack stack) {
-        if( stack == null || stack.getItem() != RegistryItems.rainCoat ) {
+        if( stack == null || stack.getItem() != EspItems.rainCoat ) {
             stack = EMPTY_COAT_SLOT;
         }
 
@@ -114,7 +114,7 @@ public abstract class AEntityEnderAvis
     }
 
     public boolean hasCoat() {
-        return this.getCoat().hasTagCompound() && this.getCoat().getItem() == RegistryItems.rainCoat;
+        return this.getCoat().hasTagCompound() && this.getCoat().getItem() == EspItems.rainCoat;
     }
 
     public boolean isCoatApplicable(ItemStack coat) {

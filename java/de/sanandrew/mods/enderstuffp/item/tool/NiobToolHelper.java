@@ -3,7 +3,7 @@ package de.sanandrew.mods.enderstuffp.item.tool;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
-import de.sanandrew.mods.enderstuffp.util.RegistryItems;
+import de.sanandrew.mods.enderstuffp.util.EspItems;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,7 +34,7 @@ public final class NiobToolHelper
         int fortune = EnchantmentHelper.getFortuneModifier(player);
 
         if( shouldDropNugget && SAPUtils.RNG.nextInt(50) == 0 ) {
-            ItemStack nugget = new ItemStack(RegistryItems.endNugget, SAPUtils.RNG.nextInt(EnchantmentHelper.getFortuneModifier(player) + 1) + 1);
+            ItemStack nugget = new ItemStack(EspItems.endNugget, SAPUtils.RNG.nextInt(EnchantmentHelper.getFortuneModifier(player) + 1) + 1);
             nugget = EnchantmentHelper.getEnchantmentLevel(EnderStuffPlus.enderChestTel.effectId, stack) > 0
                         ? SAPUtils.addItemStackToInventory(nugget, player.getInventoryEnderChest())
                         : nugget;

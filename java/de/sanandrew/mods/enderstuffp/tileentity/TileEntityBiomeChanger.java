@@ -8,9 +8,9 @@ import de.sanandrew.mods.enderstuffp.network.EnumPacket;
 import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions.EnumAction;
+import de.sanandrew.mods.enderstuffp.util.EspBlocks;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
-import de.sanandrew.mods.enderstuffp.util.RegistryBlocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -102,7 +102,7 @@ public class TileEntityBiomeChanger
     private void changeBiomeBlock(int x, int z, int currBiome) {
         int x1 = x + this.xCoord;
         int z1 = z + this.zCoord;
-        int y = this.worldObj.getTopSolidOrLiquidBlock(x1, z1);
+        int y = this.worldObj.getTopSolidOrLiquidBlock(x1, z1) - 1;
 
         Chunk chunk = this.worldObj.getChunkFromBlockCoords(x1, z1);
         byte[] biomeArray = chunk.getBiomeArray();
@@ -110,19 +110,19 @@ public class TileEntityBiomeChanger
         if( this.isReplacingBlocks && !this.worldObj.isRemote ) {
             BiomeGenBase prevBiome = BiomeGenBase.getBiome(biomeArray[(z1 & 0xF) << 4 | (x1 & 0xF)] & 255);
 
-            if( this.worldObj.getBlock(x1, y - 1, z1) == prevBiome.topBlock && this.worldObj.canBlockSeeTheSky(x1, y, z1) ) {
+            if( this.worldObj.getBlock(x1, y, z1) == prevBiome.topBlock && this.worldObj.canBlockSeeTheSky(x1, y + 1, z1) ) {
                 BiomeGenBase biome = BiomeGenBase.getBiome(currBiome);
-                this.worldObj.setBlock(x1, y - 1, z1, biome.topBlock, biome.field_150604_aj, 2);
-                for( int i = 0; i < 5 && y - 1 - i >= 0; i++ ) {
-                    if( this.worldObj.getBlock(x1, y - 1 - i, z1) == prevBiome.fillerBlock ) {
-                        this.worldObj.setBlock(x1, y - 1 - i, z1, biome.fillerBlock, 0, 2);
+                this.worldObj.setBlock(x1, y, z1, biome.topBlock, biome.field_150604_aj, 2);
+                for( int i = 0; i < 5 && y - i >= 0; i++ ) {
+                    if( this.worldObj.getBlock(x1, y - i, z1) == prevBiome.fillerBlock ) {
+                        this.worldObj.setBlock(x1, y - i, z1, biome.fillerBlock, 0, 2);
                     }
                 }
             }
         }
 
         biomeArray[(z1 & 0xF) << 4 | (x1 & 0xF)] = (byte) currBiome;
-        EnderStuffPlus.proxy.handleParticle(EnumParticleFx.FX_BIOME_DATA, x1 + 0.5F, y, z1 + 0.5D, Unit.with((short) currBiome));
+        EnderStuffPlus.proxy.handleParticle(EnumParticleFx.FX_BIOME_DATA, x1 + 0.5F, y + 1, z1 + 0.5D, Unit.with((short) currBiome));
 
         chunk.setBiomeArray(biomeArray);
         chunk.setChunkModified();
@@ -140,7 +140,7 @@ public class TileEntityBiomeChanger
         nbt.setShort("maxRange", this.getMaxRange());
         nbt.setByte("radForm", (byte) this.perimForm.ordinal());
         nbt.setBoolean("isActive", this.isActive);
-        nbt.setBoolean("isReplacingBlocks", this.isActive);
+        nbt.setBoolean("isReplacingBlocks", this.isReplacingBlocks);
         nbt.setInteger("fluxAmount", this.fluxAmount);
         nbt.setInteger("usedFlux", this.usedFlux);
         if( this.customName != null ) {
@@ -167,7 +167,7 @@ public class TileEntityBiomeChanger
     }
 
     public String getName() {
-        return this.customName != null ? this.customName : RegistryBlocks.biomeChanger.getUnlocalizedName() + ".name";
+        return this.customName != null ? this.customName : EspBlocks.biomeChanger.getUnlocalizedName() + ".name";
     }
 
     public short getMaxRange() {

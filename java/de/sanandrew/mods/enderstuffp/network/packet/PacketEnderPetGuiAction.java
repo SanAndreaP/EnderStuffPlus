@@ -9,7 +9,7 @@ package de.sanandrew.mods.enderstuffp.network.packet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.enderstuffp.entity.living.IEnderPet;
 import de.sanandrew.mods.enderstuffp.network.IPacket;
-import de.sanandrew.mods.enderstuffp.util.RegistryItems;
+import de.sanandrew.mods.enderstuffp.util.EspItems;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
@@ -48,7 +48,7 @@ public class PacketEnderPetGuiAction
                 case 3:
                     {
                         if( playerMP.inventory.hasItem(Items.egg) || playerMP.capabilities.isCreativeMode ) {
-                            ItemStack stack = new ItemStack(RegistryItems.enderPetEgg, 1);
+                            ItemStack stack = new ItemStack(EspItems.enderPetEgg, 1);
                             NBTTagCompound nbt = new NBTTagCompound();
                             pet.writePetToNBT(nbt);
                             stack.setTagCompound(nbt);

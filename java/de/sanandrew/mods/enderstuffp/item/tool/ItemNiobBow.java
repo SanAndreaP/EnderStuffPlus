@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
-import de.sanandrew.mods.enderstuffp.util.RegistryItems;
+import de.sanandrew.mods.enderstuffp.util.EspItems;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBow;
@@ -30,7 +30,7 @@ public class ItemNiobBow
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(ItemStack stack, int pass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-        if( usingItem != null && usingItem.getItem() == RegistryItems.niobBow ) {
+        if( usingItem != null && usingItem.getItem() == EspItems.niobBow ) {
             int k = usingItem.getMaxItemUseDuration() - useRemaining;
             if( k >= 9 ) {
                 return this.bowPowIII;
@@ -47,7 +47,7 @@ public class ItemNiobBow
 
     @Override
     public boolean getIsRepairable(ItemStack brokenItem, ItemStack repairItem) {
-        return repairItem.getItem() == RegistryItems.endIngot || super.getIsRepairable(brokenItem, repairItem);
+        return repairItem.getItem() == EspItems.endIngot || super.getIsRepairable(brokenItem, repairItem);
     }
 
     @Override

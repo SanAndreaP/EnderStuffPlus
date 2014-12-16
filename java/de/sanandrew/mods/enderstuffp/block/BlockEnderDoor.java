@@ -2,7 +2,7 @@ package de.sanandrew.mods.enderstuffp.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.mods.enderstuffp.util.RegistryItems;
+import de.sanandrew.mods.enderstuffp.util.EspItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.IconFlipped;
@@ -158,13 +158,13 @@ public class BlockEnderDoor
 
     @Override
     public Item getItemDropped(int meta, Random random, int fortuneLevel) {
-        return ((meta & 8) != 0) ? Item.getItemById(0) : RegistryItems.itemNiobDoor;
+        return ((meta & 8) != 0) ? Item.getItemById(0) : EspItems.itemNiobDoor;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public Item getItem(World world, int x, int y, int z) {
-        return RegistryItems.itemNiobDoor;
+        return EspItems.itemNiobDoor;
     }
 
     public boolean isDoorOpen(IBlockAccess blockAccess, int x, int y, int z) {

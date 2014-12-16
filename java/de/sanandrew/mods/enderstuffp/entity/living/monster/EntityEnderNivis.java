@@ -2,7 +2,7 @@ package de.sanandrew.mods.enderstuffp.entity.living.monster;
 
 import de.sanandrew.mods.enderstuffp.entity.living.IEnderCreature;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
-import de.sanandrew.mods.enderstuffp.util.RegistryItems;
+import de.sanandrew.mods.enderstuffp.util.EspItems;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.init.Blocks;
@@ -60,7 +60,7 @@ public class EntityEnderNivis
             j += this.rand.nextInt(lootingLvl + 1);
         }
 
-        this.entityDropItem(new ItemStack(RegistryItems.espPearls, j, 0), 0.0F);
+        this.entityDropItem(new ItemStack(EspItems.espPearls, j, 0), 0.0F);
     }
 
     @Override

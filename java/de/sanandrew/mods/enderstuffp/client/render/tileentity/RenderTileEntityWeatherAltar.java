@@ -1,7 +1,5 @@
 package de.sanandrew.mods.enderstuffp.client.render.tileentity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.enderstuffp.client.event.TextureStitchHandler;
 import de.sanandrew.mods.enderstuffp.client.model.tileentity.ModelWeatherAltar;
@@ -17,9 +15,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
 public class RenderTileEntityWeatherAltar
-    extends TileEntitySpecialRenderer
+        extends TileEntitySpecialRenderer
 {
     ModelWeatherAltar modelBlock = new ModelWeatherAltar();
 
@@ -38,7 +35,7 @@ public class RenderTileEntityWeatherAltar
         GL11.glPushMatrix();
         GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.25F, -0.0421875F);
-        GL11.glTranslatef(0f, 0f, 0.084375F);
+        GL11.glTranslatef(0.0f, 0.0f, 0.084375F);
 
         this.bindTexture(TextureMap.locationItemsTexture);
 
@@ -58,15 +55,15 @@ public class RenderTileEntityWeatherAltar
 
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-        GL11.glRotatef(180F, 1F, 0F, 0F);
-        GL11.glRotatef(te.getWorldObj().getBlockMetadata(te.xCoord, te.yCoord, te.zCoord) * 90F, 0F, 1F, 0F);
+        GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(te.getWorldObj().getBlockMetadata(te.xCoord, te.yCoord, te.zCoord) * 90.0F, 0.0F, 1.0F, 0.0F);
 
         this.modelBlock.renderBlock();
 
-        GL11.glRotatef(-180F, 1F, 0F, 0F);
+        GL11.glRotatef(-180.0F, 1.0F, 0.0F, 0.0F);
         GL11.glScalef(0.25F, 0.25F, 0.25F);
         GL11.glTranslatef(0.0F, -2.5F, 0.0F);
-        GL11.glTranslatef(1.25F, 0F, 0F);
+        GL11.glTranslatef(1.25F, 0.0F, 0.0F);
 
         float sunFloat = 0.5F - (itmFloat.getValue0()[0] + (itmFloat.getValue1()[0] - itmFloat.getValue0()[0]) * partTicks) * 0.5F;
         float rainFloat = 0.5F - (itmFloat.getValue0()[1] + (itmFloat.getValue1()[1] - itmFloat.getValue0()[1]) * partTicks) * 0.5F;
@@ -74,17 +71,17 @@ public class RenderTileEntityWeatherAltar
 
         RenderHelper.disableStandardItemLighting();
 
-        GL11.glTranslatef(0F, -sunFloat, 0F);
-        this.renderIcon(TextureStitchHandler.sunIcon, 1F - sunFloat, 1F - sunFloat, 1F - sunFloat);
-        GL11.glTranslatef(0F, sunFloat, 0F);
+        GL11.glTranslatef(0.0F, -sunFloat, 0.0F);
+        this.renderIcon(TextureStitchHandler.sunIcon, 1.0F - sunFloat, 1.0F - sunFloat, 1.0F - sunFloat);
+        GL11.glTranslatef(0.0F, sunFloat, 0.0F);
 
-        GL11.glTranslatef(-1.25F, -rainFloat, 0F);
-        this.renderIcon(TextureStitchHandler.rainIcon, 1F - rainFloat, 1F - rainFloat, 1F - rainFloat);
-        GL11.glTranslatef(0F, rainFloat, 0F);
+        GL11.glTranslatef(-1.25F, -rainFloat, 0.0F);
+        this.renderIcon(TextureStitchHandler.rainIcon, 1.0F - rainFloat, 1.0F - rainFloat, 1.0F - rainFloat);
+        GL11.glTranslatef(0.0F, rainFloat, 0.0F);
 
-        GL11.glTranslatef(-1.25F, -stormFloat, 0F);
-        this.renderIcon(TextureStitchHandler.thunderIcon, 1F - stormFloat, 1F - stormFloat, 1F - stormFloat);
-        GL11.glTranslatef(0F, stormFloat, 0F);
+        GL11.glTranslatef(-1.25F, -stormFloat, 0.0F);
+        this.renderIcon(TextureStitchHandler.thunderIcon, 1.0F - stormFloat, 1.0F - stormFloat, 1.0F - stormFloat);
+        GL11.glTranslatef(0.0F, stormFloat, 0.0F);
 
         RenderHelper.enableStandardItemLighting();
 

@@ -52,7 +52,7 @@ public class ItemNiobShears
 
     @Override
     public int getItemEnchantability() {
-        return RegistryItems.toolNiobium.getEnchantability();
+        return EspItems.toolNiobium.getEnchantability();
     }
 
     private List<Block> getShearable(ItemStack stack, World worldObj, int x, int y, int z) {

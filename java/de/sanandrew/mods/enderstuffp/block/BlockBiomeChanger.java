@@ -53,7 +53,7 @@ public class BlockBiomeChanger
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xOffset, float yOffset, float zOffset) {
         if( !world.isRemote ) {
-            EnderStuffPlus.proxy.openGui(player, EnumGui.BIOMECHANGER, x, y, z);
+            EnderStuffPlus.proxy.openGui(player, EnumGui.BIOME_CHANGER, x, y, z);
         }
 
         return true;

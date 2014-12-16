@@ -10,7 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;
 
-public final class RegistryBlocks
+public final class EspBlocks
 {
     public static Block avisEgg;
 

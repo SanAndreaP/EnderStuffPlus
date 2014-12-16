@@ -5,7 +5,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
-import de.sanandrew.mods.enderstuffp.util.RegistryItems;
+import de.sanandrew.mods.enderstuffp.util.EspItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -81,7 +81,7 @@ public final class RegistryRaincoats
                  new ItemStack(Items.gold_nugget)
         );
         addColor(EnderStuffPlus.MOD_ID, "niobium", 0x141E61, "textures/entity/enderMiss_cape/niob.png", "textures/entity/enderAvis_cape/niob.png",
-                 new ItemStack(RegistryItems.endNugget, 1, 0)
+                 new ItemStack(EspItems.endNugget, 1, 0)
         );
 
         addSpecialColor(EnderStuffPlus.MOD_ID, new CoatColorTransparent("transparent", 0xCDCDCD,

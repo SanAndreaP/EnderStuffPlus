@@ -7,7 +7,7 @@
 package de.sanandrew.mods.enderstuffp.entity.living.monster;
 
 import de.sanandrew.core.manpack.util.UsedByReflection;
-import de.sanandrew.mods.enderstuffp.util.RegistryItems;
+import de.sanandrew.mods.enderstuffp.util.EspItems;
 import de.sanandrew.mods.enderstuffp.entity.living.AEntityEnderAvis;
 import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
 import net.minecraft.item.Item;
@@ -56,7 +56,7 @@ public class EntityEnderAvisWild
 
     @Override
     protected Item getDropItem() {
-        return RegistryItems.avisFeather;
+        return EspItems.avisFeather;
     }
 
     private boolean isValidLightLevel() {

@@ -9,6 +9,8 @@ package de.sanandrew.mods.enderstuffp.block;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityOreGenerator;
+import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
+import de.sanandrew.mods.enderstuffp.util.EnumGui;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -18,7 +20,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -37,9 +38,9 @@ public class BlockOreGenerator
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xOffset, float yOffset, float zOffset) {
-        TileEntityOreGenerator tileEntity = (TileEntityOreGenerator) world.getTileEntity(x, y, z);
-
-        player.addChatMessage(new ChatComponentText(Integer.toString(world.getBlockMetadata(x, y, z))));
+        if( !world.isRemote ) {
+            EnderStuffPlus.proxy.openGui(player, EnumGui.ORE_GENERATOR, x, y, z);
+        }
 
         return true;
     }

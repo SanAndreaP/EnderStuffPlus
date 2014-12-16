@@ -1,8 +1,8 @@
 package de.sanandrew.mods.enderstuffp.item;
 
 import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
+import de.sanandrew.mods.enderstuffp.util.EspBlocks;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
-import de.sanandrew.mods.enderstuffp.util.RegistryBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -71,7 +71,7 @@ public class ItemNiobDoor
         } else {
             ++y;
 
-            Block block = RegistryBlocks.blockEndDoor;
+            Block block = EspBlocks.blockEndDoor;
 
             if( player.canPlayerEdit(x, y, z, side, stack) && player.canPlayerEdit(x, y + 1, z, side, stack) ) {
                 if( !block.canPlaceBlockAt(world, x, y, z) ) {

@@ -1,6 +1,6 @@
 package de.sanandrew.mods.enderstuffp.enchantment;
 
-import de.sanandrew.mods.enderstuffp.util.RegistryItems;
+import de.sanandrew.mods.enderstuffp.util.EspItems;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.item.Item;
@@ -18,8 +18,8 @@ public class EnchantmentEnderChestTeleport
     public boolean canApply(ItemStack stack) {
         Item itm = stack.getItem();
         return super.canApply(stack)
-               && (itm == RegistryItems.niobPick || itm == RegistryItems.niobAxe || itm == RegistryItems.niobShovel || itm == RegistryItems.niobHoe
-                   || itm == RegistryItems.niobSword || itm == RegistryItems.niobShears);
+               && (itm == EspItems.niobPick || itm == EspItems.niobAxe || itm == EspItems.niobShovel || itm == EspItems.niobHoe
+                   || itm == EspItems.niobSword || itm == EspItems.niobShears);
     }
 
     @Override
