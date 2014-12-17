@@ -254,7 +254,7 @@ public class EntityEnderAvis
 //    }
 
 //    @Override
-//    public String getName() {
+//    public String getInventoryName() {
 //        return this.getCustomNameTag();
 //    }
 
@@ -659,7 +659,7 @@ public class EntityEnderAvis
 //        if( par1nbtTagCompound.hasKey("petName") ) {
 //            this.setName(par1nbtTagCompound.getString("petName"));
 //        }
-//        if( this.getName().equals(EnumChatFormatting.OBFUSCATED + "RANDOM" + EnumChatFormatting.RESET) ) {
+//        if( this.getInventoryName().equals(EnumChatFormatting.OBFUSCATED + "RANDOM" + EnumChatFormatting.RESET) ) {
 //            this.setName("");
 //        }
 //    }

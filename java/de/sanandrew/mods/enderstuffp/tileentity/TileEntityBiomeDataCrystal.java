@@ -9,18 +9,23 @@ package de.sanandrew.mods.enderstuffp.tileentity;
 import de.sanandrew.core.manpack.util.javatuples.Unit;
 import de.sanandrew.mods.enderstuffp.network.EnumPacket;
 import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
+import de.sanandrew.mods.enderstuffp.network.packet.PacketTileDataSync.ITileSync;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
+import java.io.IOException;
 import java.util.Random;
 
 public class TileEntityBiomeDataCrystal
         extends TileEntity
+    implements ITileSync
 {
     public int dataProgress = 0;
     public short biomeID = -1;
@@ -50,7 +55,7 @@ public class TileEntityBiomeDataCrystal
 
             if( this.prevDataProgress != this.dataProgress ) {
                 this.prevDataProgress = this.dataProgress;
-                PacketProcessor.sendToAllAround(EnumPacket.TILE_ENERGY_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F,
+                PacketProcessor.sendToAllAround(EnumPacket.TILE_DATA_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F,
                                                 Unit.with(this));
             }
         }
@@ -89,5 +94,15 @@ public class TileEntityBiomeDataCrystal
 
     public int getBiomeID() {
         return this.biomeID < 0 ? 0 : this.biomeID;
+    }
+
+    @Override
+    public void writeToStream(ByteBufOutputStream stream) throws IOException {
+        stream.writeInt(this.dataProgress);
+    }
+
+    @Override
+    public void readFromStream(ByteBufInputStream stream) throws IOException {
+        this.dataProgress = stream.readInt();
     }
 }

@@ -26,3 +26,23 @@ CONSIDER
 	- carminite as possible end mineral
     - add compatibility for Thermal Expansion Pulverizer
     - add compatibility for Tinkers Construct
+
+            rarity      flux/tick       time/ingot      total generated
+            in %                        in s            in RF
+
+    coal    1.00        40               250              10_000
+    iron    0.55        40               500              20_000
+    gold    0.11        80               1200             96_000
+   lapis    0.81        40               300              12_000
+redstone    4.10         5               250               1_250
+ emerald    0.20        60               900              54_000
+ diamond    0.09        120              900             10_8000
+
+ niobium    0.22        80               600              48_000
+tantalum    0.10        120              800              96_000
+
+  copper    0.60        30               500              15_000
+     tin    0.60        30               500              15_000
+    lead    0.50        40               500              20_000
+  silver    0.50        40               500              20_000
+  nickel    0.20       120               400              48_000

@@ -1,4 +1,4 @@
-package de.sanandrew.mods.enderstuffp.util;
+package de.sanandrew.mods.enderstuffp.util.manager;
 
 import com.google.common.collect.Maps;
 import net.minecraft.item.ItemStack;
@@ -7,10 +7,11 @@ import net.minecraft.world.biome.BiomeGenBase;
 import java.util.*;
 import java.util.Map.Entry;
 
-public class RegistryBiomeChanger
+@Deprecated
+public class BiomeChangerManager
 {
-    private static final List<Integer> disabledBiomesList = new ArrayList<>();
-    private static final HashMap<Integer, Entry<ItemStack, Integer>> fuelList = Maps.newHashMap();
+    private static final List<Integer> DISABLED_BIOMES_LIST = new ArrayList<>();
+    private static final HashMap<Integer, Entry<ItemStack, Integer>> FUEL_LIST = Maps.newHashMap();
 
     public static void initialize() {
 //        addNewFuel(new ItemStack(Items.diamond), 1);
@@ -38,35 +39,35 @@ public class RegistryBiomeChanger
         if( getMultiFromStack(stack) > 0 ) {
             return false;
         } else {
-            fuelList.put(getNewFuelID(), new AbstractMap.SimpleEntry<ItemStack, Integer>(stack, multiplicator));
+            FUEL_LIST.put(getNewFuelID(), new AbstractMap.SimpleEntry<ItemStack, Integer>(stack, multiplicator));
         }
 
         return true;
     }
 
     public static boolean disableBiome(int biomeID) {
-        if( disabledBiomesList.contains(biomeID) ) {
+        if( DISABLED_BIOMES_LIST.contains(biomeID) ) {
             return false;
         }
 
-        disabledBiomesList.add(biomeID);
+        DISABLED_BIOMES_LIST.add(biomeID);
         return true;
     }
 
     public static List<Integer> getDisabledBiomes() {
-        return new ArrayList<>(disabledBiomesList);
+        return new ArrayList<>(DISABLED_BIOMES_LIST);
     }
 
     public static boolean isBiomeDisabled(BiomeGenBase biome) {
-        return disabledBiomesList.contains(biome.biomeID);
+        return DISABLED_BIOMES_LIST.contains(biome.biomeID);
     }
 
     public static HashMap<Integer, Entry<ItemStack, Integer>> getFuelList() {
-        return Maps.newHashMap(fuelList);
+        return Maps.newHashMap(FUEL_LIST);
     }
 
     public static int getMultiFromStack(ItemStack stack) {
-        Iterator<Entry<Integer, Entry<ItemStack, Integer>>> iterator = fuelList.entrySet().iterator();
+        Iterator<Entry<Integer, Entry<ItemStack, Integer>>> iterator = FUEL_LIST.entrySet().iterator();
         while( iterator.hasNext() && stack != null ) {
             Entry<ItemStack, Integer> entry = iterator.next().getValue();
 
@@ -79,6 +80,6 @@ public class RegistryBiomeChanger
     }
 
     private static int getNewFuelID() {
-        return fuelList.size();
+        return FUEL_LIST.size();
     }
 }

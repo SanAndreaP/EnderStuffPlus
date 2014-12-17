@@ -9,7 +9,7 @@ package de.sanandrew.mods.enderstuffp.entity.living;
 import de.sanandrew.core.manpack.util.UsedByReflection;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.util.*;
-import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
+import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -160,7 +160,7 @@ public class EntityEnderAvisPet
 
     @Override
     public float getAIMoveSpeed() {
-        return this.isSitting() ? 0.0F : (this.isRidden() ? 0.2F + (this.getCoatBase() == RegistryRaincoats.baseGold ? 0.05F : 0.0F) : 0.1F);
+        return this.isSitting() ? 0.0F : (this.isRidden() ? 0.2F + (this.getCoatBase() == RaincoatManager.baseGold ? 0.05F : 0.0F) : 0.1F);
     }
 
     @Override
@@ -333,7 +333,7 @@ public class EntityEnderAvisPet
                     this.jumpMovementFactor = (this.getAIMoveSpeed() * 1.6F) / 3.0F;
                     this.motionY = 0.4D;
 
-                    if( this.getCoatBase() == RegistryRaincoats.baseRedstone ) {
+                    if( this.getCoatBase() == RaincoatManager.baseRedstone ) {
                         this.motionY += 0.1F;
                     }
 

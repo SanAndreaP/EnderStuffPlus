@@ -104,4 +104,9 @@ public class ModelOreGenerator
         reinfBarBottomLeftT.render(0.0625F);
         reinfBarBottomLeftB.render(0.0625F);
     }
+
+    public void addGrinderRotation(double rotation) {
+        this.grinderAxis1.rotateAngleX += rotation;
+        this.grinderAxis2.rotateAngleX -= rotation;
+    }
 }

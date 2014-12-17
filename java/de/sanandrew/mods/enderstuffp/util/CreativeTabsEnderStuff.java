@@ -7,7 +7,7 @@
 package de.sanandrew.mods.enderstuffp.util;
 
 import de.sanandrew.mods.enderstuffp.item.ItemBlockBiomeDataCrystal;
-import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
+import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -38,8 +38,8 @@ public final class CreativeTabsEnderStuff
                     if( this.stack == null ) {
                         this.stack = new ItemStack(EspItems.rainCoat);
                         NBTTagCompound nbt = new NBTTagCompound();
-                        nbt.setString("base", RegistryRaincoats.baseGold.getUUID());
-                        nbt.setString("color", RegistryRaincoats.getColor(EnderStuffPlus.MOD_ID, "purple").getUUID());
+                        nbt.setString("base", RaincoatManager.baseGold.getUUID());
+                        nbt.setString("color", RaincoatManager.getColor(EnderStuffPlus.MOD_ID, "purple").getUUID());
                         this.stack.setTagCompound(nbt);
                     }
 

@@ -5,9 +5,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
-import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
-import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats.CoatBaseEntry;
-import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats.CoatColorEntry;
+import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager;
+import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager.CoatBaseEntry;
+import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager.CoatColorEntry;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,12 +36,12 @@ public class ItemRaincoat
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public void addInformation(ItemStack stack, EntityPlayer player, List infos, boolean isAdvancedInfo) {
         if( stack.hasTagCompound() ) {
-            CoatColorEntry clr = RegistryRaincoats.getColor(stack.getTagCompound().getString("color"));
+            CoatColorEntry clr = RaincoatManager.getColor(stack.getTagCompound().getString("color"));
             infos.add(EnumChatFormatting.BOLD + SAPUtils.translate(clr.getUnlocalizedName()));
 
 
-            CoatBaseEntry entry = RegistryRaincoats.getBase(stack.getTagCompound().getString("base"));
-            if( entry != RegistryRaincoats.NULL_BASE ) {
+            CoatBaseEntry entry = RaincoatManager.getBase(stack.getTagCompound().getString("base"));
+            if( entry != RaincoatManager.NULL_BASE ) {
                 infos.add(EnumChatFormatting.ITALIC + SAPUtils.translate(entry.getUnlocalizedName()));
                 String[] split = SAPUtils.translate(entry.desc).split("<BREAK>");
                 for( String effect : split ) {
@@ -55,8 +55,8 @@ public class ItemRaincoat
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int pass) {
         if( stack.hasTagCompound() ) {
-            CoatBaseEntry base = RegistryRaincoats.getBase(stack.getTagCompound().getString("base"));
-            CoatColorEntry color = RegistryRaincoats.getColor(stack.getTagCompound().getString("color"));
+            CoatBaseEntry base = RaincoatManager.getBase(stack.getTagCompound().getString("base"));
+            CoatColorEntry color = RaincoatManager.getColor(stack.getTagCompound().getString("color"));
             if( pass == 0 ) {
                 return color.color;
             } else if( pass > 0 ) {
@@ -77,8 +77,8 @@ public class ItemRaincoat
     @SideOnly(Side.CLIENT)
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
-        for( String base : RegistryRaincoats.getBaseList() ) {
-            for( String color : RegistryRaincoats.getColorList() ) {
+        for( String base : RaincoatManager.getBaseList() ) {
+            for( String color : RaincoatManager.getColorList() ) {
                 NBTTagCompound nbt = new NBTTagCompound();
                 ItemStack is = new ItemStack(this, 1, 0);
                 nbt.setString("base", base);

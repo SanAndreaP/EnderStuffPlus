@@ -1,4 +1,4 @@
-package de.sanandrew.mods.enderstuffp.util.raincoat;
+package de.sanandrew.mods.enderstuffp.util.manager.raincoat;
 
 import com.google.common.collect.Maps;
 import cpw.mods.fml.relauncher.Side;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public final class RegistryRaincoats
+public final class RaincoatManager
 {
     private static final Map<String, CoatBaseEntry> BASE_LIST = Maps.newLinkedHashMap();
     private static final Map<String, CoatColorEntry> COLOR_LIST = Maps.newLinkedHashMap();

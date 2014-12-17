@@ -5,9 +5,9 @@ import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.core.manpack.util.javatuples.Unit;
 import de.sanandrew.mods.enderstuffp.item.ItemRaincoat;
 import de.sanandrew.mods.enderstuffp.util.*;
-import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
-import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats.CoatBaseEntry;
-import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats.CoatColorEntry;
+import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager;
+import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager.CoatBaseEntry;
+import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager.CoatColorEntry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -157,8 +157,8 @@ public class EntityEnderMiss
         if( this.rand.nextInt(2) == 0 ) {
             NBTTagCompound nbt = new NBTTagCompound();
 
-            List<String> bases = RegistryRaincoats.getBaseList();
-            List<String> colors = RegistryRaincoats.getColorList();
+            List<String> bases = RaincoatManager.getBaseList();
+            List<String> colors = RaincoatManager.getColorList();
             nbt.setString("base", bases.get(rand.nextInt(bases.size())));
             nbt.setString("color", colors.get(rand.nextInt(colors.size())));
             ItemStack stack = new ItemStack(EspItems.rainCoat, 1, 0);
@@ -181,7 +181,7 @@ public class EntityEnderMiss
 
     @Override
     public float getAIMoveSpeed() {
-        return this.isSitting() ? 0.0F : (this.isRidden() ? 0.2F + (this.getCoatBase() == RegistryRaincoats.baseGold ? 0.05F : 0.0F) : 0.1F);
+        return this.isSitting() ? 0.0F : (this.isRidden() ? 0.2F + (this.getCoatBase() == RaincoatManager.baseGold ? 0.05F : 0.0F) : 0.1F);
     }
 
     @Override
@@ -231,12 +231,12 @@ public class EntityEnderMiss
 
     @Override
     public CoatBaseEntry getCoatBase() {
-        return this.hasCoat() ? RegistryRaincoats.getBase(this.getCoat().getTagCompound().getString("base")) : RegistryRaincoats.NULL_BASE;
+        return this.hasCoat() ? RaincoatManager.getBase(this.getCoat().getTagCompound().getString("base")) : RaincoatManager.NULL_BASE;
     }
 
     @Override
     public CoatColorEntry getCoatColor() {
-        return this.hasCoat() ? RegistryRaincoats.getColor(this.getCoat().getTagCompound().getString("color")) : RegistryRaincoats.NULL_COLOR;
+        return this.hasCoat() ? RaincoatManager.getColor(this.getCoat().getTagCompound().getString("color")) : RaincoatManager.NULL_COLOR;
     }
 
     @Override
@@ -403,7 +403,7 @@ public class EntityEnderMiss
 
     @Override
     public boolean isPotionApplicable(PotionEffect effect) {
-        return this.getCoatBase() != RegistryRaincoats.baseNiob || !Potion.potionTypes[effect.getPotionID()].isBadEffect();
+        return this.getCoatBase() != RaincoatManager.baseNiob || !Potion.potionTypes[effect.getPotionID()].isBadEffect();
     }
 
     public boolean isRidden() {
@@ -458,7 +458,7 @@ public class EntityEnderMiss
                 this.motionY += (this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F;
             }
 
-            if( this.getCoatBase() == RegistryRaincoats.baseRedstone ) {
+            if( this.getCoatBase() == RaincoatManager.baseRedstone ) {
                 this.motionY += 0.1F;
             }
 
@@ -503,7 +503,7 @@ public class EntityEnderMiss
 
         if( !this.worldObj.isRemote ) {
             if( this.prevCoatBase != this.getCoat() ) {
-                if( this.hasCoat() && RegistryRaincoats.getBase(this.getCoat().getTagCompound().getString("base")) == RegistryRaincoats.baseObsidian ) {
+                if( this.hasCoat() && RaincoatManager.getBase(this.getCoat().getTagCompound().getString("base")) == RaincoatManager.baseObsidian ) {
                     this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(60.0D);
                 } else {
                     this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);

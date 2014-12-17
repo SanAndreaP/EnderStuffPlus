@@ -8,9 +8,6 @@ package de.sanandrew.mods.enderstuffp.network.packet;
 
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.enderstuffp.network.IPacket;
-import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
-import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeDataCrystal;
-import de.sanandrew.mods.enderstuffp.tileentity.TileEntityOreGenerator;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -20,12 +17,12 @@ import net.minecraft.tileentity.TileEntity;
 
 import java.io.IOException;
 
-public class PacketTileEnergySync
+public class PacketTileDataSync
         implements IPacket
 {
     @Override
     public void process(ByteBufInputStream stream, ByteBuf rawData, INetHandler handler) throws IOException {
-        EnderStuffPlus.proxy.syncTileEnergy(stream.readInt(), stream.readInt(), stream.readInt(), stream);
+        EnderStuffPlus.proxy.syncTileData(stream.readInt(), stream.readInt(), stream.readInt(), stream);
     }
 
     @Override
@@ -36,13 +33,13 @@ public class PacketTileEnergySync
         stream.writeInt(tile.yCoord);
         stream.writeInt(tile.zCoord);
 
-        if( tile instanceof TileEntityBiomeChanger ) {
-            stream.writeInt(((TileEntityBiomeChanger) tile).fluxAmount);
-            stream.writeInt(((TileEntityBiomeChanger) tile).usedFlux);
-        } else if( tile instanceof TileEntityOreGenerator ) {
-            stream.writeInt(((TileEntityOreGenerator) tile).fluxAmount);
-        } else if( tile instanceof TileEntityBiomeDataCrystal ) {
-            stream.writeInt(((TileEntityBiomeDataCrystal) tile).dataProgress);
+        if( tile instanceof ITileSync ) {
+            ((ITileSync) tile).writeToStream(stream);
         }
+    }
+
+    public static interface ITileSync {
+        public void writeToStream(ByteBufOutputStream stream) throws IOException;
+        public void readFromStream(ByteBufInputStream stream) throws IOException;
     }
 }

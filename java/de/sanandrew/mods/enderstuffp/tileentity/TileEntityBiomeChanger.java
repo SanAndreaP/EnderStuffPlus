@@ -8,9 +8,12 @@ import de.sanandrew.mods.enderstuffp.network.EnumPacket;
 import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions.EnumAction;
+import de.sanandrew.mods.enderstuffp.network.packet.PacketTileDataSync.ITileSync;
 import de.sanandrew.mods.enderstuffp.util.EspBlocks;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -22,9 +25,11 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.io.IOException;
+
 public class TileEntityBiomeChanger
     extends TileEntity
-    implements IEnergyHandler
+    implements IEnergyHandler, ITileSync
 {
     private short currRange = 0;
     private boolean isActive = false;
@@ -166,7 +171,7 @@ public class TileEntityBiomeChanger
         }
     }
 
-    public String getName() {
+    public String getInventoryName() {
         return this.customName != null ? this.customName : EspBlocks.biomeChanger.getUnlocalizedName() + ".name";
     }
 
@@ -305,7 +310,7 @@ public class TileEntityBiomeChanger
         if( !worldObj.isRemote && (this.prevFluxAmount != this.fluxAmount || this.prevUsedFlux != this.usedFlux ) ) {
             this.prevFluxAmount = this.fluxAmount;
             this.prevUsedFlux = this.usedFlux;
-            PacketProcessor.sendToAllAround(EnumPacket.TILE_ENERGY_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F,
+            PacketProcessor.sendToAllAround(EnumPacket.TILE_DATA_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F,
                                             Unit.with(this)
             );
         }
@@ -361,7 +366,7 @@ public class TileEntityBiomeChanger
 
     @Override
     public int getMaxEnergyStored(ForgeDirection forgeDirection) {
-        return 51_200;
+        return 75_000;
     }
 
     @Override
@@ -380,6 +385,18 @@ public class TileEntityBiomeChanger
         }
 
         return -1;
+    }
+
+    @Override
+    public void writeToStream(ByteBufOutputStream stream) throws IOException {
+        stream.writeInt(this.fluxAmount);
+        stream.writeInt(this.usedFlux);
+    }
+
+    @Override
+    public void readFromStream(ByteBufInputStream stream) throws IOException {
+        this.fluxAmount = stream.readInt();
+        this.usedFlux = stream.readInt();
     }
 
     public static enum EnumPerimForm

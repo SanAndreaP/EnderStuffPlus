@@ -28,8 +28,6 @@ public class PacketParticleFX
 
     @Override
     public void writeData(ByteBufOutputStream stream, Tuple dataTuple) throws IOException {
-
-
         stream.writeByte((byte) dataTuple.getValue(0));
         stream.writeDouble((double) dataTuple.getValue(1));
         stream.writeDouble((double) dataTuple.getValue(2));

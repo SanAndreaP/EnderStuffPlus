@@ -7,6 +7,7 @@ import de.sanandrew.mods.enderstuffp.client.model.tileentity.ModelOreGenerator;
 import de.sanandrew.mods.enderstuffp.client.util.EnumTextures;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityOreGenerator;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
@@ -25,6 +26,26 @@ public class RenderTileEntityOreGenerator
         final double displayY = -0.775D;
         final double displayHeight = 0.0775D;
 
+        if( te.ticksGenRemain > 0 ) {
+            if( te.displayAmplitude < 1.0D ) {
+                te.displayAmplitude += 0.05D;
+            }
+        } else {
+            if( te.displayAmplitude > 0.0D ) {
+                te.displayAmplitude -= 0.05D;
+            } else if( te.displayAmplitude < 0.0D ) {
+                te.displayAmplitude = 0.0D;
+            }
+        }
+
+        if( !Minecraft.getMinecraft().isGamePaused() ) {
+            te.displayDrawCycles++;
+            if( te.displayDrawCycles >= 3200 ) {
+                te.displayDrawCycles = 0;
+            }
+            this.modelBlock.addGrinderRotation(te.displayAmplitude / 3.0D);
+        }
+
         this.bindTexture(EnumTextures.ORE_GENERATOR.getResource());
 
         GL11.glPushMatrix();
@@ -39,18 +60,16 @@ public class RenderTileEntityOreGenerator
         GL11.glTranslatef(0.0F, -2.5F, 0.0F);
         GL11.glTranslatef(1.25F, 0.0F, 0.0F);
 
-        if( !Minecraft.getMinecraft().isGamePaused() ) {
-            te.drawCycles++;
-            if( te.drawCycles >= 3200 ) {
-                te.drawCycles = 0;
-            }
-        }
-
+        int bright = 0xF0;
+        int brightX = bright % 65536;
+        int brightY = bright / 65536;
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX / 1.0F, brightY / 1.0F);
         for( int i = 0; i < 40; i++ ) {
-            double yShift = Math.sin((te.drawCycles * (i / 80.0D + 0.625D)) / 20.0D * Math.PI) * 6.0D * displayHeight;
+            double yShift = Math.sin((te.displayDrawCycles * (i / 80.0D + 0.625D)) / 20.0D * Math.PI) * 6.0D * displayHeight * te.displayAmplitude;
             GL11.glColor4f(0.2F, 0.2F, 1.0F, 1.0F);
             SAPClientUtils.drawSquareZPos(displayX + i*0.025D, displayY + yShift, displayX + 0.025D + i * 0.025D, displayY + 0.05 + yShift, 2.02);
         }
+
 
         GL11.glPopMatrix();
     }

@@ -18,7 +18,8 @@ public enum EnumParticleFx
     FX_MISS_TELEPORT,
     FX_AVIS_EGG,
     FX_WEATHER_ALTAR,
-    FX_BIOME_DATA;
+    FX_BIOME_DATA,
+    FX_ORE_GRIND;
 
     public static final EnumParticleFx[] VALUES = values();
 

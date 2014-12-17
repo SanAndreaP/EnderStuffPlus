@@ -77,7 +77,7 @@ public class CommonProxy
         PacketProcessor.sendToAllAround(EnumPacket.PKG_PARTICLES, dimensionId, x, y, z, 64.0D, Quintet.with(particleType.ordinalByte(), x, y, z, data));
     }
 
-    public void syncTileEnergy(int tileX, int tileY, int tileZ, ByteBufInputStream stream) throws IOException { }
+    public void syncTileData(int tileX, int tileY, int tileZ, ByteBufInputStream stream) throws IOException { }
 
     @Override
     public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {

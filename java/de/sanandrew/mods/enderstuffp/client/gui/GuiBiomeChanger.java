@@ -118,7 +118,7 @@ public class GuiBiomeChanger
         this.drawTexturedModalRect(7, 75, 0, 240, 161, 5);
         this.drawTexturedModalRect(7, 75, 0, 245, Math.round(161.0F * (this.biomeChanger.getCurrRange() / (float) this.biomeChanger.getMaxRange())), 5);
 
-        this.mc.fontRenderer.drawString(SAPUtils.translate(this.biomeChanger.getName()), 8, 6, 0x404040);
+        this.mc.fontRenderer.drawString(SAPUtils.translate(this.biomeChanger.getInventoryName()), 8, 6, 0x404040);
 
         String unlocName = EspBlocks.biomeChanger.getUnlocalizedName() + ".gui.";
 

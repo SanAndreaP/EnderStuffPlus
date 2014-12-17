@@ -9,7 +9,7 @@ package de.sanandrew.mods.enderstuffp.entity.living.monster;
 import de.sanandrew.core.manpack.util.UsedByReflection;
 import de.sanandrew.mods.enderstuffp.util.EspItems;
 import de.sanandrew.mods.enderstuffp.entity.living.AEntityEnderAvis;
-import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
+import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -46,7 +46,7 @@ public class EntityEnderAvisWild
 
     @Override
     public float getAIMoveSpeed() {
-        return this.entityToAttack != null || this.hasPath() ? 0.3F + (this.getCoatBase() == RegistryRaincoats.baseGold ? 0.05F : 0.0F) : 0.1F;
+        return this.entityToAttack != null || this.hasPath() ? 0.3F + (this.getCoatBase() == RaincoatManager.baseGold ? 0.05F : 0.0F) : 0.1F;
     }
 
     @Override

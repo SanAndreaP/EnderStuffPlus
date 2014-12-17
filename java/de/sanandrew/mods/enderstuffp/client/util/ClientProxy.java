@@ -30,6 +30,7 @@ import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderMiss;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderIgnis;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderNivis;
 import de.sanandrew.mods.enderstuffp.network.ClientPacketHandler;
+import de.sanandrew.mods.enderstuffp.network.packet.PacketTileDataSync.ITileSync;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeDataCrystal;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityOreGenerator;
@@ -40,6 +41,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -176,20 +178,18 @@ public class ClientProxy
             case FX_BIOME_DATA:
                 ParticleHelper.spawnBiomeDataFX(x, y, z, random, (Short) data.getValue(0));
                 break;
+            case FX_ORE_GRIND:
+                ParticleHelper.spawnOreGrindFX(x, y, z, random, new ItemStack((Item) Item.itemRegistry.getObject(data.getValue(0)), 1, (int) data.getValue(1)));
+                break;
         }
     }
 
     @Override
-    public void syncTileEnergy(int tileX, int tileY, int tileZ, ByteBufInputStream stream) throws IOException {
+    public void syncTileData(int tileX, int tileY, int tileZ, ByteBufInputStream stream) throws IOException {
         TileEntity tile = this.getWorld(null).getTileEntity(tileX, tileY, tileZ);
 
-        if( tile instanceof TileEntityBiomeChanger ) {
-            ((TileEntityBiomeChanger) tile).fluxAmount = stream.readInt();
-            ((TileEntityBiomeChanger) tile).usedFlux = stream.readInt();
-        } else if( tile instanceof TileEntityOreGenerator ) {
-            ((TileEntityOreGenerator) tile).fluxAmount = stream.readInt();
-        } else if( tile instanceof TileEntityBiomeDataCrystal ) {
-            ((TileEntityBiomeDataCrystal) tile).dataProgress = stream.readInt();
+        if( tile instanceof ITileSync ) {
+            ((ITileSync) tile).readFromStream(stream);
         }
     }
 

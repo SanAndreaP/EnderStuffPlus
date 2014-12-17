@@ -9,47 +9,73 @@ package de.sanandrew.mods.enderstuffp.tileentity;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.core.manpack.util.javatuples.Unit;
 import de.sanandrew.mods.enderstuffp.network.EnumPacket;
 import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
+import de.sanandrew.mods.enderstuffp.network.packet.PacketTileDataSync.ITileSync;
+import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
+import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
+import de.sanandrew.mods.enderstuffp.util.EspBlocks;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.io.IOException;
+
 public class TileEntityOreGenerator
         extends TileEntity
-        implements IEnergyProvider, IInventory
+        implements IEnergyProvider, IInventory, ITileSync
 {
-    public int fluxAmount = 25_000;
-    private int prevFluxAmount = -1;
     private static final int MAX_EXTRACTABLE_FLUX = 200;
     private static final int MAX_STORABLE_FLUX = 50_000;
-    public long drawCycles = 0;
 
+    private int prevFluxAmount = -1;
+    private int prevTicksGenRemain = -1;
     private ItemStack fuelStack = null;
-    private int ticksGenRemain = 0;
-    private int fluxGenerated = 0;
+
+    public long displayDrawCycles = 0;
+    public double displayAmplitude = 0.0D;
+
+    public int fluxAmount = 0;
+    public int ticksGenRemain = 0;
+    public int maxTicksGenRemain = 0;
+    public int fluxGenerated = 0;
+
+    public String customName = null;
+
+    private ItemStack prevFuelStack = null;
 
     @Override
     public void updateEntity() {
         if( !this.worldObj.isRemote ) {
             //FIXME make it use of different ores = diff. time / diff. flux/tick
-            if( this.fuelStack != null && this.ticksGenRemain == 0 && this.fluxAmount < MAX_STORABLE_FLUX ) {
-                this.ticksGenRemain = 100;
-                this.fluxGenerated = 80;
-                this.fuelStack = SAPUtils.decrStackSize(this.fuelStack);
-            }
-
             if( this.ticksGenRemain > 0 ) {
                 this.ticksGenRemain--;
-
                 this.fluxAmount = Math.min(this.fluxAmount + this.fluxGenerated, MAX_STORABLE_FLUX);
 
                 if( this.ticksGenRemain == 0 ) {
                     this.fluxGenerated = 0;
                 }
+            }
+
+            if( this.fuelStack != null && this.ticksGenRemain == 0 && this.fluxAmount < MAX_STORABLE_FLUX ) {
+                this.ticksGenRemain = 100;
+                this.maxTicksGenRemain = 100;
+                this.fluxGenerated = 80;
+                this.prevFuelStack = this.fuelStack.copy();
+
+                this.fuelStack = SAPUtils.decrStackSize(this.fuelStack);
+                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             }
 
             if( this.fluxAmount > 0 ) {
@@ -77,11 +103,105 @@ public class TileEntityOreGenerator
                 }
             }
 
-            if( this.prevFluxAmount != this.fluxAmount ) {
+            if( this.prevFluxAmount != this.fluxAmount || this.prevTicksGenRemain != this.ticksGenRemain ) {
                 this.prevFluxAmount = this.fluxAmount;
-                PacketProcessor.sendToAllAround(EnumPacket.TILE_ENERGY_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F,
+                this.prevTicksGenRemain = this.ticksGenRemain;
+                PacketProcessor.sendToAllAround(EnumPacket.TILE_DATA_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F,
                                                 Unit.with(this));
             }
+        } else if( this.ticksGenRemain > 0 && this.prevFuelStack != null ) {
+            Pair data = Pair.with(Item.itemRegistry.getNameForObject(this.prevFuelStack.getItem()), this.prevFuelStack.getItemDamage());
+            EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_ORE_GRIND, this.xCoord + 0.5F, this.yCoord + 0.5F, this.zCoord + 0.5F,
+                                               this.worldObj.provider.dimensionId, data);
+        }
+    }
+
+    @Override
+     public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+
+        this.fluxAmount = nbt.getInteger("fluxAmount");
+        this.ticksGenRemain = nbt.getInteger("ticksGenRemain");
+        this.maxTicksGenRemain = nbt.getInteger("maxTicksGenRemain");
+        this.fluxGenerated = nbt.getInteger("fluxGenerated");
+
+        if( nbt.hasKey("fuelItem") ) {
+            this.fuelStack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("fuelItem"));
+        }
+
+        if( nbt.hasKey("prevFuelItem") ) {
+            this.prevFuelStack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("prevFuelItem"));
+        }
+
+        if( nbt.hasKey("customName") ) {
+            this.customName = nbt.getString("customName");
+        }
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+
+        nbt.setInteger("fluxAmount", this.fluxAmount);
+        nbt.setInteger("ticksGenRemain", this.ticksGenRemain);
+        nbt.setInteger("maxTicksGenRemain", this.maxTicksGenRemain);
+        nbt.setInteger("fluxGenerated", this.fluxGenerated);
+
+        if( this.fuelStack != null ) {
+            nbt.setTag("fuelItem", this.fuelStack.writeToNBT(new NBTTagCompound()));
+        }
+
+        if( this.prevFuelStack != null ) {
+            nbt.setTag("prevFuelItem", this.prevFuelStack.writeToNBT(new NBTTagCompound()));
+        }
+
+        if( this.customName != null ) {
+            nbt.setString("customName", this.customName);
+        }
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setInteger("fluxAmount", this.fluxAmount);
+        nbt.setInteger("ticksGenRemain", this.ticksGenRemain);
+        nbt.setInteger("maxTicksGenRemain", this.maxTicksGenRemain);
+        nbt.setInteger("fluxGenerated", this.fluxGenerated);
+
+        if( this.fuelStack != null ) {
+            nbt.setTag("fuelItem", this.fuelStack.writeToNBT(new NBTTagCompound()));
+        }
+
+        if( this.prevFuelStack != null ) {
+            nbt.setTag("prevFuelItem", this.prevFuelStack.writeToNBT(new NBTTagCompound()));
+        }
+
+        if( this.customName != null ) {
+            nbt.setString("customName", this.customName);
+        }
+
+        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        NBTTagCompound nbt = pkt.func_148857_g();
+
+        this.fluxAmount = nbt.getInteger("fluxAmount");
+        this.ticksGenRemain = nbt.getInteger("ticksGenRemain");
+        this.maxTicksGenRemain = nbt.getInteger("maxTicksGenRemain");
+        this.fluxGenerated = nbt.getInteger("fluxGenerated");
+
+        if( nbt.hasKey("fuelItem") ) {
+            this.fuelStack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("fuelItem"));
+        }
+
+        if( nbt.hasKey("prevFuelItem") ) {
+            this.prevFuelStack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("prevFuelItem"));
+        }
+
+        if( nbt.hasKey("customName") ) {
+            this.customName = nbt.getString("customName");
         }
     }
 
@@ -140,7 +260,7 @@ public class TileEntityOreGenerator
 
     @Override
     public String getInventoryName() {
-        return "";
+        return this.customName != null ? this.customName : EspBlocks.oreGenerator.getUnlocalizedName() + ".name";
     }
 
     @Override
@@ -170,7 +290,21 @@ public class TileEntityOreGenerator
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return slot == 0 && (this.fuelStack == null || (ItemStack.areItemStacksEqual(this.fuelStack, stack)
+        return slot == 0 && (this.fuelStack == null || (SAPUtils.areStacksEqual(this.fuelStack, stack, true)
                                                         && this.fuelStack.stackSize < this.fuelStack.getMaxStackSize()));
+    }
+
+    @Override
+    public void writeToStream(ByteBufOutputStream stream) throws IOException {
+        stream.writeInt(this.fluxAmount);
+        stream.writeInt(this.fluxGenerated);
+        stream.writeInt(this.ticksGenRemain);
+    }
+
+    @Override
+    public void readFromStream(ByteBufInputStream stream) throws IOException {
+        this.fluxAmount = stream.readInt();
+        this.fluxGenerated = stream.readInt();
+        this.ticksGenRemain = stream.readInt();
     }
 }

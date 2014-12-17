@@ -20,7 +20,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import de.sanandrew.core.manpack.util.SAPReflectionHelper;
 import de.sanandrew.core.manpack.util.modcompatibility.ModInitHelperInst;
 import de.sanandrew.mods.enderstuffp.enchantment.EnchantmentEnderChestTeleport;
-import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
+import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
@@ -94,7 +94,7 @@ public class EnderStuffPlus
 //        channelHandler.registerPacket(PacketSetWeather.class);
 //
 //        RegistryDungeonLoot.initialize();
-        RegistryRaincoats.initialize();
+        RaincoatManager.initialize();
 //        RegistryDuplicator.initialize();
 //        RegistryBiomeChanger.initialize();
 //

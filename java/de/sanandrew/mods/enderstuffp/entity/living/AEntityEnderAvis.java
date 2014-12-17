@@ -11,9 +11,9 @@ import de.sanandrew.mods.enderstuffp.item.ItemRaincoat;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EnumEnderPetEggInfo;
 import de.sanandrew.mods.enderstuffp.util.EspItems;
-import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats;
-import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats.CoatBaseEntry;
-import de.sanandrew.mods.enderstuffp.util.raincoat.RegistryRaincoats.CoatColorEntry;
+import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager;
+import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager.CoatBaseEntry;
+import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager.CoatColorEntry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -138,12 +138,12 @@ public abstract class AEntityEnderAvis
 
     @Override
     public CoatBaseEntry getCoatBase() {
-        return this.hasCoat() ? RegistryRaincoats.getBase(this.getCoat().getTagCompound().getString("base")) : RegistryRaincoats.NULL_BASE;
+        return this.hasCoat() ? RaincoatManager.getBase(this.getCoat().getTagCompound().getString("base")) : RaincoatManager.NULL_BASE;
     }
 
     @Override
     public CoatColorEntry getCoatColor() {
-        return this.hasCoat() ? RegistryRaincoats.getColor(this.getCoat().getTagCompound().getString("color")) : RegistryRaincoats.NULL_COLOR;
+        return this.hasCoat() ? RaincoatManager.getColor(this.getCoat().getTagCompound().getString("color")) : RaincoatManager.NULL_COLOR;
     }
 
     public float[] getCollarColorArr() {
@@ -193,7 +193,7 @@ public abstract class AEntityEnderAvis
 
     @Override
     public boolean isPotionApplicable(PotionEffect effect) {
-        return this.getCoatBase() != RegistryRaincoats.baseNiob || !Potion.potionTypes[effect.getPotionID()].isBadEffect();
+        return this.getCoatBase() != RaincoatManager.baseNiob || !Potion.potionTypes[effect.getPotionID()].isBadEffect();
     }
 
     @Override
@@ -208,7 +208,7 @@ public abstract class AEntityEnderAvis
 
         if( !this.worldObj.isRemote ) {
             if( this.prevCoatBase != this.getCoat() ) {
-                if( this.hasCoat() && RegistryRaincoats.getBase(this.getCoat().getTagCompound().getString("base")) == RegistryRaincoats.baseObsidian ) {
+                if( this.hasCoat() && RaincoatManager.getBase(this.getCoat().getTagCompound().getString("base")) == RaincoatManager.baseObsidian ) {
                     this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(60.0D);
                 } else {
                     this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
@@ -357,7 +357,7 @@ public abstract class AEntityEnderAvis
 //        if( par1nbtTagCompound.hasKey("petName") ) {
 //            this.setName(par1nbtTagCompound.getString("petName"));
 //        }
-//        if( this.getName().equals(EnumChatFormatting.OBFUSCATED + "RANDOM" + EnumChatFormatting.RESET) ) {
+//        if( this.getInventoryName().equals(EnumChatFormatting.OBFUSCATED + "RANDOM" + EnumChatFormatting.RESET) ) {
 //            this.setName("");
 //        }
     }

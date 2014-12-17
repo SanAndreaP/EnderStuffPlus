@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class ConfigRegistry
+public final class Configuration
 {
 //    public static Map<CfgNames, Integer> blockIDs = Maps.newEnumMap(CfgNames.class);
 //    public static Map<CfgNames, Integer> itemIDs = Maps.newEnumMap(CfgNames.class);
@@ -76,7 +76,7 @@ public final class ConfigRegistry
     }
 
     public static void setConfig(File modCfgDir) {
-        Configuration config = new Configuration(new File(modCfgDir, "sanandreasp/" + EnderStuffPlus.MOD_ID + ".cfg"));
+        net.minecraftforge.common.config.Configuration config = new net.minecraftforge.common.config.Configuration(new File(modCfgDir, "sanandreasp/" + EnderStuffPlus.MOD_ID + ".cfg"));
 
         config.load();
 
@@ -105,10 +105,10 @@ public final class ConfigRegistry
         genEndlessEnd = config.get(CATEGORY_WORLDGEN, "Generate End Islands", true).getBoolean(true);
         genAvisNest = config.get(CATEGORY_WORLDGEN, "Generate Avis Nests", true).getBoolean(true);
 
-        enchID = config.get(Configuration.CATEGORY_GENERAL, "EC-Teleport Enchantment-ID", enchID).getInt();
-        griefing = config.get(Configuration.CATEGORY_GENERAL, "Can Mod-Ender-Mobs grief", true).getBoolean(true);
-        useNiobHDGlow = config.get(Configuration.CATEGORY_GENERAL, "Use HD Tool glow effect", true).getBoolean(true);
-        useAnimations = config.get(Configuration.CATEGORY_GENERAL, "Use animated textures", true).getBoolean(true);
+        enchID = config.get(net.minecraftforge.common.config.Configuration.CATEGORY_GENERAL, "EC-Teleport Enchantment-ID", enchID).getInt();
+        griefing = config.get(net.minecraftforge.common.config.Configuration.CATEGORY_GENERAL, "Can Mod-Ender-Mobs grief", true).getBoolean(true);
+        useNiobHDGlow = config.get(net.minecraftforge.common.config.Configuration.CATEGORY_GENERAL, "Use HD Tool glow effect", true).getBoolean(true);
+        useAnimations = config.get(net.minecraftforge.common.config.Configuration.CATEGORY_GENERAL, "Use animated textures", true).getBoolean(true);
 
         config.save();
     }

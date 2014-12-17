@@ -17,6 +17,10 @@ tile.enderstuffp:biomeChanger.gui.blockrepl.label.disabled=disabled
 tile.enderstuffp:biomeChanger.gui.activate=activate
 tile.enderstuffp:biomeChanger.gui.deactivate=deactivate
 
+tile.enderstuffp:oreGenerator.name=Ore Generator
+tile.enderstuffp:oreGenerator.gui.flux.generating=Power Level
+tile.enderstuffp:oreGenerator.gui.flux.stored=Stored Energy
+
 tile.enderstuffp:duplicator.name=Duplicator
 tile.enderstuffp:weatherAltar.name=Weather Altar
 tile.enderstuffp:enderLeaves.name=Endertree Leaves
