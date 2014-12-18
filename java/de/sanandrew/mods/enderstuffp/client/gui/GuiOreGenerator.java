@@ -7,14 +7,21 @@
 package de.sanandrew.mods.enderstuffp.client.gui;
 
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.mods.enderstuffp.client.util.EnumTextures;
 import de.sanandrew.mods.enderstuffp.inventory.ContainerOreGenerator;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityOreGenerator;
 import de.sanandrew.mods.enderstuffp.util.EspBlocks;
+import de.sanandrew.mods.enderstuffp.util.manager.OreGeneratorManager;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
+
+import java.util.List;
 
 public class GuiOreGenerator
         extends GuiContainer
@@ -48,7 +55,7 @@ public class GuiOreGenerator
 
         int ticksRemain = this.oreGenerator.ticksGenRemain;
         int maxTicksRemain = this.oreGenerator.maxTicksGenRemain;
-        int ticksScale = 16 - (int) (ticksRemain / (float) maxTicksRemain * 16.0F);
+        int ticksScale = Math.max(14 - (int) (ticksRemain / (float) maxTicksRemain * 14.0F), 0);
 
 
         this.mc.fontRenderer.drawString(SAPUtils.translate(this.oreGenerator.getInventoryName()), 8, 6, 0x404040);
@@ -72,9 +79,31 @@ public class GuiOreGenerator
         this.mc.fontRenderer.drawString(String.format("%d / %d RF", currFlux, maxFlux), 33, 53, 0x000000);
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
+    protected void renderToolTip(ItemStack stack, int x, int y) {
+        List list = stack.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
+        Pair<Integer, Integer> fuelValues = OreGeneratorManager.getFuelValues(stack);
+        if( fuelValues != null ) {
+            list.add(SAPUtils.translatePostFormat(EspBlocks.oreGenerator.getUnlocalizedName() + ".gui.fuelTooltip", fuelValues.getValue1() * fuelValues.getValue0(),
+                                                  fuelValues.getValue0()));
+        }
+
+        for (int k = 0; k < list.size(); ++k) {
+            if (k == 0) {
+                list.set(k, stack.getRarity().rarityColor + (String)list.get(k));
+            } else {
+                list.set(k, EnumChatFormatting.GRAY + (String)list.get(k));
+            }
+        }
+
+        FontRenderer font = stack.getItem().getFontRenderer(stack);
+        drawHoveringText(list, x, y, (font == null ? fontRendererObj : font));
+    }
+
     private static String getTimeFromTicks(int ticks) {
         double secs = ticks / 20.0D;
-        String s = String.format("%.1f", secs % 20.0D) + 's';
+        String s = String.format("%.1f", secs % 60.0D) + 's';
         int t = (int)secs / 60;
         if( t == 0 ) {
             return s;

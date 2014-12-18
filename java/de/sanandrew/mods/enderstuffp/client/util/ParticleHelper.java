@@ -113,6 +113,8 @@ final class ParticleHelper
 
     static void spawnOreGrindFX(double x, double y, double z, Random rand, ItemStack oreItem) {
         EntityFX part = new EntityBreakingFX(getMc().theWorld, x, y, z, oreItem.getItem(), oreItem.getItemDamage());
+        part.motionX *= 0.3F;
+        part.motionZ *= 0.3F;
         Minecraft.getMinecraft().effectRenderer.addEffect(part);
     }
 

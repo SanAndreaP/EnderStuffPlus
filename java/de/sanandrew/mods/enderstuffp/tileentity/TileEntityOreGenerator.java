@@ -17,6 +17,7 @@ import de.sanandrew.mods.enderstuffp.network.packet.PacketTileDataSync.ITileSync
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
 import de.sanandrew.mods.enderstuffp.util.EspBlocks;
+import de.sanandrew.mods.enderstuffp.util.manager.OreGeneratorManager;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.entity.player.EntityPlayer;
@@ -58,7 +59,6 @@ public class TileEntityOreGenerator
     @Override
     public void updateEntity() {
         if( !this.worldObj.isRemote ) {
-            //FIXME make it use of different ores = diff. time / diff. flux/tick
             if( this.ticksGenRemain > 0 ) {
                 this.ticksGenRemain--;
                 this.fluxAmount = Math.min(this.fluxAmount + this.fluxGenerated, MAX_STORABLE_FLUX);
@@ -69,13 +69,16 @@ public class TileEntityOreGenerator
             }
 
             if( this.fuelStack != null && this.ticksGenRemain == 0 && this.fluxAmount < MAX_STORABLE_FLUX ) {
-                this.ticksGenRemain = 100;
-                this.maxTicksGenRemain = 100;
-                this.fluxGenerated = 80;
-                this.prevFuelStack = this.fuelStack.copy();
+                Pair<Integer, Integer> fuelValues = OreGeneratorManager.getFuelValues(this.fuelStack);
+                if( fuelValues != null ) {
+                    this.fluxGenerated = fuelValues.getValue0();
+                    this.maxTicksGenRemain = fuelValues.getValue1();
+                    this.ticksGenRemain = this.maxTicksGenRemain;
+                    this.prevFuelStack = this.fuelStack.copy();
+                    this.fuelStack = SAPUtils.decrStackSize(this.fuelStack);
 
-                this.fuelStack = SAPUtils.decrStackSize(this.fuelStack);
-                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                    this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                }
             }
 
             if( this.fluxAmount > 0 ) {
@@ -290,8 +293,8 @@ public class TileEntityOreGenerator
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return slot == 0 && (this.fuelStack == null || (SAPUtils.areStacksEqual(this.fuelStack, stack, true)
-                                                        && this.fuelStack.stackSize < this.fuelStack.getMaxStackSize()));
+        return slot == 0 && OreGeneratorManager.getFuelValues(stack) != null
+               && (this.fuelStack == null || (SAPUtils.areStacksEqual(this.fuelStack, stack, true) && this.fuelStack.stackSize < this.fuelStack.getMaxStackSize()));
     }
 
     @Override

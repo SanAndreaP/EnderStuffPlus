@@ -141,7 +141,7 @@ public class ItemNiobShears
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         this.itemIcon = iconRegister.registerIcon(EnderStuffPlus.MOD_ID + ":niobShears");
-        this.glowMap = iconRegister.registerIcon(EnderStuffPlus.MOD_ID + ":niobShearsGlow" + (Configuration.useNiobHDGlow ? "HD" : ""));
+        this.glowMap = iconRegister.registerIcon(EnderStuffPlus.MOD_ID + ":niobShearsGlow" + (EspConfiguration.useNiobHDGlow ? "HD" : ""));
     }
 
     @Override

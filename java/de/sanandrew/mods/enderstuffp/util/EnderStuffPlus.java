@@ -20,9 +20,11 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import de.sanandrew.core.manpack.util.SAPReflectionHelper;
 import de.sanandrew.core.manpack.util.modcompatibility.ModInitHelperInst;
 import de.sanandrew.mods.enderstuffp.enchantment.EnchantmentEnderChestTeleport;
+import de.sanandrew.mods.enderstuffp.util.manager.OreGeneratorManager;
 import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -111,6 +113,7 @@ public class EnderStuffPlus
 //
 //        proxy.registerClientStuff();
         proxy.preInit(event);
+        OreGeneratorManager.initialize();
 
         this.thermalExpInitHelper.preInitialize();
     }
@@ -119,7 +122,6 @@ public class EnderStuffPlus
     public void init(FMLInitializationEvent event) {
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(MOD_CHANNEL);
         proxy.init(event);
-//        channelHandler.initialise();
 //        FurnaceRecipes.smelting().func_151394_a(new ItemStack(ModBlockRegistry.endOre, 1, 0),
 //                                                new ItemStack(ModItemRegistry.endIngot, 1, 0), 0.85F);
 //        CraftingRegistry.initialize();
@@ -130,12 +132,22 @@ public class EnderStuffPlus
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent evt) {
-//        channelHandler.postInitialise();
         this.thermalExpInitHelper.postInitialize();
     }
 
     //TODO: check the MCP name for its correctness before release!
     public static boolean isJumping(EntityLivingBase livingBase) {
         return SAPReflectionHelper.getCachedFieldValue(EntityLivingBase.class, livingBase, "isJumping", "field_70703_bu");
+    }
+
+    public static boolean hasPlayerFullNiob(EntityPlayer player) {
+        boolean b = true;
+        for( int i = 0; i < 4; i++ ) {
+            if( player.getCurrentArmor(i) == null || (player.getCurrentArmor(i).getItem() != niobSet.get(i).getItem()) ) {
+                b = false;
+                break;
+            }
+        }
+        return b;
     }
 }

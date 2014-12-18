@@ -10,9 +10,7 @@ import org.lwjgl.opengl.GL11;
 public class CoatColorTransparent
     extends CoatColorEntry
 {
-
-    public CoatColorTransparent(String colorName, int itemColor, ResourceLocation colorMissTexture, ResourceLocation colorAvisTexture,
-                                ItemStack craftingIngredient) {
+    public CoatColorTransparent(String colorName, int itemColor, ResourceLocation colorMissTexture, ResourceLocation colorAvisTexture, ItemStack craftingIngredient) {
         super(colorName, itemColor, colorMissTexture, colorAvisTexture, craftingIngredient);
     }
 

@@ -11,10 +11,7 @@ import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.enderstuffp.client.event.FovUpdateHandler;
 import de.sanandrew.mods.enderstuffp.client.event.RenderGameOverlayHandler;
 import de.sanandrew.mods.enderstuffp.client.event.TextureStitchHandler;
-import de.sanandrew.mods.enderstuffp.client.render.ItemRendererBiomeChanger;
-import de.sanandrew.mods.enderstuffp.client.render.ItemRendererBiomeDataCrystal;
-import de.sanandrew.mods.enderstuffp.client.render.ItemRendererGlowTools;
-import de.sanandrew.mods.enderstuffp.client.render.ItemRendererWeatherAltar;
+import de.sanandrew.mods.enderstuffp.client.render.*;
 import de.sanandrew.mods.enderstuffp.client.render.entity.*;
 import de.sanandrew.mods.enderstuffp.client.render.tileentity.RenderTileEntityBiomeChanger;
 import de.sanandrew.mods.enderstuffp.client.render.tileentity.RenderTileEntityBiomeDataCrystal;
@@ -90,6 +87,9 @@ public class ClientProxy
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EspBlocks.biomeChanger), new ItemRendererBiomeChanger());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EspBlocks.weatherAltar), new ItemRendererWeatherAltar());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EspBlocks.biomeDataCrystal), new ItemRendererBiomeDataCrystal());
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EspBlocks.oreGenerator), new ItemRendererOreGenerator());
+
+        MinecraftForgeClient.registerItemRenderer(EspItems.niobBow, new ItemRendererNiobBow());
     }
 
     //    @Override

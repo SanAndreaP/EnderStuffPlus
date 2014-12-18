@@ -3,7 +3,7 @@ package de.sanandrew.mods.enderstuffp.item.tool;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
-import de.sanandrew.mods.enderstuffp.util.Configuration;
+import de.sanandrew.mods.enderstuffp.util.EspConfiguration;
 import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EspItems;
@@ -71,7 +71,7 @@ public class ItemNiobHoe
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         this.itemIcon = iconRegister.registerIcon(EnderStuffPlus.MOD_ID + ":niobHoe");
-        this.glowMap = iconRegister.registerIcon(EnderStuffPlus.MOD_ID + ":niobHoeGlow" + (Configuration.useNiobHDGlow ? "HD" : ""));
+        this.glowMap = iconRegister.registerIcon(EnderStuffPlus.MOD_ID + ":niobHoeGlow" + (EspConfiguration.useNiobHDGlow ? "HD" : ""));
     }
 
     @Override

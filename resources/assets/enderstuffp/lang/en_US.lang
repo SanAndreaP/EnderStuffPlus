@@ -20,6 +20,7 @@ tile.enderstuffp:biomeChanger.gui.deactivate=deactivate
 tile.enderstuffp:oreGenerator.name=Ore Generator
 tile.enderstuffp:oreGenerator.gui.flux.generating=Power Level
 tile.enderstuffp:oreGenerator.gui.flux.stored=Stored Energy
+tile.enderstuffp:oreGenerator.gui.fuelTooltip=Generates %s RF at %s RF/t
 
 tile.enderstuffp:duplicator.name=Duplicator
 tile.enderstuffp:weatherAltar.name=Weather Altar
@@ -44,7 +45,8 @@ item.enderstuffp:avisArrow.name=Avis Arrow
 item.enderstuffp:avisCompass.name=Avis Compass
 item.enderstuffp:enderPetEgg.name=Enderpet Egg
 item.enderstuffp:petStaff.name=Enderpet Staff
-item.enderstuffp:niobIngot.name=Niobium Ingot
+item.enderstuffp:enderIngot_niobium.name=Niobium Ingot
+item.enderstuffp:enderIngot_tantalum.name=Tantalum Ingot
 item.enderstuffp:bowNiob.name=Niobium Bow
 item.enderstuffp:niobHelmet.name=Niobium Helmet
 item.enderstuffp:niobChestplate.name=Niobium Chestplate

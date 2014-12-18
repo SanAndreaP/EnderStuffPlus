@@ -2,7 +2,7 @@ package de.sanandrew.mods.enderstuffp.item.tool;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.mods.enderstuffp.util.Configuration;
+import de.sanandrew.mods.enderstuffp.util.EspConfiguration;
 import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EspItems;
@@ -50,7 +50,7 @@ public class ItemNiobPickaxe
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         this.itemIcon = iconRegister.registerIcon(EnderStuffPlus.MOD_ID + ":niobPick");
-        this.glowMap = iconRegister.registerIcon(EnderStuffPlus.MOD_ID + ":niobPickGlow" + (Configuration.useNiobHDGlow ? "HD" : ""));
+        this.glowMap = iconRegister.registerIcon(EnderStuffPlus.MOD_ID + ":niobPickGlow" + (EspConfiguration.useNiobHDGlow ? "HD" : ""));
     }
 
     @Override

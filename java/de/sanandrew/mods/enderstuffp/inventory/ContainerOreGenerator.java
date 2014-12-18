@@ -8,9 +8,11 @@ package de.sanandrew.mods.enderstuffp.inventory;
 
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityOreGenerator;
+import de.sanandrew.mods.enderstuffp.util.manager.OreGeneratorManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -22,7 +24,7 @@ public class ContainerOreGenerator
 
     public ContainerOreGenerator(InventoryPlayer invPlayer, TileEntityOreGenerator generator) {
         this.oreGenerator = generator;
-        this.addSlotToContainer(this.fuelSlot = new Slot(generator, 0, 62, 70));
+        this.addSlotToContainer(this.fuelSlot = new SlotFuel(generator, 0, 62, 70));
 
         for( int i = 0; i < 3; ++i ) {
             for( int j = 0; j < 9; ++j ) {
@@ -91,5 +93,16 @@ public class ContainerOreGenerator
         }
 
         return stackCopy;
+    }
+
+    public static class SlotFuel extends Slot {
+        public SlotFuel(IInventory inventory, int id, int x, int y) {
+            super(inventory, id, x, y);
+        }
+
+        @Override
+        public boolean isItemValid(ItemStack stack) {
+            return OreGeneratorManager.getFuelValues(stack) != null;
+        }
     }
 }

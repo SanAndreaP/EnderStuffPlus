@@ -1,7 +1,6 @@
 package de.sanandrew.mods.enderstuffp.util;
 
 import com.google.common.collect.Maps;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -11,7 +10,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class Configuration
+public final class EspConfiguration
 {
 //    public static Map<CfgNames, Integer> blockIDs = Maps.newEnumMap(CfgNames.class);
 //    public static Map<CfgNames, Integer> itemIDs = Maps.newEnumMap(CfgNames.class);
@@ -30,44 +29,6 @@ public final class Configuration
     private static final String CATEGORY_WORLDGEN = "worldgen";
 
     static {
-//        blockIDs.put(CfgNames.AVIS_EGG, 1000);
-//        blockIDs.put(CfgNames.NIOBIUM_ORE, 1001);
-//        blockIDs.put(CfgNames.NIOBIUM_BLOCK, 1002);
-//        blockIDs.put(CfgNames.BIOME_CHANGER, 1003);
-//        blockIDs.put(CfgNames.DUPLICATOR, 1004);
-//        blockIDs.put(CfgNames.WEATHER_ALTAR, 1005);
-//        blockIDs.put(CfgNames.ENDER_DOOR_BLOCK, 1006);
-//        blockIDs.put(CfgNames.ENDER_LEAVES, 1007);
-//        blockIDs.put(CfgNames.ENDER_LOG, 1008);
-//        blockIDs.put(CfgNames.ENDER_PLANKS, 1009);
-//        blockIDs.put(CfgNames.ENDER_SAPLING, 1010);
-//        blockIDs.put(CfgNames.CORRUPT_END_STONE, 1011);
-//        blockIDs.put(CfgNames.END_FLUID, 1012);
-//
-//        itemIDs.put(CfgNames.ESP_PEARLS, 10000);
-//        itemIDs.put(CfgNames.ENDER_FLESH, 10002);
-//        itemIDs.put(CfgNames.AVIS_FEATHER, 10003);
-//        itemIDs.put(CfgNames.AVIS_ARROW, 10004);
-//        itemIDs.put(CfgNames.AVIS_COMPASS, 10005);
-//        itemIDs.put(CfgNames.ENDERPET_EGG, 10006);
-//        itemIDs.put(CfgNames.ENDERPET_STAFF, 10007);
-//        itemIDs.put(CfgNames.NIOBIUM_INGOT, 10008);
-//        itemIDs.put(CfgNames.NIOBIUM_BOW, 10009);
-//        itemIDs.put(CfgNames.ENDER_RAINCOAT, 10010);
-//        itemIDs.put(CfgNames.NIOBIUM_HELMET, 10011);
-//        itemIDs.put(CfgNames.NIOBIUM_CHESTPLATE, 10012);
-//        itemIDs.put(CfgNames.NIOBIUM_LEGGINGS, 10013);
-//        itemIDs.put(CfgNames.NIOBIUM_BOOTS, 10014);
-//        itemIDs.put(CfgNames.NIOBIUM_PICKAXE, 10015);
-//        itemIDs.put(CfgNames.NIOBIUM_SHOVEL, 10016);
-//        itemIDs.put(CfgNames.NIOBIUM_AXE, 10017);
-//        itemIDs.put(CfgNames.NIOBIUM_HOE, 10018);
-//        itemIDs.put(CfgNames.NIOBIUM_SWORD, 10019);
-//        itemIDs.put(CfgNames.NIOBIUM_SHEARS, 10020);
-//        itemIDs.put(CfgNames.NIOBIUM_NUGGET, 10021);
-//        itemIDs.put(CfgNames.ENDER_DOOR_ITEM, 10022);
-//        itemIDs.put(CfgNames.ENDER_STICK, 10023);
-
         spawnConditions.put("EnderNivis", new Integer[] { 1, 1, 4 });
         spawnConditions.put("EnderIgnis", new Integer[] { 1, 1, 4 });
         spawnConditions.put("EnderRay", new Integer[] { 1, 1, 4 });
@@ -79,14 +40,6 @@ public final class Configuration
         net.minecraftforge.common.config.Configuration config = new net.minecraftforge.common.config.Configuration(new File(modCfgDir, "sanandreasp/" + EnderStuffPlus.MOD_ID + ".cfg"));
 
         config.load();
-
-//        for( Entry<CfgNames, Integer> block : blockIDs.entrySet() ) {
-//            blockIDs.put(block.getKey(), config.getBlock(block.getKey().toString(), block.getValue()).getInt());
-//        }
-//
-//        for( Entry<CfgNames, Integer> item : itemIDs.entrySet() ) {
-//            itemIDs.put(item.getKey(), config.getItem(item.getKey().toString(), item.getValue()).getInt());
-//        }
 
         config.addCustomCategoryComment(CATEGORY_SPAWNINGS, "The values in this category are arrays. They represent following pattern:"
                                                             + "\n  value #1 is the minimum spawn count per spawn loop"
