@@ -17,19 +17,19 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import de.sanandrew.core.manpack.util.SAPReflectionHelper;
 import de.sanandrew.core.manpack.util.modcompatibility.ModInitHelperInst;
 import de.sanandrew.mods.enderstuffp.enchantment.EnchantmentEnderChestTeleport;
+import de.sanandrew.mods.enderstuffp.util.manager.IslandManager;
 import de.sanandrew.mods.enderstuffp.util.manager.OreGeneratorManager;
 import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.biome.BiomeGenBase;
 
-import java.util.HashMap;
+import java.util.Map;
 
 @Mod(modid = EnderStuffPlus.MOD_ID, version = EnderStuffPlus.VERSION)
 public class EnderStuffPlus
@@ -42,9 +42,11 @@ public class EnderStuffPlus
     private static final String MOD_PROXY_CLIENT = "de.sanandrew.mods.enderstuffp.client.util.ClientProxy";
     private static final String MOD_PROXY_COMMON = "de.sanandrew.mods.enderstuffp.util.CommonProxy";
 
-    private static final String THERMAL_EXP_HELPER_CLS = "de.sanandrew.mods.enderstuffp.util.modcompat.ThermalExpansionInitHelper";
+    private static final String THERMAL_EXP_HELPER_CLS = "de.sanandrew.mods.enderstuffp.util.modcompat.thermalexpansion.ThermalExpansionInitHelper";
+    private static final String TCONSTRUCT_HELPER_CLS = "de.sanandrew.mods.enderstuffp.util.modcompat.tconstruct.TinkersConstructInitHelper";
 
     private ModInitHelperInst thermalExpInitHelper;
+    private ModInitHelperInst tConstructInitHelper;
 
     @Instance(EnderStuffPlus.MOD_ID)
     public static EnderStuffPlus instance;
@@ -54,11 +56,14 @@ public class EnderStuffPlus
 
     public static Enchantment enderChestTel;
 
-    public static HashMap<Integer, ItemStack> niobSet = Maps.newHashMap();
+    public static Map<Integer, ItemStack> niobSet = Maps.newHashMap();
+
+    public static BiomeGenBase surfaceEnd;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         this.thermalExpInitHelper = ModInitHelperInst.loadWhenModAvailable("ThermalExpansion", THERMAL_EXP_HELPER_CLS);
+        this.tConstructInitHelper = ModInitHelperInst.loadWhenModAvailable("TConstruct", TCONSTRUCT_HELPER_CLS);
 //        ConfigRegistry.setConfig(event.getModConfigurationDirectory());
 //        ESPModRegistry.espTabCoats = new CreativeTabs("ESPTabCoats") {
 //            @Override
@@ -96,7 +101,6 @@ public class EnderStuffPlus
 //        channelHandler.registerPacket(PacketSetWeather.class);
 //
 //        RegistryDungeonLoot.initialize();
-        RaincoatManager.initialize();
 //        RegistryDuplicator.initialize();
 //        RegistryBiomeChanger.initialize();
 //
@@ -104,40 +108,41 @@ public class EnderStuffPlus
 //
         NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
 //
-//        OreDictionary.registerOre("ingotNiob", new ItemStack(RegistryItems.endIngot));
-//        OreDictionary.registerOre("oreNiob", new ItemStack(ModBlockRegistry.endOre));
-//        OreDictionary.registerOre("blockNiob", new ItemStack(ModBlockRegistry.endBlock));
+//        OreDictionary.registerOre("ingotNiob", new ItemStack(RegistryItems.enderIngot));
+//        OreDictionary.registerOre("oreNiob", new ItemStack(ModBlockRegistry.enderOre));
+//        OreDictionary.registerOre("blockNiob", new ItemStack(ModBlockRegistry.enderBlock));
 //        OreDictionary.registerOre("logWood", new ItemStack(ModBlockRegistry.enderLog, 1, OreDictionary.WILDCARD_VALUE));
 //        OreDictionary.registerOre("plankWood", ModBlockRegistry.enderPlanks);
 //        OreDictionary.registerOre("treeSapling", new ItemStack(ModBlockRegistry.sapEndTree, 1, OreDictionary.WILDCARD_VALUE));
 //
 //        proxy.registerClientStuff();
         proxy.preInit(event);
+
+        RaincoatManager.initialize();
         OreGeneratorManager.initialize();
+        IslandManager.initialize();
 
         this.thermalExpInitHelper.preInitialize();
+        this.tConstructInitHelper.preInitialize();
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(MOD_CHANNEL);
         proxy.init(event);
-//        FurnaceRecipes.smelting().func_151394_a(new ItemStack(ModBlockRegistry.endOre, 1, 0),
-//                                                new ItemStack(ModItemRegistry.endIngot, 1, 0), 0.85F);
+//        FurnaceRecipes.smelting().func_151394_a(new ItemStack(ModBlockRegistry.enderOre, 1, 0),
+//                                                new ItemStack(ModItemRegistry.enderIngot, 1, 0), 0.85F);
 //        CraftingRegistry.initialize();
         GameRegistry.addRecipe(new ItemStack(Items.stone_sword, 1), "XX", 'X', Blocks.sand);
 
         this.thermalExpInitHelper.initialize();
+        this.tConstructInitHelper.initialize();
     }
 
     @EventHandler
-    public void postInit(FMLPostInitializationEvent evt) {
+    public void postInit(FMLPostInitializationEvent event) {
         this.thermalExpInitHelper.postInitialize();
-    }
-
-    //TODO: check the MCP name for its correctness before release!
-    public static boolean isJumping(EntityLivingBase livingBase) {
-        return SAPReflectionHelper.getCachedFieldValue(EntityLivingBase.class, livingBase, "isJumping", "field_70703_bu");
+        this.tConstructInitHelper.postInitialize();
     }
 
     public static boolean hasPlayerFullNiob(EntityPlayer player) {

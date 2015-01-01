@@ -1,9 +1,18 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.client.model.tileentity;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.client.helpers.SAPClientUtils;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
+@SideOnly(Side.CLIENT)
 public class ModelOreGenerator
         extends ModelBase
 {
@@ -105,8 +114,8 @@ public class ModelOreGenerator
         reinfBarBottomLeftB.render(0.0625F);
     }
 
-    public void addGrinderRotation(double rotation) {
-        this.grinderAxis1.rotateAngleX += rotation;
-        this.grinderAxis2.rotateAngleX -= rotation;
+    public void addGrinderRotation(float rotation) {
+        this.grinderAxis1.rotateAngleX = rotation;
+        this.grinderAxis2.rotateAngleX = rotation;
     }
 }

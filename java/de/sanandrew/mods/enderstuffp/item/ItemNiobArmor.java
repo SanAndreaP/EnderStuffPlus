@@ -1,8 +1,10 @@
 package de.sanandrew.mods.enderstuffp.item;
 
+import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.client.util.EnumTextures;
-import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
+import de.sanandrew.mods.enderstuffp.util.EspCreativeTabs;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
+import de.sanandrew.mods.enderstuffp.util.EnumEnderOres;
 import de.sanandrew.mods.enderstuffp.util.EspItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,13 +21,13 @@ import java.util.List;
 public class ItemNiobArmor
     extends ItemArmor
 {
-    public static final int RENDER_ID = EnderStuffPlus.proxy.addArmor("niobArmor");
+    public static final int RENDER_ID = EnderStuffPlus.proxy.addArmor("armorNiobium");
 
-    public ItemNiobArmor(String name, ArmorMaterial material, int slotId) {
+    public ItemNiobArmor(String name, String texture, ArmorMaterial material, int slotId) {
         super(material, RENDER_ID, slotId);
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ':' + name);
-        this.setTextureName(EnderStuffPlus.MOD_ID + ':' + name);
-        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
+        this.setTextureName(EnderStuffPlus.MOD_ID + ':' + texture);
+        this.setCreativeTab(EspCreativeTabs.ESP_TAB);
     }
 
     @Override
@@ -40,7 +42,7 @@ public class ItemNiobArmor
 
     @Override
     public boolean getIsRepairable(ItemStack brokenItem, ItemStack repairItem) {
-        return repairItem.getItem() == EspItems.endIngot || super.getIsRepairable(brokenItem, repairItem);
+        return SAPUtils.areStacksEqual(repairItem, EnumEnderOres.REPAIR_ITEM_NIOBIUM, false) || super.getIsRepairable(brokenItem, repairItem);
     }
 
     @Override

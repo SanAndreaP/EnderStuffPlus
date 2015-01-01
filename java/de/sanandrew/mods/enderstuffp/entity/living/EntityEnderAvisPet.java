@@ -9,6 +9,7 @@ package de.sanandrew.mods.enderstuffp.entity.living;
 import de.sanandrew.core.manpack.util.UsedByReflection;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.util.*;
+import de.sanandrew.mods.enderstuffp.util.manager.ReflectionManager;
 import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -25,6 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 
+import java.sql.Ref;
 import java.util.UUID;
 
 public class EntityEnderAvisPet
@@ -328,7 +330,7 @@ public class EntityEnderAvisPet
             this.moveStrafing = player.moveStrafing;
             this.moveForward = player.moveForward;
 
-            if( EnderStuffPlus.isJumping(player) ) {
+            if( ReflectionManager.isLivingJumping(player) ) {
                 if( this.canFly() && this.posY < 253.0D ) {
                     this.jumpMovementFactor = (this.getAIMoveSpeed() * 1.6F) / 3.0F;
                     this.motionY = 0.4D;

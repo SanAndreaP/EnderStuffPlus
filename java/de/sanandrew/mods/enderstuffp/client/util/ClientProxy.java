@@ -26,6 +26,7 @@ import de.sanandrew.mods.enderstuffp.entity.living.AEntityEnderAvis;
 import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderMiss;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderIgnis;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderNivis;
+import de.sanandrew.mods.enderstuffp.entity.projectile.EntityAvisArrow;
 import de.sanandrew.mods.enderstuffp.network.ClientPacketHandler;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketTileDataSync.ITileSync;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
@@ -71,6 +72,7 @@ public class ClientProxy
         RenderingRegistry.registerEntityRenderingHandler(EntityPearlMiss.class, new RenderSnowball(EspItems.espPearls, 2));
         RenderingRegistry.registerEntityRenderingHandler(EntityBait.class, new RenderSnowball(EspItems.espPearls, 2));
         RenderingRegistry.registerEntityRenderingHandler(EntityWeatherAltarFirework.class, new RenderWeatherAltarFirework());
+        RenderingRegistry.registerEntityRenderingHandler(EntityAvisArrow.class, new RenderAvisArrow());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBiomeChanger.class, new RenderTileEntityBiomeChanger());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWeatherAltar.class, new RenderTileEntityWeatherAltar());
@@ -89,7 +91,7 @@ public class ClientProxy
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EspBlocks.biomeDataCrystal), new ItemRendererBiomeDataCrystal());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EspBlocks.oreGenerator), new ItemRendererOreGenerator());
 
-        MinecraftForgeClient.registerItemRenderer(EspItems.niobBow, new ItemRendererNiobBow());
+        MinecraftForgeClient.registerItemRenderer(EspItems.niobBow, new ItemRendererBow());
     }
 
     //    @Override

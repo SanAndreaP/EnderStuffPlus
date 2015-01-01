@@ -15,16 +15,22 @@ import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderAvisMother
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderAvisWild;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderIgnis;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderNivis;
-import de.sanandrew.mods.enderstuffp.event.EntityJoinWorldHandler;
+import de.sanandrew.mods.enderstuffp.entity.projectile.EntityAvisArrow;
+import de.sanandrew.mods.enderstuffp.event.*;
 import de.sanandrew.mods.enderstuffp.network.EnumPacket;
 import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
 import de.sanandrew.mods.enderstuffp.network.ServerPacketHandler;
+import de.sanandrew.mods.enderstuffp.world.EspWorldGenerator;
+import de.sanandrew.mods.enderstuffp.world.biome.BiomeGenSurfaceEnd;
 import io.netty.buffer.ByteBufInputStream;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.World;
+import net.minecraftforge.common.BiomeManager;
+import net.minecraftforge.common.BiomeManager.BiomeEntry;
+import net.minecraftforge.common.BiomeManager.BiomeType;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.io.IOException;
@@ -38,8 +44,14 @@ public class CommonProxy
         EnderStuffPlus.channel.register(new ServerPacketHandler());
 
         MinecraftForge.EVENT_BUS.register(new EntityJoinWorldHandler());
+        MinecraftForge.EVENT_BUS.register(new ArrowEventsHandler());
+        MinecraftForge.EVENT_BUS.register(new EntityDropEventHandler());
+        MinecraftForge.EVENT_BUS.register(new EntityHitEventHandler());
+        MinecraftForge.EVENT_BUS.register(new BonemealEventHandler());
+        MinecraftForge.EVENT_BUS.register(new EspWorldGenerator());
 
         int entityId = 0;
+        EntityRegistry.registerModEntity(EntityAvisArrow.class, "EnderAvisArrow", entityId++, EnderStuffPlus.instance, 64, 20, true);
         EntityRegistry.registerModEntity(EntityEnderNivis.class, "EnderNivis", entityId++, EnderStuffPlus.instance, 80, 1, true);
         EntityRegistry.registerModEntity(EntityEnderIgnis.class, "EnderIgnis", entityId++, EnderStuffPlus.instance, 80, 1, true);
         EntityRegistry.registerModEntity(EntityEnderMiss.class, "EnderMiss", entityId++, EnderStuffPlus.instance, 80, 1, true);
@@ -50,7 +62,16 @@ public class CommonProxy
         EntityRegistry.registerModEntity(EntityPearlIgnis.class, "EnderIgnisPearl", entityId++, EnderStuffPlus.instance, 64, 10, true);
         EntityRegistry.registerModEntity(EntityPearlMiss.class, "EnderMissPearl", entityId++, EnderStuffPlus.instance, 64, 10, true);
         EntityRegistry.registerModEntity(EntityBait.class, "EnderMissBait", entityId++, EnderStuffPlus.instance, 64, 4, false);
-        EntityRegistry.registerModEntity(EntityItemTantal.class, "ItemTantal", entityId++, EnderStuffPlus.instance, 64, 20, true);
+        EntityRegistry.registerModEntity(EntityItemFireproof.class, "ItemFireproof", entityId++, EnderStuffPlus.instance, 64, 20, true);
+
+        EnderStuffPlus.surfaceEnd = new BiomeGenSurfaceEnd(110);
+        //TODO: 100 is too damn high! JUST FOR TESTING PURPOSES!!!
+        BiomeManager.addBiome(BiomeType.ICY, new BiomeEntry(EnderStuffPlus.surfaceEnd, 100));
+        BiomeManager.addBiome(BiomeType.DESERT, new BiomeEntry(EnderStuffPlus.surfaceEnd, 100));
+        BiomeManager.addBiome(BiomeType.COOL, new BiomeEntry(EnderStuffPlus.surfaceEnd, 100));
+        BiomeManager.addBiome(BiomeType.WARM, new BiomeEntry(EnderStuffPlus.surfaceEnd, 100));
+
+        BiomeManager.addSpawnBiome(EnderStuffPlus.surfaceEnd);
     }
 
     public int addArmor(String armorId) {
@@ -59,11 +80,7 @@ public class CommonProxy
 
 //    public void registerHandlers() {
         // TODO: reimplement event handlers
-//        MinecraftForge.EVENT_BUS.register(new ArrowEventsInst());
-//        MinecraftForge.EVENT_BUS.register(new BonemealEventInst());
 //        MinecraftForge.EVENT_BUS.register(new EnderEvents());
-//        MinecraftForge.EVENT_BUS.register(new EntityDropEventInst());
-//        MinecraftForge.EVENT_BUS.register(new EntityHitEventInst());
 //        MinecraftForge.EVENT_BUS.register(new EntityInteractEventInst());
 //        MinecraftForge.EVENT_BUS.register(new EntityJoinWorldEventInst());
 //        MinecraftForge.EVENT_BUS.register(new EnderStuffWorldGenerator());

@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.block;
 
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityAvisEgg;
@@ -13,19 +19,17 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 public class BlockAvisEgg
-    extends BlockDragonEgg
-    implements ITileEntityProvider
+        extends BlockDragonEgg
+        implements ITileEntityProvider
 {
     public BlockAvisEgg() {
         super();
-        this.isBlockContainer = true;
     }
 
-//    @Override
-//    public void breakBlock(World world, int x, int y, int z, Block oldBlock, int oldMeta) {
-//        super.breakBlock(world, x, y, z, oldBlock, oldMeta);
-//        world.removeTileEntity(x, y, z);
-//    }
+    @Override
+    public boolean hasTileEntity(int metadata) {
+        return true;
+    }
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
@@ -44,25 +48,6 @@ public class BlockAvisEgg
 
     @Override
     public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) { }
-
-//    @Override
-//    public void onBlockDestroyedByExplosion(World world, int x, int y, int z, Explosion explosion) {
-//        world.removeTileEntity(x, y, z);
-//        super.onBlockDestroyedByExplosion(world, x, y, z, explosion);
-//    }
-
-//    @Override
-//    public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int meta) {
-//        world.removeTileEntity(x, y, z);
-//        super.onBlockDestroyedByPlayer(world, x, y, z, meta);
-//    }
-
-//    @Override
-//    public boolean onBlockEventReceived(World world, int x, int y, int z, int evtId, int evtParam) {
-//        super.onBlockEventReceived(world, x, y, z, evtId, evtParam);
-//        TileEntity tileentity = world.getTileEntity(x, y, z);
-//        return tileentity != null && tileentity.receiveClientEvent(evtId, evtParam);
-//    }
 
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemstack) {

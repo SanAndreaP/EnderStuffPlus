@@ -4,7 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
+import de.sanandrew.mods.enderstuffp.util.EspCreativeTabs;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,7 +49,7 @@ public class ItemEnderFlesh
         super(2, 0.6F, false);
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":enderFlesh");
         this.setTextureName(EnderStuffPlus.MOD_ID + ":enderFlesh");
-        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
+        this.setCreativeTab(EspCreativeTabs.ESP_TAB);
         this.setAlwaysEdible();
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
@@ -62,6 +62,7 @@ public class ItemEnderFlesh
         if( stack.getItemDamage() > 0 ) {
             infos.add("positive effects only");
         }
+
         if( stack.getItemDamage() == 2 ) {
             infos.add("4x duration");
         }
@@ -74,18 +75,9 @@ public class ItemEnderFlesh
         return damage == 2 ? 0xFF6666 : 0xFFFFFF;
     }
 
-    private static PotionEffect getRandomPotionEffect(ItemStack stack, Random random) {
-        int duration = 600 * (stack.getItemDamage() == 2 ? 4 : 1);
-        boolean isPositive = stack.getItemDamage() > 0;
-        List<Potion> potions = new ArrayList<Potion>(isPositive ? POTION_EFFECTS.get(false) : POTION_EFFECTS.values());
-
-        return new PotionEffect(potions.get(random.nextInt(potions.size())).id, duration, 0);
-    }
-
     @Override
     public EnumRarity getRarity(ItemStack stack) {
-        return stack.getItemDamage() == 2 ? EnumRarity.rare
-                                          : (stack.getItemDamage() == 1 ? EnumRarity.uncommon : EnumRarity.common);
+        return stack.getItemDamage() == 2 ? EnumRarity.rare : (stack.getItemDamage() == 1 ? EnumRarity.uncommon : EnumRarity.common);
     }
 
     @Override
@@ -108,5 +100,13 @@ public class ItemEnderFlesh
         for( int i = 0; i < 3; i++ ) {
             player.addPotionEffect(getRandomPotionEffect(stack, world.rand));
         }
+    }
+
+    private static PotionEffect getRandomPotionEffect(ItemStack stack, Random random) {
+        int duration = 600 * (stack.getItemDamage() == 2 ? 4 : 1);
+        boolean isPositive = stack.getItemDamage() > 0;
+        List<Potion> potions = new ArrayList<>(isPositive ? POTION_EFFECTS.get(false) : POTION_EFFECTS.values());
+
+        return new PotionEffect(potions.get(random.nextInt(potions.size())).id, duration, 0);
     }
 }

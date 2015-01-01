@@ -10,8 +10,8 @@ import cpw.mods.fml.common.FMLLog;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
-import de.sanandrew.mods.enderstuffp.item.ItemEnderIngot;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
+import de.sanandrew.mods.enderstuffp.util.EnumEnderOres;
 import de.sanandrew.mods.enderstuffp.util.EspItems;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -38,8 +38,8 @@ public final class OreGeneratorManager
             addFuel(new ItemStack(Items.redstone, 1, OreDictionary.WILDCARD_VALUE), 5, 250, true);
             addFuel(new ItemStack(Items.emerald, 1, OreDictionary.WILDCARD_VALUE), 60, 900, true);
             addFuel(new ItemStack(Items.diamond, 1, OreDictionary.WILDCARD_VALUE), 120, 900, true);
-            addFuel(new ItemStack(EspItems.endIngot, 1, ItemEnderIngot.NIOBIUM), 80, 600, true);
-            addFuel(new ItemStack(EspItems.endIngot, 1, ItemEnderIngot.TANTALUM), 120, 800, true);
+            addFuel(new ItemStack(EspItems.enderIngot, 1, EnumEnderOres.NIOBIUM.ordinal()), 80, 600, true);
+            addFuel(new ItemStack(EspItems.enderIngot, 1, EnumEnderOres.TANTALUM.ordinal()), 120, 800, true);
         } else {
             FMLLog.log(Level.WARN, EnderStuffPlus.MOD_LOG, "Can not initialize the OreGeneratorManager multiple times!");
         }
@@ -80,8 +80,9 @@ public final class OreGeneratorManager
      */
     public static Pair<Integer, Integer> getFuelValues(ItemStack stack) {
         for( Entry<ItemStack, Triplet<Integer, Integer, Boolean>> fuel : FUELS.entrySet() ) {
-            if( SAPUtils.areStacksEqual(fuel.getKey(), stack, fuel.getValue().getValue2()) ) {
-                return Pair.with(fuel.getValue().getValue0(), fuel.getValue().getValue1());
+            Triplet<Integer, Integer, Boolean> val = fuel.getValue();
+            if( SAPUtils.areStacksEqual(fuel.getKey(), stack, val.getValue2()) ) {
+                return Pair.with(val.getValue0(), val.getValue1());
             }
         }
 

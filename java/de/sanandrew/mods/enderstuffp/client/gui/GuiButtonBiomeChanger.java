@@ -6,6 +6,8 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.client.gui;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.enderstuffp.client.util.EnumTextures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -13,6 +15,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.OpenGlHelper;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class GuiButtonBiomeChanger
         extends GuiButton
 {
@@ -38,14 +41,14 @@ public class GuiButtonBiomeChanger
             this.drawTexturedModalRect(this.xPosition + this.width / 2, this.yPosition, 200 - this.width / 2, 78 + hoverState * 14, this.width / 2, this.height);
 
             this.mouseDragged(mc, mouseX, mouseY);
-            int l = 14737632;
+            int l = 0xE0E0E0;
 
             if( packedFGColour != 0 ) {
                 l = packedFGColour;
             } else if( !this.enabled ) {
-                l = 10526880;
+                l = 0xA0A0A0;
             } else if( this.field_146123_n ) {
-                l = 16777120;
+                l = 0xFFFFA0;
             }
 
             this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, l);

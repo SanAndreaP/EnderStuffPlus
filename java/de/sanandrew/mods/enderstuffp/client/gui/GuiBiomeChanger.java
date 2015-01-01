@@ -7,6 +7,8 @@
 package de.sanandrew.mods.enderstuffp.client.gui;
 
 import com.google.common.collect.Maps;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.client.helpers.GuiUtils;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.client.util.EnumTextures;
@@ -27,6 +29,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.Map;
 
+@SideOnly(Side.CLIENT)
 public class GuiBiomeChanger
         extends GuiScreen
 {

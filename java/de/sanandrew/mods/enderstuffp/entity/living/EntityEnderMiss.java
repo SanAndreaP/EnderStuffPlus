@@ -5,6 +5,7 @@ import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.core.manpack.util.javatuples.Unit;
 import de.sanandrew.mods.enderstuffp.item.ItemRaincoat;
 import de.sanandrew.mods.enderstuffp.util.*;
+import de.sanandrew.mods.enderstuffp.util.manager.ReflectionManager;
 import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager;
 import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager.CoatBaseEntry;
 import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager.CoatColorEntry;
@@ -587,7 +588,7 @@ public class EntityEnderMiss
             this.setRotation(player.rotationYaw, 0.0F);
             this.moveStrafing = player.moveStrafing;
             this.moveForward = player.moveForward;
-            this.isJumping = EnderStuffPlus.isJumping(player);
+            this.isJumping = ReflectionManager.isLivingJumping(player);
 
             this.stepHeight = 1.0F;
         }

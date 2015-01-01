@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.block;
 
 import cpw.mods.fml.relauncher.Side;
@@ -18,7 +24,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockBiomeChanger
-    extends BlockContainer
+        extends BlockContainer
 {
     public BlockBiomeChanger(Material material) {
         super(material);

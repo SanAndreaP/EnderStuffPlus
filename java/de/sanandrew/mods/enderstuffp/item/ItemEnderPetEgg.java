@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.entity.living.IEnderPet;
-import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
+import de.sanandrew.mods.enderstuffp.util.EspCreativeTabs;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EnumEnderPetEggInfo;
 import net.minecraft.block.Block;
@@ -32,7 +32,7 @@ public class ItemEnderPetEgg
 {
     public ItemEnderPetEgg() {
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":enderPetEgg");
-        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
+        this.setCreativeTab(EspCreativeTabs.ESP_TAB);
         this.setHasSubtypes(true);
         this.setMaxStackSize(1);
     }

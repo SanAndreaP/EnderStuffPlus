@@ -21,7 +21,7 @@ public class EspItems
     public static Item enderPetStaff;
     public static Item enderStick;
     public static Item endHorseArmor;
-    public static Item endIngot;
+    public static Item enderIngot;
     public static Item endNugget;
     public static Item espPearls;
     public static Item itemNiobDoor;
@@ -51,41 +51,41 @@ public class EspItems
     private static void initItems() {
         espPearls     = new ItemCustomEnderPearl();
         enderFlesh    = new ItemEnderFlesh();
-        avisFeather   = new ItemStandard("avisFeather");
-        avisArrow     = new ItemStandard("avisArrow");
+        avisFeather   = new ItemStandard("avisFeather", "feather_avis");
+        avisArrow     = new ItemStandard("avisArrow", "arrow_avis");
         avisCompass   = new ItemAvisCompass();
         enderPetEgg   = new ItemEnderPetEgg();
-        enderPetStaff = new ItemStandard("petStaff");
-        endIngot      = new ItemEnderIngot();
-        niobBow       = new ItemNiobBow();
+        enderPetStaff = new ItemStandard("petStaff", "pet_staff");
+        enderIngot    = new ItemEnderIngot();
+        niobBow       = new ItemNiobiumBow();
         rainCoat      = new ItemRaincoat();
-        niobHelmet    = new ItemNiobArmor("niobHelmet", armorNiobium, 0);
-        niobPlate     = new ItemNiobArmor("niobChestplate", armorNiobium, 1);
-        niobLegs      = new ItemNiobArmor("niobLeggings", armorNiobium, 2);
-        niobBoots     = new ItemNiobArmor("niobBoots", armorNiobium, 3);
-        niobPick      = new ItemNiobPickaxe(toolNiobium);
-        niobShovel    = new ItemNiobShovel(toolNiobium);
-        niobAxe       = new ItemNiobAxe(toolNiobium);
-        niobHoe       = new ItemNiobHoe(toolNiobium);
-        niobSword     = new ItemNiobSword(toolNiobium);
-        niobShears    = new ItemNiobShears();
-        endNugget     = new ItemStandard("niobNugget");
+        niobHelmet    = new ItemNiobArmor("helmetNiobium", "helmet_niobium", armorNiobium, 0);
+        niobPlate     = new ItemNiobArmor("chestplateNiobium", "chestplate_niobium", armorNiobium, 1);
+        niobLegs      = new ItemNiobArmor("leggingsNiobium", "leggings_niobium", armorNiobium, 2);
+        niobBoots     = new ItemNiobArmor("bootsNiobium", "boots_niobium", armorNiobium, 3);
+        niobPick      = new ItemNiobiumPickaxe(toolNiobium);
+        niobShovel    = new ItemNiobiumShovel(toolNiobium);
+        niobAxe       = new ItemNiobiumAxe(toolNiobium);
+        niobHoe       = new ItemNiobiumHoe(toolNiobium);
+        niobSword     = new ItemNiobiumSword(toolNiobium);
+        niobShears    = new ItemNiobiumShears();
+        endNugget     = new ItemEnderNugget();
         itemNiobDoor  = new ItemNiobDoor();
-        enderStick    = new ItemStandard("enderStick");
+        enderStick    = new ItemStandard("enderStick", "stick_ender");
         endHorseArmor = new ItemEndHorseArmor();
-        tantalPick    = new ItemTantalPickaxe(toolNiobium);
+        tantalPick    = new ItemTantalumPickaxe(toolNiobium);
         ahrahSword    = new ItemAhrahSword(toolNiobium);
 
         enderPetStaff.setFull3D();
     }
 
     private static void initMaterials() {
-        toolNiobium = EnumHelper.addToolMaterial("NIOBIUM", 2, 250, 6.0F, 2.0F, 22);
-        armorNiobium = EnumHelper.addArmorMaterial("NIOBIUM", 15, new int[]{2, 6, 5, 2}, 25);
+        armorNiobium = EnumHelper.addArmorMaterial(EnderStuffPlus.MOD_ID.toUpperCase() + "_NIOBIUM", 20, new int[]{2, 7, 5, 2}, 18);
+        toolNiobium = EnumHelper.addToolMaterial(EnderStuffPlus.MOD_ID.toUpperCase() + "_NIOBIUM", 3, 450, 7.0F, 2.5F, 18);
     }
 
     private static void registerItems() {
-        SAPUtils.registerItems(espPearls, avisFeather, avisArrow, avisCompass, enderPetEgg, enderPetStaff, endIngot, niobBow, niobHelmet,
+        SAPUtils.registerItems(espPearls, avisFeather, avisArrow, avisCompass, enderPetEgg, enderPetStaff, enderIngot, niobBow, niobHelmet,
                                niobPlate, niobLegs, niobBoots, niobPick, niobShovel, niobAxe, niobHoe, niobSword, niobShears, enderFlesh,
                                rainCoat, itemNiobDoor, endNugget, enderStick, endHorseArmor, tantalPick, ahrahSword);
     }

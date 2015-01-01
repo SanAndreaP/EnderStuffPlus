@@ -3,7 +3,6 @@ package de.sanandrew.mods.enderstuffp.client.render;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.client.helpers.ItemRenderHelper;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
@@ -19,8 +18,6 @@ public class ItemRendererGlowTools
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        EntityLivingBase entity = (EntityLivingBase) data[1];
-
         GL11.glPopMatrix();                                         // prevents Forge from pre-translating the item
 
         ItemRenderHelper.renderItem(item, 0, false);

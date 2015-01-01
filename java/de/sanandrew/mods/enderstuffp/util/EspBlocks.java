@@ -1,10 +1,11 @@
 package de.sanandrew.mods.enderstuffp.util;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import de.sanandrew.core.manpack.item.ItemBlockNamedMeta;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.block.*;
-import de.sanandrew.mods.enderstuffp.item.ItemBlockBiomeDataCrystal;
+import de.sanandrew.mods.enderstuffp.item.block.ItemBlockBiomeDataCrystal;
+import de.sanandrew.mods.enderstuffp.item.block.ItemBlockEnderOre;
+import de.sanandrew.mods.enderstuffp.item.block.ItemBlockEnderStorage;
 import de.sanandrew.mods.enderstuffp.tileentity.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -17,18 +18,20 @@ public final class EspBlocks
     public static Block biomeChanger;
     public static Block corruptES;
     public static Block duplicator;
-    public static Block endBlock;
+    public static Block enderBlock;
     public static Block enderLeaves;
     public static Block enderLog;
     public static Block enderPlanks;
     public static Fluid endFluid;
     public static Block endFluidBlock;
-    public static Block endOre;
+    public static Block enderOre;
     public static Block weatherAltar;
     public static BlockEnderDoor blockEndDoor;
-//    public static BlockSaplingEndTree sapEndTree;
+    public static BlockSaplingEndTree sapEndTree;
     public static Block oreGenerator;
     public static Block biomeDataCrystal;
+    public static Block fertilizer;
+
 
     public static void initialize() {
         initRegisterFluids();
@@ -41,83 +44,87 @@ public final class EspBlocks
 
     private static void initBlocks() {
         avisEgg = new BlockAvisEgg();
-        endOre = new BlockEndOre();
-        endBlock = new BlockEndStorage();
+        enderOre = new BlockEnderOre();
+        enderBlock = new BlockEnderStorage();
         biomeChanger = new BlockBiomeChanger(Material.rock);
 //        duplicator    = new BlockDuplicator();
         weatherAltar = new BlockWeatherAltar();
         blockEndDoor = new BlockEnderDoor(Material.iron);
-//        enderLeaves   = new BlockEndLeaves();
-//        enderLog      = new BlockEndLog();
-//        sapEndTree    = new BlockSaplingEndTree();
-//        enderPlanks   = new BlockEnderWood();
+        enderLeaves   = new BlockEndLeaves();
+        enderLog      = new BlockEndLog();
+        sapEndTree    = new BlockSaplingEndTree();
+        enderPlanks   = new BlockEnderWood();
 //        corruptES     = new BlockCorruptEndStone();
 //        endFluidBlock = new BlockEndFluid(endFluid, Material.water);
         oreGenerator = new BlockOreGenerator();
         biomeDataCrystal = new BlockBiomeDataCrystal();
+        fertilizer = new BlockFertilizer();
 
         avisEgg.setBlockName(EnderStuffPlus.MOD_ID + ":avisEgg")
-               .setCreativeTab(CreativeTabsEnderStuff.ESP_TAB)
+               .setCreativeTab(EspCreativeTabs.ESP_TAB)
                .setHardness(1.0F)
                .setBlockTextureName(EnderStuffPlus.MOD_ID + ":eggAvis");
-        endOre.setBlockName(EnderStuffPlus.MOD_ID + ":oreNiob")
-              .setCreativeTab(CreativeTabsEnderStuff.ESP_TAB)
+        enderOre.setBlockName(EnderStuffPlus.MOD_ID + ":oreNiob")
+              .setCreativeTab(EspCreativeTabs.ESP_TAB)
               .setHardness(3.0F)
               .setResistance(5.0F)
               .setStepSound(Block.soundTypeStone);
-        endBlock.setBlockName(EnderStuffPlus.MOD_ID + ":blockNiob")
-                .setCreativeTab(CreativeTabsEnderStuff.ESP_TAB)
+        enderBlock.setBlockName(EnderStuffPlus.MOD_ID + ":blockNiob")
+                .setCreativeTab(EspCreativeTabs.ESP_TAB)
                 .setHardness(5.0F)
                 .setResistance(10.0F)
                 .setStepSound(Block.soundTypeMetal);
         biomeChanger.setBlockName(EnderStuffPlus.MOD_ID + ":biomeChanger")
-                    .setCreativeTab(CreativeTabsEnderStuff.ESP_TAB)
+                    .setCreativeTab(EspCreativeTabs.ESP_TAB)
                     .setHardness(1.0F);
 //        duplicator.setBlockName(ESPModRegistry.MOD_ID + ":duplicator")
 //                  .setCreativeTab(ESPModRegistry.espTab)
 //                  .setHardness(1.0F);
         weatherAltar.setBlockName(EnderStuffPlus.MOD_ID + ":weatherAltar")
-                    .setCreativeTab(CreativeTabsEnderStuff.ESP_TAB)
+                    .setCreativeTab(EspCreativeTabs.ESP_TAB)
                     .setHardness(1.0F);
         blockEndDoor.disableStats()
                     .setBlockName(EnderStuffPlus.MOD_ID + ":enderDoor")
                     .setHardness(5.0F)
                     .setStepSound(Block.soundTypeMetal);
-//        enderLeaves.setBlockName(ESPModRegistry.MOD_ID + ":enderLeaves")
-//                   .setCreativeTab(ESPModRegistry.espTab)
-//                   .setHardness(0.2F)
-//                   .setStepSound(Block.soundTypeGrass)
-//                   .setLightOpacity(1);
-//        enderLog.setBlockName(ESPModRegistry.MOD_ID + ":enderLog")
-//                .setCreativeTab(ESPModRegistry.espTab)
-//                .setHardness(2.0F)
-//                .setStepSound(Block.soundTypeWood)
-//                .setLightLevel(4.1F / 15.0F);
-//        sapEndTree.setBlockName(ESPModRegistry.MOD_ID + ":enderSapling")
-//                  .setCreativeTab(ESPModRegistry.espTab)
-//                  .setHardness(0.0F)
-//                  .setStepSound(Block.soundTypeGrass)
-//                  .setBlockTextureName(ESPModRegistry.MOD_ID + ":sapling_end");
-//        enderPlanks.setBlockName(ESPModRegistry.MOD_ID + ":enderWood")
-//                   .setCreativeTab(ESPModRegistry.espTab)
-//                   .setHardness(2.0F)
-//                   .setResistance(5.0F)
-//                   .setStepSound(Block.soundTypeWood)
-//                   .setBlockTextureName(ESPModRegistry.MOD_ID + ":enderWood" + (!ConfigRegistry.useAnimations ? "_NA" : ""));
+        enderLeaves.setBlockName(EnderStuffPlus.MOD_ID + ":enderLeaves")
+                   .setCreativeTab(EspCreativeTabs.ESP_TAB)
+                   .setHardness(0.2F)
+                   .setStepSound(Block.soundTypeGrass)
+                   .setLightOpacity(1);
+        enderLog.setBlockName(EnderStuffPlus.MOD_ID + ":enderLog")
+                .setCreativeTab(EspCreativeTabs.ESP_TAB)
+                .setHardness(2.0F)
+                .setStepSound(Block.soundTypeWood)
+                .setLightLevel(4.1F / 15.0F);
+        sapEndTree.setBlockName(EnderStuffPlus.MOD_ID + ":enderSapling")
+                  .setCreativeTab(EspCreativeTabs.ESP_TAB)
+                  .setHardness(0.0F)
+                  .setStepSound(Block.soundTypeGrass)
+                  .setBlockTextureName(EnderStuffPlus.MOD_ID + ":sapling_end");
+        enderPlanks.setBlockName(EnderStuffPlus.MOD_ID + ":enderWood")
+                   .setCreativeTab(EspCreativeTabs.ESP_TAB)
+                   .setHardness(2.0F)
+                   .setResistance(5.0F)
+                   .setStepSound(Block.soundTypeWood)
+                   .setBlockTextureName(EnderStuffPlus.MOD_ID + ":enderWood");
 //        corruptES.setBlockName(ESPModRegistry.MOD_ID + ":corruptES")
 //                 .setCreativeTab(ESPModRegistry.espTab)
 //                 .setHardness(3.0F)
 //                 .setResistance(15.0F)
 //                 .setStepSound(Block.soundTypePiston);
         oreGenerator.setBlockName(EnderStuffPlus.MOD_ID + ":oreGenerator")
-                    .setCreativeTab(CreativeTabsEnderStuff.ESP_TAB)
-                    .setHardness(5.0F)
+                    .setCreativeTab(EspCreativeTabs.ESP_TAB)
+                    .setHardness(1.0F)
                     .setStepSound(Block.soundTypeMetal);
         biomeDataCrystal.setBlockName(EnderStuffPlus.MOD_ID + ":biomeDataCrystal")
                         .setBlockTextureName(EnderStuffPlus.MOD_ID + ":biome_crystal")
-                        .setCreativeTab(CreativeTabsEnderStuff.ESP_TAB_BIOMEDC)
-                        .setHardness(5.0F)
+                        .setCreativeTab(EspCreativeTabs.ESP_TAB_BIOMEDC)
+                        .setHardness(1.0F)
                         .setStepSound(Block.soundTypeMetal);
+        fertilizer.setBlockName(EnderStuffPlus.MOD_ID + ":fertilizer")
+                    .setCreativeTab(EspCreativeTabs.ESP_TAB)
+                    .setHardness(1.0F);
 //
 //        endFluid.setBlock(endFluidBlock);
     }
@@ -136,17 +143,18 @@ public final class EspBlocks
         GameRegistry.registerTileEntity(TileEntityWeatherAltar.class, EnderStuffPlus.MOD_ID + ":weatherAltarTile");
         GameRegistry.registerTileEntity(TileEntityOreGenerator.class, EnderStuffPlus.MOD_ID + ":oreGeneratorTile");
         GameRegistry.registerTileEntity(TileEntityBiomeDataCrystal.class, EnderStuffPlus.MOD_ID + ":biomeDataCrystalTile");
+        GameRegistry.registerTileEntity(TileEntityFertilizer.class, EnderStuffPlus.MOD_ID + ":fertilizer");
 
 //        SAPUtils.registerBlocks(avisEgg, biomeChanger, duplicator, weatherAltar, blockEndDoor, enderLog, sapEndTree, enderPlanks,
 //                                corruptES, endFluidBlock);
 
-        SAPUtils.registerBlocks(avisEgg, biomeChanger, weatherAltar, blockEndDoor, oreGenerator);
+        SAPUtils.registerBlocks(avisEgg, biomeChanger, weatherAltar, blockEndDoor, oreGenerator, fertilizer, enderLog, sapEndTree, enderPlanks, enderLeaves);
 
 //        GameRegistry.registerBlock(enderLeaves, ItemEndLeaves.class, ESPModRegistry.MOD_ID + ":blockEndLeaves");
         GameRegistry.registerBlock(biomeDataCrystal, ItemBlockBiomeDataCrystal.class, "biomeDataCrystal");
-        GameRegistry.registerBlock(endOre, ItemBlockNamedMeta.class, "blockEndOre");
-        GameRegistry.registerBlock(endBlock, ItemBlockNamedMeta.class, "blockEndStorg");
+        GameRegistry.registerBlock(enderOre, ItemBlockEnderOre.class, "blockEnderOre");
+        GameRegistry.registerBlock(enderBlock, ItemBlockEnderStorage.class, "blockEnderStorage");
 
-        endOre.setHarvestLevel("pickaxe", 2, 0);
+        enderOre.setHarvestLevel("pickaxe", 2, 0);
     }
 }

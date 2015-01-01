@@ -29,10 +29,11 @@ tile.enderstuffp:enderLog.name=Endertree Log
 tile.enderstuffp:enderWood.name=Endertree Planks
 tile.enderstuffp:enderSapling.name=Endertree Sapling
 tile.enderstuffp:corruptEndstone.name=Corrupt Endstone
-tile.enderstuffp:oreEnd_0.name=Niobium Ore
-tile.enderstuffp:oreEnd_1.name=Tantalum Ore
-tile.enderstuffp:blockEndOre_0.name=Block of Niobium
-tile.enderstuffp:blockEndOre_1.name=Block of Tantalum
+
+tile.enderstuffp:oreNiobium.name=Niobium Ore
+tile.enderstuffp:oreTantalum.name=Tantalum Ore
+tile.enderstuffp:blockNiobium.name=Block of Niobium
+tile.enderstuffp:blockTantalum.name=Block of Tantalum
 
 tile.enderstuffp:biomeDataCrystal.name=Biome Data Crystal
 tile.enderstuffp:biomeDataCrystal.empty=Empty
@@ -45,25 +46,28 @@ item.enderstuffp:avisArrow.name=Avis Arrow
 item.enderstuffp:avisCompass.name=Avis Compass
 item.enderstuffp:enderPetEgg.name=Enderpet Egg
 item.enderstuffp:petStaff.name=Enderpet Staff
-item.enderstuffp:enderIngot_niobium.name=Niobium Ingot
-item.enderstuffp:enderIngot_tantalum.name=Tantalum Ingot
-item.enderstuffp:bowNiob.name=Niobium Bow
-item.enderstuffp:niobHelmet.name=Niobium Helmet
-item.enderstuffp:niobChestplate.name=Niobium Chestplate
-item.enderstuffp:niobLeggings.name=Niobium Leggins
-item.enderstuffp:niobBoots.name=Niobium Boots
-item.enderstuffp:niobPick.name=Niobium Pickaxe
-item.enderstuffp:niobShovel.name=Niobium Shovel
-item.enderstuffp:niobAxe.name=Niobium Axe
-item.enderstuffp:niobHoe.name=Niobium Hoe
-item.enderstuffp:niobSword.name=Niobium Sword
-item.enderstuffp:niobShears.name=Niobium Shears
+item.enderstuffp:ingotNiobium.name=Niobium Ingot
+item.enderstuffp:ingotTantalum.name=Tantalum Ingot
 item.enderstuffp:niobNugget.name=Niobium Nugget
 item.enderstuffp:doorNiob.name=Niobium Door
 item.enderstuffp:enderStick.name=Endertree Stick
 item.enderstuffp:enderPearls.0.name=Nivis Pearl
 item.enderstuffp:enderPearls.1.name=Ignis Pearl
 item.enderstuffp:enderPearls.2.name=Endermiss Pearl
+
+item.enderstuffp:niobHelmet.name=Niobium Helmet
+item.enderstuffp:niobChestplate.name=Niobium Chestplate
+item.enderstuffp:niobLeggings.name=Niobium Leggins
+item.enderstuffp:niobBoots.name=Niobium Boots
+item.enderstuffp:bowNiobium.name=Niobium Bow
+item.enderstuffp:pickNiobium.name=Niobium Pickaxe
+item.enderstuffp:shovelNiobium.name=Niobium Shovel
+item.enderstuffp:axeNiobium.name=Niobium Axe
+item.enderstuffp:hoeNiobium.name=Niobium Hoe
+item.enderstuffp:swordNiobium.name=Niobium Sword
+item.enderstuffp:shearsNiobium.name=Niobium Shears
+
+item.enderstuffp:pickTantalum.name=Tantalum Pickaxe
 
 item.enderstuffp:rainCoat.name=Enderpet Raincoat
 item.enderstuffp:rainCoat.color.black=Black

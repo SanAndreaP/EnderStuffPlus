@@ -3,7 +3,7 @@ package de.sanandrew.mods.enderstuffp.item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.enderstuffp.client.event.TextureStitchHandler;
-import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
+import de.sanandrew.mods.enderstuffp.util.EspCreativeTabs;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
@@ -20,7 +20,7 @@ public class ItemAvisCompass
     public ItemAvisCompass() {
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":avisCompass");
         this.setTextureName(EnderStuffPlus.MOD_ID + ":compass");
-        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
+        this.setCreativeTab(EspCreativeTabs.ESP_TAB);
     }
 
     @SideOnly(Side.CLIENT)

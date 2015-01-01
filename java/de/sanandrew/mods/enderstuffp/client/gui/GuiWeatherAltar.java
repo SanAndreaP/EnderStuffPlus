@@ -16,20 +16,21 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GuiWeatherAltar
-    extends GuiScreen
+        extends GuiScreen
 {
-    private TileEntityWeatherAltar teWeatherAltar;
+    private static final int X_SIZE = 226;
+    private static final int Y_SIZE = 107;
+
+    private TileEntityWeatherAltar weatherAltar;
     private GuiButton btnSun;
     private GuiButton btnRain;
     private GuiButton btnStorm;
     private GuiTextField txtDuration;
     private int guiLeft;
     private int guiTop;
-    private int xSize = 226;
-    private int ySize = 107;
 
     public GuiWeatherAltar(TileEntityWeatherAltar tileAltar) {
-        this.teWeatherAltar = tileAltar;
+        this.weatherAltar = tileAltar;
         this.allowUserInput = true;
     }
 
@@ -47,7 +48,7 @@ public class GuiWeatherAltar
                 weatherId = 2;
             }
 
-            PacketProcessor.sendToServer(EnumPacket.WEATHERALTAR_SET, Quintet.with(this.teWeatherAltar.xCoord, this.teWeatherAltar.yCoord, this.teWeatherAltar.zCoord,
+            PacketProcessor.sendToServer(EnumPacket.WEATHERALTAR_SET, Quintet.with(this.weatherAltar.xCoord, this.weatherAltar.yCoord, this.weatherAltar.zCoord,
                                                                                    weatherId, dur));
         }
     }
@@ -61,7 +62,7 @@ public class GuiWeatherAltar
     public void drawScreen(int mouseX, int mouseY, float partTicks) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(EnumTextures.GUI_WEATHERALTAR.getResource());
-        this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
+        this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, X_SIZE, Y_SIZE);
 
         this.fontRendererObj.drawString(SAPUtils.translatePreFormat("tile.%s:weatherAltar.name", EnderStuffPlus.MOD_ID), this.guiLeft + 6, this.guiTop + 6, 0x808080);
         this.fontRendererObj.drawString(SAPUtils.translate(EnderStuffPlus.MOD_ID + ".weatherAltar.duration"), this.guiLeft + 12, this.guiTop + 35, 0x808080);
@@ -81,7 +82,7 @@ public class GuiWeatherAltar
         try {
             int dur = Integer.parseInt(this.txtDuration.getText());
 
-            return this.teWeatherAltar.isValidDuration(dur) ? dur : 0;
+            return this.weatherAltar.isValidDuration(dur) ? dur : 0;
         } catch( NumberFormatException e ) {
             return 0;
         }
@@ -91,8 +92,8 @@ public class GuiWeatherAltar
     @SuppressWarnings({ "unchecked" })
     public void initGui() {
         super.initGui();
-        this.guiLeft = (this.width - this.xSize) / 2;
-        this.guiTop = (this.height - this.ySize) / 2;
+        this.guiLeft = (this.width - X_SIZE) / 2;
+        this.guiTop = (this.height - Y_SIZE) / 2;
 
         this.btnSun = new GuiButton(this.buttonList.size(), this.guiLeft + 10, this.guiTop + 75, 66, 20,
                                     SAPUtils.translate(EnderStuffPlus.MOD_ID + ".weatherAltar.sun"));

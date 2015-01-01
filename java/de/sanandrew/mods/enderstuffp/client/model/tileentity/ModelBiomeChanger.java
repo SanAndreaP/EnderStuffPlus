@@ -1,5 +1,12 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.client.model.tileentity;
 
+import de.sanandrew.core.manpack.util.client.helpers.SAPClientUtils;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.model.ModelBase;
@@ -10,21 +17,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelBiomeChanger
-    extends ModelBase
+        extends ModelBase
 {
     private ModelRenderer floatyBox1;
     private ModelRenderer floatyBox2;
     private ModelRenderer base;
 
     public ModelBiomeChanger() {
-        this.base = new ModelRenderer(this, 0, 0);
-        this.base.addBox(-7.0F, 0.0F, -7.0F, 14, 9, 14);
-
-        this.floatyBox1 = new ModelRenderer(this, 16, 23);
-        this.floatyBox1.addBox(-4.0F, 0.0F, -2.0F, 8, 1, 4);
-
-        this.floatyBox2 = new ModelRenderer(this, 0, 23);
-        this.floatyBox2.addBox(-2.0F, 0.0F, -4.0F, 4, 1, 8);
+        this.base = SAPClientUtils.createNewBox(this, 0, 0, false, -7.0F, 0.0F, -7.0F, 14, 9, 14, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+        this.floatyBox1 = SAPClientUtils.createNewBox(this, 16, 23, false, -4.0F, 0.0F, -2.0F, 8, 1, 4, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+        this.floatyBox2 = SAPClientUtils.createNewBox(this, 0, 23, false, -2.0F, 0.0F, -4.0F, 4, 1, 8, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
     }
 
     public void renderBlock() {

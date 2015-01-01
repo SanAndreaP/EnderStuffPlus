@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.client.gui;
 
 import org.lwjgl.opengl.GL11;
@@ -20,10 +26,6 @@ public class GuiButtonPetGUI
     public GuiButtonPetGUI(int id, int x, int y, int width, int height, String label, int color) {
         super(id, x, y, width, height, label);
         this.color = color;
-    }
-
-    public GuiButtonPetGUI(int id, int x, int y, String label, int color) {
-        this(id, x, y, 200, 20, label, color);
     }
 
     @Override

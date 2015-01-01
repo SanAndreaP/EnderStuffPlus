@@ -43,7 +43,7 @@ public class RenderTileEntityOreGenerator
             if( te.displayDrawCycles >= 3200 ) {
                 te.displayDrawCycles = 0;
             }
-            this.modelBlock.addGrinderRotation(te.displayAmplitude / 3.0D);
+            this.modelBlock.addGrinderRotation((float) (te.displayDrawCycles / 31.0D * Math.PI * 2.0D * te.displayAmplitude));
         }
 
         this.bindTexture(EnumTextures.ORE_GENERATOR.getResource());

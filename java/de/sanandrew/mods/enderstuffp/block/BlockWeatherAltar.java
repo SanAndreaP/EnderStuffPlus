@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.block;
 
 import cpw.mods.fml.relauncher.Side;
@@ -21,8 +27,8 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 public class BlockWeatherAltar
-    extends BlockDirectional
-    implements ITileEntityProvider
+        extends BlockDirectional
+        implements ITileEntityProvider
 {
     public BlockWeatherAltar() {
         super(Material.rock);

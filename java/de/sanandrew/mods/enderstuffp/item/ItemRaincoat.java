@@ -3,7 +3,7 @@ package de.sanandrew.mods.enderstuffp.item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
-import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
+import de.sanandrew.mods.enderstuffp.util.EspCreativeTabs;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager;
 import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager.CoatBaseEntry;
@@ -27,7 +27,7 @@ public class ItemRaincoat
 
     public ItemRaincoat() {
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":rainCoat");
-        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB_COATS);
+        this.setCreativeTab(EspCreativeTabs.ESP_TAB_COATS);
         this.setMaxDamage(0);
     }
 

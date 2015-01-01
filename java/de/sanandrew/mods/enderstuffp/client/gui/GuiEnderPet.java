@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
@@ -19,10 +25,13 @@ import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import java.util.regex.Pattern;
+
 @SideOnly(Side.CLIENT)
 public class GuiEnderPet
-    extends GuiScreen
+        extends GuiScreen
 {
+    private static final Pattern COLOR_CODE_PATTERN = Pattern.compile("\247.");
     private IEnderPet enderPet;
     private GuiTextField nameTxt;
     private EntityPlayer owner;
@@ -63,7 +72,7 @@ public class GuiEnderPet
     }
 
     private int getRealStringWidth(String str) {
-        String strippedString = str.replaceAll("\247.", "");
+        String strippedString = COLOR_CODE_PATTERN.matcher(str).replaceAll("");
         return this.fontRendererObj.getStringWidth(strippedString);
     }
 
@@ -81,7 +90,8 @@ public class GuiEnderPet
         this.nameTxt = new GuiTextField(this.fontRendererObj, (this.width - 198) / 2, this.yPos + 30, 198, 15);
         this.nameTxt.setText(name);
 
-        GuiButton mountBtn = new GuiButtonPetGUI(0, (this.width - 200) / 2, this.yPos + 55, 200, 15, SAPUtils.translate("mount"), color).setBGAlpha(128);
+        GuiButton mountBtn = new GuiButtonPetGUI(0, (this.width - 200) / 2, this.yPos + 55, 200, 15, SAPUtils.translate(EnderStuffPlus.MOD_ID + ".guipet.mount"),
+                                                 color).setBGAlpha(128);
         mountBtn.enabled = this.enderPet.canMount();
         this.buttonList.add(mountBtn);
 

@@ -1,12 +1,14 @@
 /*******************************************************************************************************************
  * Authors:   SanAndreasP
- * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * Copyright: SanAndreasP
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.block;
 
-import de.sanandrew.mods.enderstuffp.item.ItemBlockBiomeDataCrystal;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.mods.enderstuffp.item.block.ItemBlockBiomeDataCrystal;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeDataCrystal;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -31,6 +33,7 @@ public class BlockBiomeDataCrystal
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public int getRenderBlockPass() {
         return 1;
     }
@@ -93,8 +96,8 @@ public class BlockBiomeDataCrystal
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-        ItemStack stack = super.getPickBlock(target, world, x, y, z);
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
+        ItemStack stack = super.getPickBlock(target, world, x, y, z, player);
         NBTTagCompound nbt = new NBTTagCompound();
         TileEntityBiomeDataCrystal crystalTile = (TileEntityBiomeDataCrystal) world.getTileEntity(x, y, z);
 

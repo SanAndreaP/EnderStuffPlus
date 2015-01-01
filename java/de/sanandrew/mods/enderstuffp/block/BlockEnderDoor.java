@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.block;
 
 import cpw.mods.fml.relauncher.Side;
@@ -19,9 +25,10 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 public class BlockEnderDoor
-    extends Block
+        extends Block
 {
-    private static final String[] doorIconNames = new String[] { "doorNiob_lower", "doorNiob_middle", "doorNiob_upper" };
+    private static final String[] DOOR_ICON_NAMES = new String[] { "doorNiob_lower", "doorNiob_middle", "doorNiob_upper" };
+
     @SideOnly(Side.CLIENT)
     private IIcon[] icons;
 
@@ -36,12 +43,7 @@ public class BlockEnderDoor
 
     @Override
     public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-        if( y >= 254 ) {
-            return false;
-        } else {
-            return super.canPlaceBlockAt(world, x, y, z) && super.canPlaceBlockAt(world, x, y + 1, z)
-                   && super.canPlaceBlockAt(world, x, y + 2, z);
-        }
+        return y < 254 && super.canPlaceBlockAt(world, x, y, z) && super.canPlaceBlockAt(world, x, y + 1, z) && super.canPlaceBlockAt(world, x, y + 2, z);
     }
 
     @Override
@@ -70,23 +72,23 @@ public class BlockEnderDoor
 
             if( isOpen ) {
                 if( (stripMeta == 0) && (side == 2) ) {
-                    isTextureFlipped = !isTextureFlipped;
+                    isTextureFlipped = true;
                 } else if( (stripMeta == 1) && (side == 5) ) {
-                    isTextureFlipped = !isTextureFlipped;
+                    isTextureFlipped = true;
                 } else if( (stripMeta == 2) && (side == 3) ) {
-                    isTextureFlipped = !isTextureFlipped;
+                    isTextureFlipped = true;
                 } else if( (stripMeta == 3) && (side == 4) ) {
-                    isTextureFlipped = !isTextureFlipped;
+                    isTextureFlipped = true;
                 }
             } else {
                 if( (stripMeta == 0) && (side == 5) ) {
-                    isTextureFlipped = !isTextureFlipped;
+                    isTextureFlipped = true;
                 } else if( (stripMeta == 1) && (side == 3) ) {
-                    isTextureFlipped = !isTextureFlipped;
+                    isTextureFlipped = true;
                 } else if( (stripMeta == 2) && (side == 4) ) {
-                    isTextureFlipped = !isTextureFlipped;
+                    isTextureFlipped = true;
                 } else if( (stripMeta == 3) && (side == 2) ) {
-                    isTextureFlipped = !isTextureFlipped;
+                    isTextureFlipped = true;
                 }
 
                 if( (fullMeta & 16) != 0 ) {
@@ -94,7 +96,7 @@ public class BlockEnderDoor
                 }
             }
 
-            return this.icons[(isTextureFlipped ? doorIconNames.length : 0) + (isBottomHalf ? 0 : isTopHalf ? 2 : 1)];
+            return this.icons[(isTextureFlipped ? DOOR_ICON_NAMES.length : 0) + (isBottomHalf ? 0 : isTopHalf ? 2 : 1)];
         } else {
             return this.icons[0];
         }
@@ -104,10 +106,6 @@ public class BlockEnderDoor
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
         this.setBlockBoundsBasedOnState(world, x, y, z);
         return super.getCollisionBoundingBoxFromPool(world, x, y, z);
-    }
-
-    public int getDoorOrientation(IBlockAccess world, int x, int y, int z) {
-        return this.getFullMetadata(world, x, y, z) & 3;
     }
 
     public int getFullMetadata(IBlockAccess world, int x, int y, int z) {
@@ -167,18 +165,13 @@ public class BlockEnderDoor
         return EspItems.itemNiobDoor;
     }
 
-    public boolean isDoorOpen(IBlockAccess blockAccess, int x, int y, int z) {
-        return (this.getFullMetadata(blockAccess, x, y, z) & 4) != 0;
-    }
-
     @Override
     public boolean isOpaqueCube() {
         return false;
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xOffset,
-                                    float yOffset, float zOffset) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xOffset, float yOffset, float zOffset) {
         return false;
     }
 
@@ -213,8 +206,7 @@ public class BlockEnderDoor
                     this.dropBlockAsItem(world, x, y, z, meta, 0);
                 }
             } else {
-                boolean isPowered = world.isBlockIndirectlyGettingPowered(x, y, z)
-                                    || world.isBlockIndirectlyGettingPowered(x, y + 1, z)
+                boolean isPowered = world.isBlockIndirectlyGettingPowered(x, y, z) || world.isBlockIndirectlyGettingPowered(x, y + 1, z)
                                     || world.isBlockIndirectlyGettingPowered(x, y + 2, z);
 
                 if( (isPowered || block != null && block.canProvidePower()) && block != this ) {
@@ -259,18 +251,18 @@ public class BlockEnderDoor
                 world.markBlockRangeForRenderUpdate(x, y - 1, z, x, y, z);
             }
 
-            world.playAuxSFXAtEntity((EntityPlayer) null, 1003, x, y, z, 0);
+            world.playAuxSFXAtEntity(null, 1003, x, y, z, 0);
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister regIcon) {
-        this.icons = new IIcon[doorIconNames.length * 2];
+        this.icons = new IIcon[DOOR_ICON_NAMES.length * 2];
 
-        for( int i = 0; i < doorIconNames.length; ++i ) {
-            this.icons[i] = regIcon.registerIcon("enderstuffp:" + doorIconNames[i]);
-            this.icons[i + doorIconNames.length] = new IconFlipped(this.icons[i], true, false);
+        for( int i = 0; i < DOOR_ICON_NAMES.length; ++i ) {
+            this.icons[i] = regIcon.registerIcon("enderstuffp:" + DOOR_ICON_NAMES[i]);
+            this.icons[i + DOOR_ICON_NAMES.length] = new IconFlipped(this.icons[i], true, false);
         }
     }
 

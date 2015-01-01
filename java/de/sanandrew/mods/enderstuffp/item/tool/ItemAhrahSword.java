@@ -2,7 +2,7 @@ package de.sanandrew.mods.enderstuffp.item.tool;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
+import de.sanandrew.mods.enderstuffp.util.EspCreativeTabs;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EspItems;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -17,9 +17,9 @@ public class ItemAhrahSword
 
     public ItemAhrahSword(ToolMaterial toolMaterial) {
         super(toolMaterial);
-        this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":ahrahSword");
+        this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":sword_ahrah");
         this.setTextureName(EnderStuffPlus.MOD_ID + ":ahrah");
-        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
+        this.setCreativeTab(EspCreativeTabs.ESP_TAB);
     }
 
 //    @Override
@@ -30,7 +30,7 @@ public class ItemAhrahSword
 
     @Override
     public boolean getIsRepairable(ItemStack brokenItem, ItemStack repairItem) {
-        return repairItem.getItem() == EspItems.endIngot || super.getIsRepairable(brokenItem, repairItem);
+        return repairItem.getItem() == EspItems.enderIngot || super.getIsRepairable(brokenItem, repairItem);
     }
 
     @Override

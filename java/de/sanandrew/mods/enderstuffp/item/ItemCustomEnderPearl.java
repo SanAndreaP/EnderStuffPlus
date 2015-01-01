@@ -6,7 +6,7 @@ import de.sanandrew.mods.enderstuffp.entity.item.EntityBait;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlIgnis;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlMiss;
 import de.sanandrew.mods.enderstuffp.entity.item.EntityPearlNivis;
-import de.sanandrew.mods.enderstuffp.util.CreativeTabsEnderStuff;
+import de.sanandrew.mods.enderstuffp.util.EspCreativeTabs;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -27,10 +27,12 @@ public class ItemCustomEnderPearl
     @SideOnly(Side.CLIENT)
     private IIcon[] icons;
 
+    private static final String[] TYPES = new String[] { "nivis", "ignis", "miss" };
+
     public ItemCustomEnderPearl() {
         super();
         this.setUnlocalizedName(EnderStuffPlus.MOD_ID + ":enderPearls");
-        this.setCreativeTab(CreativeTabsEnderStuff.ESP_TAB);
+        this.setCreativeTab(EspCreativeTabs.ESP_TAB);
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
         this.setMaxStackSize(16);
@@ -52,7 +54,7 @@ public class ItemCustomEnderPearl
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName() + '.' + stack.getItemDamage();
+        return super.getUnlocalizedName() + '.' + TYPES[stack.getItemDamage()];
     }
 
     @Override
@@ -81,6 +83,7 @@ public class ItemCustomEnderPearl
                                 baitIter.remove();
                             }
                         }
+
                         world.playSoundAtEntity(player, "fire.ignite", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
                         return stack;
                     } else {
@@ -102,8 +105,8 @@ public class ItemCustomEnderPearl
     public void registerIcons(IIconRegister iconRegister) {
         this.icons = new IIcon[3];
 
-        this.icons[0] = iconRegister.registerIcon("enderstuffp:pearlNivis");
-        this.icons[1] = iconRegister.registerIcon("enderstuffp:pearlIgnis");
-        this.icons[2] = iconRegister.registerIcon("enderstuffp:pearlEndermiss");
+        this.icons[0] = iconRegister.registerIcon(EnderStuffPlus.MOD_ID + ":pearl_nivis");
+        this.icons[1] = iconRegister.registerIcon(EnderStuffPlus.MOD_ID + ":pearl_ignis");
+        this.icons[2] = iconRegister.registerIcon(EnderStuffPlus.MOD_ID + ":pearl_miss");
     }
 }
