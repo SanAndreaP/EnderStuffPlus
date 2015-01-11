@@ -116,6 +116,6 @@ public class ModelOreGenerator
 
     public void addGrinderRotation(float rotation) {
         this.grinderAxis1.rotateAngleX = rotation;
-        this.grinderAxis2.rotateAngleX = rotation;
+        this.grinderAxis2.rotateAngleX = -rotation;
     }
 }

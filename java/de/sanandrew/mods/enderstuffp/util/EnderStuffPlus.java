@@ -31,7 +31,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 import java.util.Map;
 
-@Mod(modid = EnderStuffPlus.MOD_ID, version = EnderStuffPlus.VERSION)
+@Mod(modid = EnderStuffPlus.MOD_ID, version = EnderStuffPlus.VERSION, name = "EnderStuff+")
 public class EnderStuffPlus
 {
     public static final String MOD_ID = "enderstuffp";

@@ -89,15 +89,15 @@ public class TileEntityOreGenerator
                     if( te instanceof IEnergyReceiver ) {
                         IEnergyReceiver receiver = (IEnergyReceiver) te;
 
-                        if( !receiver.canConnectEnergy(direction.getOpposite()) ) {
+                        if( !receiver.canConnectEnergy(direction) ) {
                             continue;
                         }
 
-                        int extractable = this.extractEnergy(direction.getOpposite(), maxExtractable, true);
-                        int receivable = receiver.receiveEnergy(direction, extractable, false);
+                        int extractable = this.extractEnergy(direction, maxExtractable, true);
+                        int receivable = receiver.receiveEnergy(direction.getOpposite(), extractable, false);
 
                         maxExtractable -= receivable;
-                        this.extractEnergy(direction.getOpposite(), receivable, false);
+                        this.extractEnergy(direction, receivable, false);
                     }
 
                     if( maxExtractable == 0 ) {

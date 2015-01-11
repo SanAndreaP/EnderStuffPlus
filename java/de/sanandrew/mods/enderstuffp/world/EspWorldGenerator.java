@@ -38,9 +38,6 @@ public class EspWorldGenerator
     public void populateEndPre(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkProvider) {
         int x, y, z;
 
-//        if( chunkX % 3 == 0 && chunkZ % 3 == 0 ) {
-//            (new WorldGenEndIsland()).generate(world, random, chunkX * 16, 64, chunkZ * 16);
-//        }
         if( random.nextInt(16) == 0 && EspConfiguration.genEndlessEnd && (Math.abs(chunkX) > 10 || Math.abs(chunkZ) > 10) ) {
             x = chunkX * 16 + random.nextInt(16);
             z = chunkZ * 16 + random.nextInt(16);
@@ -81,6 +78,7 @@ public class EspWorldGenerator
             world.setBlock(posX, posY, posZ, EspBlocks.enderOre, 0, 2);
             return true;
         }
+
         return false;
     }
 

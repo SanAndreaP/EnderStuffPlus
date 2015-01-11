@@ -84,8 +84,7 @@ public final class IslandManager
                                 BufferedImage rotatedImg = rotateImg(origImg, rot);
                                 EnumBlockType[][][] val = new EnumBlockType[origImg.getWidth()][40][origImg.getHeight()];
 
-                                generateLayer(val, rotatedImg, 0, 0.75F);
-                                for( int y = 1; y < 40; y++, scale *= 0.8F ) {
+                                for( int y = 0; y < 40 && scale > 0.0F; y++, scale *= 0.8F ) {
                                     generateLayer(val, rotatedImg, y, scale);
                                 }
 
@@ -93,8 +92,7 @@ public final class IslandManager
 
                                 scale = 1.0F;
                                 val = new EnumBlockType[origImg.getWidth()][40][origImg.getHeight()];
-                                generateLayer(val, rotatedImg, 0, 0.75F);
-                                for( int y = 1; y < 40 && scale < 100.0F; y++, scale *= 1.5F ) {
+                                for( int y = 0; y < 40 && scale < 100.0F; y++, scale *= 1.5F ) {
                                     generateLayer(val, rotatedImg, y, 1.0F - scale / 100.0F);
 
                                 }
