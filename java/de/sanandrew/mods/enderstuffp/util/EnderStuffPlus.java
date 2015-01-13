@@ -27,6 +27,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.biome.BiomeGenBase;
 
 import java.util.Map;
@@ -59,6 +60,8 @@ public class EnderStuffPlus
     public static Map<Integer, ItemStack> niobSet = Maps.newHashMap();
 
     public static BiomeGenBase surfaceEnd;
+
+    public static DamageSource endAcid;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -104,7 +107,7 @@ public class EnderStuffPlus
 //        RegistryDuplicator.initialize();
 //        RegistryBiomeChanger.initialize();
 //
-//        endAcid = SAPUtils.getNewDamageSource("enderstuffp:endAcid");
+        endAcid = new DamageSource("enderstuffp:endAcid");
 //
         NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
 //
@@ -147,12 +150,14 @@ public class EnderStuffPlus
 
     public static boolean hasPlayerFullNiob(EntityPlayer player) {
         boolean b = true;
+
         for( int i = 0; i < 4; i++ ) {
             if( player.getCurrentArmor(i) == null || (player.getCurrentArmor(i).getItem() != niobSet.get(i).getItem()) ) {
                 b = false;
                 break;
             }
         }
+
         return b;
     }
 }

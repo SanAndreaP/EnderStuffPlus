@@ -3,13 +3,17 @@ package de.sanandrew.mods.enderstuffp.util;
 import cpw.mods.fml.common.registry.GameRegistry;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.mods.enderstuffp.block.*;
+import de.sanandrew.mods.enderstuffp.item.ItemEndLeaves;
 import de.sanandrew.mods.enderstuffp.item.block.ItemBlockBiomeDataCrystal;
 import de.sanandrew.mods.enderstuffp.item.block.ItemBlockEnderOre;
 import de.sanandrew.mods.enderstuffp.item.block.ItemBlockEnderStorage;
 import de.sanandrew.mods.enderstuffp.tileentity.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumRarity;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 
 public final class EspBlocks
 {
@@ -38,8 +42,8 @@ public final class EspBlocks
         initBlocks();
         registerBlocks();
 
-//        Blocks.fire.setFireInfo(enderLeaves, 30, 60);
-//        Blocks.fire.setFireInfo(enderLog, 5, 5);
+        Blocks.fire.setFireInfo(enderLeaves, 30, 60);
+        Blocks.fire.setFireInfo(enderLog, 5, 5);
     }
 
     private static void initBlocks() {
@@ -55,7 +59,7 @@ public final class EspBlocks
         sapEndTree    = new BlockSaplingEndTree();
         enderPlanks   = new BlockEnderWood();
 //        corruptES     = new BlockCorruptEndStone();
-//        endFluidBlock = new BlockEndFluid(endFluid, Material.water);
+        endFluidBlock = new BlockEndFluid(endFluid, Material.water);
         oreGenerator = new BlockOreGenerator();
         biomeDataCrystal = new BlockBiomeDataCrystal();
         fertilizer = new BlockFertilizer();
@@ -125,15 +129,17 @@ public final class EspBlocks
         fertilizer.setBlockName(EnderStuffPlus.MOD_ID + ":fertilizer")
                     .setCreativeTab(EspCreativeTabs.ESP_TAB)
                     .setHardness(1.0F);
-//
-//        endFluid.setBlock(endFluidBlock);
+
+        endFluidBlock.setCreativeTab(EspCreativeTabs.ESP_TAB);
+
+        endFluid.setBlock(endFluidBlock);
     }
 
     private static void initRegisterFluids() {
-//        endFluid = new Fluid(ESPModRegistry.MOD_ID + ":endfluid");
-//        endFluid.setDensity(-500).setTemperature(150).setLuminosity(8).setViscosity(500).setRarity(EnumRarity.uncommon).setGaseous(true);
-//
-//        FluidRegistry.registerFluid(endFluid);
+        endFluid = new Fluid(EnderStuffPlus.MOD_ID + ":endfluid");
+        endFluid.setDensity(3000).setTemperature(150).setLuminosity(8).setViscosity(500).setRarity(EnumRarity.uncommon).setGaseous(false);
+
+        FluidRegistry.registerFluid(endFluid);
     }
 
     private static void registerBlocks() {
@@ -148,12 +154,13 @@ public final class EspBlocks
 //        SAPUtils.registerBlocks(avisEgg, biomeChanger, duplicator, weatherAltar, blockEndDoor, enderLog, sapEndTree, enderPlanks,
 //                                corruptES, endFluidBlock);
 
-        SAPUtils.registerBlocks(avisEgg, biomeChanger, weatherAltar, blockEndDoor, oreGenerator, fertilizer, enderLog, sapEndTree, enderPlanks, enderLeaves);
+        SAPUtils.registerBlocks(avisEgg, biomeChanger, weatherAltar, blockEndDoor, oreGenerator, fertilizer, enderLog, sapEndTree, enderPlanks,
+                                endFluidBlock);
 
-//        GameRegistry.registerBlock(enderLeaves, ItemEndLeaves.class, ESPModRegistry.MOD_ID + ":blockEndLeaves");
+        GameRegistry.registerBlock(enderLeaves, ItemEndLeaves.class, "endLeaves");
         GameRegistry.registerBlock(biomeDataCrystal, ItemBlockBiomeDataCrystal.class, "biomeDataCrystal");
-        GameRegistry.registerBlock(enderOre, ItemBlockEnderOre.class, "blockEnderOre");
-        GameRegistry.registerBlock(enderBlock, ItemBlockEnderStorage.class, "blockEnderStorage");
+        GameRegistry.registerBlock(enderOre, ItemBlockEnderOre.class, "enderOre");
+        GameRegistry.registerBlock(enderBlock, ItemBlockEnderStorage.class, "enderStorage");
 
         enderOre.setHarvestLevel("pickaxe", 2, 0);
     }
