@@ -17,9 +17,7 @@ import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderIgnis;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderNivis;
 import de.sanandrew.mods.enderstuffp.entity.projectile.EntityAvisArrow;
 import de.sanandrew.mods.enderstuffp.event.*;
-import de.sanandrew.mods.enderstuffp.network.EnumPacket;
-import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
-import de.sanandrew.mods.enderstuffp.network.ServerPacketHandler;
+import de.sanandrew.mods.enderstuffp.network.PacketManager;
 import de.sanandrew.mods.enderstuffp.world.EspWorldGenerator;
 import de.sanandrew.mods.enderstuffp.world.biome.BiomeGenSurfaceEnd;
 import io.netty.buffer.ByteBufInputStream;
@@ -41,7 +39,7 @@ public class CommonProxy
     public void preInit(FMLPreInitializationEvent event) { }
 
     public void init(FMLInitializationEvent event) {
-        EnderStuffPlus.channel.register(new ServerPacketHandler());
+//        EnderStuffPlus.channel.register(new ServerPacketHandler());
 
         MinecraftForge.EVENT_BUS.register(new EntityJoinWorldHandler());
         MinecraftForge.EVENT_BUS.register(new ArrowEventsHandler());
@@ -91,7 +89,7 @@ public class CommonProxy
     public void handleParticle(EnumParticleFx particleType, double x, double y, double z, Tuple data) { }
 
     public void spawnParticle(EnumParticleFx particleType, double x, double y, double z, int dimensionId, Tuple data) {
-        PacketProcessor.sendToAllAround(EnumPacket.PKG_PARTICLES, dimensionId, x, y, z, 64.0D, Quintet.with(particleType.ordinalByte(), x, y, z, data));
+        PacketManager.sendToAllAround(PacketManager.PKG_PARTICLES, dimensionId, x, y, z, 64.0D, Quintet.with(particleType.ordinalByte(), x, y, z, data));
     }
 
     public void syncTileData(int tileX, int tileY, int tileZ, ByteBufInputStream stream) throws IOException { }
@@ -110,7 +108,7 @@ public class CommonProxy
         int guiId = id.ordinal();
 
         if( player instanceof EntityPlayerMP && getServerGuiElement(guiId, player, player.worldObj, x, y, z) == null ) {
-            PacketProcessor.sendToPlayer(EnumPacket.PKG_OPEN_CLIENT_GUI, (EntityPlayerMP) player, Quartet.with((byte) guiId, x, y, z));
+            PacketManager.sendToPlayer(PacketManager.PKG_OPEN_CLIENT_GUI, (EntityPlayerMP) player, Quartet.with((byte) guiId, x, y, z));
         } else {
             FMLNetworkHandler.openGui(player, EnderStuffPlus.instance, guiId, player.worldObj, x, y, z);
         }

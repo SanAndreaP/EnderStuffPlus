@@ -11,8 +11,7 @@ import cofh.api.energy.IEnergyReceiver;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.core.manpack.util.javatuples.Unit;
-import de.sanandrew.mods.enderstuffp.network.EnumPacket;
-import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
+import de.sanandrew.mods.enderstuffp.network.PacketManager;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketTileDataSync.ITileSync;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
@@ -109,8 +108,8 @@ public class TileEntityOreGenerator
             if( this.prevFluxAmount != this.fluxAmount || this.prevTicksGenRemain != this.ticksGenRemain ) {
                 this.prevFluxAmount = this.fluxAmount;
                 this.prevTicksGenRemain = this.ticksGenRemain;
-                PacketProcessor.sendToAllAround(EnumPacket.TILE_DATA_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F,
-                                                Unit.with(this));
+                PacketManager.sendToAllAround(PacketManager.TILE_DATA_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F,
+                                              Unit.with(this));
             }
         } else if( this.ticksGenRemain > 0 && this.prevFuelStack != null ) {
             Pair data = Pair.with(Item.itemRegistry.getNameForObject(this.prevFuelStack.getItem()), this.prevFuelStack.getItemDamage());

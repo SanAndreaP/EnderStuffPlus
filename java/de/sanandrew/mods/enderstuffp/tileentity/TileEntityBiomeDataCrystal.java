@@ -7,8 +7,7 @@
 package de.sanandrew.mods.enderstuffp.tileentity;
 
 import de.sanandrew.core.manpack.util.javatuples.Unit;
-import de.sanandrew.mods.enderstuffp.network.EnumPacket;
-import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
+import de.sanandrew.mods.enderstuffp.network.PacketManager;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketTileDataSync.ITileSync;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
@@ -55,8 +54,8 @@ public class TileEntityBiomeDataCrystal
 
             if( this.prevDataProgress != this.dataProgress ) {
                 this.prevDataProgress = this.dataProgress;
-                PacketProcessor.sendToAllAround(EnumPacket.TILE_DATA_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F,
-                                                Unit.with(this));
+                PacketManager.sendToAllAround(PacketManager.TILE_DATA_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F,
+                                              Unit.with(this));
             }
         }
     }

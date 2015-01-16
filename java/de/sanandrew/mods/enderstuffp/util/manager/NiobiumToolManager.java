@@ -41,7 +41,7 @@ public final class NiobiumToolManager
             if( nugget != null ) {
                 nugget = SAPUtils.addItemStackToInventory(nugget, player.inventory);
                 if( nugget != null ) {
-                    SAPUtils.dropBlockAsItem(block, player.worldObj, x, y, z, nugget);
+                    SAPUtils.dropBlockAsItem(player.worldObj, x, y, z, nugget);
                 }
             }
         }

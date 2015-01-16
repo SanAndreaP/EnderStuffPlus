@@ -14,15 +14,16 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import de.sanandrew.core.manpack.managers.SAPUpdateManager;
 import de.sanandrew.core.manpack.util.modcompatibility.ModInitHelperInst;
 import de.sanandrew.mods.enderstuffp.enchantment.EnchantmentEnderChestTeleport;
+import de.sanandrew.mods.enderstuffp.network.PacketManager;
 import de.sanandrew.mods.enderstuffp.util.manager.IslandManager;
 import de.sanandrew.mods.enderstuffp.util.manager.OreGeneratorManager;
 import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager;
+import de.sanandrew.mods.enderstuffp.world.BiomeChangerChunkLoader;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -30,6 +31,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.Map;
 
@@ -54,7 +57,7 @@ public class EnderStuffPlus
     public static EnderStuffPlus instance;
     @SidedProxy(modId = EnderStuffPlus.MOD_ID, clientSide = EnderStuffPlus.MOD_PROXY_CLIENT, serverSide = EnderStuffPlus.MOD_PROXY_COMMON)
     public static CommonProxy proxy;
-    public static FMLEventChannel channel;
+//    public static FMLEventChannel channel;
 
     public static Enchantment enderChestTel;
 
@@ -129,13 +132,18 @@ public class EnderStuffPlus
         OreGeneratorManager.initialize();
         IslandManager.initialize();
 
+        PacketManager.registerPackets();
+
         this.thermalExpInitHelper.preInitialize();
         this.tConstructInitHelper.preInitialize();
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(MOD_CHANNEL);
+        BiomeChangerChunkLoader chunkLoaderBc = new BiomeChangerChunkLoader();
+        ForgeChunkManager.setForcedChunkLoadingCallback(this, chunkLoaderBc);
+        MinecraftForge.EVENT_BUS.register(chunkLoaderBc);
+//        channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(MOD_CHANNEL);
         proxy.init(event);
 //        FurnaceRecipes.smelting().func_151394_a(new ItemStack(ModBlockRegistry.enderOre, 1, 0),
 //                                                new ItemStack(ModItemRegistry.enderIngot, 1, 0), 0.85F);

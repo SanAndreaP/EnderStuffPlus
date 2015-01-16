@@ -27,7 +27,6 @@ import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderMiss;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderIgnis;
 import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderNivis;
 import de.sanandrew.mods.enderstuffp.entity.projectile.EntityAvisArrow;
-import de.sanandrew.mods.enderstuffp.network.ClientPacketHandler;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketTileDataSync.ITileSync;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeDataCrystal;
@@ -61,7 +60,7 @@ public class ClientProxy
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
-        EnderStuffPlus.channel.register(new ClientPacketHandler());
+//        EnderStuffPlus.channel.register(new ClientPacketHandler());
 
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderNivis.class, new RenderEnderNivis());
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderIgnis.class, new RenderEnderIgnis());

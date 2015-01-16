@@ -6,11 +6,10 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.network.packet;
 
+import de.sanandrew.core.manpack.network.IPacket;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
-import de.sanandrew.mods.enderstuffp.network.EnumPacket;
-import de.sanandrew.mods.enderstuffp.network.IPacket;
-import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
+import de.sanandrew.mods.enderstuffp.network.PacketManager;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger.EnumPerimForm;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
@@ -91,7 +90,7 @@ public class PacketBiomeChangerActions
 //            data = Tuple.from(ArrayUtils.addAll(data.toArray(), additionalData));
 //        }
 
-        PacketProcessor.sendToAllAround(EnumPacket.BIOME_CHANGER_ACTIONS, tile.getWorldObj().provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, 256.0D, data);
+        PacketManager.sendToAllAround(PacketManager.BIOME_CHANGER_ACTIONS, tile.getWorldObj().provider.dimensionId, tile.xCoord, tile.yCoord, tile.zCoord, 256.0D, data);
     }
 
     public static void sendPacketServer(TileEntityBiomeChanger tile, EnumAction action) {
@@ -101,7 +100,7 @@ public class PacketBiomeChangerActions
 //            data = Tuple.from(ArrayUtils.addAll(data.toArray(), additionalData));
 //        }
 
-        PacketProcessor.sendToServer(EnumPacket.BIOME_CHANGER_ACTIONS, data);
+        PacketManager.sendToServer(PacketManager.BIOME_CHANGER_ACTIONS, data);
     }
 
     public static enum EnumAction {

@@ -7,7 +7,7 @@
 package de.sanandrew.mods.enderstuffp.network.packet;
 
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
-import de.sanandrew.mods.enderstuffp.network.IPacket;
+import de.sanandrew.core.manpack.network.IPacket;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EnumGui;
 import io.netty.buffer.ByteBuf;

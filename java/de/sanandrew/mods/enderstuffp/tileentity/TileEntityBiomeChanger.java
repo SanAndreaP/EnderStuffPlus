@@ -4,14 +4,13 @@ import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.javatuples.Unit;
-import de.sanandrew.mods.enderstuffp.network.EnumPacket;
-import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
+import de.sanandrew.mods.enderstuffp.network.PacketManager;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions.EnumAction;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketTileDataSync.ITileSync;
-import de.sanandrew.mods.enderstuffp.util.EspBlocks;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
+import de.sanandrew.mods.enderstuffp.util.EspBlocks;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.nbt.NBTTagCompound;
@@ -310,9 +309,8 @@ public class TileEntityBiomeChanger
         if( !worldObj.isRemote && (this.prevFluxAmount != this.fluxAmount || this.prevUsedFlux != this.usedFlux ) ) {
             this.prevFluxAmount = this.fluxAmount;
             this.prevUsedFlux = this.usedFlux;
-            PacketProcessor.sendToAllAround(EnumPacket.TILE_DATA_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F,
-                                            Unit.with(this)
-            );
+            PacketManager.sendToAllAround(PacketManager.TILE_DATA_SYNC, this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 64.0F,
+                                          Unit.with(this));
         }
     }
 

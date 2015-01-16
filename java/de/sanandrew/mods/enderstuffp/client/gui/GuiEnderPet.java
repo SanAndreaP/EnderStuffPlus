@@ -12,8 +12,7 @@ import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.enderstuffp.entity.living.IEnderPet;
-import de.sanandrew.mods.enderstuffp.network.EnumPacket;
-import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
+import de.sanandrew.mods.enderstuffp.network.PacketManager;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -144,7 +143,7 @@ public class GuiEnderPet
         if( actionId == 4 ) {
             writeEntityName();
         } else {
-            PacketProcessor.sendToServer(EnumPacket.ENDERPET_ACTION, Pair.with(this.enderPet.getEntity().getEntityId(), (byte) actionId));
+            PacketManager.sendToServer(PacketManager.ENDERPET_ACTION, Pair.with(this.enderPet.getEntity().getEntityId(), (byte) actionId));
         }
     }
 
@@ -166,7 +165,7 @@ public class GuiEnderPet
 
     private void writeEntityName() {
         if( !this.nameTxt.getText().isEmpty() ) {
-            PacketProcessor.sendToServer(EnumPacket.ENDERPET_ACTION, Triplet.with(this.enderPet.getEntity().getEntityId(), (byte) 4, this.nameTxt.getText()));
+            PacketManager.sendToServer(PacketManager.ENDERPET_ACTION, Triplet.with(this.enderPet.getEntity().getEntityId(), (byte) 4, this.nameTxt.getText()));
         }
     }
 }

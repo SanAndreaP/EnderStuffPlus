@@ -5,8 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.core.manpack.util.javatuples.Quintet;
 import de.sanandrew.mods.enderstuffp.client.util.EnumTextures;
-import de.sanandrew.mods.enderstuffp.network.EnumPacket;
-import de.sanandrew.mods.enderstuffp.network.PacketProcessor;
+import de.sanandrew.mods.enderstuffp.network.PacketManager;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityWeatherAltar;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import net.minecraft.client.gui.GuiButton;
@@ -48,8 +47,8 @@ public class GuiWeatherAltar
                 weatherId = 2;
             }
 
-            PacketProcessor.sendToServer(EnumPacket.WEATHERALTAR_SET, Quintet.with(this.weatherAltar.xCoord, this.weatherAltar.yCoord, this.weatherAltar.zCoord,
-                                                                                   weatherId, dur));
+            PacketManager.sendToServer(PacketManager.WEATHERALTAR_SET, Quintet.with(this.weatherAltar.xCoord, this.weatherAltar.yCoord, this.weatherAltar.zCoord,
+                                                                                 weatherId, dur));
         }
     }
 
