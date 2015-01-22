@@ -9,6 +9,7 @@ package de.sanandrew.mods.enderstuffp.client.event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.core.manpack.util.SAPReflectionHelper;
 import de.sanandrew.mods.enderstuffp.client.util.EnumTextures;
 import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderAvisPet;
 import de.sanandrew.mods.enderstuffp.entity.living.IEnderPet;
@@ -16,8 +17,11 @@ import de.sanandrew.mods.enderstuffp.util.EspBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
@@ -32,6 +36,8 @@ public class RenderGameOverlayHandler
     private static final ResourceLocation RES_UNDERWATER_OVERLAY = new ResourceLocation("textures/misc/underwater.png");
 
     private Minecraft mc;
+
+    public static boolean isAvisMotherFog = false;
 
     public RenderGameOverlayHandler() {
         this.mc = Minecraft.getMinecraft();
@@ -88,13 +94,31 @@ public class RenderGameOverlayHandler
             event.red = 0.6F;
             event.green = 0.0F;
             event.blue = 0.8F;
+        } else if( isAvisMotherFog ) {
+            float bossColorModifier = SAPReflectionHelper.getCachedFieldValue(EntityRenderer.class, this.mc.entityRenderer, "bossColorModifier", "");
+            if( bossColorModifier > 0.0F ) {
+                float bossColorModifierPrev = SAPReflectionHelper.getCachedFieldValue(EntityRenderer.class, this.mc.entityRenderer, "bossColorModifierPrev", "");
+                float f11 = bossColorModifierPrev + (bossColorModifier - bossColorModifierPrev) * (float) event.renderPartialTicks;
+
+                event.red = event.red * (1.0F - f11) + event.red * 0.4F * f11 + 0.3F * f11;
+                event.green = event.green * (1.0F - f11) + event.green * 0.0F * f11 + 0.4F * f11;
+                event.blue = event.blue * (1.0F - f11) + event.blue * 0.7F * f11 + 0.4F * f11;
+            } else {
+                isAvisMotherFog = false;
+            }
         }
     }
 
     @SubscribeEvent
     public void renderFogDensity(FogDensity event) {
         if( event.block == EspBlocks.endFluidBlock ) {
-            event.density = 0.7F;
+            GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
+
+            if( event.entity.isPotionActive(Potion.waterBreathing) ) {
+                event.density = 0.05F;
+            } else {
+                event.density = 0.7F - EnchantmentHelper.getRespiration(event.entity) * 0.03F;
+            }
             event.setCanceled(true);
         }
     }

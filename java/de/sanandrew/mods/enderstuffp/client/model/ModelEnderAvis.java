@@ -2,7 +2,7 @@ package de.sanandrew.mods.enderstuffp.client.model;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.client.helpers.SAPClientUtils;
+import de.sanandrew.core.manpack.util.client.helpers.ModelBoxBuilder;
 import de.sanandrew.mods.enderstuffp.entity.living.AEntityEnderAvis;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -30,6 +30,7 @@ public class ModelEnderAvis
     private ModelCollar collar;
 
     private ModelRenderer saddleBody;
+    private ModelRenderer neck;
 
     private ModelRenderer coatBody;
     private ModelRenderer coatHead;
@@ -43,50 +44,59 @@ public class ModelEnderAvis
         this.textureWidth = 64;
         this.textureHeight = 32;
 
-        this.body = SAPClientUtils.createNewBox(this, 0, 0, false, -4.0F, -3.0F, -8.0F, 8, 6, 16, 0.0F, 8.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-        this.head = SAPClientUtils.createNewBox(this, 32, 6, false, -2.0F, -3.0F, -3.0F, 4, 4, 6, 0.0F, -1.0F, -12.0F, 0.0F, 0.0F, 0.0F);
-        this.rightWing = SAPClientUtils.createNewBox(this, 16, 24, true, -11.5F, 0.5F, 0.0F, 12, 0, 8, -4.0F, 6.0F, -5.0F, 0.0F, 1.5707963F, 0.0F);
-        this.leftWing = SAPClientUtils.createNewBox(this, -8, 24, false, -0.5F, 0.5F, 0.0F, 12, 0, 8, 4.0F, 6.0F, -5.0F, 0.0F, -1.5707963F, 0.0F);
-        this.rightLeg = SAPClientUtils.createNewBox(this, 2, 0, true, -0.5F, 0.0F, -0.5F, 1, 14, 1, -2.0F, 10.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-        this.leftLeg = SAPClientUtils.createNewBox(this, 2, 0, false, -0.5F, 0.0F, -0.5F, 1, 14, 1, 2.0F, 10.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+        this.body = ModelBoxBuilder.newBuilder(this).setLocation(0.0F, 8.0F, 0.0F).getBox(-4.0F, -3.0F, -8.0F, 8, 6, 16, 0.0F);
+        this.head = ModelBoxBuilder.newBuilder(this).setTexture(32, 6, false).setLocation(0.0F, -1.0F, -12.0F).getBox(-2.0F, -3.0F, -3.0F, 4, 4, 6, 0.0F);
+        this.rightWing = ModelBoxBuilder.newBuilder(this).setTexture(16, 24, true).setLocation(-4.0F, 6.0F, -5.0F).setRotation(0.0F, 1.5707963F, 0.0F)
+                                        .getBox(-11.5F, 0.5F, 0.0F, 12, 0, 8, 0.0F);
+        this.leftWing = ModelBoxBuilder.newBuilder(this).setTexture(-8, 24, false).setLocation(4.0F, 6.0F, -5.0F).setRotation(0.0F, -1.5707963F, 0.0F)
+                                       .getBox(-0.5F, 0.5F, 0.0F, 12, 0, 8, 0.0F);
+        this.rightLeg = ModelBoxBuilder.newBuilder(this).setTexture(2, 0, true).setLocation(-2.0F, 10.0F, 0.0F).getBox(-0.5F, 0.0F, -0.5F, 1, 14, 1, 0.0F);
+        this.leftLeg = ModelBoxBuilder.newBuilder(this).setTexture(2, 0, false).setLocation(2.0F, 10.0F, 0.0F).getBox(-0.5F, 0.0F, -0.5F, 1, 14, 1, 0.0F);
+        this.saddleBody = ModelBoxBuilder.newBuilder(this).setTexture(0, 0, false).setLocation(0.2F, 0.0F, 8.0F).getBox(-4.0F, -3.0F, -8.0F, 8, 6, 16, 0.0F);
+        this.coatBody = ModelBoxBuilder.newBuilder(this).setTexture(0, 0, false).setLocation(0.1F, 0.0F, 8.0F).getBox(-4.0F, -3.0F, -8.0F, 8, 6, 16, 0.0F);
+        this.coatHead = ModelBoxBuilder.newBuilder(this).setTexture(32, 6, false).setLocation(0.1F, 0.0F, -1.0F).setRotation(-12.0F, 0.0F, 0.0F)
+                                       .getBox(-2.0F, -3.0F, -3.0F, 4, 4, 6, 0.0F);
+        this.coatRightLeg = ModelBoxBuilder.newBuilder(this).setTexture(2, 0, true).setLocation(0.1F, -2.0F, 10.0F).getBox(-0.5F, 0.0F, -0.5F, 1, 14, 1, 0.0F);
+        this.coatLeftLeg = ModelBoxBuilder.newBuilder(this).setTexture(2, 0, false).setLocation(0.1F, 2.0F, 10.0F).getBox(-0.5F, 0.0F, -0.5F, 1, 14, 1, 0.0F);
+        this.neck = ModelBoxBuilder.newBuilder(this).setTexture(8, 0, false).setLocation(0.0F, -2.0F, -7.0F).setRotation(-2.530727F, 0.0F, 0.0F)
+                                   .getBox(-1.0F, 0.0F, -1.0F, 2, 9, 2, 0.0F);
 
-        this.saddleBody = SAPClientUtils.createNewBox(this, 0, 0, false, -4.0F, -3.0F, -8.0F, 8, 6, 16, 0.2F, 0.0F, 8.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+        this.collar = ModelBoxBuilder.newBuilder(this, ModelCollar.class).setTexture(38, 0, false).setLocation(0.0F, 0.0F, 0.8F)
+                                     .getBox(-1.0F, 3.0F, -1.8F, 2, 3, 2, 0.2F);
 
-        this.coatBody = SAPClientUtils.createNewBox(this, 0, 0, false, -4.0F, -3.0F, -8.0F, 8, 6, 16, 0.1F, 0.0F, 8.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-        this.coatHead = SAPClientUtils.createNewBox(this, 32, 6, false, -2.0F, -3.0F, -3.0F, 4, 4, 6, 0.1F, 0.0F, -1.0F, -12.0F, 0.0F, 0.0F, 0.0F);
-        this.coatRightLeg = SAPClientUtils.createNewBox(this, 2, 0, true, -0.5F, 0.0F, -0.5F, 1, 14, 1, 0.1F, -2.0F, 10.0F, 0.0F, 0.0F, 0.0F, 0.0F);
-        this.coatLeftLeg = SAPClientUtils.createNewBox(this, 2, 0, false, -0.5F, 0.0F, -0.5F, 1, 14, 1, 0.1F, 2.0F, 10.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+        this.neck.addChild(this.collar);
+        this.body.addChild(this.neck);
 
-        // neck
-        ModelRenderer neck = SAPClientUtils.createNewBox(this, 8, 0, false, -1.0F, 0.0F, -1.0F, 2, 9, 2, 0.0F, -2.0F, -7.0F, -2.530727F, 0.0F, 0.0F);
-        this.body.addChild(neck);
-        this.coatBody.addChild(SAPClientUtils.createNewBox(this, 8, 0, false, -1.0F, 0.0F, -1.0F, 2, 9, 2, 0.1F, 0.0F, -2.0F, -7.0F, -2.530727F, 0.0F, 0.0F));
-
-        // collar
-        this.collar = SAPClientUtils.createNewBox(ModelCollar.class, this, 38, 0, false, -1.0F, 3.0F, -1.8F, 2, 3, 2, 0.2F, 0.0F, 0.0F, 0.8F, 0.0F, 0.0F, 0.0F);
-        neck.addChild(this.collar);
+        this.coatBody.addChild(ModelBoxBuilder.newBuilder(this).setTexture(8, 0, false).setLocation(0.1F, 0.0F, -2.0F).setRotation(-7.0F, -2.530727F, 0.0F)
+                                              .getBox(-1.0F, 0.0F, -1.0F, 2, 9, 2, 0.0F));
 
         // body tail feathers
-        this.body.addChild(SAPClientUtils.createNewBox(this, -8, 0, false, 0.0F, 0.0F, 0.0F, 1, 0, 8, 0.0F, -3.0F, 8.0F, 0.5235988F, 0.5235988F, 0.3490659F));
-        this.body.addChild(SAPClientUtils.createNewBox(this, -8, 0, false, -0.5F, 0.0F, 0.0F, 1, 0, 8, 0.0F, -3.0F, 8.0F, 0.5235988F, 0.0F, 0.0F));
-        this.body.addChild(SAPClientUtils.createNewBox(this, -8, 0, false, -1.0F, 0.0F, 0.0F, 1, 0, 8, 0.0F, -3.0F, 8.0F, 0.5235988F, -0.5235988F, -0.3490659F));
+        this.body.addChild(ModelBoxBuilder.newBuilder(this).setTexture(-8, 0, false).setLocation(0.0F, -3.0F, 8.0F).setRotation(0.5235988F, 0.5235988F, 0.3490659F)
+                                          .getBox(0.0F, 0.0F, 0.0F, 1, 0, 8, 0.0F));
+        this.body.addChild(ModelBoxBuilder.newBuilder(this).setTexture(-8, 0, false).setLocation(0.0F, -3.0F, 8.0F).setRotation(0.5235988F, 0.0F, 0.0F)
+                                          .getBox(-0.5F, 0.0F, 0.0F, 1, 0, 8, 0.0F));
+        this.body.addChild(ModelBoxBuilder.newBuilder(this).setTexture(-8, 0, false).setLocation(0.0F, -3.0F, 8.0F).setRotation(0.5235988F, -0.5235988F, -0.3490659F)
+                                          .getBox(-1.0F, 0.0F, 0.0F, 1, 0, 8, 0.0F));
 
         // head feathers
-        this.head.addChild(SAPClientUtils.createNewBox(this, -4, 12, false, -0.5F, 0.0F, 4.0F, 1, 0, 4, 0.0F, 0.0F, 0.0F, 0.7853982F, 0.2617994F, 0.2617994F));
-        this.head.addChild(SAPClientUtils.createNewBox(this, -4, 12, false, -0.5F, 0.0F, 4.0F, 1, 0, 4, 0.0F, 0.0F, 0.0F, 0.7853982F, 0.0F, 0.0F));
-        this.head.addChild(SAPClientUtils.createNewBox(this, -4, 12, false, -0.5F, 0.0F, 4.0F, 1, 0, 4, 0.0F, 0.0F, 0.0F, 0.7853982F, -0.2617994F, -0.2617994F));
+        this.head.addChild(ModelBoxBuilder.newBuilder(this).setTexture(-4, 12, false).setRotation(0.7853982F, 0.2617994F, 0.2617994F)
+                                          .getBox(-0.5F, 0.0F, 4.0F, 1, 0, 4, 0.0F));
+        this.head.addChild(ModelBoxBuilder.newBuilder(this).setTexture(-4, 12, false).setRotation(0.7853982F, 0.0F, 0.0F)
+                                          .getBox(-0.5F, 0.0F, 4.0F, 1, 0, 4, 0.0F));
+        this.head.addChild(ModelBoxBuilder.newBuilder(this).setTexture(-4, 12, false).setRotation(0.7853982F, -0.2617994F, -0.2617994F)
+                                          .getBox(-0.5F, 0.0F, 4.0F, 1, 0, 4, 0.0F));
 
         // head beak
-        this.head.addChild(SAPClientUtils.createNewBox(this, 8, 12, false, -1.0F, -2.0F, -5.0F, 2, 2, 2, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F));
-        this.head.addChild(SAPClientUtils.createNewBox(this, 6, 12, false, -0.5F, -1.5F, -6.0F, 1, 1, 1, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F));
+        this.head.addChild(ModelBoxBuilder.newBuilder(this).setTexture(8, 12, false).getBox(-1.0F, -2.0F, -5.0F, 2, 2, 2, 0.0F));
+        this.head.addChild(ModelBoxBuilder.newBuilder(this).setTexture(6, 12, false).getBox(-0.5F, -1.5F, -6.0F, 1, 1, 1, 0.0F));
 
         // feet
-        this.rightLeg.addChild(SAPClientUtils.createNewBox(this, 27, 0, true, -1.5F, 14.0F, -3.0F, 3, 0, 5, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F));
-        this.leftLeg.addChild(SAPClientUtils.createNewBox(this, 27, 0, false, -1.5F, 14.0F, -3.0F, 3, 0, 5, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F));
+        this.rightLeg.addChild(ModelBoxBuilder.newBuilder(this).setTexture(27, 0, true).getBox(-1.5F, 14.0F, -3.0F, 3, 0, 5, 0.0F));
+        this.leftLeg.addChild(ModelBoxBuilder.newBuilder(this).setTexture(27, 0, false).getBox(-1.5F, 14.0F, -3.0F, 3, 0, 5, 0.0F));
 
         // wing bones
-        this.rightWing.addChild(SAPClientUtils.createNewBox(this, 0, 22, true, -12.0F, 0.0F, -1.0F, 12, 1, 1, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F));
-        this.leftWing.addChild(SAPClientUtils.createNewBox(this, 0, 22, false, 0.0F, 0.0F, -1.0F, 12, 1, 1, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F));
+        this.rightWing.addChild(ModelBoxBuilder.newBuilder(this).setTexture(0, 22, true).getBox(-12.0F, 0.0F, -1.0F, 12, 1, 1, 0.0F));
+        this.leftWing.addChild(ModelBoxBuilder.newBuilder(this).setTexture(0, 22, false).getBox(0.0F, 0.0F, -1.0F, 12, 1, 1, 0.0F));
     }
 
     @Override
@@ -144,8 +154,8 @@ public class ModelEnderAvis
     {
         public float[] color;
 
-        public ModelCollar(ModelBase model, int texX, int texY) {
-            super(model, texX, texY);
+        public ModelCollar(ModelBase model) {
+            super(model);
         }
 
         @Override

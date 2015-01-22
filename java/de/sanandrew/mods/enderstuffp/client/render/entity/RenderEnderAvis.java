@@ -2,6 +2,7 @@ package de.sanandrew.mods.enderstuffp.client.render.entity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.mods.enderstuffp.client.event.RenderGameOverlayHandler;
 import de.sanandrew.mods.enderstuffp.client.model.ModelEnderAvis;
 import de.sanandrew.mods.enderstuffp.client.util.EnumTextures;
 import de.sanandrew.mods.enderstuffp.entity.living.AEntityEnderAvis;
@@ -48,7 +49,8 @@ public class RenderEnderAvis
         }
 
         if( entity instanceof EntityEnderAvisMother ) {
-            BossStatus.setBossStatus((EntityEnderAvisMother) entity, false);
+            BossStatus.setBossStatus((EntityEnderAvisMother) entity, true);
+            RenderGameOverlayHandler.isAvisMotherFog = true;
         }
 
         super.doRender(entity, x, y, z, yaw, partTicks);

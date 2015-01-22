@@ -55,13 +55,14 @@ public class ItemNiobArmor
                     badPotions.add(pEffect);
                 }
             }
+
             if( !badPotions.isEmpty() ) {
                 boolean shouldRemovePotion = true;
                 for( int i = 0; i < 4; i++ ) {
                     if( player.getCurrentArmor(i) == null ) {
                         shouldRemovePotion = false;
                         break;
-                    } else if( player.getCurrentArmor(i).getItem() != EnderStuffPlus.niobSet.get(i - 1).getItem() ) {
+                    } else if( player.getCurrentArmor(i).getItem() != EnderStuffPlus.niobSet.get(i).getItem() ) {
                         shouldRemovePotion = false;
                         break;
                     }

@@ -61,6 +61,6 @@ public class BiomeChangerChunkLoader
     @Override
     public List<Ticket> ticketsLoaded(List<Ticket> tickets, World world, int maxTicketCount) {
         //TODO: probably do sth. when a ticket is loaded, so a BiomeChanger outside of loaded chunks can then load and operate.
-        return null;
+        return tickets;
     }
 }
