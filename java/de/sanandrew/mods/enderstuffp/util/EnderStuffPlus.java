@@ -17,6 +17,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import de.sanandrew.core.manpack.managers.SAPUpdateManager;
+import de.sanandrew.core.manpack.managers.SAPUpdateManager.Version;
 import de.sanandrew.core.manpack.util.modcompatibility.ModInitHelperInst;
 import de.sanandrew.mods.enderstuffp.enchantment.EnchantmentEnderChestTeleport;
 import de.sanandrew.mods.enderstuffp.network.PacketManager;
@@ -69,7 +70,7 @@ public class EnderStuffPlus
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        SAPUpdateManager.createUpdateManager("EnderStuff+", 2, 0, 0, "https://raw.githubusercontent.com/SanAndreasP/EnderStuffPlus/master/update.json",
+        SAPUpdateManager.createUpdateManager("EnderStuff+", new Version(VERSION), "https://raw.githubusercontent.com/SanAndreasP/EnderStuffPlus/master/update.json",
                                              "http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1286957", event.getSourceFile());
 
         this.thermalExpInitHelper = ModInitHelperInst.loadWhenModAvailable("ThermalExpansion", THERMAL_EXP_HELPER_CLS);
