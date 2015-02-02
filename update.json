@@ -1,6 +1,16 @@
 {
   "version": "2.0.0",
   "downloadUrl": "",
-  "description": "Example placeholder description.",
-  "changelog": []
+  "description": "Initial release with new update manager! Nothing exciting going in here...",
+  "changelog": [
+    "lots",
+    "of",
+    "stuff",
+    "going",
+    "on",
+    "here",
+    "man",
+    ".",
+    "a very big chunk of text which should be truncated within the details GUI, fun stuff indeed. Lorem ipsum dolor sit amet, I can't remember anything else anymore :("
+  ]
 }
