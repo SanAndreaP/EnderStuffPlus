@@ -134,7 +134,7 @@ public class WorldGenEndLeak
                     double rad5 = Math.pow(radius - 7, 2);
                     double rad6 = Math.pow(radius - 9, 2);
 
-                    Block baseBlock = random.nextInt(10) == 0 ? Blocks.end_stone : EspBlocks.corruptES;
+                    Block baseBlock = Blocks.end_stone;//random.nextInt(10) == 0 ? Blocks.end_stone : EspBlocks.corruptES;
 
                     if( radVec <= rad6 ) {
                         if( !this.replace(world, x + i, y + j, z + k, Blocks.air) ) {
@@ -193,7 +193,7 @@ public class WorldGenEndLeak
         for( int i = -3; i <= 3; i++ ) {
             for( int k = -3; k <= 3; k++ ) {
                 for( int j = 0; j <= maxHgt + radius; j++ ) {
-                    Block baseBlock = random.nextInt(10) == 0 ? Blocks.end_stone : EspBlocks.corruptES;
+                    Block baseBlock = /*random.nextInt(10) == 0 ?*/ Blocks.end_stone /*: EspBlocks.corruptES*/;
                     int radVec = Math.abs(i) + Math.abs(j - radius) + Math.abs(k);
                     if( j > radius || radVec <= radius ) {
                         radVec = Math.abs(i) + Math.round((Math.abs(j) / ((float) maxHgt + (float) radius)) * 3F) + Math.abs(k);
@@ -243,11 +243,13 @@ public class WorldGenEndLeak
     }
 
     private boolean replace(World world, int x, int y, int z, Block block, int meta, int replaceFlag) {
-        Block currBlock = world.getBlock(x, y, z);
+        if( block != null ) {
+            Block currBlock = world.getBlock(x, y, z);
 
-        if( currBlock == null || currBlock.isAir(world, x, y, z) || REPLACEABLE_BLOCKS.contains(currBlock) ) {
-            world.setBlock(x, y, z, block, meta, replaceFlag);
-            return true;
+            if( currBlock == null || currBlock.isAir(world, x, y, z) || REPLACEABLE_BLOCKS.contains(currBlock) ) {
+                world.setBlock(x, y, z, block, meta, replaceFlag);
+                return true;
+            }
         }
         return false;
     }

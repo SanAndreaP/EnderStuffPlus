@@ -19,16 +19,12 @@ import de.sanandrew.mods.enderstuffp.entity.projectile.EntityAvisArrow;
 import de.sanandrew.mods.enderstuffp.event.*;
 import de.sanandrew.mods.enderstuffp.network.PacketManager;
 import de.sanandrew.mods.enderstuffp.world.EspWorldGenerator;
-import de.sanandrew.mods.enderstuffp.world.biome.BiomeGenSurfaceEnd;
 import io.netty.buffer.ByteBufInputStream;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.World;
-import net.minecraftforge.common.BiomeManager;
-import net.minecraftforge.common.BiomeManager.BiomeEntry;
-import net.minecraftforge.common.BiomeManager.BiomeType;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.io.IOException;
@@ -62,14 +58,15 @@ public class CommonProxy
         EntityRegistry.registerModEntity(EntityBait.class, "EnderMissBait", entityId++, EnderStuffPlus.instance, 64, 4, false);
         EntityRegistry.registerModEntity(EntityItemFireproof.class, "ItemFireproof", entityId++, EnderStuffPlus.instance, 64, 20, true);
 
-        EnderStuffPlus.surfaceEnd = new BiomeGenSurfaceEnd(110);
-        //TODO: 100 is too damn high! JUST FOR TESTING PURPOSES!!!
-        BiomeManager.addBiome(BiomeType.ICY, new BiomeEntry(EnderStuffPlus.surfaceEnd, 100));
-        BiomeManager.addBiome(BiomeType.DESERT, new BiomeEntry(EnderStuffPlus.surfaceEnd, 100));
-        BiomeManager.addBiome(BiomeType.COOL, new BiomeEntry(EnderStuffPlus.surfaceEnd, 100));
-        BiomeManager.addBiome(BiomeType.WARM, new BiomeEntry(EnderStuffPlus.surfaceEnd, 100));
-
-        BiomeManager.addSpawnBiome(EnderStuffPlus.surfaceEnd);
+        //FIXME: add biome?
+//        EnderStuffPlus.surfaceEnd = new BiomeGenSurfaceEnd(110);
+//        //TODO: 100 is too damn high! JUST FOR TESTING PURPOSES!!!
+//        BiomeManager.addBiome(BiomeType.ICY, new BiomeEntry(EnderStuffPlus.surfaceEnd, 100));
+//        BiomeManager.addBiome(BiomeType.DESERT, new BiomeEntry(EnderStuffPlus.surfaceEnd, 100));
+//        BiomeManager.addBiome(BiomeType.COOL, new BiomeEntry(EnderStuffPlus.surfaceEnd, 100));
+//        BiomeManager.addBiome(BiomeType.WARM, new BiomeEntry(EnderStuffPlus.surfaceEnd, 100));
+//
+//        BiomeManager.addSpawnBiome(EnderStuffPlus.surfaceEnd);
     }
 
     public int addArmor(String armorId) {
