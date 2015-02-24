@@ -77,7 +77,6 @@ public class CommonProxy
         // TODO: reimplement event handlers
 //        MinecraftForge.EVENT_BUS.register(new EnderEvents());
 //        MinecraftForge.EVENT_BUS.register(new EntityInteractEventInst());
-//        MinecraftForge.EVENT_BUS.register(new EntityJoinWorldEventInst());
 //        MinecraftForge.EVENT_BUS.register(new EnderStuffWorldGenerator());
 //
 //        GameRegistry.registerWorldGenerator(new EnderStuffWorldGenerator(), 10);

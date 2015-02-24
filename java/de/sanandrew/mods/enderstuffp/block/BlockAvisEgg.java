@@ -7,6 +7,8 @@
 package de.sanandrew.mods.enderstuffp.block;
 
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityAvisEgg;
+import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
+import de.sanandrew.mods.enderstuffp.util.EspCreativeTabs;
 import net.minecraft.block.BlockDragonEgg;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.EntityLivingBase;
@@ -24,6 +26,10 @@ public class BlockAvisEgg
 {
     public BlockAvisEgg() {
         super();
+        this.setBlockName(EnderStuffPlus.MOD_ID + ":avisEgg");
+        this.setCreativeTab(EspCreativeTabs.ESP_TAB);
+        this.setHardness(1.0F);
+        this.setBlockTextureName(EnderStuffPlus.MOD_ID + ":eggAvis");
     }
 
     @Override

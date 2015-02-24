@@ -11,6 +11,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeChanger;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EnumGui;
+import de.sanandrew.mods.enderstuffp.util.EspCreativeTabs;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -26,8 +27,11 @@ import net.minecraft.world.World;
 public class BlockBiomeChanger
         extends BlockContainer
 {
-    public BlockBiomeChanger(Material material) {
-        super(material);
+    public BlockBiomeChanger() {
+        super(Material.rock);
+        this.setBlockName(EnderStuffPlus.MOD_ID + ":biomeChanger");
+        this.setCreativeTab(EspCreativeTabs.ESP_TAB);
+        this.setHardness(1.0F);
     }
 
     @Override

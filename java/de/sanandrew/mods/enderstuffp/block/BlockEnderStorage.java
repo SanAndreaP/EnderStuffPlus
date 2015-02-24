@@ -10,7 +10,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.core.manpack.util.client.IGlowBlockOverlay;
 import de.sanandrew.core.manpack.util.client.RenderBlockGlowOverlay;
+import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EnumEnderOres;
+import de.sanandrew.mods.enderstuffp.util.EspCreativeTabs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -42,6 +44,11 @@ public class BlockEnderStorage
 
     public BlockEnderStorage() {
         super(Material.iron);
+        this.setBlockName(EnderStuffPlus.MOD_ID + ":blockOre");
+        this.setCreativeTab(EspCreativeTabs.ESP_TAB);
+        this.setHardness(5.0F);
+        this.setResistance(10.0F);
+        this.setStepSound(Block.soundTypeMetal);
     }
 
     @Override

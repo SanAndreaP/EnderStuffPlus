@@ -63,10 +63,6 @@ public class EntityDropEventHandler
             if( spawnParticles ) {
                 EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_NIOBTOOL,  event.entityLiving.posX + 0.5F, event.entityLiving.posY,
                                                    event.entityLiving.posZ + 0.5F, player.dimension, null);
-//                ESPModRegistry.sendPacketAllRng("fxPortal", event.entityLiving.posX, event.entityLiving.posY,
-//                                                event.entityLiving.posZ, 128.0D, player.dimension,
-//                                                event.entityLiving.posX, event.entityLiving.posY,
-//                                                event.entityLiving.posZ, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F, 20);
             }
         }
     }

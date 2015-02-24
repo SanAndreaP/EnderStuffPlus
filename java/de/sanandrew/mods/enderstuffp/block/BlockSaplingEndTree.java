@@ -2,6 +2,8 @@ package de.sanandrew.mods.enderstuffp.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
+import de.sanandrew.mods.enderstuffp.util.EspCreativeTabs;
 import de.sanandrew.mods.enderstuffp.world.WorldGenEndTree;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
@@ -17,6 +19,11 @@ public class BlockSaplingEndTree
 {
     public BlockSaplingEndTree() {
         super();
+        this.setBlockName(EnderStuffPlus.MOD_ID + ":enderSapling");
+        this.setCreativeTab(EspCreativeTabs.ESP_TAB);
+        this.setHardness(0.0F);
+        this.setStepSound(Block.soundTypeGrass);
+        this.setBlockTextureName(EnderStuffPlus.MOD_ID + ":sapling_end");
 
         float size = 0.4F;
         this.setBlockBounds(0.5F - size, 0.0F, 0.5F - size, 0.5F + size, size * 2.0F, 0.5F + size);

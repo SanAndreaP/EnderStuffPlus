@@ -20,6 +20,7 @@ import de.sanandrew.core.manpack.managers.SAPUpdateManager;
 import de.sanandrew.core.manpack.managers.SAPUpdateManager.Version;
 import de.sanandrew.core.manpack.util.modcompatibility.ModInitHelperInst;
 import de.sanandrew.mods.enderstuffp.enchantment.EnchantmentEnderChestTeleport;
+import de.sanandrew.mods.enderstuffp.event.BlockPlaceHandler;
 import de.sanandrew.mods.enderstuffp.network.PacketManager;
 import de.sanandrew.mods.enderstuffp.util.manager.IslandManager;
 import de.sanandrew.mods.enderstuffp.util.manager.OreGeneratorManager;
@@ -34,6 +35,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Map;
 
@@ -76,33 +78,36 @@ public class EnderStuffPlus
         this.thermalExpInitHelper = ModInitHelperInst.loadWhenModAvailable("ThermalExpansion", THERMAL_EXP_HELPER_CLS);
         this.tConstructInitHelper = ModInitHelperInst.loadWhenModAvailable("TConstruct", TCONSTRUCT_HELPER_CLS);
 //        ConfigRegistry.setConfig(event.getModConfigurationDirectory());
-//        ESPModRegistry.espTabCoats = new CreativeTabs("ESPTabCoats") {
-//            @Override
-//            public Item getTabIconItem() {
-//                return ModItemRegistry.rainCoat;
-//            }
-//        };
-//
-//        ModBlockRegistry.initialize();
+
         EspBlocks.initialize();
         EspItems.initialize();
 //        ModEntityRegistry.initialize();
-//
+
+        OreDictionary.registerOre("ingotNiob", new ItemStack(EspItems.enderIngot, 1, EnumEnderOres.NIOBIUM.ordinal()));
+        OreDictionary.registerOre("oreNiob", new ItemStack(EspBlocks.enderOre, 1, EnumEnderOres.NIOBIUM.ordinal()));
+        OreDictionary.registerOre("blockNiob", new ItemStack(EspBlocks.enderOreBlock, 1, EnumEnderOres.NIOBIUM.ordinal()));
+        OreDictionary.registerOre("ingotTantal", new ItemStack(EspItems.enderIngot, 1, EnumEnderOres.TANTALUM.ordinal()));
+        OreDictionary.registerOre("oreTantal", new ItemStack(EspBlocks.enderOre, 1, EnumEnderOres.TANTALUM.ordinal()));
+        OreDictionary.registerOre("blockTantal", new ItemStack(EspBlocks.enderOreBlock, 1, EnumEnderOres.TANTALUM.ordinal()));
+        OreDictionary.registerOre("logWood", new ItemStack(EspBlocks.enderLog, 1, OreDictionary.WILDCARD_VALUE));
+        OreDictionary.registerOre("plankWood", new ItemStack(EspBlocks.enderPlanks, 1, OreDictionary.WILDCARD_VALUE));
+        OreDictionary.registerOre("treeSapling", new ItemStack(EspBlocks.sapEndTree, 1, OreDictionary.WILDCARD_VALUE));
+
 //        espBiome = new BiomeGenSurfaceEnd(125);
 
-////        WorldType.DEFAULT.addNewBiome(espBiome);
-////        WorldType.LARGE_BIOMES.addNewBiome(espBiome);
-//
+//        WorldType.DEFAULT.addNewBiome(espBiome);
+//        WorldType.LARGE_BIOMES.addNewBiome(espBiome);
+
         enderChestTel = new EnchantmentEnderChestTeleport(/*ConfigRegistry.enchID*/128, 5);
         Enchantment.addToBookList(enderChestTel);
-//
+
         niobSet.put(0, new ItemStack(EspItems.niobBoots));
         niobSet.put(1, new ItemStack(EspItems.niobLegs));
         niobSet.put(2, new ItemStack(EspItems.niobPlate));
         niobSet.put(3, new ItemStack(EspItems.niobHelmet));
-//
+
 //        proxy.registerHandlers();
-//
+
 //        channelHandler.registerPacket(PacketBCGUIAction.class);
 //        channelHandler.registerPacket(PacketChangeBCGUI.class);
 //        channelHandler.registerPacket(PacketChangeBiome.class);
@@ -110,22 +115,15 @@ public class EnderStuffPlus
 //        channelHandler.registerPacket(PacketFXRayball.class);
 //        channelHandler.registerPacket(PacketFXCstPortal.class);
 //        channelHandler.registerPacket(PacketSetWeather.class);
-//
+
 //        RegistryDungeonLoot.initialize();
 //        RegistryDuplicator.initialize();
 //        RegistryBiomeChanger.initialize();
-//
+
         endAcid = new DamageSource("enderstuffp:endAcid");
-//
+
         NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
-//
-//        OreDictionary.registerOre("ingotNiob", new ItemStack(RegistryItems.enderIngot));
-//        OreDictionary.registerOre("oreNiob", new ItemStack(ModBlockRegistry.enderOre));
-//        OreDictionary.registerOre("blockNiob", new ItemStack(ModBlockRegistry.enderBlock));
-//        OreDictionary.registerOre("logWood", new ItemStack(ModBlockRegistry.enderLog, 1, OreDictionary.WILDCARD_VALUE));
-//        OreDictionary.registerOre("plankWood", ModBlockRegistry.enderPlanks);
-//        OreDictionary.registerOre("treeSapling", new ItemStack(ModBlockRegistry.sapEndTree, 1, OreDictionary.WILDCARD_VALUE));
-//
+
 //        proxy.registerClientStuff();
         proxy.preInit(event);
 
@@ -144,6 +142,9 @@ public class EnderStuffPlus
         BiomeChangerChunkLoader chunkLoaderBc = new BiomeChangerChunkLoader();
         ForgeChunkManager.setForcedChunkLoadingCallback(this, chunkLoaderBc);
         MinecraftForge.EVENT_BUS.register(chunkLoaderBc);
+
+        MinecraftForge.EVENT_BUS.register(new BlockPlaceHandler());
+
 //        channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(MOD_CHANNEL);
         proxy.init(event);
 //        FurnaceRecipes.smelting().func_151394_a(new ItemStack(ModBlockRegistry.enderOre, 1, 0),

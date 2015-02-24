@@ -7,7 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class EnchantmentEnderChestTeleport
-    extends Enchantment
+        extends Enchantment
 {
     public EnchantmentEnderChestTeleport(int effectId, int weight) {
         super(effectId, weight, EnumEnchantmentType.all);

@@ -10,6 +10,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.enderstuffp.item.block.ItemBlockBiomeDataCrystal;
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityBiomeDataCrystal;
+import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
+import de.sanandrew.mods.enderstuffp.util.EspCreativeTabs;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -30,6 +32,11 @@ public class BlockBiomeDataCrystal
 {
     public BlockBiomeDataCrystal() {
         super(Material.glass);
+        this.setBlockName(EnderStuffPlus.MOD_ID + ":biomeDataCrystal");
+        this.setBlockTextureName(EnderStuffPlus.MOD_ID + ":biome_crystal");
+        this.setCreativeTab(EspCreativeTabs.ESP_TAB_BIOMEDC);
+        this.setHardness(1.0F);
+        this.setStepSound(Block.soundTypeMetal);
     }
 
     @Override

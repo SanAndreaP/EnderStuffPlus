@@ -4,6 +4,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EspBlocks;
+import de.sanandrew.mods.enderstuffp.util.EspCreativeTabs;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -27,6 +29,11 @@ public class BlockEndLeaves
 
     public BlockEndLeaves() {
         super();
+        this.setBlockName(EnderStuffPlus.MOD_ID + ":enderLeaves");
+        this.setCreativeTab(EspCreativeTabs.ESP_TAB);
+        this.setHardness(0.2F);
+        this.setStepSound(Block.soundTypeGrass);
+        this.setLightOpacity(1);
     }
 
     @Override

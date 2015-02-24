@@ -8,6 +8,7 @@ package de.sanandrew.mods.enderstuffp.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EspItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -34,6 +35,10 @@ public class BlockEnderDoor
 
     public BlockEnderDoor(Material material) {
         super(material);
+        this.disableStats();
+        this.setBlockName(EnderStuffPlus.MOD_ID + ":enderDoor");
+        this.setHardness(5.0F);
+        this.setStepSound(Block.soundTypeMetal);
     }
 
     @Override

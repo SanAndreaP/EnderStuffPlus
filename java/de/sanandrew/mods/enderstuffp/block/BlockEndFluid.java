@@ -3,6 +3,7 @@ package de.sanandrew.mods.enderstuffp.block;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
+import de.sanandrew.mods.enderstuffp.util.EspCreativeTabs;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -22,6 +23,7 @@ public class BlockEndFluid
 
     public BlockEndFluid(Fluid fluid, Material material) {
         super(fluid, material);
+        this.setCreativeTab(EspCreativeTabs.ESP_TAB); //TODO: add bucket for it
     }
 
     @Override

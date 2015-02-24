@@ -1,12 +1,14 @@
 /*******************************************************************************************************************
  * Authors:   SanAndreasP
- * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * Copyright: SanAndreasP
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.block;
 
 import de.sanandrew.mods.enderstuffp.tileentity.TileEntityFertilizer;
+import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
+import de.sanandrew.mods.enderstuffp.util.EspCreativeTabs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
@@ -18,6 +20,9 @@ public class BlockFertilizer
 {
     public BlockFertilizer() {
         super(Material.rock);
+        this.setBlockName(EnderStuffPlus.MOD_ID + ":fertilizer");
+        this.setCreativeTab(EspCreativeTabs.ESP_TAB);
+        this.setHardness(1.0F);
     }
 
     @Override
