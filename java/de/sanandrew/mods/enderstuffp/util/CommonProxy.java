@@ -85,7 +85,7 @@ public class CommonProxy
     public void handleParticle(EnumParticleFx particleType, double x, double y, double z, Tuple data) { }
 
     public void spawnParticle(EnumParticleFx particleType, double x, double y, double z, int dimensionId, Tuple data) {
-        PacketManager.sendToAllAround(PacketManager.PKG_PARTICLES, dimensionId, x, y, z, 64.0D, Quintet.with(particleType.ordinalByte(), x, y, z, data));
+        PacketManager.sendToAllAround(PacketManager.PARTICLES, dimensionId, x, y, z, 64.0D, Quintet.with(particleType.ordinalByte(), x, y, z, data));
     }
 
     public void syncTileData(int tileX, int tileY, int tileZ, ByteBufInputStream stream) throws IOException { }
@@ -104,7 +104,7 @@ public class CommonProxy
         int guiId = id.ordinal();
 
         if( player instanceof EntityPlayerMP && getServerGuiElement(guiId, player, player.worldObj, x, y, z) == null ) {
-            PacketManager.sendToPlayer(PacketManager.PKG_OPEN_CLIENT_GUI, (EntityPlayerMP) player, Quartet.with((byte) guiId, x, y, z));
+            PacketManager.sendToPlayer(PacketManager.OPEN_CLIENT_GUI, (EntityPlayerMP) player, Quartet.with((byte) guiId, x, y, z));
         } else {
             FMLNetworkHandler.openGui(player, EnderStuffPlus.instance, guiId, player.worldObj, x, y, z);
         }

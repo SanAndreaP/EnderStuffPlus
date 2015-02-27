@@ -3,14 +3,14 @@ package de.sanandrew.mods.enderstuffp.tileentity;
 import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.core.manpack.util.javatuples.Unit;
 import de.sanandrew.mods.enderstuffp.network.PacketManager;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions.EnumAction;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketTileDataSync.ITileSync;
-import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
-import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
 import de.sanandrew.mods.enderstuffp.util.EspBlocks;
+import de.sanandrew.mods.enderstuffp.world.BiomeChangerChunkLoader;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.nbt.NBTTagCompound;
@@ -54,7 +54,7 @@ public class TileEntityBiomeChanger
     }
 
     public void changeBiome() {
-        int currBiome = this.getBiomeId();
+        short currBiome = this.getBiomeId();
 
         if( currBiome < 0 ) {
             return;
@@ -62,17 +62,17 @@ public class TileEntityBiomeChanger
 
         switch( this.perimForm ){
             case SQUARE :
-                this.changeBiomeSquare(currBiome);
+                this.changeBiomeSquare((byte) currBiome);
                 break;
             case RHOMBUS :
-                this.changeBiomeRhombus(currBiome);
+                this.changeBiomeRhombus((byte) currBiome);
                 break;
             default :
-                this.changeBiomeCircle(currBiome);
+                this.changeBiomeCircle((byte) currBiome);
         }
     }
 
-    private void changeBiomeCircle(int currBiome) {
+    private void changeBiomeCircle(byte currBiome) {
         for( int x = -this.currRange; x <= this.currRange; x++ ) {
             for( int z = -this.currRange; z <= this.currRange; z++ ) {
                 double radius = Math.sqrt(x * x + z * z);
@@ -83,7 +83,7 @@ public class TileEntityBiomeChanger
         }
     }
 
-    private void changeBiomeRhombus(int currBiome) {
+    private void changeBiomeRhombus(byte currBiome) {
         for( int x = -this.currRange; x <= this.currRange; x++ ) {
             for( int z = -this.currRange; z <= this.currRange; z++ ) {
                 if( MathHelper.abs_int(x) + MathHelper.abs_int(z) == this.currRange ) {
@@ -93,7 +93,7 @@ public class TileEntityBiomeChanger
         }
     }
 
-    private void changeBiomeSquare(int currBiome) {
+    private void changeBiomeSquare(byte currBiome) {
         for( int x = -this.currRange; x <= this.currRange; x++ ) {
             for( int z = -this.currRange; z <= this.currRange; z++ ) {
                 if( MathHelper.abs_int(x) == this.currRange || MathHelper.abs_int(z) == this.currRange ) {
@@ -103,7 +103,7 @@ public class TileEntityBiomeChanger
         }
     }
 
-    private void changeBiomeBlock(int x, int z, int currBiome) {
+    private void changeBiomeBlock(int x, int z, byte currBiome) {
         int x1 = x + this.xCoord;
         int z1 = z + this.zCoord;
         int y = this.worldObj.getTopSolidOrLiquidBlock(x1, z1) - 1;
@@ -125,12 +125,13 @@ public class TileEntityBiomeChanger
             }
         }
 
-        biomeArray[(z1 & 0xF) << 4 | (x1 & 0xF)] = (byte) currBiome;
-        EnderStuffPlus.proxy.handleParticle(EnumParticleFx.FX_BIOME_DATA, x1 + 0.5F, y + 1, z1 + 0.5D, Unit.with((short) currBiome));
+        biomeArray[(z1 & 0xF) << 4 | (x1 & 0xF)] = currBiome;
 
         chunk.setBiomeArray(biomeArray);
         chunk.setChunkModified();
-        this.worldObj.markBlockForUpdate(x1, y - 1, z1);
+        this.worldObj.markBlockForUpdate(x1, y, z1);
+
+        PacketManager.sendToAllAround(PacketManager.BIOME_CHANGER_MODIFY, this.worldObj.provider.dimensionId, x1, y, z1, 64.0D, Triplet.with(x1, z1, currBiome));
     }
 
     public short getCurrRange() {
@@ -233,6 +234,7 @@ public class TileEntityBiomeChanger
             if( this.getBiomeId() >= 0 && this.fluxAmount > 0 ) {
                 this.isActive = true;
                 PacketBiomeChangerActions.sendPacketClient(this, EnumAction.ACTIVATE);
+                BiomeChangerChunkLoader.forceChunk(this.xCoord >> 4, this.zCoord >> 4);
             }
         } else {
             this.isActive = true;
@@ -245,6 +247,7 @@ public class TileEntityBiomeChanger
         this.usedFlux = 0;
         if( !this.worldObj.isRemote ) {
             PacketBiomeChangerActions.sendPacketClient(this, EnumAction.DEACTIVATE);
+            BiomeChangerChunkLoader.unforceChunk(this.xCoord >> 4, this.zCoord >> 4);
         }
     }
 
@@ -376,7 +379,7 @@ public class TileEntityBiomeChanger
         return this.isActive ? 50 * (this.isReplacingBlocks ? 4 : 1) : 0;
     }
 
-    public int getBiomeId() {
+    public short getBiomeId() {
         TileEntity te = this.worldObj.getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
         if( te instanceof TileEntityBiomeDataCrystal ) {
             return ((TileEntityBiomeDataCrystal) te).biomeID;

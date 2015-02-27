@@ -14,22 +14,24 @@ import net.minecraft.entity.player.EntityPlayerMP;
 
 public final class PacketManager
 {
-    public static final short PKG_PARTICLES = 0;
-    public static final short PKG_OPEN_CLIENT_GUI = 1;
+    public static final short PARTICLES = 0;
+    public static final short OPEN_CLIENT_GUI = 1;
     public static final short ENDERPET_ACTION = 2;
     public static final short WEATHERALTAR_SET = 3;
     public static final short TILE_DATA_SYNC = 4;
     public static final short BIOME_CHANGER_ACTIONS = 5;
+    public static final short BIOME_CHANGER_MODIFY = 6;
 
     public static void registerPackets() {
         NetworkManager.registerModHandler(EnderStuffPlus.MOD_ID, EnderStuffPlus.MOD_CHANNEL);
 
-        NetworkManager.registerModPacketCls(EnderStuffPlus.MOD_ID, PKG_PARTICLES, PacketParticleFX.class);
-        NetworkManager.registerModPacketCls(EnderStuffPlus.MOD_ID, PKG_OPEN_CLIENT_GUI, PacketRemoteOpenGui.class);
+        NetworkManager.registerModPacketCls(EnderStuffPlus.MOD_ID, PARTICLES, PacketParticleFX.class);
+        NetworkManager.registerModPacketCls(EnderStuffPlus.MOD_ID, OPEN_CLIENT_GUI, PacketRemoteOpenGui.class);
         NetworkManager.registerModPacketCls(EnderStuffPlus.MOD_ID, ENDERPET_ACTION, PacketEnderPetGuiAction.class);
         NetworkManager.registerModPacketCls(EnderStuffPlus.MOD_ID, WEATHERALTAR_SET, PacketSetWeather.class);
         NetworkManager.registerModPacketCls(EnderStuffPlus.MOD_ID, TILE_DATA_SYNC, PacketTileDataSync.class);
         NetworkManager.registerModPacketCls(EnderStuffPlus.MOD_ID, BIOME_CHANGER_ACTIONS, PacketBiomeChangerActions.class);
+        NetworkManager.registerModPacketCls(EnderStuffPlus.MOD_ID, BIOME_CHANGER_MODIFY, PacketBiomeChangerModify.class);
     }
 
     public static void sendToServer(short packet, Tuple data) {

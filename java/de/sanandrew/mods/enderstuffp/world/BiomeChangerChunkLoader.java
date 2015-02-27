@@ -7,7 +7,10 @@
 package de.sanandrew.mods.enderstuffp.world;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import de.sanandrew.core.manpack.util.EnumNbtTypes;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
@@ -29,6 +32,28 @@ public class BiomeChangerChunkLoader
         }
     }
 
+    public static void addBiomeChangerCoords(int x, int y, int z) {
+        if( existingTicket != null ) {
+            NBTTagCompound modData = existingTicket.getModData();
+            NBTTagList coords;
+
+            if( modData.hasKey("BiomeChngCoords") ) {
+                coords = modData.getTagList("BiomeChngCoords", EnumNbtTypes.NBT_COMPOUND.ordinal());
+            } else {
+                coords = new NBTTagList();
+            }
+
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setInteger("tileX", x);
+            tag.setInteger("tileY", y);
+            tag.setInteger("tileZ", z);
+
+            coords.appendTag(tag);
+
+            modData.setTag("BiomeChngCoords", coords);
+        }
+    }
+
     public static void forceChunk(int chunkX, int chunkZ) {
         ForgeChunkManager.forceChunk(existingTicket, new ChunkCoordIntPair(chunkX, chunkZ));
     }
@@ -44,6 +69,7 @@ public class BiomeChangerChunkLoader
 
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
+        releaseTicket();
         existingTicket = null;
     }
 
@@ -55,6 +81,11 @@ public class BiomeChangerChunkLoader
 
     @Override
     public void ticketsLoaded(List<Ticket> tickets, World world) {
+        for( Ticket ticket : tickets ) {
+            int x = ticket.getModData().getInteger("LoaderX");
+            int y = ticket.getModData().getInteger("LoaderY");
+            int z = ticket.getModData().getInteger("LoaderZ");
+        }
         //TODO: probably do sth. when a ticket is loaded, so a BiomeChanger outside of loaded chunks can then load and operate.
     }
 
