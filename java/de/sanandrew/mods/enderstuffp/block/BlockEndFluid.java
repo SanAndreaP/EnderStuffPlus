@@ -52,6 +52,8 @@ public class BlockEndFluid
     public void registerBlockIcons(IIconRegister iconRegister) {
         this.stillIcon = iconRegister.registerIcon("enderstuffp:water_still");
         this.flowingIcon = iconRegister.registerIcon("enderstuffp:water_flow");
+
+        this.getFluid().setIcons(this.stillIcon, this.flowingIcon);
     }
 
 }

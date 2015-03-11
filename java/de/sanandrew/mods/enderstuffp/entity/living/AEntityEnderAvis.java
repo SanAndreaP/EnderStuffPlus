@@ -59,7 +59,7 @@ public abstract class AEntityEnderAvis
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.getDefaultMaxHealth());
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.3D);
     }
 
@@ -209,9 +209,9 @@ public abstract class AEntityEnderAvis
         if( !this.worldObj.isRemote ) {
             if( this.prevCoatBase != this.getCoat() ) {
                 if( this.hasCoat() && RaincoatManager.getBase(this.getCoat().getTagCompound().getString("base")) == RaincoatManager.baseObsidian ) {
-                    this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(60.0D);
+                    this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.getDefaultMaxHealth() * 1.5D);
                 } else {
-                    this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
+                    this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.getDefaultMaxHealth());
                     this.setHealth(Math.min(this.getHealth(), this.getMaxHealth()));
                 }
 
@@ -415,6 +415,8 @@ public abstract class AEntityEnderAvis
 
     @Override
     public void setOwner(UUID owner) { }
+
+    public abstract double getDefaultMaxHealth();
 
     @Override
     public String getGuiTitle() {

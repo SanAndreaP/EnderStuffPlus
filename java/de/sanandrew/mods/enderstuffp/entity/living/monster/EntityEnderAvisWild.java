@@ -55,6 +55,11 @@ public class EntityEnderAvisWild
     }
 
     @Override
+    public double getDefaultMaxHealth() {
+        return 40.0D;
+    }
+
+    @Override
     protected Item getDropItem() {
         return EspItems.avisFeather;
     }

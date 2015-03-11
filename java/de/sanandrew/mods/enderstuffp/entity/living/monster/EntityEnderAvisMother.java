@@ -1,6 +1,6 @@
 /*******************************************************************************************************************
  * Authors:   SanAndreasP
- * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * Copyright: SanAndreasP
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
@@ -8,6 +8,7 @@ package de.sanandrew.mods.enderstuffp.entity.living.monster;
 
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.enderstuffp.entity.living.AEntityEnderAvis;
+import de.sanandrew.mods.enderstuffp.entity.projectile.EntityAvisArrow;
 import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -58,23 +59,33 @@ public class EntityEnderAvisMother
             this.eggPos = Triplet.with((int) this.posX, (int) this.posY, (int) this.posZ);
         }
 
-        if( this.entityToAttack == null ) {
+        if( this.entityToAttack instanceof EntityLivingBase ) {
+            if( ticksExisted % 20 == 0 && !this.worldObj.isRemote && this.getDistanceSqToEntity(this.entityToAttack) > 12.0D && !this.isDead ) {
+                EntityAvisArrow projectile = new EntityAvisArrow(this.worldObj, this, (EntityLivingBase) this.entityToAttack, 1.6F, (14 - this.worldObj.difficultySetting.getDifficultyId() * 4));
+                projectile.setDamage(4.0D + this.rand.nextGaussian() * 0.25D + (this.worldObj.difficultySetting.getDifficultyId() * 0.11D));
+
+                this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+                this.worldObj.spawnEntityInWorld(projectile);
+            }
+        } else {
             @SuppressWarnings("unchecked")
             List<EntityLivingBase> livings = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
-                                                                                 AxisAlignedBB.getBoundingBox(this.eggPos.getValue0() - 8.0F,
-                                                                                                              this.eggPos.getValue1() - 8.0F,
-                                                                                                              this.eggPos.getValue2() - 8.0F,
-                                                                                                              this.eggPos.getValue0() + 8.0F,
-                                                                                                              this.eggPos.getValue1() + 8.0F,
-                                                                                                              this.eggPos.getValue2() + 8.0F));
+                                                                                 AxisAlignedBB.getBoundingBox(this.eggPos.getValue0() - 16.0F,
+                                                                                                              this.eggPos.getValue1() - 16.0F,
+                                                                                                              this.eggPos.getValue2() - 16.0F,
+                                                                                                              this.eggPos.getValue0() + 16.0F,
+                                                                                                              this.eggPos.getValue1() + 16.0F,
+                                                                                                              this.eggPos.getValue2() + 16.0F));
             if( livings.size() > 0 ) {
                 this.entityToAttack = livings.get(this.rand.nextInt(livings.size()));
 
-                if( this.entityToAttack.isDead || this.entityToAttack == this ) {
+                if( this.entityToAttack.isDead || this.entityToAttack == this || this.entityToAttack.isEntityInvulnerable() ) {
                     this.entityToAttack = null;
                 } else {
                     this.setPathToEntity(null);
                 }
+            } else {
+                this.entityToAttack = null;
             }
 
             if( this.entityToAttack == null && !this.hasPath() && this.getDistanceSq(this.eggPos.getValue0(), this.eggPos.getValue1(), this.eggPos.getValue2()) > 64.0D ) {
@@ -88,7 +99,7 @@ public class EntityEnderAvisMother
 
     @Override
     public float getAIMoveSpeed() {
-        return this.entityToAttack != null || this.hasPath() ? 0.3F + (this.getCoatBase() == RaincoatManager.baseGold ? 0.05F : 0.0F) : 0.1F;
+        return this.entityToAttack != null || this.hasPath() ? 0.5F + (this.getCoatBase() == RaincoatManager.baseGold ? 0.05F : 0.0F) : 0.1F;
     }
 
     @Override
@@ -109,5 +120,10 @@ public class EntityEnderAvisMother
     @Override
     public boolean isWet() {
         return false;
+    }
+
+    @Override
+    public double getDefaultMaxHealth() {
+        return 160.0D;
     }
 }

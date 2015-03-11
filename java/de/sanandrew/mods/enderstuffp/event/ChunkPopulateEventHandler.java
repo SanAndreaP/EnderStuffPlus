@@ -1,9 +1,10 @@
-package de.sanandrew.mods.enderstuffp.world;
+package de.sanandrew.mods.enderstuffp.event;
 
-import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import de.sanandrew.mods.enderstuffp.util.EspBlocks;
 import de.sanandrew.mods.enderstuffp.util.EspConfiguration;
+import de.sanandrew.mods.enderstuffp.world.WorldGenAvisNest;
+import de.sanandrew.mods.enderstuffp.world.WorldGenEndIsland;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -11,8 +12,7 @@ import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 
 import java.util.Random;
 
-public class EspWorldGenerator
-        implements IWorldGenerator
+public class ChunkPopulateEventHandler
 {
     @SubscribeEvent
     public void onPoopulateChunkPre(PopulateChunkEvent.Pre event) {
@@ -64,13 +64,14 @@ public class EspWorldGenerator
             (new WorldGenAvisNest()).generate(world, random, x, y, z);
         }
 
-        if( random.nextInt(256) == 0 && EspConfiguration.genLeak ) {
-            x = chunkX * 16 + random.nextInt(16);
-            z = chunkZ * 16 + random.nextInt(16);
-            y = world.getTopSolidOrLiquidBlock(x, z);
-
-            (new WorldGenEndLeak()).generate(world, random, x, y, z);
-        }
+        // TODO: END LEAK DISABLED FOR NOW!
+//        if( random.nextInt(256) == 0 && EspConfiguration.genLeak ) {
+//            x = chunkX * 16 + random.nextInt(16);
+//            z = chunkZ * 16 + random.nextInt(16);
+//            y = world.getTopSolidOrLiquidBlock(x, z);
+//
+//            (new WorldGenEndLeak()).generate(world, random, x, y, z);
+//        }
     }
 
     private boolean generateNiobium(World world, Random rand, int posX, int posY, int posZ) {
@@ -80,21 +81,5 @@ public class EspWorldGenerator
         }
 
         return false;
-    }
-
-    @Override
-    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-        int x, y, z;
-
-        switch( world.provider.dimensionId ) {
-            case 1:
-                if( random.nextInt(64) == 0 && EspConfiguration.genEndlessEnd && (Math.abs(chunkX) > 10 || Math.abs(chunkZ) > 10) ) {
-                    x = chunkX * 16 + random.nextInt(16);
-                    z = chunkZ * 16 + random.nextInt(16);
-                    y = random.nextInt(64) + 64;
-
-                    (new WorldGenEndIsland()).generate(world, random, x, y, z);
-                }
-        }
     }
 }

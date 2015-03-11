@@ -26,7 +26,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 
-import java.sql.Ref;
 import java.util.UUID;
 
 public class EntityEnderAvisPet
@@ -143,6 +142,11 @@ public class EntityEnderAvisPet
     @Override
     public void setOwner(UUID owner) {
         this.ownerUUID = owner;
+    }
+
+    @Override
+    public double getDefaultMaxHealth() {
+        return 40.0D;
     }
 
     @Override

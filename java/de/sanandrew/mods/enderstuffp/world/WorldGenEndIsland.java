@@ -1,3 +1,9 @@
+/*******************************************************************************************************************
+ * Authors:   SanAndreasP
+ * Copyright: SanAndreasP
+ * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+ *                http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.world;
 
 import cpw.mods.fml.common.FMLLog;
@@ -9,6 +15,7 @@ import de.sanandrew.mods.enderstuffp.util.manager.IslandManager;
 import de.sanandrew.mods.enderstuffp.util.manager.IslandManager.EnumBlockType;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import org.apache.logging.log4j.Level;
 
@@ -55,9 +62,9 @@ public class WorldGenEndIsland
 
         for( Triplet<Integer, Integer, EnumBlockType> featureLoc : features ) {
             if( random.nextInt(2) != 0 ) {
-                (new WorldGenIslandForest()).generate(world, random, featureLoc.getValue0(), y + 1, featureLoc.getValue1());
+                new WorldGenIslandForest().generate(world, random, featureLoc.getValue0(), y + 1, featureLoc.getValue1());
             } else {
-                (new WorldGenEndGoo()).generate(world, random, featureLoc.getValue0(), y + 1, featureLoc.getValue1());
+                new WorldGenLakes(EspBlocks.endFluidBlock).generate(world, random, featureLoc.getValue0(), y + 1, featureLoc.getValue1());
             }
         }
 
@@ -75,25 +82,6 @@ public class WorldGenEndIsland
             }
 
             return false;
-        }
-    }
-
-    private static class WorldGenEndGoo
-            extends WorldGenerator
-    {
-        @Override
-        public boolean generate(World world, Random random, int x, int y, int z) {
-            for( int i = -6; i <= 6; i++ ) {
-                for( int j = -4; j < 0; j++ ) {
-                    for( int k = -6; k <= 6; k++ ) {
-                        if( i*i + j*j + k*k < 16 ) {
-                            world.setBlock(x+i, y+j, z+k, EspBlocks.endFluidBlock, 0, 2);
-                        }
-                    }
-                }
-            }
-
-            return true;
         }
     }
 }

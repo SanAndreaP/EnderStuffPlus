@@ -60,7 +60,6 @@ public class EnderStuffPlus
     public static EnderStuffPlus instance;
     @SidedProxy(modId = EnderStuffPlus.MOD_ID, clientSide = EnderStuffPlus.MOD_PROXY_CLIENT, serverSide = EnderStuffPlus.MOD_PROXY_COMMON)
     public static CommonProxy proxy;
-//    public static FMLEventChannel channel;
 
     public static Enchantment enderChestTel;
 
@@ -124,7 +123,6 @@ public class EnderStuffPlus
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
 
-//        proxy.registerClientStuff();
         proxy.preInit(event);
 
         RaincoatManager.initialize();

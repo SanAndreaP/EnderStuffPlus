@@ -18,7 +18,7 @@ import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderNivis;
 import de.sanandrew.mods.enderstuffp.entity.projectile.EntityAvisArrow;
 import de.sanandrew.mods.enderstuffp.event.*;
 import de.sanandrew.mods.enderstuffp.network.PacketManager;
-import de.sanandrew.mods.enderstuffp.world.EspWorldGenerator;
+import de.sanandrew.mods.enderstuffp.event.ChunkPopulateEventHandler;
 import io.netty.buffer.ByteBufInputStream;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -42,7 +42,7 @@ public class CommonProxy
         MinecraftForge.EVENT_BUS.register(new EntityDropEventHandler());
         MinecraftForge.EVENT_BUS.register(new EntityHitEventHandler());
         MinecraftForge.EVENT_BUS.register(new BonemealEventHandler());
-        MinecraftForge.EVENT_BUS.register(new EspWorldGenerator());
+        MinecraftForge.EVENT_BUS.register(new ChunkPopulateEventHandler());
 
         int entityId = 0;
         EntityRegistry.registerModEntity(EntityAvisArrow.class, "EnderAvisArrow", entityId++, EnderStuffPlus.instance, 64, 20, true);
