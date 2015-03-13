@@ -83,7 +83,7 @@ public abstract class AEntityEnderAvis
 
     @Override
     public boolean attackEntityAsMob(Entity entity) {
-        float damage = 5F;
+        float damage = 5.0F;
 
         if( this.isPotionActive(Potion.damageBoost) ) {
             damage += 3 << this.getActivePotionEffect(Potion.damageBoost).getAmplifier();

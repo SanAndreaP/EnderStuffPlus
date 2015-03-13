@@ -59,7 +59,7 @@ public class ChunkPopulateEventHandler
         if( random.nextInt(10) == 0 && EspConfiguration.genAvisNest ) {
             x = chunkX * 16 + random.nextInt(16);
             z = chunkZ * 16 + random.nextInt(16);
-            y = 64 + random.nextInt(64);
+            y = 32 + random.nextInt(96);
 
             (new WorldGenAvisNest()).generate(world, random, x, y, z);
         }

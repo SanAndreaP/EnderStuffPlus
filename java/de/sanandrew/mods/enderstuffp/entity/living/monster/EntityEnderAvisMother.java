@@ -9,11 +9,13 @@ package de.sanandrew.mods.enderstuffp.entity.living.monster;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.enderstuffp.entity.living.AEntityEnderAvis;
 import de.sanandrew.mods.enderstuffp.entity.projectile.EntityAvisArrow;
+import de.sanandrew.mods.enderstuffp.util.EspBlocks;
 import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.item.Item;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
@@ -31,6 +33,10 @@ public class EntityEnderAvisMother
     public EntityEnderAvisMother(World world) {
         super(world);
         setSize(1.0F, 2.0F);
+    }
+
+    public void setEggPosition(int x, int y, int z) {
+        this.eggPos = Triplet.with(x, y, z);
     }
 
     @Override
@@ -59,13 +65,22 @@ public class EntityEnderAvisMother
             this.eggPos = Triplet.with((int) this.posX, (int) this.posY, (int) this.posZ);
         }
 
+        if( this.worldObj.getBlock(this.eggPos.getValue0(), this.eggPos.getValue1(), this.eggPos.getValue2()) != EspBlocks.avisEgg ) {
+            this.attackEntityFrom(DamageSource.magic, 1.0F);
+        }
+
         if( this.entityToAttack instanceof EntityLivingBase ) {
-            if( ticksExisted % 20 == 0 && !this.worldObj.isRemote && this.getDistanceSqToEntity(this.entityToAttack) > 12.0D && !this.isDead ) {
-                EntityAvisArrow projectile = new EntityAvisArrow(this.worldObj, this, (EntityLivingBase) this.entityToAttack, 1.6F, (14 - this.worldObj.difficultySetting.getDifficultyId() * 4));
+            if( ticksExisted % 20 == 0 && !this.worldObj.isRemote && this.getDistanceSqToEntity(this.entityToAttack) > 12.0D && !this.isDead
+                && this.canEntityBeSeen(this.entityToAttack) && !this.entityToAttack.isDead )
+            {
+                EntityAvisArrow projectile = new EntityAvisArrow(this.worldObj, this, (EntityLivingBase) this.entityToAttack, 1.6F,
+                                                                 (14 - this.worldObj.difficultySetting.getDifficultyId() * 4));
                 projectile.setDamage(4.0D + this.rand.nextGaussian() * 0.25D + (this.worldObj.difficultySetting.getDifficultyId() * 0.11D));
 
                 this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
                 this.worldObj.spawnEntityInWorld(projectile);
+            } else {
+                this.entityToAttack = null;
             }
         } else {
             @SuppressWarnings("unchecked")
@@ -79,7 +94,9 @@ public class EntityEnderAvisMother
             if( livings.size() > 0 ) {
                 this.entityToAttack = livings.get(this.rand.nextInt(livings.size()));
 
-                if( this.entityToAttack.isDead || this.entityToAttack == this || this.entityToAttack.isEntityInvulnerable() ) {
+                if( this.entityToAttack.isDead || this.entityToAttack == this || this.entityToAttack.isEntityInvulnerable()
+                    || !this.canEntityBeSeen(this.entityToAttack) )
+                {
                     this.entityToAttack = null;
                 } else {
                     this.setPathToEntity(null);
@@ -95,6 +112,26 @@ public class EntityEnderAvisMother
         }
 
         super.onLivingUpdate();
+    }
+
+    @Override
+    public void writeEntityToNBT(NBTTagCompound tagCompound) {
+        super.writeEntityToNBT(tagCompound);
+
+        if( this.eggPos != null ) {
+            tagCompound.setInteger("eggPosX", this.eggPos.getValue0());
+            tagCompound.setInteger("eggPosY", this.eggPos.getValue1());
+            tagCompound.setInteger("eggPosZ", this.eggPos.getValue2());
+        }
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound tagCompound) {
+        super.readEntityFromNBT(tagCompound);
+
+        if( tagCompound.hasKey("eggPosX") && tagCompound.hasKey("eggPosY") && tagCompound.hasKey("eggPosZ") ) {
+            this.eggPos = Triplet.with(tagCompound.getInteger("eggPosX"), tagCompound.getInteger("eggPosY"), tagCompound.getInteger("eggPosZ"));
+        }
     }
 
     @Override
