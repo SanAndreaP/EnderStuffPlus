@@ -41,7 +41,7 @@ public final class OreGeneratorManager
             addFuel(new ItemStack(EspItems.enderIngot, 1, EnumEnderOres.NIOBIUM.ordinal()), 80, 600, true);
             addFuel(new ItemStack(EspItems.enderIngot, 1, EnumEnderOres.TANTALUM.ordinal()), 120, 800, true);
         } else {
-            FMLLog.log(Level.WARN, EnderStuffPlus.MOD_LOG, "Can not initialize the OreGeneratorManager multiple times!");
+            EnderStuffPlus.MOD_LOG.log(Level.WARN, "Can not initialize the OreGeneratorManager multiple times!");
         }
     }
 
@@ -56,17 +56,17 @@ public final class OreGeneratorManager
      */
     public static void addFuel(ItemStack stack, int fluxPerTick, int burnTime, boolean ignoreNbt) {
         if( stack == null ) {
-            FMLLog.log(Level.WARN, EnderStuffPlus.MOD_LOG, "OreGeneratorManager: stack cannot be null!");
+            EnderStuffPlus.MOD_LOG.log(Level.WARN, "OreGeneratorManager: stack cannot be null!");
             return;
         }
 
         if( fluxPerTick <= 0 ) {
-            FMLLog.log(Level.WARN, EnderStuffPlus.MOD_LOG, "OreGeneratorManager: fluxPerTick must be at least 1!");
+            EnderStuffPlus.MOD_LOG.log(Level.WARN, "OreGeneratorManager: fluxPerTick must be at least 1!");
             return;
         }
 
         if( burnTime <= 0 ) {
-            FMLLog.log(Level.WARN, EnderStuffPlus.MOD_LOG, "OreGeneratorManager: burnTime must be at least 1!");
+            EnderStuffPlus.MOD_LOG.log(Level.WARN, "OreGeneratorManager: burnTime must be at least 1!");
             return;
         }
 

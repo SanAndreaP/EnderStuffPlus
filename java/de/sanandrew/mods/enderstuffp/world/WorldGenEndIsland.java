@@ -6,7 +6,6 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.world;
 
-import cpw.mods.fml.common.FMLLog;
 import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EnumEnderOres;
@@ -30,7 +29,7 @@ public class WorldGenEndIsland
     public boolean generate(World world, Random random, int x, int y, int z) {
         EnumBlockType[][][] types = IslandManager.getRandomIslandShape(random);
         if( types == null ) {
-            FMLLog.log(EnderStuffPlus.MOD_LOG, Level.WARN, "Couldn't generate island!");
+            EnderStuffPlus.MOD_LOG.log(Level.WARN, "Couldn't generate island!");
             return false;
         }
 

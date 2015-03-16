@@ -66,7 +66,7 @@ final class ParticleHelper
         }
     }
 
-    static void spawnEnderTeleportFX(double x, double y, double z, Random rand, float red, float green, float blue, double prevPosX, double prevPosY, double prevPosZ) {
+    static void spawnTeleportFX(double x, double y, double z, Random rand, float red, float green, float blue, double prevPosX, double prevPosY, double prevPosZ) {
         for( int i = 0; i < 128; i++ ) {
             double posMulti = i / 127.0D;
             double partX = prevPosX + (x - prevPosX) * posMulti + (rand.nextDouble() - 0.5D) * 2.0D;

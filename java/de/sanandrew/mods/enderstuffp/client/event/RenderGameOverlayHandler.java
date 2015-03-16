@@ -9,15 +9,14 @@ package de.sanandrew.mods.enderstuffp.client.event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.SAPReflectionHelper;
 import de.sanandrew.mods.enderstuffp.client.util.EnumTextures;
 import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderAvisPet;
 import de.sanandrew.mods.enderstuffp.entity.living.IEnderPet;
 import de.sanandrew.mods.enderstuffp.util.EspBlocks;
+import de.sanandrew.mods.enderstuffp.util.manager.ReflectionManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -95,9 +94,9 @@ public class RenderGameOverlayHandler
             event.green = 0.0F;
             event.blue = 0.8F;
         } else if( isAvisMotherFog ) {
-            float bossColorModifier = SAPReflectionHelper.getCachedFieldValue(EntityRenderer.class, this.mc.entityRenderer, "bossColorModifier", "");
+            float bossColorModifier = ReflectionManager.getBossColorModifier();
             if( bossColorModifier > 0.0F ) {
-                float bossColorModifierPrev = SAPReflectionHelper.getCachedFieldValue(EntityRenderer.class, this.mc.entityRenderer, "bossColorModifierPrev", "");
+                float bossColorModifierPrev = ReflectionManager.getBossColorModifierPrev();
                 float f11 = bossColorModifierPrev + (bossColorModifier - bossColorModifierPrev) * (float) event.renderPartialTicks;
 
                 event.red = event.red * (1.0F - f11) + event.red * 0.4F * f11 + 0.3F * f11;

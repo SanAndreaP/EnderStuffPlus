@@ -1,6 +1,7 @@
 package de.sanandrew.mods.enderstuffp.util;
 
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.mods.enderstuffp.entity.item.ItemEspMonsterPlacer;
 import de.sanandrew.mods.enderstuffp.item.*;
 import de.sanandrew.mods.enderstuffp.item.tool.*;
 import net.minecraft.item.Item;
@@ -37,6 +38,7 @@ public class EspItems
     public static Item niobShovel;
     public static Item niobSword;
     public static Item rainCoat;
+    public static Item monsterEgg;
     //FIXME unfinished!
     public static Item tantalPick;
     public static Item ahrahSword;
@@ -46,6 +48,11 @@ public class EspItems
         initMaterials();
         initItems();
         registerItems();
+    }
+
+    private static void initMaterials() {
+        armorNiobium = EnumHelper.addArmorMaterial(EnderStuffPlus.MOD_ID.toUpperCase() + "_NIOBIUM", 20, new int[]{2, 7, 5, 2}, 18);
+        toolNiobium = EnumHelper.addToolMaterial(EnderStuffPlus.MOD_ID.toUpperCase() + "_NIOBIUM", 3, 450, 7.0F, 2.5F, 18);
     }
 
     private static void initItems() {
@@ -75,18 +82,14 @@ public class EspItems
         endHorseArmor = new ItemEndHorseArmor();
         tantalPick    = new ItemTantalumPickaxe(toolNiobium);
         ahrahSword    = new ItemAhrahSword(toolNiobium);
+        monsterEgg    = new ItemEspMonsterPlacer();
 
         enderPetStaff.setFull3D();
-    }
-
-    private static void initMaterials() {
-        armorNiobium = EnumHelper.addArmorMaterial(EnderStuffPlus.MOD_ID.toUpperCase() + "_NIOBIUM", 20, new int[]{2, 7, 5, 2}, 18);
-        toolNiobium = EnumHelper.addToolMaterial(EnderStuffPlus.MOD_ID.toUpperCase() + "_NIOBIUM", 3, 450, 7.0F, 2.5F, 18);
     }
 
     private static void registerItems() {
         SAPUtils.registerItems(espPearls, avisFeather, avisArrow, avisCompass, enderPetEgg, enderPetStaff, enderIngot, niobBow, niobHelmet,
                                niobPlate, niobLegs, niobBoots, niobPick, niobShovel, niobAxe, niobHoe, niobSword, niobShears, enderFlesh,
-                               rainCoat, itemNiobDoor, endNugget, enderStick, endHorseArmor, tantalPick, ahrahSword);
+                               rainCoat, itemNiobDoor, endNugget, enderStick, endHorseArmor, tantalPick, ahrahSword, monsterEgg);
     }
 }
