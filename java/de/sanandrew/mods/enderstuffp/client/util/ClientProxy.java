@@ -130,18 +130,6 @@ public class ClientProxy
 
     }
 
-//    @Override
-//    public void registerHandlers() {
-////        MinecraftForge.EVENT_BUS.register(new SoundRegistry());
-////        MinecraftForge.EVENT_BUS.register(new RenderHUDEvent());
-////        MinecraftForge.EVENT_BUS.register(new FOVManipulator());
-////        MinecraftForge.EVENT_BUS.register(new IconRegistry());
-//
-////        TickRegistry.registerTickHandler(new TickHandlerPlayerClt(), Side.CLIENT);
-//
-//        super.registerHandlers();
-//    }
-
     @Override
     public void handleParticle(EnumParticleFx particleType, double x, double y, double z, Tuple data) {
         Random random = SAPUtils.RNG;
@@ -167,9 +155,6 @@ public class ClientProxy
             case FX_MISS_BODY:
                 ParticleHelper.spawnEnderBodyFX(x, y, z, random, 1.0F, 0.5F, 0.7F, (Boolean) data.getValue(0));
                 break;
-            case FX_MISS_TELEPORT:
-                ParticleHelper.spawnEnderTeleportFX(x, y, z, random, 1.0F, 0.5F, 0.7F, (Double) data.getValue(0), (Double) data.getValue(1), (Double) data.getValue(2));
-                break;
             case FX_AVIS_EGG:
                 ParticleHelper.spawnPortalFX(x, y, z, random, 5, 0.5F, 0.0F, 1.0F);
                 break;
@@ -181,6 +166,12 @@ public class ClientProxy
                 break;
             case FX_ORE_GRIND:
                 ParticleHelper.spawnOreGrindFX(x, y, z, random, new ItemStack((Item) Item.itemRegistry.getObject(data.getValue(0)), 1, (int) data.getValue(1)));
+                break;
+            case FX_NIVIS_BODY:
+                ParticleHelper.spawnEnderBodyFX(x, y, z, random, 0.4F, 0.4F, 1.0F, (Boolean) data.getValue(0));
+                break;
+            case FX_IGNIS_BODY:
+                ParticleHelper.spawnEnderBodyFX(x, y, z, random, 1.0F, 1.0F, 0.0F, (Boolean) data.getValue(0));
                 break;
         }
     }

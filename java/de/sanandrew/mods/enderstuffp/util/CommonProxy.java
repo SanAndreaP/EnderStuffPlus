@@ -4,21 +4,11 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
-import cpw.mods.fml.common.registry.EntityRegistry;
 import de.sanandrew.core.manpack.util.javatuples.Quartet;
 import de.sanandrew.core.manpack.util.javatuples.Quintet;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
-import de.sanandrew.mods.enderstuffp.entity.item.*;
-import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderAvisPet;
-import de.sanandrew.mods.enderstuffp.entity.living.EntityEnderMiss;
-import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderAvisMother;
-import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderAvisWild;
-import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderIgnis;
-import de.sanandrew.mods.enderstuffp.entity.living.monster.EntityEnderNivis;
-import de.sanandrew.mods.enderstuffp.entity.projectile.EntityAvisArrow;
 import de.sanandrew.mods.enderstuffp.event.*;
 import de.sanandrew.mods.enderstuffp.network.PacketManager;
-import de.sanandrew.mods.enderstuffp.event.ChunkPopulateEventHandler;
 import io.netty.buffer.ByteBufInputStream;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -35,8 +25,6 @@ public class CommonProxy
     public void preInit(FMLPreInitializationEvent event) { }
 
     public void init(FMLInitializationEvent event) {
-//        EnderStuffPlus.channel.register(new ServerPacketHandler());
-
         MinecraftForge.EVENT_BUS.register(new EntityJoinWorldHandler());
         MinecraftForge.EVENT_BUS.register(new ArrowEventsHandler());
         MinecraftForge.EVENT_BUS.register(new EntityDropEventHandler());
@@ -44,19 +32,7 @@ public class CommonProxy
         MinecraftForge.EVENT_BUS.register(new BonemealEventHandler());
         MinecraftForge.EVENT_BUS.register(new ChunkPopulateEventHandler());
 
-        int entityId = 0;
-        EntityRegistry.registerModEntity(EntityAvisArrow.class, "EnderAvisArrow", entityId++, EnderStuffPlus.instance, 64, 20, true);
-        EntityRegistry.registerModEntity(EntityEnderNivis.class, "EnderNivis", entityId++, EnderStuffPlus.instance, 80, 1, true);
-        EntityRegistry.registerModEntity(EntityEnderIgnis.class, "EnderIgnis", entityId++, EnderStuffPlus.instance, 80, 1, true);
-        EntityRegistry.registerModEntity(EntityEnderMiss.class, "EnderMiss", entityId++, EnderStuffPlus.instance, 80, 1, true);
-        EntityRegistry.registerModEntity(EntityEnderAvisPet.class, "EnderAvisPet", entityId++, EnderStuffPlus.instance, 80, 1, true);
-        EntityRegistry.registerModEntity(EntityEnderAvisMother.class, "EnderAvisMother", entityId++, EnderStuffPlus.instance, 80, 1, true);
-        EntityRegistry.registerModEntity(EntityEnderAvisWild.class, "EnderAvisWild", entityId++, EnderStuffPlus.instance, 80, 1, true);
-        EntityRegistry.registerModEntity(EntityPearlNivis.class, "EnderNivisPearl", entityId++, EnderStuffPlus.instance, 64, 10, true);
-        EntityRegistry.registerModEntity(EntityPearlIgnis.class, "EnderIgnisPearl", entityId++, EnderStuffPlus.instance, 64, 10, true);
-        EntityRegistry.registerModEntity(EntityPearlMiss.class, "EnderMissPearl", entityId++, EnderStuffPlus.instance, 64, 10, true);
-        EntityRegistry.registerModEntity(EntityBait.class, "EnderMissBait", entityId++, EnderStuffPlus.instance, 64, 4, false);
-        EntityRegistry.registerModEntity(EntityItemFireproof.class, "ItemFireproof", entityId++, EnderStuffPlus.instance, 64, 20, true);
+        EspEntities.registerEntities();
 
         //FIXME: add biome?
 //        EnderStuffPlus.surfaceEnd = new BiomeGenSurfaceEnd(110);

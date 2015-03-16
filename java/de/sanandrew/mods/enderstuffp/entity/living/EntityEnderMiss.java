@@ -1,15 +1,14 @@
 package de.sanandrew.mods.enderstuffp.entity.living;
 
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
-import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.core.manpack.util.javatuples.Unit;
+import de.sanandrew.mods.enderstuffp.entity.living.monster.AEntityEndermanEsp;
 import de.sanandrew.mods.enderstuffp.item.ItemRaincoat;
 import de.sanandrew.mods.enderstuffp.util.*;
 import de.sanandrew.mods.enderstuffp.util.manager.ReflectionManager;
 import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager;
 import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager.CoatBaseEntry;
 import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager.CoatColorEntry;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -29,8 +28,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -38,10 +35,10 @@ import java.util.UUID;
 
 public class EntityEnderMiss
         extends EntityCreature
-        implements IEnderPet<EntityEnderMiss>, IEnderCreature
+        implements IEnderPet<EntityEnderMiss>, IEnderCreature, ITeleportProvider<EntityEnderMiss>
 {
     private static final AttributeModifier SPEED_TAMED = (new AttributeModifier(UUID.fromString("020E0DFB-87AE-4653-9556-831010E291A0"),
-                                                                                "Tamerfollowing speed boost", 6.2D, 0)).setSaved(false);
+                                                                                "following speed boost", 6.2D, 0)).setSaved(false);
     private static final int DW_BOOLEANS = 20;
     private static final int DW_BOW_CLR = 21;
     private static final int DW_COAT = 22;
@@ -94,7 +91,7 @@ public class EntityEnderMiss
 
         if( dmgSource instanceof EntityDamageSourceIndirect && !this.isTamed() ) {
             for( int i = 0; i < 64; ++i ) {
-                if( this.teleportRandomly() ) {
+                if( AEntityEndermanEsp.teleportRandomly(this) ) {
                     return false;
                 }
             }
@@ -248,6 +245,11 @@ public class EntityEnderMiss
     @Override
     protected Item getDropItem() {
         return EspItems.espPearls;
+    }
+
+    @Override
+    public void spawnParticles(double x, double y, double z) {
+        EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_MISS_BODY, x, y, z, this.dimension, Unit.with(false));
     }
 
     @Override
@@ -540,7 +542,7 @@ public class EntityEnderMiss
             attributeinstance.applyModifier(SPEED_TAMED);
 
             if( this.getDistanceToEntity(ep) > 10.0F && this.teleportTimer <= 0 && Math.abs(ep.posY - this.posY) < 6.0F ) {
-                this.teleportToEntity(ep);
+                AEntityEndermanEsp.teleportToEntity(this, ep);
             }
         } else if( this.isTamed() && !this.isRidden() && ep != null && ep.getCurrentEquippedItem() != null
                    && ep.getCurrentEquippedItem().getItem() instanceof ItemFood && this.getDistanceToEntity(ep) > 2.0F && this.needFood() && !this.isSitting() )
@@ -564,12 +566,12 @@ public class EntityEnderMiss
                 && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ))
                 && this.rand.nextFloat() * 30.0F < (bright - 0.4F) * 2.0F )
             {
-                this.teleportRandomly();
+                AEntityEndermanEsp.teleportRandomly(this);
             }
         }
 
         if( this.isWet() && !this.hasCoat() && !this.isTamed() ) {
-            this.teleportRandomly();
+            AEntityEndermanEsp.teleportRandomly(this);
         }
 
         if( !this.isSitting() ) {
@@ -677,94 +679,89 @@ public class EntityEnderMiss
         return true;
     }
 
-//    public void spawnParticle(String type, double X, double Y, double Z) {
-//        ESPModRegistry.sendPacketAllRng("fxPortal", this.posX, this.posY, this.posZ, 128.0D, this.dimension, this.posX,
-//                                        this.posY, this.posZ, 1.0F, 0.5F, 0.7F, this.width, this.height, 1);
+//    protected boolean teleportRandomly() {
+//        double var1 = this.posX + (this.rand.nextDouble() - 0.5D) * 64.0D;
+//        double var3 = this.posY + (this.rand.nextInt(64) - 32);
+//        double var5 = this.posZ + (this.rand.nextDouble() - 0.5D) * 64.0D;
+//
+//        return this.teleportTo(var1, var3, var5);
 //    }
-
-    protected boolean teleportRandomly() {
-        double var1 = this.posX + (this.rand.nextDouble() - 0.5D) * 64.0D;
-        double var3 = this.posY + (this.rand.nextInt(64) - 32);
-        double var5 = this.posZ + (this.rand.nextDouble() - 0.5D) * 64.0D;
-
-        return this.teleportTo(var1, var3, var5);
-    }
-
-    protected boolean teleportTo(double par1, double par3, double par5) {
-        EnderTeleportEvent event = new EnderTeleportEvent(this, par1, par3, par5, 0);
-
-        if( MinecraftForge.EVENT_BUS.post(event) ) {
-            return false;
-        }
-
-        double prevPosX = this.posX;
-        double prevPosY = this.posY;
-        double prevPosZ = this.posZ;
-
-        this.posX = event.targetX;
-        this.posY = event.targetY;
-        this.posZ = event.targetZ;
-
-        boolean teleportSucceed = false;
-        int blockX = MathHelper.floor_double(this.posX);
-        int blockY = MathHelper.floor_double(this.posY);
-        int blockZ = MathHelper.floor_double(this.posZ);
-        Block block;
-
-        if( this.worldObj.blockExists(blockX, blockY, blockZ) ) {
-            boolean blockSolid = false;
-
-            while( !blockSolid && blockY > 0 ) {
-                block = this.worldObj.getBlock(blockX, blockY - 1, blockZ);
-
-                if( block != null && block.getMaterial().blocksMovement() ) {
-                    blockSolid = true;
-                } else {
-                    --this.posY;
-                    --blockY;
-                }
-            }
-
-            if( blockSolid ) {
-                this.setPosition(this.posX, this.posY, this.posZ);
-
-                if( this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty()
-                    && (!this.worldObj.isAnyLiquid(this.boundingBox) || this.hasCoat()) )
-                {
-                    teleportSucceed = true;
-                }
-            }
-        }
-
-        if( !teleportSucceed ) {
-            this.setPosition(prevPosX, prevPosY, prevPosZ);
-
-            return false;
-        } else {
-            EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_MISS_TELEPORT, this.posX, this.posY, this.posZ, this.dimension,
-                                               Triplet.with(prevPosX, prevPosY, prevPosZ));
-
-            this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "mob.endermen.portal", 1.0F, 1.0F);
-            this.worldObj.playSoundAtEntity(this, "mob.endermen.portal", 1.0F, 1.0F);
-
-            return true;
-        }
-    }
-
-    protected boolean teleportToEntity(Entity par1Entity) {
-        Vec3 var2 = Vec3.createVectorHelper(this.posX - par1Entity.posX, this.boundingBox.minY + this.height / 2.0F
-                                                                         - par1Entity.posY + par1Entity.getEyeHeight(),
-                                            this.posZ - par1Entity.posZ);
-
-        var2 = var2.normalize();
-
-        double multi = 16.0D;
-        double x = this.posX + (this.rand.nextDouble() - 0.5D) * 0.8D - var2.xCoord * multi;
-        double y = this.posY + (this.rand.nextInt(16) - 8) - var2.yCoord * multi;
-        double z = this.posZ + (this.rand.nextDouble() - 0.5D) * 0.8D - var2.zCoord * multi;
-
-        return this.teleportTo(x, y, z);
-    }
+//
+//    protected boolean teleportTo(double par1, double par3, double par5) {
+//        EnderTeleportEvent event = new EnderTeleportEvent(this, par1, par3, par5, 0);
+//
+//        if( MinecraftForge.EVENT_BUS.post(event) ) {
+//            return false;
+//        }
+//
+//        double prevPosX = this.posX;
+//        double prevPosY = this.posY;
+//        double prevPosZ = this.posZ;
+//
+//        this.posX = event.targetX;
+//        this.posY = event.targetY;
+//        this.posZ = event.targetZ;
+//
+//        boolean teleportSucceed = false;
+//        int blockX = MathHelper.floor_double(this.posX);
+//        int blockY = MathHelper.floor_double(this.posY);
+//        int blockZ = MathHelper.floor_double(this.posZ);
+//        Block block;
+//
+//        if( this.worldObj.blockExists(blockX, blockY, blockZ) ) {
+//            boolean blockSolid = false;
+//
+//            while( !blockSolid && blockY > 0 ) {
+//                block = this.worldObj.getBlock(blockX, blockY - 1, blockZ);
+//
+//                if( block != null && block.getMaterial().blocksMovement() ) {
+//                    blockSolid = true;
+//                } else {
+//                    --this.posY;
+//                    --blockY;
+//                }
+//            }
+//
+//            if( blockSolid ) {
+//                this.setPosition(this.posX, this.posY, this.posZ);
+//
+//                if( this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty()
+//                    && (!this.worldObj.isAnyLiquid(this.boundingBox) || this.hasCoat()) )
+//                {
+//                    teleportSucceed = true;
+//                }
+//            }
+//        }
+//
+//        if( !teleportSucceed ) {
+//            this.setPosition(prevPosX, prevPosY, prevPosZ);
+//
+//            return false;
+//        } else {
+//            EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_MISS_TELEPORT, this.posX, this.posY, this.posZ, this.dimension,
+//                                               Triplet.with(prevPosX, prevPosY, prevPosZ));
+//
+//            this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "mob.endermen.portal", 1.0F, 1.0F);
+//            this.worldObj.playSoundAtEntity(this, "mob.endermen.portal", 1.0F, 1.0F);
+//
+//            return true;
+//        }
+//    }
+//
+//    protected boolean teleportToEntity(Entity par1Entity) {
+//        Vec3 var2 = Vec3.createVectorHelper(this.posX - par1Entity.posX, this.boundingBox.minY + this.height / 2.0F
+//                                                                         - par1Entity.posY + par1Entity.getEyeHeight(),
+//                                            this.posZ - par1Entity.posZ);
+//
+//        var2 = var2.normalize();
+//
+//        double multi = 16.0D;
+//        double x = this.posX + (this.rand.nextDouble() - 0.5D) * 0.8D - var2.xCoord * multi;
+//        double y = this.posY + (this.rand.nextInt(16) - 8) - var2.yCoord * multi;
+//        double z = this.posZ + (this.rand.nextDouble() - 0.5D) * 0.8D - var2.zCoord * multi;
+//
+//        return this.teleportTo(x, y, z);
+//    }
 
     @Override
     public void updateEntityActionState() {

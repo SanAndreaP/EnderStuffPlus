@@ -6,7 +6,6 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.util.manager;
 
-import cpw.mods.fml.common.FMLLog;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import org.apache.logging.log4j.Level;
 
@@ -37,16 +36,16 @@ public final class IslandManager
     public static EnumBlockType[][][] getRandomIslandShape(Random random) {
         if( !isInitialized ) {
             try {
-                FMLLog.log(EnderStuffPlus.MOD_LOG, Level.WARN, "Island Initialization not done yet! waiting for other thread to finish!");
+                EnderStuffPlus.MOD_LOG.log(Level.WARN, "Island Initialization not done yet! waiting for other thread to finish!");
                 islandInitThread.join();
             } catch( InterruptedException ex ) {
-                FMLLog.log(EnderStuffPlus.MOD_LOG, Level.WARN, ex, "Island generation thread interrupted!");
+                EnderStuffPlus.MOD_LOG.log(Level.WARN, "Island generation thread interrupted!", ex);
                 errored = true;
             }
         }
 
         if( errored ) {
-            FMLLog.log(EnderStuffPlus.MOD_LOG, Level.WARN, "Island cannot be generated, because an error occurred!");
+            EnderStuffPlus.MOD_LOG.log(Level.WARN, "Island cannot be generated, because an error occurred!");
             return null;
         }
 
@@ -67,7 +66,7 @@ public final class IslandManager
         public void run() {
             ISLANDS.clear();
 
-            FMLLog.log(EnderStuffPlus.MOD_LOG, Level.INFO, "Starting initialization of island generation");
+            EnderStuffPlus.MOD_LOG.log(Level.INFO, "Starting initialization of island generation");
             long start = System.currentTimeMillis();
 
             int count = 0;
@@ -103,13 +102,13 @@ public final class IslandManager
                     }
                 }
             } catch( IOException | URISyntaxException ex ) {
-                FMLLog.log(EnderStuffPlus.MOD_LOG, Level.WARN, ex, "Initialization of island generation errored!");
+                EnderStuffPlus.MOD_LOG.log(Level.WARN, "Initialization of island generation errored!", ex);
                 errored = true;
                 return;
             }
 
-            FMLLog.log(EnderStuffPlus.MOD_LOG, Level.INFO, "Initialization of island generation finished in %d ms, creating %s islands",
-                       System.currentTimeMillis() - start, count);
+            EnderStuffPlus.MOD_LOG.printf(Level.INFO, "Initialization of island generation finished in %d ms, creating %s islands", System.currentTimeMillis() - start,
+                                          count);
 
             isInitialized = true;
         }

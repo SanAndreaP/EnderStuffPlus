@@ -33,7 +33,7 @@ public class RenderEnderNivis
     }
 
     private void applyStats(EntityEnderNivis nivis) {
-        this.nivisModel.setCarrying(nivis.func_146080_bZ().getMaterial() != Material.air);
+        this.nivisModel.setCarrying(nivis.getCarryingBlock().getMaterial() != Material.air);
         this.nivisModel.setAttacking(nivis.isScreaming());
     }
 
@@ -60,7 +60,7 @@ public class RenderEnderNivis
     private void renderCarrying(EntityEnderNivis nivis, float partTicks) {
         super.renderEquippedItems(nivis, partTicks);
 
-        if( nivis.func_146080_bZ().getMaterial() != Material.air ) {
+        if( nivis.getCarryingBlock().getMaterial() != Material.air ) {
             float scale = 0.5F;
 
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -79,7 +79,7 @@ public class RenderEnderNivis
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
             this.bindTexture(TextureMap.locationBlocksTexture);
-            this.field_147909_c.renderBlockAsItem(nivis.func_146080_bZ(), nivis.getCarryingData(), 1.0F);
+            this.field_147909_c.renderBlockAsItem(nivis.getCarryingBlock(), nivis.getCarryingData(), 1.0F);
 
             GL11.glPopMatrix();
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);

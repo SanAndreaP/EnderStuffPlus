@@ -15,7 +15,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 import de.sanandrew.core.manpack.managers.SAPUpdateManager;
 import de.sanandrew.core.manpack.managers.SAPUpdateManager.Version;
 import de.sanandrew.core.manpack.util.modcompatibility.ModInitHelperInst;
@@ -28,14 +27,14 @@ import de.sanandrew.mods.enderstuffp.util.manager.raincoat.RaincoatManager;
 import de.sanandrew.mods.enderstuffp.world.BiomeChangerChunkLoader;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 
@@ -44,7 +43,7 @@ public class EnderStuffPlus
 {
     public static final String MOD_ID = "enderstuffp";
     public static final String VERSION = "2.0.0";
-    public static final String MOD_LOG = "EnderStuffP";
+    public static final Logger MOD_LOG = LogManager.getLogger(MOD_ID);
     public static final String MOD_CHANNEL = "EnderStuffPNWCH";
 
     private static final String MOD_PROXY_CLIENT = "de.sanandrew.mods.enderstuffp.client.util.ClientProxy";
@@ -148,7 +147,6 @@ public class EnderStuffPlus
 //        FurnaceRecipes.smelting().func_151394_a(new ItemStack(ModBlockRegistry.enderOre, 1, 0),
 //                                                new ItemStack(ModItemRegistry.enderIngot, 1, 0), 0.85F);
 //        CraftingRegistry.initialize();
-        GameRegistry.addRecipe(new ItemStack(Items.stone_sword, 1), "XX", 'X', Blocks.sand);
 
         this.thermalExpInitHelper.initialize();
         this.tConstructInitHelper.initialize();

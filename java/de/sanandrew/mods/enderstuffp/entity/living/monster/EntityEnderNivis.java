@@ -1,10 +1,11 @@
 package de.sanandrew.mods.enderstuffp.entity.living.monster;
 
+import de.sanandrew.core.manpack.util.javatuples.Unit;
 import de.sanandrew.mods.enderstuffp.entity.living.IEnderCreature;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
+import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
 import de.sanandrew.mods.enderstuffp.util.EspItems;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -12,7 +13,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 public class EntityEnderNivis
-    extends EntityEnderman
+    extends AEntityEndermanEsp
     implements IEnderCreature
 {
     public EntityEnderNivis(World world) {
@@ -20,6 +21,7 @@ public class EntityEnderNivis
         this.setSize(0.6F, 2.9F);
         this.stepHeight = 1.0F;
         this.experienceValue = 8;
+        this.isImmuneToWater = true;
     }
 
     @Override
@@ -30,16 +32,12 @@ public class EntityEnderNivis
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource dmgSource, float attackPts) {
-        if( dmgSource.equals(DamageSource.drown) && this.getAir() > -20 ) {
-            return false;
+    public boolean attackEntityFrom(DamageSource source, float damage) {
+        if( source.isFireDamage() ) {
+            damage *= 5.0F;
         }
 
-        if( dmgSource.isFireDamage() ) {
-            attackPts *= 5.0F;
-        }
-
-        return super.attackEntityFrom(dmgSource, attackPts);
+        return super.attackEntityFrom(source, damage);
     }
 
     @Override
@@ -53,11 +51,11 @@ public class EntityEnderNivis
     }
 
     @Override
-    protected void dropFewItems(boolean recentlyHit, int lootingLvl) {
+    protected void dropFewItems(boolean playerHit, int lootLevel) {
         int j = this.rand.nextInt(3);
 
-        if( lootingLvl > 0 ) {
-            j += this.rand.nextInt(lootingLvl + 1);
+        if( lootLevel > 0 ) {
+            j += this.rand.nextInt(lootLevel + 1);
         }
 
         this.entityDropItem(new ItemStack(EspItems.espPearls, j, 0), 0.0F);
@@ -99,5 +97,15 @@ public class EntityEnderNivis
                 }
             }
         }
+    }
+
+    @Override
+    protected void spawnIdleParticle() {
+        EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_NIVIS_BODY, this.posX, this.posY, this.posZ, this.dimension, Unit.with(false));
+    }
+
+    @Override
+    public void spawnParticles(double x, double y, double z) {
+        EnderStuffPlus.proxy.spawnParticle(EnumParticleFx.FX_NIVIS_BODY, x, y, z, this.dimension, Unit.with(false));
     }
 }

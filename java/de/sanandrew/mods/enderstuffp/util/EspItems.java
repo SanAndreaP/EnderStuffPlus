@@ -1,6 +1,7 @@
 package de.sanandrew.mods.enderstuffp.util;
 
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.mods.enderstuffp.entity.item.ItemEspMonsterPlacer;
 import de.sanandrew.mods.enderstuffp.item.*;
 import de.sanandrew.mods.enderstuffp.item.tool.*;
 import net.minecraft.item.Item;
@@ -37,6 +38,7 @@ public class EspItems
     public static Item niobShovel;
     public static Item niobSword;
     public static Item rainCoat;
+    public static Item monsterEgg;
     //FIXME unfinished!
     public static Item tantalPick;
     public static Item ahrahSword;
@@ -80,6 +82,7 @@ public class EspItems
         endHorseArmor = new ItemEndHorseArmor();
         tantalPick    = new ItemTantalumPickaxe(toolNiobium);
         ahrahSword    = new ItemAhrahSword(toolNiobium);
+        monsterEgg    = new ItemEspMonsterPlacer();
 
         enderPetStaff.setFull3D();
     }
@@ -87,6 +90,6 @@ public class EspItems
     private static void registerItems() {
         SAPUtils.registerItems(espPearls, avisFeather, avisArrow, avisCompass, enderPetEgg, enderPetStaff, enderIngot, niobBow, niobHelmet,
                                niobPlate, niobLegs, niobBoots, niobPick, niobShovel, niobAxe, niobHoe, niobSword, niobShears, enderFlesh,
-                               rainCoat, itemNiobDoor, endNugget, enderStick, endHorseArmor, tantalPick, ahrahSword, new ItemWorldGenSpawner());
+                               rainCoat, itemNiobDoor, endNugget, enderStick, endHorseArmor, tantalPick, ahrahSword, monsterEgg);
     }
 }
