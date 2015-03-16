@@ -72,9 +72,9 @@ public class RenderEnderAvis
 
     @Override
     protected void preRenderCallback(EntityLivingBase livingBase, float partTicks) {
-        if( livingBase.isChild() ) {
-            GL11.glScalef(0.5F, 0.5F, 0.5F);
-        }
+//        if( livingBase.isChild() ) {
+//            GL11.glScalef(0.5F, 0.5F, 0.5F);
+//        }
 
         if( livingBase instanceof EntityEnderAvisMother ) {
             GL11.glScalef(1.5F, 1.5F, 1.5F);
@@ -113,7 +113,7 @@ public class RenderEnderAvis
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-            this.setRenderPassModel(this.coatModel);
+//            this.setRenderPassModel(this.coatModel);
 
             if( avis.hasCoat() ) {
                 CoatColorEntry coatClr = avis.getCoatColor();
@@ -147,7 +147,7 @@ public class RenderEnderAvis
 
             if( avis instanceof EntityEnderAvisPet && ((EntityEnderAvisPet) avis).isSaddled() ) {
                 this.bindTexture(EnumTextures.ENDERAVIS_TEXTURE_SADDLE.getResource());
-                this.setRenderPassModel(this.saddleModel);
+//                this.setRenderPassModel(this.saddleModel);
             }
 
             return 1;

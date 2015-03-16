@@ -70,17 +70,16 @@ public class EntityEnderAvisMother
         }
 
         if( this.entityToAttack instanceof EntityLivingBase ) {
-            if( ticksExisted % 20 == 0 && !this.worldObj.isRemote && this.getDistanceSqToEntity(this.entityToAttack) > 12.0D && !this.isDead
-                && this.canEntityBeSeen(this.entityToAttack) && !this.entityToAttack.isDead )
-            {
+            if( !this.canEntityBeSeen(this.entityToAttack) || this.entityToAttack.isDead ) {
+                this.entityToAttack = null;
+            } else if( ticksExisted % 20 == 0 && !this.worldObj.isRemote && this.getDistanceSqToEntity(this.entityToAttack) > 12.0D && !this.isDead ) {
                 EntityAvisArrow projectile = new EntityAvisArrow(this.worldObj, this, (EntityLivingBase) this.entityToAttack, 1.6F,
-                                                                 (14 - this.worldObj.difficultySetting.getDifficultyId() * 4));
+                                                                 (14 - this.worldObj.difficultySetting.getDifficultyId() * 4)
+                );
                 projectile.setDamage(4.0D + this.rand.nextGaussian() * 0.25D + (this.worldObj.difficultySetting.getDifficultyId() * 0.11D));
 
                 this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
                 this.worldObj.spawnEntityInWorld(projectile);
-            } else {
-                this.entityToAttack = null;
             }
         } else {
             @SuppressWarnings("unchecked")

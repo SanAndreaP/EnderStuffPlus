@@ -46,7 +46,7 @@ public class ModelEnderAvis
 
         this.body = ModelBoxBuilder.newBuilder(this).setLocation(0.0F, 8.0F, 0.0F).getBox(-4.0F, -3.0F, -8.0F, 8, 6, 16, 0.0F);
         this.head = ModelBoxBuilder.newBuilder(this).setTexture(32, 6, false).setLocation(0.0F, -1.0F, -12.0F).getBox(-2.0F, -3.0F, -3.0F, 4, 4, 6, 0.0F);
-        this.rightWing = ModelBoxBuilder.newBuilder(this).setTexture(16, 24, true).setLocation(-4.0F, 6.0F, -5.0F).setRotation(0.0F, 1.5707963F, 0.0F)
+        this.rightWing = ModelBoxBuilder.newBuilder(this).setTexture(16, 24, false).setLocation(-4.0F, 6.0F, -5.0F).setRotation(0.0F, 1.5707963F, 0.0F)
                                         .getBox(-11.5F, 0.5F, 0.0F, 12, 0, 8, 0.0F);
         this.leftWing = ModelBoxBuilder.newBuilder(this).setTexture(-8, 24, false).setLocation(4.0F, 6.0F, -5.0F).setRotation(0.0F, -1.5707963F, 0.0F)
                                        .getBox(-0.5F, 0.5F, 0.0F, 12, 0, 8, 0.0F);

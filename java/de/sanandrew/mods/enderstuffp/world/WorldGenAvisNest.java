@@ -5,12 +5,17 @@ import de.sanandrew.mods.enderstuffp.util.EspBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
 public class WorldGenAvisNest
     extends WorldGenerator
 {
+    private static final ForgeDirection[] directions = new ForgeDirection[] {
+            ForgeDirection.NORTH, ForgeDirection.WEST, ForgeDirection.SOUTH, ForgeDirection.EAST
+    };
+
     @Override
     public boolean generate(World world, Random rand, int posX, int posY, int posZ) {
         generateRoom(world, rand, posX, posY, posZ);
@@ -103,10 +108,12 @@ public class WorldGenAvisNest
         world.spawnEntityInWorld(boss);
     }
 
-    private void generateEntrance( World world, Random rand, int posX, int posY, int posZ ) {
-        int currPosX = posX + 5;
+    private void generateEntrance(World world, Random rand, int posX, int posY, int posZ) {
+        ForgeDirection dir = directions[rand.nextInt(directions.length)];
+
+        int currPosX = posX + 5 * dir.offsetX;
         int currPosY = posY;
-        int currPosZ = posZ;
+        int currPosZ = posZ + 5 * dir.offsetZ;
 
         for( int y = 0; y <= 2; y++ ) {
             for( int x = -2; x <= 2; x++ ) {
@@ -116,7 +123,8 @@ public class WorldGenAvisNest
             }
         }
         currPosY += 1;
-        currPosX += 1;
+        currPosX += dir.offsetX;
+        currPosZ += dir.offsetZ;
 
         boolean reachedSurface = world.canBlockSeeTheSky(currPosX, currPosY, currPosZ);
         while( !reachedSurface ) {
@@ -125,8 +133,9 @@ public class WorldGenAvisNest
                     world.setBlock(currPosX + x, currPosY, currPosZ + z, Blocks.air, 0, new Random().nextInt(2) + 2);
                 }
             }
-            currPosX += 1;
             currPosY += 1;
+            currPosX += dir.offsetX;
+            currPosZ += dir.offsetZ;
 
             reachedSurface = world.canBlockSeeTheSky(currPosX, currPosY, currPosZ);
         }

@@ -48,6 +48,11 @@ public class EspItems
         registerItems();
     }
 
+    private static void initMaterials() {
+        armorNiobium = EnumHelper.addArmorMaterial(EnderStuffPlus.MOD_ID.toUpperCase() + "_NIOBIUM", 20, new int[]{2, 7, 5, 2}, 18);
+        toolNiobium = EnumHelper.addToolMaterial(EnderStuffPlus.MOD_ID.toUpperCase() + "_NIOBIUM", 3, 450, 7.0F, 2.5F, 18);
+    }
+
     private static void initItems() {
         espPearls     = new ItemCustomEnderPearl();
         enderFlesh    = new ItemEnderFlesh();
@@ -79,14 +84,9 @@ public class EspItems
         enderPetStaff.setFull3D();
     }
 
-    private static void initMaterials() {
-        armorNiobium = EnumHelper.addArmorMaterial(EnderStuffPlus.MOD_ID.toUpperCase() + "_NIOBIUM", 20, new int[]{2, 7, 5, 2}, 18);
-        toolNiobium = EnumHelper.addToolMaterial(EnderStuffPlus.MOD_ID.toUpperCase() + "_NIOBIUM", 3, 450, 7.0F, 2.5F, 18);
-    }
-
     private static void registerItems() {
         SAPUtils.registerItems(espPearls, avisFeather, avisArrow, avisCompass, enderPetEgg, enderPetStaff, enderIngot, niobBow, niobHelmet,
                                niobPlate, niobLegs, niobBoots, niobPick, niobShovel, niobAxe, niobHoe, niobSword, niobShears, enderFlesh,
-                               rainCoat, itemNiobDoor, endNugget, enderStick, endHorseArmor, tantalPick, ahrahSword);
+                               rainCoat, itemNiobDoor, endNugget, enderStick, endHorseArmor, tantalPick, ahrahSword, new ItemWorldGenSpawner());
     }
 }
