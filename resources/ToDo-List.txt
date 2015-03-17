@@ -3,12 +3,10 @@ TODO-LIST
 FIXME
 
 NEEDED
-    - add Ore Generator GUI, functinality and model
     - re-add avis nest
     - re-add Ender Nemesis and Ender Leak
     - re-add Duplicator
     - re-add end islands
-    - re-add end trees
     - re-add end ore generation
     - refine Ender Avis boss
     - re-add Ender Ray
@@ -46,3 +44,7 @@ tantalum    0.10        120              800              96_000
     lead    0.50        40               500              20_000
   silver    0.50        40               500              20_000
   nickel    0.20       120               400              48_000
+
+DONE
+    - add Ore Generator GUI, functinality and model
+    - re-add end trees

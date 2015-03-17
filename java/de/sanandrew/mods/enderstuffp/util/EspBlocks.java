@@ -36,14 +36,26 @@ public final class EspBlocks
     public static Block biomeDataCrystal;
     public static Block fertilizer;
 
+    // Ore storage blocks
+    public static Block blockCrocoite;
+
 
     public static void initialize() {
         initRegisterFluids();
         initBlocks();
+        registerTileEntities();
         registerBlocks();
+        initHarvestLevels();
 
         Blocks.fire.setFireInfo(enderLeaves, 30, 60);
         Blocks.fire.setFireInfo(enderLog, 5, 5);
+    }
+
+    private static void initRegisterFluids() {
+        endFluid = new Fluid(EnderStuffPlus.MOD_ID + ":endfluid");
+        endFluid.setDensity(3000).setTemperature(150).setLuminosity(8).setViscosity(500).setRarity(EnumRarity.uncommon).setGaseous(false);
+
+        FluidRegistry.registerFluid(endFluid);
     }
 
     private static void initBlocks() {
@@ -63,6 +75,7 @@ public final class EspBlocks
         oreGenerator = new BlockOreGenerator();
         biomeDataCrystal = new BlockBiomeDataCrystal();
         fertilizer = new BlockFertilizer();
+        blockCrocoite = new BlockCrocoite();
 
 //        duplicator.setBlockName(ESPModRegistry.MOD_ID + ":duplicator")
 //                  .setCreativeTab(ESPModRegistry.espTab)
@@ -76,14 +89,7 @@ public final class EspBlocks
         endFluid.setBlock(endFluidBlock);
     }
 
-    private static void initRegisterFluids() {
-        endFluid = new Fluid(EnderStuffPlus.MOD_ID + ":endfluid");
-        endFluid.setDensity(3000).setTemperature(150).setLuminosity(8).setViscosity(500).setRarity(EnumRarity.uncommon).setGaseous(false);
-
-        FluidRegistry.registerFluid(endFluid);
-    }
-
-    private static void registerBlocks() {
+    private static void registerTileEntities() {
         GameRegistry.registerTileEntity(TileEntityAvisEgg.class, EnderStuffPlus.MOD_ID + ":avisEggTile");
         GameRegistry.registerTileEntity(TileEntityBiomeChanger.class, EnderStuffPlus.MOD_ID + ":biomeChangerTile");
 //        GameRegistry.registerTileEntity(TileEntityDuplicator.class, "duplicatorTE");
@@ -91,9 +97,12 @@ public final class EspBlocks
         GameRegistry.registerTileEntity(TileEntityOreGenerator.class, EnderStuffPlus.MOD_ID + ":oreGeneratorTile");
         GameRegistry.registerTileEntity(TileEntityBiomeDataCrystal.class, EnderStuffPlus.MOD_ID + ":biomeDataCrystalTile");
         GameRegistry.registerTileEntity(TileEntityFertilizer.class, EnderStuffPlus.MOD_ID + ":fertilizer");
+        GameRegistry.registerTileEntity(TileEntityCrocoite.class, EnderStuffPlus.MOD_ID + ":crocoite");
+    }
 
+    private static void registerBlocks() {
         SAPUtils.registerBlocks(avisEgg, biomeChanger, weatherAltar, blockEndDoor, oreGenerator, fertilizer, enderLog, sapEndTree, enderPlanks,
-                                endFluidBlock);
+                                endFluidBlock, blockCrocoite);
 
         GameRegistry.registerBlock(enderLeaves, ItemEndLeaves.class, "endLeaves");
         GameRegistry.registerBlock(biomeDataCrystal, ItemBlockBiomeDataCrystal.class, "biomeDataCrystal");
@@ -101,7 +110,9 @@ public final class EspBlocks
         GameRegistry.registerBlock(enderOreBlock, ItemBlockEnderStorage.class, "enderStorage");
 
         Blocks.dragon_egg.setCreativeTab(EspCreativeTabs.ESP_TAB);
+    }
 
+    private static void initHarvestLevels() {
         enderOre.setHarvestLevel("pickaxe", 2, EnumEnderOres.NIOBIUM.ordinal());
         enderOre.setHarvestLevel("pickaxe", 3, EnumEnderOres.TANTALUM.ordinal());
     }
