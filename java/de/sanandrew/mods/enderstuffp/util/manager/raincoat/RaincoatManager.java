@@ -40,7 +40,7 @@ public final class RaincoatManager
                            "textures/entity/enderAvis_cape/stripes_gold.png", new ItemStack(Blocks.gold_block)
         );
         baseNiob = addBase(EnderStuffPlus.MOD_ID, "niobium", 0x3C408B, "textures/entity/enderMiss_cape/stripes_niob.png",
-                           "textures/entity/enderAvis_cape/stripes_niob.png", new ItemStack(/*ModBlockRegistry.enderOreBlock*/Blocks.grass, 1, 0)
+                           "textures/entity/enderAvis_cape/stripes_niob.png", new ItemStack(/*ModBlockRegistry.blockOreEnder*/Blocks.grass, 1, 0)
         );
         baseIron = addBase(EnderStuffPlus.MOD_ID, "iron", 0xA9A9A9,
                            "textures/entity/enderMiss_cape/stripes_iron.png", "textures/entity/enderAvis_cape/stripes_iron.png", new ItemStack(Blocks.iron_block)
@@ -52,7 +52,7 @@ public final class RaincoatManager
                                "textures/entity/enderAvis_cape/stripes_obsd.png", new ItemStack(Blocks.obsidian)
         );
         baseTantal = addBase(EnderStuffPlus.MOD_ID, "tantalum", 0xFF81E8, "textures/entity/enderMiss_cape/stripes_tant.png",
-                             "textures/entity/enderAvis_cape/stripes_tant.png", new ItemStack(/*ModBlockRegistry.enderOreBlock*/Blocks.grass, 1, 1)
+                             "textures/entity/enderAvis_cape/stripes_tant.png", new ItemStack(/*ModBlockRegistry.blockOreEnder*/Blocks.grass, 1, 1)
         );
 
         ArrayList<Triplet<String, Integer, Integer>> colors = new ArrayList<>(18);

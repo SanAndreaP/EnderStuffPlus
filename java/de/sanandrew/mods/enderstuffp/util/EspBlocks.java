@@ -17,26 +17,29 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 public final class EspBlocks
 {
+    // misc
     public static Block avisEgg;
-
-    public static Block biomeChanger;
-    public static Block corruptES;
-    public static Block duplicator;
-    public static Block enderOreBlock;
+//    public static Block corruptES;
     public static Block enderLeaves;
     public static Block enderLog;
     public static Block enderPlanks;
     public static Fluid endFluid;
     public static Block endFluidBlock;
-    public static Block enderOre;
-    public static Block weatherAltar;
     public static BlockEnderDoor blockEndDoor;
     public static BlockSaplingEndTree sapEndTree;
-    public static Block oreGenerator;
     public static Block biomeDataCrystal;
+
+    // machines
+    public static Block biomeChanger;
+//    public static Block duplicator;
+    public static Block weatherAltar;
+    public static Block oreGenerator;
     public static Block fertilizer;
 
-    // Ore storage blocks
+    // ores
+    public static Block oreEnder;
+    public static Block blockOreEnder;
+    public static Block oreCrocoite;
     public static Block blockCrocoite;
 
 
@@ -60,8 +63,8 @@ public final class EspBlocks
 
     private static void initBlocks() {
         avisEgg = new BlockAvisEgg();
-        enderOre = new BlockEnderOre();
-        enderOreBlock = new BlockEnderStorage();
+        oreEnder = new BlockEnderOre();
+        blockOreEnder = new BlockEnderStorage();
         biomeChanger = new BlockBiomeChanger();
 //        duplicator    = new BlockDuplicator();
         weatherAltar = new BlockWeatherAltar();
@@ -76,6 +79,7 @@ public final class EspBlocks
         biomeDataCrystal = new BlockBiomeDataCrystal();
         fertilizer = new BlockFertilizer();
         blockCrocoite = new BlockCrocoite();
+        oreCrocoite = new BlockOreCrocoite();
 
 //        duplicator.setBlockName(ESPModRegistry.MOD_ID + ":duplicator")
 //                  .setCreativeTab(ESPModRegistry.espTab)
@@ -102,18 +106,18 @@ public final class EspBlocks
 
     private static void registerBlocks() {
         SAPUtils.registerBlocks(avisEgg, biomeChanger, weatherAltar, blockEndDoor, oreGenerator, fertilizer, enderLog, sapEndTree, enderPlanks,
-                                endFluidBlock, blockCrocoite);
+                                endFluidBlock, blockCrocoite, oreCrocoite);
 
         GameRegistry.registerBlock(enderLeaves, ItemEndLeaves.class, "endLeaves");
         GameRegistry.registerBlock(biomeDataCrystal, ItemBlockBiomeDataCrystal.class, "biomeDataCrystal");
-        GameRegistry.registerBlock(enderOre, ItemBlockEnderOre.class, "enderOre");
-        GameRegistry.registerBlock(enderOreBlock, ItemBlockEnderStorage.class, "enderStorage");
+        GameRegistry.registerBlock(oreEnder, ItemBlockEnderOre.class, "enderOre");
+        GameRegistry.registerBlock(blockOreEnder, ItemBlockEnderStorage.class, "enderStorage");
 
         Blocks.dragon_egg.setCreativeTab(EspCreativeTabs.ESP_TAB);
     }
 
     private static void initHarvestLevels() {
-        enderOre.setHarvestLevel("pickaxe", 2, EnumEnderOres.NIOBIUM.ordinal());
-        enderOre.setHarvestLevel("pickaxe", 3, EnumEnderOres.TANTALUM.ordinal());
+        oreEnder.setHarvestLevel("pickaxe", 2, EnumEnderOres.NIOBIUM.ordinal());
+        oreEnder.setHarvestLevel("pickaxe", 3, EnumEnderOres.TANTALUM.ordinal());
     }
 }

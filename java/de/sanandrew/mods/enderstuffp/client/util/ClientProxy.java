@@ -91,6 +91,9 @@ public class ClientProxy
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EspBlocks.oreGenerator), new ItemRendererOreGenerator());
 
         MinecraftForgeClient.registerItemRenderer(EspItems.niobBow, new ItemRendererBow());
+
+        BlockRendererOreCrocoite.renderId = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(BlockRendererOreCrocoite.renderId, new BlockRendererOreCrocoite());
     }
 
     //    @Override

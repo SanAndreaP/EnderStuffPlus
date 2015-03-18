@@ -82,11 +82,11 @@ public class EnderStuffPlus
 //        ModEntityRegistry.initialize();
 
         OreDictionary.registerOre("ingotNiob", new ItemStack(EspItems.enderIngot, 1, EnumEnderOres.NIOBIUM.ordinal()));
-        OreDictionary.registerOre("oreNiob", new ItemStack(EspBlocks.enderOre, 1, EnumEnderOres.NIOBIUM.ordinal()));
-        OreDictionary.registerOre("blockNiob", new ItemStack(EspBlocks.enderOreBlock, 1, EnumEnderOres.NIOBIUM.ordinal()));
+        OreDictionary.registerOre("oreNiob", new ItemStack(EspBlocks.oreEnder, 1, EnumEnderOres.NIOBIUM.ordinal()));
+        OreDictionary.registerOre("blockNiob", new ItemStack(EspBlocks.blockOreEnder, 1, EnumEnderOres.NIOBIUM.ordinal()));
         OreDictionary.registerOre("ingotTantal", new ItemStack(EspItems.enderIngot, 1, EnumEnderOres.TANTALUM.ordinal()));
-        OreDictionary.registerOre("oreTantal", new ItemStack(EspBlocks.enderOre, 1, EnumEnderOres.TANTALUM.ordinal()));
-        OreDictionary.registerOre("blockTantal", new ItemStack(EspBlocks.enderOreBlock, 1, EnumEnderOres.TANTALUM.ordinal()));
+        OreDictionary.registerOre("oreTantal", new ItemStack(EspBlocks.oreEnder, 1, EnumEnderOres.TANTALUM.ordinal()));
+        OreDictionary.registerOre("blockTantal", new ItemStack(EspBlocks.blockOreEnder, 1, EnumEnderOres.TANTALUM.ordinal()));
         OreDictionary.registerOre("logWood", new ItemStack(EspBlocks.enderLog, 1, OreDictionary.WILDCARD_VALUE));
         OreDictionary.registerOre("plankWood", new ItemStack(EspBlocks.enderPlanks, 1, OreDictionary.WILDCARD_VALUE));
         OreDictionary.registerOre("treeSapling", new ItemStack(EspBlocks.sapEndTree, 1, OreDictionary.WILDCARD_VALUE));
@@ -144,7 +144,7 @@ public class EnderStuffPlus
 
 //        channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(MOD_CHANNEL);
         proxy.init(event);
-//        FurnaceRecipes.smelting().func_151394_a(new ItemStack(ModBlockRegistry.enderOre, 1, 0),
+//        FurnaceRecipes.smelting().func_151394_a(new ItemStack(ModBlockRegistry.oreEnder, 1, 0),
 //                                                new ItemStack(ModItemRegistry.enderIngot, 1, 0), 0.85F);
 //        CraftingRegistry.initialize();
 

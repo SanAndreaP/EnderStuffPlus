@@ -76,7 +76,7 @@ public class ChunkPopulateEventHandler
 
     private boolean generateNiobium(World world, Random rand, int posX, int posY, int posZ) {
         if( world.getBlock(posX, posY, posZ) == Blocks.end_stone && !world.canBlockSeeTheSky(posX, posY, posZ) ) {
-            world.setBlock(posX, posY, posZ, EspBlocks.enderOre, 0, 2);
+            world.setBlock(posX, posY, posZ, EspBlocks.oreEnder, 0, 2);
             return true;
         }
 

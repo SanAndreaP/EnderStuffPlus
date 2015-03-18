@@ -46,7 +46,7 @@ public class WorldGenEndIsland
                     EnumBlockType type = types[i][j][k];
                     if( type == EnumBlockType.STONE || (j != 0 && type == EnumBlockType.FEATURE) ) {
                         if( maxTantal > 0 && random.nextInt(2048) == 0 ) {
-                            world.setBlock(x + i, y - j, z + k, EspBlocks.enderOre, EnumEnderOres.TANTALUM.ordinal(), 2);
+                            world.setBlock(x + i, y - j, z + k, EspBlocks.oreEnder, EnumEnderOres.TANTALUM.ordinal(), 2);
                             maxTantal--;
                         } else {
                             world.setBlock(x + i, y - j, z + k, Blocks.end_stone, 0, 2);

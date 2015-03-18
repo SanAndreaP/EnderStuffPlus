@@ -11,9 +11,9 @@ NEEDED
     - refine Ender Avis boss
     - re-add Ender Ray
     - re-add spawning of ender creatures
+    - Crocoite as possible end mineral
 CONSIDER
     - Chunk Repopulator
-    - Crocoite as possible end mineral
     - Scolecite as possible end mineral
     - Ender Miss wear swords and let them attack (intelligently, e.g. run away if creeper charges up) other mobs
     - custom loot chests which require a key and a minigame (like in "Dust: An Elysian Tail") to open it

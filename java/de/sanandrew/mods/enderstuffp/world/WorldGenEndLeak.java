@@ -1,6 +1,5 @@
 package de.sanandrew.mods.enderstuffp.world;
 
-import de.sanandrew.mods.enderstuffp.util.EspBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -138,19 +137,19 @@ public class WorldGenEndLeak
 
                     if( radVec <= rad6 ) {
                         if( !this.replace(world, x + i, y + j, z + k, Blocks.air) ) {
-                            if( this.isInEnd && world.getBlock(x + i, y + j, z + k) == EspBlocks.corruptES ) {
-                                // world.setBlockToAir(x+i, y+j, z+k);
-                            } else {
-                                this.replace(world, x + i, y + j, z + k, baseBlock);
-                            }
+//                            if( this.isInEnd && world.getBlock(x + i, y + j, z + k) == EspBlocks.corruptES ) {
+//                                // world.setBlockToAir(x+i, y+j, z+k);
+//                            } else {
+//                                this.replace(world, x + i, y + j, z + k, baseBlock);
+//                            }
                         }
                     } else if( radVec > rad6 && radVec <= rad5 ) {
                         if( random.nextInt(3) > 0 && !this.replace(world, x + i, y + j, z + k, Blocks.air) ) {
-                            if( this.isInEnd && world.getBlock(x + i, y + j, z + k) == EspBlocks.corruptES ) {
-                                // world.setBlockToAir(x+i, y+j, z+k);
-                            } else {
-                                this.replace(world, x + i, y + j, z + k, baseBlock);
-                            }
+//                            if( this.isInEnd && world.getBlock(x + i, y + j, z + k) == EspBlocks.corruptES ) {
+//                                // world.setBlockToAir(x+i, y+j, z+k);
+//                            } else {
+//                                this.replace(world, x + i, y + j, z + k, baseBlock);
+//                            }
                         }
                     } else if( radVec > rad5 && radVec <= rad4 ) {
                         if( random.nextInt(5) == 0 ) {
@@ -158,12 +157,12 @@ public class WorldGenEndLeak
                         } else if( random.nextInt(3) == 0 ) {
                             if( !this.replace(world, x + i, y + j, z + k, Blocks.air)
                                 && world.getBlock(x + i, y + j, z + k) != Blocks.obsidian ) {
-                                if( this.isInEnd
-                                    && world.getBlock(x + i, y + j, z + k) == EspBlocks.corruptES ) {
-                                    // world.setBlockToAir(x+i, y+j, z+k);;
-                                } else {
-                                    world.setBlock(x + i, y + j, z + k, baseBlock);
-                                }
+//                                if( this.isInEnd
+//                                    && world.getBlock(x + i, y + j, z + k) == EspBlocks.corruptES ) {
+//                                    // world.setBlockToAir(x+i, y+j, z+k);;
+//                                } else {
+//                                    world.setBlock(x + i, y + j, z + k, baseBlock);
+//                                }
                             }
                         }
                     } else if( radVec > rad4 && radVec <= rad3 ) {
