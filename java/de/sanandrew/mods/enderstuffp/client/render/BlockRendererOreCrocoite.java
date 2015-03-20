@@ -9,8 +9,10 @@ package de.sanandrew.mods.enderstuffp.client.render;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.IBlockAccess;
+import org.lwjgl.opengl.GL11;
 
 public class BlockRendererOreCrocoite
         implements ISimpleBlockRenderingHandler
@@ -19,7 +21,46 @@ public class BlockRendererOreCrocoite
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
+        Tessellator tessellator = Tessellator.instance;
 
+        renderer.renderMinX = 0.25F;
+        renderer.renderMinZ = 0.25F;
+        renderer.renderMaxX = 0.75F;
+        renderer.renderMaxZ = 0.75F;
+        renderer.renderMaxY = 0.125F;
+
+        GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(0.0F, -1.0F, 0.0F);
+        renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, Blocks.end_stone.getIcon(0, 0));
+        tessellator.draw();
+
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(0.0F, 1.0F, 0.0F);
+        renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, Blocks.end_stone.getIcon(0, 0));
+        tessellator.draw();
+
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(0.0F, 0.0F, -1.0F);
+        renderer.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, Blocks.end_stone.getIcon(0, 0));
+        tessellator.draw();
+
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(0.0F, 0.0F, 1.0F);
+        renderer.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, Blocks.end_stone.getIcon(0, 0));
+        tessellator.draw();
+
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(-1.0F, 0.0F, 0.0F);
+        renderer.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, Blocks.end_stone.getIcon(0, 0));
+        tessellator.draw();
+
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(1.0F, 0.0F, 0.0F);
+        renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, Blocks.end_stone.getIcon(0, 0));
+        tessellator.draw();
     }
 
     @Override
@@ -36,7 +77,7 @@ public class BlockRendererOreCrocoite
 
     @Override
     public boolean shouldRender3DInInventory(int modelId) {
-        return false;
+        return true;
     }
 
     @Override

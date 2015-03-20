@@ -39,7 +39,8 @@ public enum EnumTextures
     GUI_INGAMEICONS             ("textures/gui/hud_icons.png"),
     GUI_WEATHERALTAR            ("textures/gui/weather_altar.png"),
     TEX_ARMOR_NIOBIUM_1         ("textures/models/armor/niob_1.png"),
-    TEX_ARMOR_NIOBIUM_2         ("textures/models/armor/niob_2.png");
+    TEX_ARMOR_NIOBIUM_2         ("textures/models/armor/niob_2.png"),
+    CROCOITE_CRYSTALS           ("textures/blocks/crystal_crocoite.png");
 
     public static final ResourceLocation GLASS_TEXTURE = new ResourceLocation("textures/blocks/glass.png");
     public static final ResourceLocation BIOMECRYSTAL_BLOCKTEXTURE = new ResourceLocation(EnderStuffPlus.MOD_ID, "textures/blocks/biome_crystal.png");

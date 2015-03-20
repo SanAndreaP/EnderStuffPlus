@@ -102,6 +102,7 @@ public final class EspBlocks
         GameRegistry.registerTileEntity(TileEntityBiomeDataCrystal.class, EnderStuffPlus.MOD_ID + ":biomeDataCrystalTile");
         GameRegistry.registerTileEntity(TileEntityFertilizer.class, EnderStuffPlus.MOD_ID + ":fertilizer");
         GameRegistry.registerTileEntity(TileEntityCrocoite.class, EnderStuffPlus.MOD_ID + ":crocoite");
+        GameRegistry.registerTileEntity(TileEntityOreCrocoite.class, EnderStuffPlus.MOD_ID + ":crocoiteOre");
     }
 
     private static void registerBlocks() {

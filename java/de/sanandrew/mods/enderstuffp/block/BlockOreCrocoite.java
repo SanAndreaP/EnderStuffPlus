@@ -7,15 +7,16 @@
 package de.sanandrew.mods.enderstuffp.block;
 
 import de.sanandrew.mods.enderstuffp.client.render.BlockRendererOreCrocoite;
+import de.sanandrew.mods.enderstuffp.tileentity.TileEntityOreCrocoite;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EspCreativeTabs;
 import net.minecraft.block.BlockOre;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 public class BlockOreCrocoite
         extends BlockOre
 {
-    public static int currRenderPass;
-
     public BlockOreCrocoite() {
         super();
         this.setBlockName(EnderStuffPlus.MOD_ID + ":oreCrocoite");
@@ -43,13 +44,12 @@ public class BlockOreCrocoite
     }
 
     @Override
-    public int getRenderBlockPass() {
-        return 1;
+    public boolean hasTileEntity(int metadata) {
+        return true;
     }
 
     @Override
-    public boolean canRenderInPass(int pass) {
-        currRenderPass = pass;
-        return pass <= 1;
+    public TileEntity createTileEntity(World world, int metadata) {
+        return new TileEntityOreCrocoite();
     }
 }
