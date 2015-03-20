@@ -67,19 +67,15 @@ public class RenderTileEntityOreCrocoite
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GL11.glEnable(GL11.GL_BLEND);
+        OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_SRC_COLOR, GL11.GL_ONE, GL11.GL_ZERO);
         GL11.glEnable(GL11.GL_CULL_FACE);
 
         float lastBrightX = OpenGlHelper.lastBrightnessX;
         float lastBrightY = OpenGlHelper.lastBrightnessY;
-        int i1 = Minecraft.getMinecraft().theWorld.getSkyBlockTypeBrightness(EnumSkyBlock.Sky, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
-        int j1 = Minecraft.getMinecraft().theWorld.getSkyBlockTypeBrightness(EnumSkyBlock.Block, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
-        float blockBright = Minecraft.getMinecraft().thePlayer.getBrightnessForRender(0.0F);//tileEntity.getWorldObj().getLightBrightnessForSkyBlocks(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 0);
-        float bright = blockBright;//0xF0 * Math.max(0.25F, (j1 & 15) / 15.0F);
-        float brightX = bright % 65536;
-        float brightY = bright / 65536.0F;
+        float brightX = 0xF0;
+        float brightY = Minecraft.getMinecraft().theWorld.getSkyBlockTypeBrightness(EnumSkyBlock.Sky, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) * 0xF0;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX, brightY);
 
-//        GL11.glDisable(GL11.GL_CULL_FACE);
         this.bindTexture(EnumTextures.CROCOITE_CRYSTALS.getResource());
         for( int i = tileEntity.parts.length - 1; i >= 0; i-- ) {
             tileEntity.parts[i].render(0.0625F);
@@ -87,12 +83,13 @@ public class RenderTileEntityOreCrocoite
 
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightX, lastBrightY);
 
+        GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
     }
 
-    private void generateStem(ModelRenderer[] partArr, Vec3[] stemVecs, int index, Random rng, float x, float z, int height,
-                              float rngX, float rngY, float rngZ, float minAngX, float minAngY, float minAngZ) {
+    private void generateStem(ModelRenderer[] partArr, Vec3[] stemVecs, int index, Random rng, float x, float z, int height, float rngX, float rngY, float rngZ,
+                              float minAngX, float minAngY, float minAngZ) {
         rngX = ((rng.nextFloat() * 2.0F - 1.0F) * rngX + minAngX) / 180.0F * (float) Math.PI;
         rngY = ((rng.nextFloat() * 2.0F - 1.0F) * rngY + minAngY) / 180.0F * (float) Math.PI;
         rngZ = ((rng.nextFloat() * 2.0F - 1.0F) * rngZ + minAngZ) / 180.0F * (float) Math.PI;
@@ -103,8 +100,8 @@ public class RenderTileEntityOreCrocoite
         stemVecs[index].rotateAroundZ(rngZ);
     }
 
-    private void generatePart(ModelRenderer[] partArr, Vec3 stemVec, int index, Random rng, float x, float y, float z, int height, float scale,
-                              float rngX, float rngY, float rngZ, float minAngX, float minAngY, float minAngZ) {
+    private void generatePart(ModelRenderer[] partArr, Vec3 stemVec, int index, Random rng, float x, float y, float z, int height, float scale, float rngX, float rngY,
+                              float rngZ, float minAngX, float minAngY, float minAngZ) {
         rngX = ((rng.nextFloat() * 2.0F - 1.0F) * rngX + minAngX) / 180.0F * (float) Math.PI;
         rngY = ((rng.nextFloat() * 2.0F - 1.0F) * rngY + minAngY) / 180.0F * (float) Math.PI;
         rngZ = ((rng.nextFloat() * 2.0F - 1.0F) * rngZ + minAngZ) / 180.0F * (float) Math.PI;

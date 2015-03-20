@@ -218,3 +218,4 @@ eclipse/
 .idea/
 .gradle/
 minecraft/
+*.iml
