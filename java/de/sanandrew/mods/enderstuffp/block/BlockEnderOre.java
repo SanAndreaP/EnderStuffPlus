@@ -46,6 +46,9 @@ public class BlockEnderOre
         this.setHardness(4.0F);
         this.setResistance(5.5F);
         this.setStepSound(Block.soundTypeStone);
+
+        this.setHarvestLevel("pickaxe", 2, EnumEnderOres.NIOBIUM.ordinal());
+        this.setHarvestLevel("pickaxe", 3, EnumEnderOres.TANTALUM.ordinal());
     }
 
     @Override

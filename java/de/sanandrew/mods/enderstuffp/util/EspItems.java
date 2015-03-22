@@ -45,6 +45,7 @@ public class EspItems
     public static Item niobSword;
     public static Item rainCoat;
     public static Item monsterEgg;
+    public static Item crocoiteCrystal;
     //FIXME unfinished!
     public static Item tantalPick;
     public static Item ahrahSword;
@@ -62,33 +63,34 @@ public class EspItems
     }
 
     private static void initItems() {
-        espPearls     = new ItemCustomEnderPearl();
-        enderFlesh    = new ItemEnderFlesh();
-        avisFeather   = new ItemStandard("avisFeather", "feather_avis");
-        avisArrow     = new ItemStandard("avisArrow", "arrow_avis");
-        avisCompass   = new ItemAvisCompass();
-        enderPetEgg   = new ItemEnderPetEgg();
+        espPearls = new ItemCustomEnderPearl();
+        enderFlesh = new ItemEnderFlesh();
+        avisFeather = new ItemStandard("avisFeather", "feather_avis");
+        avisArrow = new ItemStandard("avisArrow", "arrow_avis");
+        avisCompass = new ItemAvisCompass();
+        enderPetEgg = new ItemEnderPetEgg();
         enderPetStaff = new ItemStandard("petStaff", "pet_staff");
-        enderIngot    = new ItemEnderIngot();
-        niobBow       = new ItemNiobiumBow();
-        rainCoat      = new ItemRaincoat();
-        niobHelmet    = new ItemNiobArmor("helmetNiobium", "helmet_niobium", armorNiobium, 0);
-        niobPlate     = new ItemNiobArmor("chestplateNiobium", "chestplate_niobium", armorNiobium, 1);
-        niobLegs      = new ItemNiobArmor("leggingsNiobium", "leggings_niobium", armorNiobium, 2);
-        niobBoots     = new ItemNiobArmor("bootsNiobium", "boots_niobium", armorNiobium, 3);
-        niobPick      = new ItemNiobiumPickaxe(toolNiobium);
-        niobShovel    = new ItemNiobiumShovel(toolNiobium);
-        niobAxe       = new ItemNiobiumAxe(toolNiobium);
-        niobHoe       = new ItemNiobiumHoe(toolNiobium);
-        niobSword     = new ItemNiobiumSword(toolNiobium);
-        niobShears    = new ItemNiobiumShears();
-        endNugget     = new ItemEnderNugget();
+        enderIngot = new ItemEnderIngot();
+        niobBow = new ItemNiobiumBow();
+        rainCoat = new ItemRaincoat();
+        niobHelmet = new ItemNiobArmor("helmetNiobium", "helmet_niobium", armorNiobium, 0);
+        niobPlate = new ItemNiobArmor("chestplateNiobium", "chestplate_niobium", armorNiobium, 1);
+        niobLegs = new ItemNiobArmor("leggingsNiobium", "leggings_niobium", armorNiobium, 2);
+        niobBoots = new ItemNiobArmor("bootsNiobium", "boots_niobium", armorNiobium, 3);
+        niobPick = new ItemNiobiumPickaxe(toolNiobium);
+        niobShovel = new ItemNiobiumShovel(toolNiobium);
+        niobAxe = new ItemNiobiumAxe(toolNiobium);
+        niobHoe = new ItemNiobiumHoe(toolNiobium);
+        niobSword = new ItemNiobiumSword(toolNiobium);
+        niobShears = new ItemNiobiumShears();
+        endNugget = new ItemEnderNugget();
         itemNiobDoor  = new ItemNiobDoor();
-        enderStick    = new ItemStandard("enderStick", "stick_ender");
+        enderStick = new ItemStandard("enderStick", "stick_ender");
         endHorseArmor = new ItemEndHorseArmor();
-        tantalPick    = new ItemTantalumPickaxe(toolNiobium);
-        ahrahSword    = new ItemAhrahSword(toolNiobium);
-        monsterEgg    = new ItemEspMonsterPlacer();
+        tantalPick = new ItemTantalumPickaxe(toolNiobium);
+        ahrahSword = new ItemAhrahSword(toolNiobium);
+        monsterEgg = new ItemEspMonsterPlacer();
+        crocoiteCrystal = new ItemCrocoiteCrystal();
 
         enderPetStaff.setFull3D();
     }
@@ -96,6 +98,7 @@ public class EspItems
     private static void registerItems() {
         SAPUtils.registerItems(espPearls, avisFeather, avisArrow, avisCompass, enderPetEgg, enderPetStaff, enderIngot, niobBow, niobHelmet,
                                niobPlate, niobLegs, niobBoots, niobPick, niobShovel, niobAxe, niobHoe, niobSword, niobShears, enderFlesh,
-                               rainCoat, itemNiobDoor, endNugget, enderStick, endHorseArmor, tantalPick, ahrahSword, monsterEgg, new ItemWorldGenSpawner());
+                               rainCoat, itemNiobDoor, endNugget, enderStick, endHorseArmor, tantalPick, ahrahSword, monsterEgg, crocoiteCrystal,
+                               new ItemWorldGenSpawner());
     }
 }

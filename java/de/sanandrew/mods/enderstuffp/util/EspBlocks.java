@@ -48,7 +48,6 @@ public final class EspBlocks
         initBlocks();
         registerTileEntities();
         registerBlocks();
-        initHarvestLevels();
 
         Blocks.fire.setFireInfo(enderLeaves, 30, 60);
         Blocks.fire.setFireInfo(enderLog, 5, 5);
@@ -115,10 +114,5 @@ public final class EspBlocks
         GameRegistry.registerBlock(blockOreEnder, ItemBlockEnderStorage.class, "enderStorage");
 
         Blocks.dragon_egg.setCreativeTab(EspCreativeTabs.ESP_TAB);
-    }
-
-    private static void initHarvestLevels() {
-        oreEnder.setHarvestLevel("pickaxe", 2, EnumEnderOres.NIOBIUM.ordinal());
-        oreEnder.setHarvestLevel("pickaxe", 3, EnumEnderOres.TANTALUM.ordinal());
     }
 }
