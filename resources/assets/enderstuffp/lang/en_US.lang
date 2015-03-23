@@ -55,10 +55,10 @@ item.enderstuffp:enderPearls.0.name=Nivis Pearl
 item.enderstuffp:enderPearls.1.name=Ignis Pearl
 item.enderstuffp:enderPearls.2.name=Endermiss Pearl
 
-item.enderstuffp:niobHelmet.name=Niobium Helmet
-item.enderstuffp:niobChestplate.name=Niobium Chestplate
-item.enderstuffp:niobLeggings.name=Niobium Leggins
-item.enderstuffp:niobBoots.name=Niobium Boots
+item.enderstuffp:helmetNiobium.name=Niobium Helmet
+item.enderstuffp:chestplateNiobium.name=Niobium Chestplate
+item.enderstuffp:leggingsNiobium.name=Niobium Leggins
+item.enderstuffp:bootsNiobium.name=Niobium Boots
 item.enderstuffp:bowNiobium.name=Niobium Bow
 item.enderstuffp:pickNiobium.name=Niobium Pickaxe
 item.enderstuffp:shovelNiobium.name=Niobium Shovel

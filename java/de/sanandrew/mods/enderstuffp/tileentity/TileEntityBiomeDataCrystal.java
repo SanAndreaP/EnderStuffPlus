@@ -29,6 +29,7 @@ public class TileEntityBiomeDataCrystal
     public int dataProgress = 0;
     public short biomeID = -1;
     private int prevDataProgress = 0;
+    private boolean isActive = false;
     private Random rand = new Random();
 
     @Override
@@ -60,6 +61,14 @@ public class TileEntityBiomeDataCrystal
         }
     }
 
+    public void drainData(int amount) {
+        this.dataProgress -= amount;
+        if( this.dataProgress <= 0 ) {
+            this.dataProgress = 0;
+            this.prevDataProgress = -1;
+        }
+    }
+
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         this.biomeID = pkt.func_148857_g().getShort("biomeId");
@@ -81,6 +90,7 @@ public class TileEntityBiomeDataCrystal
 
         nbt.setShort("biomeId", this.biomeID);
         nbt.setInteger("progress", this.dataProgress);
+        nbt.setBoolean("active", this.isActive);
     }
 
     @Override
@@ -89,6 +99,7 @@ public class TileEntityBiomeDataCrystal
 
         this.biomeID = nbt.getShort("biomeId");
         this.dataProgress = nbt.getInteger("progress");
+        this.isActive = nbt.getBoolean("active");
     }
 
     public int getBiomeID() {

@@ -233,6 +233,7 @@ public class TileEntityBiomeChanger
         if( !this.worldObj.isRemote ) {
             if( this.getBiomeId() >= 0 && this.fluxAmount > 0 ) {
                 this.isActive = true;
+                drainBiomeData();
                 PacketBiomeChangerActions.sendPacketClient(this, EnumAction.ACTIVATE);
                 BiomeChangerChunkLoader.forceBiomeChangerChunk(this);
             }
@@ -248,6 +249,14 @@ public class TileEntityBiomeChanger
         if( !this.worldObj.isRemote ) {
             PacketBiomeChangerActions.sendPacketClient(this, EnumAction.DEACTIVATE);
             BiomeChangerChunkLoader.unforceBiomeChangerChunk(this);
+        }
+    }
+
+    private void drainBiomeData() {
+        TileEntity te = this.worldObj.getTileEntity(this.xCoord, this.yCoord - 1, this.zCoord);
+        if( te instanceof TileEntityBiomeDataCrystal ) {
+            int amount = MathHelper.ceiling_double_int(this.maxRange / 128.0D * 10.0D);
+            ((TileEntityBiomeDataCrystal) te).drainData(amount);
         }
     }
 

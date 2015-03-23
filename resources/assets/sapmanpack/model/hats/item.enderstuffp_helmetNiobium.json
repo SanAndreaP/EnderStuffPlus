@@ -1,0 +1,41 @@
+{
+    "cubes": [
+        {
+            "textureX": 0,
+            "textureY": 0,
+            "mirror": false,
+            "boxX": -3.5,
+            "boxY": -7.5,
+            "boxZ": -3.5,
+            "sizeX": 7,
+            "sizeY": 7,
+            "sizeZ": 7,
+            "rotationPointX": 0.0,
+            "rotationPointY": 0.0,
+            "rotationPointZ": 0.0,
+            "rotationX": 0.0,
+            "rotationY": 0.0,
+            "rotationZ": 0.0,
+            "scale": 1.0
+        },
+        {
+            "textureX": 0,
+            "textureY": 14,
+            "mirror": false,
+            "boxX": -1.5,
+            "boxY": -4.5,
+            "boxZ": 4.5,
+            "sizeX": 3,
+            "sizeY": 10,
+            "sizeZ": 3,
+            "rotationPointX": 0.0,
+            "rotationPointY": 0.0,
+            "rotationPointZ": 0.0,
+            "rotationX": 0.3,
+            "rotationY": 0.0,
+            "rotationZ": 0.0,
+            "scale": 0.0
+        }
+    ],
+    "hideTails": true
+}
