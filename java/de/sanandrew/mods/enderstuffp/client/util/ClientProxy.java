@@ -6,6 +6,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.core.manpack.mod.client.particle.SAPEffectRenderer;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
 import de.sanandrew.mods.enderstuffp.client.event.FovUpdateHandler;
@@ -35,6 +36,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
@@ -46,6 +48,8 @@ import java.util.Random;
 public class ClientProxy
     extends CommonProxy
 {
+    public static int particleFxLayer;
+
     @Override
     public int addArmor(String armorId) {
         return RenderingRegistry.addNewArmourRendererPrefix(armorId);
@@ -54,7 +58,6 @@ public class ClientProxy
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
-//        EnderStuffPlus.channel.register(new ClientPacketHandler());
 
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderNivis.class, new RenderEnderNivis());
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderIgnis.class, new RenderEnderIgnis());
@@ -89,6 +92,8 @@ public class ClientProxy
 
         BlockRendererOreCrocoite.renderId = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(BlockRendererOreCrocoite.renderId, new BlockRendererOreCrocoite());
+
+        particleFxLayer = SAPEffectRenderer.INSTANCE.registerFxLayer(new ResourceLocation("enderstuffp", "textures/blocks/crystal_crocoite.png"), true);
     }
 
     //    @Override

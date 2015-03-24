@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 
 @SideOnly(Side.CLIENT)
 public class EntityBiomeDataFX
-    extends EntityPortalFX
+        extends EntityPortalFX
 {
     public EntityBiomeDataFX(World world, double x, double y, double z, double motX, double motY, double motZ, float red, float green, float blue) {
         super(world, x, y, z, motX, motY, motZ);

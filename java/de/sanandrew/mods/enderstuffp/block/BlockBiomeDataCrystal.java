@@ -65,8 +65,8 @@ public class BlockBiomeDataCrystal
         if( !world.isRemote ) {
             TileEntityBiomeDataCrystal crystalTile = (TileEntityBiomeDataCrystal) world.getTileEntity(x, y, z);
 
-            if( crystalTile != null && crystalTile.getBiomeID() >= 0 ) {
-                player.addChatMessage(new ChatComponentText(String.format("Biome: %s", BiomeGenBase.getBiome(crystalTile.getBiomeID()).biomeName)));
+            if( crystalTile != null && crystalTile.getBiomeId() >= 0 ) {
+                player.addChatMessage(new ChatComponentText(String.format("Biome: %s", BiomeGenBase.getBiome(crystalTile.getBiomeId()).biomeName)));
             } else {
                 player.addChatMessage(new ChatComponentText("Empty"));
             }
@@ -82,8 +82,9 @@ public class BlockBiomeDataCrystal
             NBTTagCompound nbt = new NBTTagCompound();
             TileEntityBiomeDataCrystal crystalTile = (TileEntityBiomeDataCrystal) world.getTileEntity(x, y, z);
 
-            nbt.setShort(ItemBlockBiomeDataCrystal.NBT_BIOME, crystalTile.biomeID);
-            nbt.setInteger(ItemBlockBiomeDataCrystal.NBT_DATAPROG, crystalTile.dataProgress);
+            nbt.setShort(ItemBlockBiomeDataCrystal.NBT_BIOME, crystalTile.hasBiome() ? crystalTile.getBiomeId() : -1);
+            nbt.setInteger(ItemBlockBiomeDataCrystal.NBT_DATAPROG, crystalTile.getDataProgress());
+            nbt.setBoolean(ItemBlockBiomeDataCrystal.NBT_USED, crystalTile.isUsed);
             stack.setTagCompound(nbt);
 
             this.dropBlockAsItem(world, x, y, z, stack);
@@ -108,8 +109,9 @@ public class BlockBiomeDataCrystal
         NBTTagCompound nbt = new NBTTagCompound();
         TileEntityBiomeDataCrystal crystalTile = (TileEntityBiomeDataCrystal) world.getTileEntity(x, y, z);
 
-        nbt.setShort(ItemBlockBiomeDataCrystal.NBT_BIOME, crystalTile.biomeID);
-        nbt.setInteger(ItemBlockBiomeDataCrystal.NBT_DATAPROG, crystalTile.dataProgress);
+        nbt.setShort(ItemBlockBiomeDataCrystal.NBT_BIOME, crystalTile.hasBiome() ? crystalTile.getBiomeId() : -1);
+        nbt.setInteger(ItemBlockBiomeDataCrystal.NBT_DATAPROG, crystalTile.getDataProgress());
+        nbt.setBoolean(ItemBlockBiomeDataCrystal.NBT_USED, crystalTile.isUsed);
         stack.setTagCompound(nbt);
 
         return stack;

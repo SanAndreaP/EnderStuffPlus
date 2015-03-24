@@ -26,10 +26,10 @@ public class RenderTileEntityBiomeDataCrystal
         double minCore = 3.0D / 16.0D;
         double maxCore = 13.0D / 16.0D;
 
-        if( crystalTile.dataProgress > 0 ) {
-            double yMax = (10.0D - crystalTile.dataProgress) / 16.0F;
-            double tessVMax = crystalTile.dataProgress / 10.0F * 0.5F;
-            float[] color = SAPUtils.getRgbaFromColorInt(BiomeGenBase.getBiome(crystalTile.getBiomeID()).color).getColorFloatArray();
+        if( crystalTile.getDataProgress() > 0 ) {
+            double yMax = (10.0D - crystalTile.getDataProgress()) / 16.0F;
+            double tessVMax = crystalTile.getDataProgress() / 10.0F * 0.5F;
+            float[] color = SAPUtils.getRgbaFromColorInt(BiomeGenBase.getBiome(crystalTile.getBiomeId()).color).getColorFloatArray();
             float prevBrightX = OpenGlHelper.lastBrightnessX;
             float prevBrightY = OpenGlHelper.lastBrightnessY;
             int bright = 0xF0;

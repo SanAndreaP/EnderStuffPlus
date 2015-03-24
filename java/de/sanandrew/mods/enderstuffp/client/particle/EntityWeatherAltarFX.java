@@ -8,7 +8,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class EntityWeatherAltarFX
-    extends EntityFX
+        extends EntityFX
 {
     private double initX;
     private double initY;

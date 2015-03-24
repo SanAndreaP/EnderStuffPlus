@@ -27,6 +27,7 @@ public class ItemBlockBiomeDataCrystal
 {
     public static final String NBT_BIOME = "biomeId";
     public static final String NBT_DATAPROG = "dataProgress";
+    public static final String NBT_USED = "used";
 
     public ItemBlockBiomeDataCrystal(Block block) {
         super(block);
@@ -43,6 +44,7 @@ public class ItemBlockBiomeDataCrystal
 
                 nbt.setShort(NBT_BIOME, (short) biome.biomeID);
                 nbt.setInteger(NBT_DATAPROG, 10);
+                nbt.setBoolean(NBT_USED, true);
 
                 stack.setTagCompound(nbt);
                 //noinspection unchecked
@@ -67,8 +69,9 @@ public class ItemBlockBiomeDataCrystal
         if( super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata) ) {
             TileEntityBiomeDataCrystal crystal = (TileEntityBiomeDataCrystal) world.getTileEntity(x, y, z);
 
-            crystal.biomeID = stack.hasTagCompound() ? stack.getTagCompound().getShort(NBT_BIOME) : -1;
-            crystal.dataProgress = stack.hasTagCompound() ? stack.getTagCompound().getInteger(NBT_DATAPROG) : 0;
+            crystal.setBiomeId(stack.hasTagCompound() ? stack.getTagCompound().getShort(NBT_BIOME) : -1);
+            crystal.setDataProgress(stack.hasTagCompound() ? stack.getTagCompound().getInteger(NBT_DATAPROG) : 0);
+            crystal.isUsed = stack.hasTagCompound() && stack.getTagCompound().getBoolean(NBT_USED);
 
             return true;
         } else {
@@ -81,8 +84,18 @@ public class ItemBlockBiomeDataCrystal
     public void addInformation(ItemStack stack, EntityPlayer player, List infos, boolean advancedInfo) {
         int biomeID = stack.hasTagCompound() ? stack.getTagCompound().getShort(NBT_BIOME) : -1;
         int dataProgress = stack.hasTagCompound() ? stack.getTagCompound().getInteger(NBT_DATAPROG) : 0;
+        boolean used = stack.hasTagCompound() && stack.getTagCompound().getBoolean(NBT_USED);
 
-        infos.add(String.format("%s", biomeID < 0 ? SAPUtils.translate(this.getUnlocalizedName() + ".empty") : BiomeGenBase.getBiome(biomeID).biomeName));
+        if( biomeID > 0 ) {
+            if( dataProgress == 0 && used ) {
+                infos.add(SAPUtils.translate(this.getUnlocalizedName() + ".used"));
+            } else {
+                infos.add(BiomeGenBase.getBiome(biomeID).biomeName);
+            }
+        } else {
+            infos.add(SAPUtils.translate(this.getUnlocalizedName() + ".empty"));
+        }
+
         if( biomeID >= 0 ) {
             infos.add(SAPUtils.translatePostFormat(this.getUnlocalizedName() + ".percentage", dataProgress * 10));
         }
