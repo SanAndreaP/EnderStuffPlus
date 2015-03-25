@@ -59,12 +59,13 @@ public class TileEntityBiomeChanger
     public void changeBiomeOrShowPerim(boolean showPerimeter) {
         if( this.hasBiome() ) {
             byte currBiome = (byte) (this.getBiomeId() & 255);
+            int perimeter = showPerimeter ? this.maxRange : this.currRange;
 
             switch( this.perimForm ) {
                 case SQUARE:
-                    for( int x = -this.currRange; x <= this.currRange; x++ ) {
-                        for( int z = -this.currRange; z <= this.currRange; z++ ) {
-                            if( MathHelper.abs_int(x) == this.currRange || MathHelper.abs_int(z) == this.currRange ) {
+                    for( int x = -perimeter; x <= perimeter; x++ ) {
+                        for( int z = -perimeter; z <= perimeter; z++ ) {
+                            if( MathHelper.abs_int(x) == perimeter || MathHelper.abs_int(z) == perimeter ) {
                                 if( showPerimeter ) {
                                     this.showParticle(x, z, currBiome);
                                 } else {
@@ -75,9 +76,9 @@ public class TileEntityBiomeChanger
                     }
                     break;
                 case RHOMBUS:
-                    for( int x = -this.currRange; x <= this.currRange; x++ ) {
-                        for( int z = -this.currRange; z <= this.currRange; z++ ) {
-                            if( MathHelper.abs_int(x) + MathHelper.abs_int(z) == this.currRange ) {
+                    for( int x = -perimeter; x <= perimeter; x++ ) {
+                        for( int z = -perimeter; z <= perimeter; z++ ) {
+                            if( MathHelper.abs_int(x) + MathHelper.abs_int(z) == perimeter ) {
                                 if( showPerimeter ) {
                                     this.showParticle(x, z, currBiome);
                                 } else {
@@ -88,10 +89,10 @@ public class TileEntityBiomeChanger
                     }
                     break;
                 case CIRCLE:
-                    for( int x = -this.currRange; x <= this.currRange; x++ ) {
-                        for( int z = -this.currRange; z <= this.currRange; z++ ) {
+                    for( int x = -perimeter; x <= perimeter; x++ ) {
+                        for( int z = -perimeter; z <= perimeter; z++ ) {
                             double radius = Math.sqrt(x * x + z * z);
-                            if( radius < this.currRange + 0.5F && radius > this.currRange - 0.5F ) {
+                            if( radius < perimeter + 0.5F && radius > perimeter - 0.5F ) {
                                 if( showPerimeter ) {
                                     this.showParticle(x, z, currBiome);
                                 } else {

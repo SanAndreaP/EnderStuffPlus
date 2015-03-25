@@ -86,7 +86,7 @@ public class ItemBlockBiomeDataCrystal
         int dataProgress = stack.hasTagCompound() ? stack.getTagCompound().getInteger(NBT_DATAPROG) : 0;
         boolean used = stack.hasTagCompound() && stack.getTagCompound().getBoolean(NBT_USED);
 
-        if( biomeID > 0 ) {
+        if( biomeID >= 0 ) {
             if( dataProgress == 0 && used ) {
                 infos.add(SAPUtils.translate(this.getUnlocalizedName() + ".used"));
             } else {

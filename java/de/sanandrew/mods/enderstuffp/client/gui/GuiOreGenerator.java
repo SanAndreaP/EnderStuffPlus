@@ -46,6 +46,7 @@ public class GuiOreGenerator
         GL11.glTranslatef(this.guiLeft, this.guiTop, 0.0F);
         this.mc.renderEngine.bindTexture(EnumTextures.GUI_ORE_GENERATOR.getResource());
 
+        GL11.glColor3f(1.0F, 1.0F, 1.0F);
         this.drawTexturedModalRect(0, 0, 0, 0, this.xSize, this.ySize);
         GL11.glPopMatrix();
     }

@@ -6,13 +6,12 @@
  *******************************************************************************************************************/
 package de.sanandrew.mods.enderstuffp.client.particle;
 
-import codechicken.lib.math.MathHelper;
 import de.sanandrew.core.manpack.mod.client.particle.EntityParticle;
 import de.sanandrew.core.manpack.util.javatuples.Quartet;
-import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.mods.enderstuffp.client.util.ClientProxy;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 
 public class EntityBiomeChangerFX
         extends EntityParticle
@@ -24,9 +23,7 @@ public class EntityBiomeChangerFX
 
     public EntityBiomeChangerFX(World world, double x, double y, double z, int biomeId, boolean showPerimeter) {
         super(world, x, y, z);
-        Triplet<Integer, Integer, Integer> myBlockPos = Triplet.with(MathHelper.floor_double(x), MathHelper.floor_double(y), MathHelper.floor_double(z));
 
-        this.particleMaxAge = 20;
         this.noClip = true;
         this.showAsPerimeter = showPerimeter;
         this.biomeId = biomeId;
@@ -57,19 +54,21 @@ public class EntityBiomeChangerFX
         double boxPosY = this.prevPosY + (this.posY - this.prevPosY) * partTicks - interpPosY;
         double boxPosZ = this.prevPosZ + (this.posZ - this.prevPosZ) * partTicks - interpPosZ;
 
-        tessellator.setBrightness(255);
-
         if( this.showAsPerimeter ) {
             scale = 0.5D;
         } else {
             scale -= (this.prevParticleAge + (this.particleAge - this.prevParticleAge) * partTicks) / (double) this.particleMaxAge;
         }
 
-        tessellator.setColorOpaque(255, 255, 255);
+        int biomeClr = BiomeGenBase.getBiome(this.biomeId).color;
+        tessellator.setColorOpaque((biomeClr >> 16) & 255, (biomeClr >> 8) & 255, biomeClr & 255);
+
+        tessellator.setBrightness(0xF0);
 
         boxPosX += 0.5 - scale / 2;
         boxPosZ += 0.5 - scale / 2;
 
+//        GL11.glEnable(GL11.GL_CULL_FACE);
         drawYNeg(tessellator, boxPosX, boxPosZ, boxPosX + scale, boxPosZ + scale, boxPosY);
         drawYPos(tessellator, boxPosX, boxPosZ, boxPosX + scale, boxPosZ + scale, boxPosY + scale);
         drawZNeg(tessellator, boxPosX, boxPosY, boxPosX + scale, boxPosY + scale, boxPosZ);
