@@ -36,7 +36,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
@@ -93,7 +92,7 @@ public class ClientProxy
         BlockRendererOreCrocoite.renderId = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(BlockRendererOreCrocoite.renderId, new BlockRendererOreCrocoite());
 
-        particleFxLayer = SAPEffectRenderer.INSTANCE.registerFxLayer(new ResourceLocation("enderstuffp", "textures/blocks/crystal_crocoite.png"), true);
+        particleFxLayer = SAPEffectRenderer.INSTANCE.registerFxLayer(EnumTextures.PARTICLES.getResource(), true);
     }
 
     //    @Override
@@ -175,6 +174,9 @@ public class ClientProxy
                 break;
             case FX_IGNIS_BODY:
                 ParticleHelper.spawnEnderBodyFX(x, y, z, random, 1.0F, 1.0F, 0.0F, (Boolean) data.getValue(0));
+                break;
+            case FX_BIOMECHG_PARTICLE:
+                ParticleHelper.spawnBiomeChangerFX(x, y, z, (Short) data.getValue(0), (Boolean) data.getValue(1));
                 break;
         }
     }

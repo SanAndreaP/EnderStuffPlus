@@ -43,7 +43,7 @@ public class PacketBiomeChangerActions
                 break;
             case CHANGE_BIOME:
                 biomeChanger.setCurrRange(stream.readByte());
-                biomeChanger.changeBiome();
+                biomeChanger.changeBiomeOrShowPerim(false);
                 biomeChanger.setCurrRange(biomeChanger.getCurrRange() + 1);
                 break;
             case REPLACE_BLOCKS:

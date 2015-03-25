@@ -7,8 +7,8 @@
 package de.sanandrew.mods.enderstuffp.network.packet;
 
 import de.sanandrew.core.manpack.network.IPacket;
+import de.sanandrew.core.manpack.util.javatuples.Pair;
 import de.sanandrew.core.manpack.util.javatuples.Tuple;
-import de.sanandrew.core.manpack.util.javatuples.Unit;
 import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
 import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
 import io.netty.buffer.ByteBuf;
@@ -37,7 +37,7 @@ public class PacketBiomeChangerModify
             biomeArray[(z & 0xF) << 4 | (x & 0xF)] = biomeId;
             chunk.setBiomeArray(biomeArray);
 
-            EnderStuffPlus.proxy.handleParticle(EnumParticleFx.FX_BIOME_DATA, x + 0.5F, y, z + 0.5D, Unit.with((short) biomeId));
+            EnderStuffPlus.proxy.handleParticle(EnumParticleFx.FX_BIOMECHG_PARTICLE, x, y - 1, z, Pair.with((short) biomeId, false));
             world.markBlockForUpdate(x, y - 1, z);
         }
     }

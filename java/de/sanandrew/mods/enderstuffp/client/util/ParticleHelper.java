@@ -8,7 +8,9 @@ package de.sanandrew.mods.enderstuffp.client.util;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import de.sanandrew.core.manpack.mod.client.particle.SAPEffectRenderer;
 import de.sanandrew.core.manpack.util.helpers.SAPUtils;
+import de.sanandrew.mods.enderstuffp.client.particle.EntityBiomeChangerFX;
 import de.sanandrew.mods.enderstuffp.client.particle.EntityBiomeDataFX;
 import de.sanandrew.mods.enderstuffp.client.particle.EntityColoredPortalFX;
 import de.sanandrew.mods.enderstuffp.client.particle.EntityWeatherAltarFX;
@@ -109,6 +111,10 @@ final class ParticleHelper
 
             Minecraft.getMinecraft().effectRenderer.addEffect(part);
         }
+    }
+
+    static void spawnBiomeChangerFX(double x, double y, double z, int biomeId, boolean isPerimeter) {
+        SAPEffectRenderer.INSTANCE.addEffect(new EntityBiomeChangerFX(getMc().theWorld, x, y, z, biomeId, isPerimeter));
     }
 
     static void spawnOreGrindFX(double x, double y, double z, Random rand, ItemStack oreItem) {

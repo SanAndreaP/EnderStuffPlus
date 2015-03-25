@@ -32,7 +32,7 @@ public enum EnumTextures
 //    GUI_BIOMECHANGER_III        ("textures/gui/BiomeChangerGUI/biomeChanger_config.png"),
 //    GUI_BIOMECHANGER_TABS       ("textures/gui/BiomeChangerGUI/biomeChanger_tabs.png"),
     GUI_BIOMECHANGER            ("textures/gui/biome_changer.png"),
-    GUI_ORE_GENERATOR            ("textures/gui/ore_generator.png"),
+    GUI_ORE_GENERATOR           ("textures/gui/ore_generator.png"),
     GUI_SCALES                  ("textures/gui/scales.png"),
     GUI_BUTTONS                 ("textures/gui/buttons.png"),
     GUI_DUPLICATOR              ("textures/gui/duplicatorGui.png"),
@@ -40,7 +40,8 @@ public enum EnumTextures
     GUI_WEATHERALTAR            ("textures/gui/weather_altar.png"),
     TEX_ARMOR_NIOBIUM_1         ("textures/models/armor/niob_1.png"),
     TEX_ARMOR_NIOBIUM_2         ("textures/models/armor/niob_2.png"),
-    CROCOITE_CRYSTALS           ("textures/blocks/crystal_crocoite.png");
+    CROCOITE_CRYSTALS           ("textures/blocks/crystal_crocoite.png"),
+    PARTICLES                   ("textures/particles/particles.png");
 
     public static final ResourceLocation GLASS_TEXTURE = new ResourceLocation("textures/blocks/glass.png");
     public static final ResourceLocation BIOMECRYSTAL_BLOCKTEXTURE = new ResourceLocation(EnderStuffPlus.MOD_ID, "textures/blocks/biome_crystal.png");

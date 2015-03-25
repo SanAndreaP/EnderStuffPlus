@@ -3,13 +3,15 @@ package de.sanandrew.mods.enderstuffp.tileentity;
 import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.mod.client.particle.SAPEffectRenderer;
+import de.sanandrew.core.manpack.util.javatuples.Pair;
+import de.sanandrew.core.manpack.util.javatuples.Triplet;
 import de.sanandrew.core.manpack.util.javatuples.Unit;
-import de.sanandrew.mods.enderstuffp.client.particle.EntityBiomeChangerFX;
 import de.sanandrew.mods.enderstuffp.network.PacketManager;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions.EnumAction;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketTileDataSync.ITileSync;
+import de.sanandrew.mods.enderstuffp.util.EnderStuffPlus;
+import de.sanandrew.mods.enderstuffp.util.EnumParticleFx;
 import de.sanandrew.mods.enderstuffp.util.EspBlocks;
 import de.sanandrew.mods.enderstuffp.world.BiomeChangerChunkLoader;
 import io.netty.buffer.ByteBufInputStream;
@@ -54,52 +56,60 @@ public class TileEntityBiomeChanger
         return true;
     }
 
-    public void changeBiome() {
+    public void changeBiomeOrShowPerim(boolean showPerimeter) {
         if( this.hasBiome() ) {
-            short currBiome = this.getBiomeId();
+            byte currBiome = (byte) (this.getBiomeId() & 255);
 
             switch( this.perimForm ) {
                 case SQUARE:
-                    this.changeBiomeSquare((byte) currBiome);
+                    for( int x = -this.currRange; x <= this.currRange; x++ ) {
+                        for( int z = -this.currRange; z <= this.currRange; z++ ) {
+                            if( MathHelper.abs_int(x) == this.currRange || MathHelper.abs_int(z) == this.currRange ) {
+                                if( showPerimeter ) {
+                                    this.showParticle(x, z, currBiome);
+                                } else {
+                                    this.changeBiomeBlock(x, z, currBiome);
+                                }
+                            }
+                        }
+                    }
                     break;
                 case RHOMBUS:
-                    this.changeBiomeRhombus((byte) currBiome);
+                    for( int x = -this.currRange; x <= this.currRange; x++ ) {
+                        for( int z = -this.currRange; z <= this.currRange; z++ ) {
+                            if( MathHelper.abs_int(x) + MathHelper.abs_int(z) == this.currRange ) {
+                                if( showPerimeter ) {
+                                    this.showParticle(x, z, currBiome);
+                                } else {
+                                    this.changeBiomeBlock(x, z, currBiome);
+                                }
+                            }
+                        }
+                    }
                     break;
-                default:
-                    this.changeBiomeCircle((byte) currBiome);
+                case CIRCLE:
+                    for( int x = -this.currRange; x <= this.currRange; x++ ) {
+                        for( int z = -this.currRange; z <= this.currRange; z++ ) {
+                            double radius = Math.sqrt(x * x + z * z);
+                            if( radius < this.currRange + 0.5F && radius > this.currRange - 0.5F ) {
+                                if( showPerimeter ) {
+                                    this.showParticle(x, z, currBiome);
+                                } else {
+                                    this.changeBiomeBlock(x, z, currBiome);
+                                }
+                            }
+                        }
+                    }
+                    break;
             }
         }
     }
 
-    private void changeBiomeCircle(byte currBiome) {
-        for( int x = -this.currRange; x <= this.currRange; x++ ) {
-            for( int z = -this.currRange; z <= this.currRange; z++ ) {
-                double radius = Math.sqrt(x * x + z * z);
-                if( radius < this.currRange + 0.5F && radius > this.currRange - 0.5F ) {
-                    this.changeBiomeBlock(x, z, currBiome);
-                }
-            }
-        }
-    }
-
-    private void changeBiomeRhombus(byte currBiome) {
-        for( int x = -this.currRange; x <= this.currRange; x++ ) {
-            for( int z = -this.currRange; z <= this.currRange; z++ ) {
-                if( MathHelper.abs_int(x) + MathHelper.abs_int(z) == this.currRange ) {
-                    this.changeBiomeBlock(x, z, currBiome);
-                }
-            }
-        }
-    }
-
-    private void changeBiomeSquare(byte currBiome) {
-        for( int x = -this.currRange; x <= this.currRange; x++ ) {
-            for( int z = -this.currRange; z <= this.currRange; z++ ) {
-                if( MathHelper.abs_int(x) == this.currRange || MathHelper.abs_int(z) == this.currRange ) {
-                    this.changeBiomeBlock(x, z, currBiome);
-                }
-            }
-        }
+    private void showParticle(int x, int z, short currBiome) {
+        int x1 = x + this.xCoord;
+        int z1 = z + this.zCoord;
+        int y = this.worldObj.getTopSolidOrLiquidBlock(x1, z1);
+        EnderStuffPlus.proxy.handleParticle(EnumParticleFx.FX_BIOMECHG_PARTICLE, x1, y + 0.25D, z1, Pair.with(currBiome, true));
     }
 
     private void changeBiomeBlock(int x, int z, byte currBiome) {
@@ -130,7 +140,9 @@ public class TileEntityBiomeChanger
         chunk.setChunkModified();
         this.worldObj.markBlockForUpdate(x1, y, z1);
 
-//        PacketManager.sendToAllAround(PacketManager.BIOME_CHANGER_MODIFY, this.worldObj.provider.dimensionId, x1, y, z1, 64.0D, Triplet.with(x1, z1, currBiome));
+        if( !this.worldObj.isRemote ) {
+            PacketManager.sendToAllAround(PacketManager.BIOME_CHANGER_MODIFY, this.worldObj.provider.dimensionId, x1, y, z1, 64.0D, Triplet.with(x1, z1, currBiome));
+        }
     }
 
     public short getCurrRange() {
@@ -261,10 +273,6 @@ public class TileEntityBiomeChanger
 
     @Override
     public void updateEntity() {
-        if( this.worldObj.isRemote ) {
-            SAPEffectRenderer.INSTANCE.addEffect(new EntityBiomeChangerFX(this.worldObj, this.xCoord, this.yCoord + 2, this.zCoord));
-        }
-
         if( this.isActive ) {
             if( !this.worldObj.isRemote ) {
                 int fluxUsage = this.getFluxUsage();
@@ -273,7 +281,7 @@ public class TileEntityBiomeChanger
                     this.deactivate();
                 } else if( fluxUsage > 0 && this.fluxAmount > 0 ) {
                     if( this.usedFlux >= fluxUsage * 20 ) {
-                        this.changeBiome();
+                        this.changeBiomeOrShowPerim(false);
                         PacketBiomeChangerActions.sendPacketClient(this, EnumAction.CHANGE_BIOME);
                         this.currRange++;
                         this.usedFlux -= fluxUsage * 20;
@@ -301,6 +309,8 @@ public class TileEntityBiomeChanger
 
                 if( this.renderBeamHeight > 0.0F ) {
                     this.renderBeamHeight -= 0.5F;
+                } else {
+                    this.changeBiomeOrShowPerim(true);
                 }
             }
         }
