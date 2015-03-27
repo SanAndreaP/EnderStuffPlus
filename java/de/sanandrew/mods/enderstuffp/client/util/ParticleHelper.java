@@ -113,8 +113,12 @@ final class ParticleHelper
         }
     }
 
-    static void spawnBiomeChangerFX(double x, double y, double z, int biomeId, boolean isPerimeter) {
-        SAPEffectRenderer.INSTANCE.addEffect(new EntityBiomeChangerFX(getMc().theWorld, x, y, z, biomeId, isPerimeter));
+    static void spawnBiomeChangerProgressFX(double x, double y, double z, int biomeId) {
+        SAPEffectRenderer.INSTANCE.addEffect(new EntityBiomeChangerFX(getMc().theWorld, x, y, z, biomeId));
+    }
+
+    static void spawnBiomeChangerPerimeterFX(double x, double y, double z, int biomeId, int perimTicks, int prevPerimTicks) {
+        SAPEffectRenderer.INSTANCE.addEffect(new EntityBiomeChangerFX(getMc().theWorld, x, y, z, biomeId, perimTicks, prevPerimTicks));
     }
 
     static void spawnOreGrindFX(double x, double y, double z, Random rand, ItemStack oreItem) {

@@ -21,7 +21,8 @@ public enum EnumParticleFx
     FX_ORE_GRIND,
     FX_NIVIS_BODY,
     FX_IGNIS_BODY,
-    FX_BIOMECHG_PARTICLE;
+    FX_BIOMECHG_PROGRESS,
+    FX_BIOMECHG_PERIMETER;
 
     public static final EnumParticleFx[] VALUES = values();
 

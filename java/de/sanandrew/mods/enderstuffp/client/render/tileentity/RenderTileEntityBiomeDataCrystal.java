@@ -52,12 +52,12 @@ public class RenderTileEntityBiomeDataCrystal
 
         minCore -= 0.01D;
         maxCore += 0.01D;
-        Minecraft.getMinecraft().renderEngine.bindTexture(EnumTextures.GLASS_TEXTURE);
-        SAPClientUtils.drawTexturedSquareYPos(x + minCore, z + minCore, x + maxCore, z + maxCore, y + maxCore, 0.0D, 0.0D, 1.0D, 1.0D);
-        SAPClientUtils.drawTexturedSquareYNeg(x + minCore, z + minCore, x + maxCore, z + maxCore, y + minCore, 0.0D, 0.0D, 1.0D, 1.0D);
-        SAPClientUtils.drawTexturedSquareXPos(y + minCore, z + minCore, y + maxCore, z + maxCore, x + maxCore, 0.0D, 0.0D, 1.0D, 1.0D);
-        SAPClientUtils.drawTexturedSquareXNeg(y + minCore, z + minCore, y + maxCore, z + maxCore, x + minCore, 0.0D, 0.0D, 1.0D, 1.0D);
-        SAPClientUtils.drawTexturedSquareZPos(x + minCore, y + minCore, x + maxCore, y + maxCore, z + maxCore, 0.0D, 0.0D, 1.0D, 1.0D);
-        SAPClientUtils.drawTexturedSquareZNeg(x + minCore, y + minCore, x + maxCore, y + maxCore, z + minCore, 0.0D, 0.0D, 1.0D, 1.0D);
+//        Minecraft.getMinecraft().renderEngine.bindTexture(EnumTextures.GLASS_TEXTURE);
+//        SAPClientUtils.drawTexturedSquareYPos(x + minCore, z + minCore, x + maxCore, z + maxCore, y + maxCore, 0.0D, 0.0D, 1.0D, 1.0D);
+//        SAPClientUtils.drawTexturedSquareYNeg(x + minCore, z + minCore, x + maxCore, z + maxCore, y + minCore, 0.0D, 0.0D, 1.0D, 1.0D);
+//        SAPClientUtils.drawTexturedSquareXPos(y + minCore, z + minCore, y + maxCore, z + maxCore, x + maxCore, 0.0D, 0.0D, 1.0D, 1.0D);
+//        SAPClientUtils.drawTexturedSquareXNeg(y + minCore, z + minCore, y + maxCore, z + maxCore, x + minCore, 0.0D, 0.0D, 1.0D, 1.0D);
+//        SAPClientUtils.drawTexturedSquareZPos(x + minCore, y + minCore, x + maxCore, y + maxCore, z + maxCore, 0.0D, 0.0D, 1.0D, 1.0D);
+//        SAPClientUtils.drawTexturedSquareZNeg(x + minCore, y + minCore, x + maxCore, y + maxCore, z + minCore, 0.0D, 0.0D, 1.0D, 1.0D);
     }
 }

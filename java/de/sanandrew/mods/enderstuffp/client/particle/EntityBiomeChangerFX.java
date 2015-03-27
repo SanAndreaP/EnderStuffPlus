@@ -17,22 +17,34 @@ public class EntityBiomeChangerFX
         extends EntityParticle
 {
     private int prevParticleAge;
-    private final boolean showAsPerimeter;
+    private final int perimTicks;
+    private final int prevPerimTicks;
+    private final boolean isPerimeter;
     private final int biomeId;
     private static final Quartet<Double, Double, Double, Double> PARTICLE_ICON_POS = Quartet.with(0.0D, 0.0D, 0.0625D, 0.0625D);
 
-    public EntityBiomeChangerFX(World world, double x, double y, double z, int biomeId, boolean showPerimeter) {
+    public EntityBiomeChangerFX(World world, double x, double y, double z, int biomeId, int perimeterTicks, int prevPerimeterTicks) {
         super(world, x, y, z);
 
         this.noClip = true;
-        this.showAsPerimeter = showPerimeter;
+        this.perimTicks = perimeterTicks;
+        this.prevPerimTicks = prevPerimeterTicks;
         this.biomeId = biomeId;
-        if( showPerimeter ) {
-            this.particleMaxAge = 1;
-        } else {
-            this.particleMaxAge = 20;
-            this.motionY = 0.2F;
-        }
+        this.particleMaxAge = 1;
+        this.isPerimeter = true;
+    }
+
+    public EntityBiomeChangerFX(World world, double x, double y, double z, int biomeId) {
+        super(world, x, y, z);
+
+        this.noClip = true;
+        this.perimTicks = 0;
+        this.prevPerimTicks = 0;
+        this.biomeId = biomeId;
+        this.isPerimeter = false;
+
+        this.particleMaxAge = 20;
+        this.motionY = 0.2F;
     }
 
     @Override
@@ -54,8 +66,8 @@ public class EntityBiomeChangerFX
         double boxPosY = this.prevPosY + (this.posY - this.prevPosY) * partTicks - interpPosY;
         double boxPosZ = this.prevPosZ + (this.posZ - this.prevPosZ) * partTicks - interpPosZ;
 
-        if( this.showAsPerimeter ) {
-            scale = 0.5D;
+        if( this.isPerimeter ) {
+            scale = (this.prevPerimTicks + (this.perimTicks - this.prevPerimTicks) * partTicks) / 10.0F * 0.5F;
         } else {
             scale -= (this.prevParticleAge + (this.particleAge - this.prevParticleAge) * partTicks) / (double) this.particleMaxAge;
         }

@@ -3,9 +3,7 @@ package de.sanandrew.mods.enderstuffp.tileentity;
 import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import de.sanandrew.core.manpack.util.javatuples.Pair;
-import de.sanandrew.core.manpack.util.javatuples.Triplet;
-import de.sanandrew.core.manpack.util.javatuples.Unit;
+import de.sanandrew.core.manpack.util.javatuples.*;
 import de.sanandrew.mods.enderstuffp.network.PacketManager;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions;
 import de.sanandrew.mods.enderstuffp.network.packet.PacketBiomeChangerActions.EnumAction;
@@ -48,6 +46,8 @@ public class TileEntityBiomeChanger
     public int fluxAmount = 0;
     public EnumPerimForm perimForm = EnumPerimForm.CIRCLE;
     public String customName = null;
+    public int ticksInactive = 0;
+    public int prevTicksInactive = 0;
 
     public TileEntityBiomeChanger() {}
 
@@ -67,7 +67,7 @@ public class TileEntityBiomeChanger
                         for( int z = -perimeter; z <= perimeter; z++ ) {
                             if( MathHelper.abs_int(x) == perimeter || MathHelper.abs_int(z) == perimeter ) {
                                 if( showPerimeter ) {
-                                    this.showParticle(x, z, currBiome);
+                                    this.showParticle(x, z, currBiome, showPerimeter);
                                 } else {
                                     this.changeBiomeBlock(x, z, currBiome);
                                 }
@@ -80,7 +80,7 @@ public class TileEntityBiomeChanger
                         for( int z = -perimeter; z <= perimeter; z++ ) {
                             if( MathHelper.abs_int(x) + MathHelper.abs_int(z) == perimeter ) {
                                 if( showPerimeter ) {
-                                    this.showParticle(x, z, currBiome);
+                                    this.showParticle(x, z, currBiome, showPerimeter);
                                 } else {
                                     this.changeBiomeBlock(x, z, currBiome);
                                 }
@@ -94,7 +94,7 @@ public class TileEntityBiomeChanger
                             double radius = Math.sqrt(x * x + z * z);
                             if( radius < perimeter + 0.5F && radius > perimeter - 0.5F ) {
                                 if( showPerimeter ) {
-                                    this.showParticle(x, z, currBiome);
+                                    this.showParticle(x, z, currBiome, showPerimeter);
                                 } else {
                                     this.changeBiomeBlock(x, z, currBiome);
                                 }
@@ -103,14 +103,27 @@ public class TileEntityBiomeChanger
                     }
                     break;
             }
+        } else {
+            this.ticksInactive = 0;
         }
     }
 
-    private void showParticle(int x, int z, short currBiome) {
+    private void showParticle(int x, int z, short currBiome, boolean showPerimeter) {
         int x1 = x + this.xCoord;
         int z1 = z + this.zCoord;
         int y = this.worldObj.getTopSolidOrLiquidBlock(x1, z1);
-        EnderStuffPlus.proxy.handleParticle(EnumParticleFx.FX_BIOMECHG_PARTICLE, x1, y + 0.25D, z1, Pair.with(currBiome, true));
+        Tuple data;
+        EnumParticleFx fx;
+
+        if( showPerimeter ) {
+            fx = EnumParticleFx.FX_BIOMECHG_PERIMETER;
+            data = Triplet.with(currBiome, this.ticksInactive, this.prevTicksInactive);
+        } else {
+            fx = EnumParticleFx.FX_BIOMECHG_PROGRESS;
+            data = Unit.with(currBiome);
+        }
+
+        EnderStuffPlus.proxy.handleParticle(fx, x1, y + 0.25D, z1, data);
     }
 
     private void changeBiomeBlock(int x, int z, byte currBiome) {
@@ -274,7 +287,13 @@ public class TileEntityBiomeChanger
 
     @Override
     public void updateEntity() {
+        this.prevTicksInactive = this.ticksInactive;
+
         if( this.isActive ) {
+            if( --this.ticksInactive < 0 ) {
+                this.ticksInactive = 0;
+            }
+
             if( !this.worldObj.isRemote ) {
                 int fluxUsage = this.getFluxUsage();
 
@@ -311,6 +330,10 @@ public class TileEntityBiomeChanger
                 if( this.renderBeamHeight > 0.0F ) {
                     this.renderBeamHeight -= 0.5F;
                 } else {
+                    if( ++this.ticksInactive > 10 ) {
+                        this.ticksInactive = 10;
+                    }
+
                     this.changeBiomeOrShowPerim(true);
                 }
             }
@@ -432,7 +455,7 @@ public class TileEntityBiomeChanger
         this.usedFlux = stream.readInt();
     }
 
-    public static enum EnumPerimForm
+    public enum EnumPerimForm
     {
         CIRCLE, RHOMBUS, SQUARE;
 

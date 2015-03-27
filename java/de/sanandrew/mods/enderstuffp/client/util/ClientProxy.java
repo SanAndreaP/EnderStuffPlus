@@ -175,8 +175,11 @@ public class ClientProxy
             case FX_IGNIS_BODY:
                 ParticleHelper.spawnEnderBodyFX(x, y, z, random, 1.0F, 1.0F, 0.0F, (Boolean) data.getValue(0));
                 break;
-            case FX_BIOMECHG_PARTICLE:
-                ParticleHelper.spawnBiomeChangerFX(x, y, z, (Short) data.getValue(0), (Boolean) data.getValue(1));
+            case FX_BIOMECHG_PROGRESS:
+                ParticleHelper.spawnBiomeChangerProgressFX(x, y, z, (Short) data.getValue(0));
+                break;
+            case FX_BIOMECHG_PERIMETER:
+                ParticleHelper.spawnBiomeChangerPerimeterFX(x, y, z, (Short) data.getValue(0), (Integer) data.getValue(1), (Integer) data.getValue(2));
                 break;
         }
     }
