@@ -107,4 +107,9 @@ public class BlockBiomeDataCrystal
 
         return stack;
     }
+
+    @Override
+    public int getRenderType() {
+        return -1;
+    }
 }

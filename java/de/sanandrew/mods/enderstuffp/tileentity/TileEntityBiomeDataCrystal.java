@@ -35,6 +35,8 @@ public class TileEntityBiomeDataCrystal
     public boolean isUsed = false;
     private Random rand = new Random();
 
+    public int currRenderPass = 0;
+
     @Override
     public void updateEntity() {
         if( !this.worldObj.isRemote ) {
@@ -157,5 +159,10 @@ public class TileEntityBiomeDataCrystal
 
     public void setDataProgress(int dataProgress) {
         this.dataProgress = Math.max(0, Math.min(MAX_PROGRESS, dataProgress));
+    }
+
+    @Override
+    public boolean shouldRenderInPass(int pass) {
+        return (this.currRenderPass = pass) < 2;
     }
 }
