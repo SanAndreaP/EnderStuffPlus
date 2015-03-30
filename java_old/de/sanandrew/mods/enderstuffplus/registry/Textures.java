@@ -4,7 +4,7 @@ import net.minecraft.util.ResourceLocation;
 
 public enum Textures {
     ARROW_AVIS                  ("textures/entity/avisArrow.png"),
-    BIOMECHANGER_TEXTURE        ("textures/blocks/biomeChanger.png"),
+    BIOMECHANGER_TEXTURE        ("textures/blocks/biome_changer.png"),
     ENDERAVIS_GLOW_TEXTURE      ("textures/entity/enderAvisGlow.png"),
     ENDERAVIS_TEXTURE           ("textures/entity/enderAvis.png"),
     ENDERAVIS_TEXTURE_SADDLE    ("textures/entity/enderAvisSaddle.png"),
@@ -29,10 +29,10 @@ public enum Textures {
     GUI_BUTTONS                 ("textures/guis/buttons.png"),
     GUI_DUPLICATOR              ("textures/guis/duplicatorGui.png"),
     GUI_INGAMEICONS             ("textures/guis/hudIcons.png"),
-    GUI_WEATHERALTAR            ("textures/guis/weatherAltar.png"),
+    GUI_WEATHERALTAR            ("textures/guis/weather_altar.png"),
     TEX_ARMOR_NIOBIUM_1         ("textures/models/armor/niob_1.png"),
     TEX_ARMOR_NIOBIUM_2         ("textures/models/armor/niob_2.png"),
-    WEATHERALTAR_TEXTURE        ("textures/blocks/weatherAltar.png");
+    WEATHERALTAR_TEXTURE        ("textures/blocks/weather_altar.png");
 
     private final ResourceLocation tex;
 

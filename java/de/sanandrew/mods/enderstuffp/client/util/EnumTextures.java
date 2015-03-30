@@ -5,11 +5,8 @@ import net.minecraft.util.ResourceLocation;
 
 public enum EnumTextures
 {
+    // ENTITIES
     ARROW_AVIS                  ("textures/entity/avisArrow.png"),
-    BIOMECHANGER                ("textures/blocks/biomeChanger.png"),
-    WEATHERALTAR                ("textures/blocks/weatherAltar.png"),
-    ORE_GENERATOR               ("textures/entity/tile/ore_generator.png"),
-    BIOMECRYSTAL_CORE           ("textures/entity/tile/biome_crystal_core.png"),
     ENDERAVIS_GLOW              ("textures/entity/enderAvisGlow.png"),
     ENDERAVIS_TEXTURE           ("textures/entity/enderAvis.png"),
     ENDERAVIS_TEXTURE_SADDLE    ("textures/entity/enderAvisSaddle.png"),
@@ -27,10 +24,15 @@ public enum EnumTextures
     ENDERRAY_GLOW_TEXTURE_SPEC  ("textures/entity/enderRayScarsGlow.png"),
     ENDERRAY_TEXTURE            ("textures/entity/enderRay.png"),
     ENDERRAY_TEXTURE_SPEC       ("textures/entity/enderRayScars.png"),
-//    GUI_BIOMECHANGER_I          ("textures/gui/BiomeChangerGUI/biomeChanger_fuel.png"),
-//    GUI_BIOMECHANGER_II         ("textures/gui/BiomeChangerGUI/biomeChanger_biomes.png"),
-//    GUI_BIOMECHANGER_III        ("textures/gui/BiomeChangerGUI/biomeChanger_config.png"),
-//    GUI_BIOMECHANGER_TABS       ("textures/gui/BiomeChangerGUI/biomeChanger_tabs.png"),
+
+    // TILE ENTITIES
+    TILE_BIOMECHANGER("textures/blocks/tile/biome_changer.png"),
+    TILE_WEATHERALTAR("textures/blocks/tile/weather_altar.png"),
+    TILE_ORE_GENERATOR("textures/blocks/tile/ore_generator.png"),
+    TILE_BIOMECRYSTAL("textures/blocks/tile/biome_crystal.png"),
+    TILE_CROCOITE_ORE("textures/blocks/tile/crocoite_crystal.png"),
+
+    // GUIS
     GUI_BIOMECHANGER            ("textures/gui/biome_changer.png"),
     GUI_ORE_GENERATOR           ("textures/gui/ore_generator.png"),
     GUI_SCALES                  ("textures/gui/scales.png"),
@@ -38,17 +40,19 @@ public enum EnumTextures
     GUI_DUPLICATOR              ("textures/gui/duplicatorGui.png"),
     GUI_INGAMEICONS             ("textures/gui/hud_icons.png"),
     GUI_WEATHERALTAR            ("textures/gui/weather_altar.png"),
+
+    // ARMOR
     TEX_ARMOR_NIOBIUM_1         ("textures/models/armor/niob_1.png"),
     TEX_ARMOR_NIOBIUM_2         ("textures/models/armor/niob_2.png"),
-    CROCOITE_CRYSTALS           ("textures/blocks/crystal_crocoite.png"),
+
+    // MISC
     PARTICLES                   ("textures/particles/particles.png");
 
     public static final ResourceLocation GLASS_TEXTURE = new ResourceLocation("textures/blocks/glass.png");
-    public static final ResourceLocation BIOMECRYSTAL_BLOCKTEXTURE = new ResourceLocation(EnderStuffPlus.MOD_ID, "textures/blocks/biome_crystal.png");
 
     private final ResourceLocation tex;
 
-    private EnumTextures(String texture) {
+    EnumTextures(String texture) {
         this.tex = new ResourceLocation(EnderStuffPlus.MOD_ID, texture);
     }
 

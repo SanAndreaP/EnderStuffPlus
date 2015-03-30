@@ -41,7 +41,7 @@ public class ItemRendererOreGenerator
     }
 
     private void renderGenerator(float x, float y, float z) {
-        Minecraft.getMinecraft().getTextureManager().bindTexture(EnumTextures.ORE_GENERATOR.getResource());
+        Minecraft.getMinecraft().getTextureManager().bindTexture(EnumTextures.TILE_ORE_GENERATOR.getResource());
 
         GL11.glTranslatef(x, y + 1.55F, z);
         GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);

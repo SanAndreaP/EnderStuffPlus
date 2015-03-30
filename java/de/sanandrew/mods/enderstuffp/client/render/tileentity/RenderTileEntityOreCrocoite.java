@@ -76,7 +76,7 @@ public class RenderTileEntityOreCrocoite
         float brightY = Minecraft.getMinecraft().theWorld.getSkyBlockTypeBrightness(EnumSkyBlock.Sky, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) * 0xF0;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX, brightY);
 
-        this.bindTexture(EnumTextures.CROCOITE_CRYSTALS.getResource());
+        this.bindTexture(EnumTextures.TILE_CROCOITE_ORE.getResource());
         for( int i = tileEntity.parts.length - 1; i >= 0; i-- ) {
             tileEntity.parts[i].render(0.0625F);
         }

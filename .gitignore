@@ -219,3 +219,4 @@ eclipse/
 .gradle/
 minecraft/
 *.iml
+classes/

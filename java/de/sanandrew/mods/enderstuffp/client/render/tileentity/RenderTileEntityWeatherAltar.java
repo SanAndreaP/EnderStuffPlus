@@ -51,7 +51,7 @@ public class RenderTileEntityWeatherAltar
         TileEntityWeatherAltar te = ((TileEntityWeatherAltar) tile);
         Pair<float[], float[]> itmFloat = te.getItemFloat();
 
-        this.bindTexture(EnumTextures.WEATHERALTAR.getResource());
+        this.bindTexture(EnumTextures.TILE_WEATHERALTAR.getResource());
 
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);

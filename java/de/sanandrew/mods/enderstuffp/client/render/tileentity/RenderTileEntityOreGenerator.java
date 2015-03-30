@@ -46,7 +46,7 @@ public class RenderTileEntityOreGenerator
             this.modelBlock.addGrinderRotation((float) (te.displayDrawCycles / 31.0D * Math.PI * 2.0D * te.displayAmplitude));
         }
 
-        this.bindTexture(EnumTextures.ORE_GENERATOR.getResource());
+        this.bindTexture(EnumTextures.TILE_ORE_GENERATOR.getResource());
 
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);

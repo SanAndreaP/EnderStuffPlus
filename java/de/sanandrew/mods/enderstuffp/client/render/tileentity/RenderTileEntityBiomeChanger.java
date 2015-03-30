@@ -84,7 +84,7 @@ public class RenderTileEntityBiomeChanger
         GL11.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
 
         if( te.getRenderPass() == 0 ) {
-            this.bindTexture(EnumTextures.BIOMECHANGER.getResource());
+            this.bindTexture(EnumTextures.TILE_BIOMECHANGER.getResource());
 
             this.modelBlock.setBoxRotations(te.getRenderBeamAngle());
 

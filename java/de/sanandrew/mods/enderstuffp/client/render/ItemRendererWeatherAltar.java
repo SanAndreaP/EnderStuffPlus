@@ -27,7 +27,7 @@ public class ItemRendererWeatherAltar
                 this.renderWeatherAltar(0.0F, -0.45F, 0.0F);
                 break;
             case INVENTORY :
-                this.renderWeatherAltar(1F, 0.26F, 1F);
+                this.renderWeatherAltar(1.0F, 0.26F, 1.0F);
                 break;
             case EQUIPPED :
                 // fallthrough;
@@ -38,7 +38,7 @@ public class ItemRendererWeatherAltar
     }
 
     private void renderWeatherAltar(float x, float y, float z) {
-        Minecraft.getMinecraft().getTextureManager().bindTexture(EnumTextures.WEATHERALTAR.getResource());
+        Minecraft.getMinecraft().getTextureManager().bindTexture(EnumTextures.TILE_WEATHERALTAR.getResource());
 
         GL11.glPushMatrix();
         GL11.glTranslatef(x, y + 1.57F, z);

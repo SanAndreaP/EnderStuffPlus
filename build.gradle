@@ -28,6 +28,13 @@ buildscript {
     }
 }
 
+apply plugin: 'idea'
+idea {
+    module {
+        inheritOutputDirs = true
+    }
+}
+
 apply plugin: 'forge'
 
 version = "1.7.2-2.0.0"

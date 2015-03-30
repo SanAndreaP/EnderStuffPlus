@@ -3,6 +3,7 @@ package de.sanandrew.mods.enderstuffp.client.model.tileentity;
 import de.sanandrew.core.manpack.util.client.helpers.ModelBoxBuilder;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import org.lwjgl.opengl.GL11;
 
 /**
  * BlockBiomeDataCrystal - SanAndreasP
@@ -12,7 +13,6 @@ public class ModelBiomeDataCrystal
         extends ModelBase
 {
     public ModelRenderer storage;
-    public ModelRenderer data;
 
     public ModelRenderer stripeT1;
     public ModelRenderer stripeT2;
@@ -107,8 +107,6 @@ public class ModelBiomeDataCrystal
         this.paneO5 = ModelBoxBuilder.newBuilder(this).setTexture(4, 4, false).setLocation(0.0F, 16.0F, 0.0F).setRotation(-1.5707963267948966F, 0.0F, 0.0F).getBox(-7.0F, -7.0F, -7.6F, 14, 14, 0, 0.0F);
         this.paneO6 = ModelBoxBuilder.newBuilder(this).setTexture(4, 4, false).setLocation(0.0F, 16.0F, 0.0F).setRotation(1.5707963267948966F, 0.0F, 0.0F).getBox(-7.0F, -7.0F, -7.6F, 14, 14, 0, 0.0F);
 
-        this.data = ModelBoxBuilder.newBuilder(this).setTexture(32, 14, false).setLocation(0.0F, 16.0F, 0.0F).getBox(-3.5F, -3.5F, -3.5F, 7, 7, 7, 0.0F);
-
         this.storage = ModelBoxBuilder.newBuilder(this).setTexture(32, 0, false).setLocation(0.0F, 16.0F, 0.0F).getBox(-3.5F, -3.5F, -3.5F, 7, 7, 7, 0.0F);
 
         this.catalyst01 = ModelBoxBuilder.newBuilder(this).setTexture(0, 17, false).setLocation(0.0F, 16.0F, 0.0F).setRotation(0.0F, 1.5707963267948966F, 0.0F).getBox(-5.0F, -7.5F, -7.5F, 1, 2, 2, 0.0F);
@@ -175,10 +173,19 @@ public class ModelBiomeDataCrystal
             this.stripeB2.render(partTicks);
             this.stripeB3.render(partTicks);
             this.stripeB4.render(partTicks);
-            this.catalyst01.render(partTicks);
-            this.catalyst02.render(partTicks);
-            this.catalyst03.render(partTicks);
+//            this.catalyst01.render(partTicks);
+//            this.catalyst02.render(partTicks);
+//            this.catalyst03.render(partTicks);
+            GL11.glPushMatrix();
             this.catalyst04.render(partTicks);
+            GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+            this.catalyst04.render(partTicks);
+            GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+            this.catalyst04.render(partTicks);
+            GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+            this.catalyst04.render(partTicks);
+            GL11.glPopMatrix();
+
             this.catalyst05.render(partTicks);
             this.catalyst06.render(partTicks);
             this.catalyst07.render(partTicks);
@@ -223,14 +230,6 @@ public class ModelBiomeDataCrystal
             this.catalyst46.render(partTicks);
             this.catalyst47.render(partTicks);
             this.catalyst48.render(partTicks);
-//            GL11.glPushMatrix();
-//            GL11.glTranslatef(this.data.offsetX, this.data.offsetY, this.data.offsetZ);
-//            GL11.glTranslatef(this.data.rotationPointX * partTicks, this.data.rotationPointY * partTicks, this.data.rotationPointZ * partTicks);
-//            GL11.glScaled(0.9D, 0.9D, 0.9D);
-//            GL11.glTranslatef(-this.data.offsetX, -this.data.offsetY, -this.data.offsetZ);
-//            GL11.glTranslatef(-this.data.rotationPointX * partTicks, -this.data.rotationPointY * partTicks, -this.data.rotationPointZ * partTicks);
-////            this.data.render(partTicks);
-//            GL11.glPopMatrix();
             this.storage.render(partTicks);
         } else {
             this.paneO2.render(partTicks);
@@ -240,14 +239,5 @@ public class ModelBiomeDataCrystal
             this.paneO4.render(partTicks);
             this.paneO6.render(partTicks);
         }
-    }
-
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
     }
 }

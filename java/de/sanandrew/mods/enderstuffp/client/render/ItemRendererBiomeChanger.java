@@ -25,7 +25,7 @@ public class ItemRendererBiomeChanger
     }
 
     private void renderBiomeChanger(float x, float y, float z) {
-        Minecraft.getMinecraft().getTextureManager().bindTexture(EnumTextures.BIOMECHANGER.getResource());
+        Minecraft.getMinecraft().getTextureManager().bindTexture(EnumTextures.TILE_BIOMECHANGER.getResource());
 
         GL11.glPushMatrix();
         GL11.glTranslatef(x, y, z);
