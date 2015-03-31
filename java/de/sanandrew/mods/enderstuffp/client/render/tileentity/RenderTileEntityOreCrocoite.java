@@ -29,7 +29,7 @@ import java.util.Random;
 public class RenderTileEntityOreCrocoite
         extends TileEntitySpecialRenderer
 {
-    private ModelBase baseModel = new ModelBase() {};
+    private static ModelBase baseModel = new ModelBase() {};
 
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partTicks) {
@@ -37,59 +37,68 @@ public class RenderTileEntityOreCrocoite
     }
 
     private void renderCrocoite(TileEntityOreCrocoite tileEntity, double x, double y, double z, float partTicks) {
-        if( tileEntity.parts == null ) {
-            Random rng = new Random(tileEntity.xCoord + tileEntity.yCoord + tileEntity.zCoord);
+        GL11.glPushMatrix();
+        GL11.glTranslated(x + 0.5D, y, z + 0.5D);
+
+        int skylight = Minecraft.getMinecraft().theWorld.getSkyBlockTypeBrightness(EnumSkyBlock.Sky, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) * 0x10;
+        tileEntity.parts = renderCrystal(tileEntity.parts, new Random(tileEntity.xCoord + tileEntity.yCoord + tileEntity.zCoord), skylight);
+
+        GL11.glPopMatrix();
+    }
+
+    public static ModelRenderer[] renderCrystal(ModelRenderer[] parts, Random rng, int skylightBrightness) {
+        // initialize crystal structure
+        if( parts == null ) {
             int partCnt = rng.nextInt(15) + 4 + 35;
             Vec3[] stemVecs = new Vec3[4];
 
-            tileEntity.parts = new ModelRenderer[partCnt];
+            parts = new ModelRenderer[partCnt];
 
-            generateStem(tileEntity.parts, stemVecs, 0, rng, 0.0F, 0.0F, 16, 10.0F, 10.0F, 10.0F, 0.0F, 0.0F, 0.0F);
-            generateStem(tileEntity.parts, stemVecs, 1, rng, 2.0F, 2.0F, 10, 10.0F, 10.0F, 10.0F, 25.0F, 25.0F, 0.0F);
-            generateStem(tileEntity.parts, stemVecs, 2, rng, -2.0F, 2.0F, 10, 10.0F, 10.0F, 10.0F, 25.0F, -25.0F, 0.0F);
-            generateStem(tileEntity.parts, stemVecs, 3, rng, 0.0F, -2.0F, 10, 10.0F, 45.0F, 10.0F, -25.0F, 0.0F, 0.0F);
+            generateStem(parts, stemVecs, 0, rng, 0.0F, 0.0F, 16, 10.0F, 10.0F, 10.0F, 0.0F, 0.0F, 0.0F);
+            generateStem(parts, stemVecs, 1, rng, 2.0F, 2.0F, 10, 10.0F, 10.0F, 10.0F, 25.0F, 25.0F, 0.0F);
+            generateStem(parts, stemVecs, 2, rng, -2.0F, 2.0F, 10, 10.0F, 10.0F, 10.0F, 25.0F, -25.0F, 0.0F);
+            generateStem(parts, stemVecs, 3, rng, 0.0F, -2.0F, 10, 10.0F, 45.0F, 10.0F, -25.0F, 0.0F, 0.0F);
 
             for( int i = 4; i < partCnt; i++ ) {
                 int stemInd = rng.nextInt(4);
                 float partX = stemInd == 1 ? 2.0F : stemInd == 2 ? -2.0F : 0.0F;
                 float partZ = stemInd == 0 ? 0.0F : stemInd == 3 ? -2.0F : 2.0F;
-                generatePart(tileEntity.parts, stemVecs[stemInd], i, rng, partX, rng.nextFloat() * 6.0F + (stemInd == 0 ? 9.0F : 3.0F), partZ, 5,
+                generatePart(parts, stemVecs[stemInd], i, rng, partX, rng.nextFloat() * 6.0F + (stemInd == 0 ? 9.0F : 3.0F), partZ, 5,
                              rng.nextFloat() * -0.6F + 0.3F, 180.0F, 0.0F, 180.0F, 0.0F, 0.0F, 0.0F);
             }
 
-            Collection<ModelRenderer> filteredParts = Collections2.filter(Arrays.asList(tileEntity.parts), new Predicate<ModelRenderer>() {
+            Collection<ModelRenderer> filteredParts = Collections2.filter(Arrays.asList(parts), new Predicate<ModelRenderer>() {
                                                                               @Override public boolean apply(@Nullable ModelRenderer input) { return input != null; }
                                                                           });
 
-            tileEntity.parts = filteredParts.toArray(new ModelRenderer[filteredParts.size()]);
+            parts = filteredParts.toArray(new ModelRenderer[filteredParts.size()]);
         }
 
-        GL11.glPushMatrix();
-        GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GL11.glEnable(GL11.GL_BLEND);
         OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_SRC_COLOR, GL11.GL_ONE, GL11.GL_ZERO);
         GL11.glEnable(GL11.GL_CULL_FACE);
 
         float lastBrightX = OpenGlHelper.lastBrightnessX;
         float lastBrightY = OpenGlHelper.lastBrightnessY;
-        float brightX = 0xF0;
-        float brightY = Minecraft.getMinecraft().theWorld.getSkyBlockTypeBrightness(EnumSkyBlock.Sky, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord) * 0xF0;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightX, brightY);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0x00, skylightBrightness);
 
-        this.bindTexture(EnumTextures.TILE_CROCOITE_ORE.getResource());
-        for( int i = tileEntity.parts.length - 1; i >= 0; i-- ) {
-            tileEntity.parts[i].render(0.0625F);
+        Minecraft.getMinecraft().renderEngine.bindTexture(EnumTextures.TILE_CROCOITE_ORE.getResource());
+
+        for( int i = parts.length - 1; i >= 0; i-- ) {
+            parts[i].render(0.0625F);
         }
 
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightX, lastBrightY);
 
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+
+        return parts;
     }
 
-    private void generateStem(ModelRenderer[] partArr, Vec3[] stemVecs, int index, Random rng, float x, float z, int height, float rngX, float rngY, float rngZ,
-                              float minAngX, float minAngY, float minAngZ) {
+    @SuppressWarnings("OverlyComplexArithmeticExpression")
+    private static void generateStem(ModelRenderer[] partArr, Vec3[] stemVecs, int index, Random rng, float x, float z, int height, float rngX, float rngY, float rngZ,
+                                     float minAngX, float minAngY, float minAngZ) {
         rngX = ((rng.nextFloat() * 2.0F - 1.0F) * rngX + minAngX) / 180.0F * (float) Math.PI;
         rngY = ((rng.nextFloat() * 2.0F - 1.0F) * rngY + minAngY) / 180.0F * (float) Math.PI;
         rngZ = ((rng.nextFloat() * 2.0F - 1.0F) * rngZ + minAngZ) / 180.0F * (float) Math.PI;
@@ -100,8 +109,9 @@ public class RenderTileEntityOreCrocoite
         stemVecs[index].rotateAroundZ(rngZ);
     }
 
-    private void generatePart(ModelRenderer[] partArr, Vec3 stemVec, int index, Random rng, float x, float y, float z, int height, float scale, float rngX, float rngY,
-                              float rngZ, float minAngX, float minAngY, float minAngZ) {
+    @SuppressWarnings("OverlyComplexArithmeticExpression")
+    private static void generatePart(ModelRenderer[] partArr, Vec3 stemVec, int index, Random rng, float x, float y, float z, int height, float scale, float rngX,
+                                     float rngY, float rngZ, float minAngX, float minAngY, float minAngZ) {
         rngX = ((rng.nextFloat() * 2.0F - 1.0F) * rngX + minAngX) / 180.0F * (float) Math.PI;
         rngY = ((rng.nextFloat() * 2.0F - 1.0F) * rngY + minAngY) / 180.0F * (float) Math.PI;
         rngZ = ((rng.nextFloat() * 2.0F - 1.0F) * rngZ + minAngZ) / 180.0F * (float) Math.PI;

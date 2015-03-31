@@ -1,6 +1,6 @@
 /*******************************************************************************************************************
  * Authors:   SanAndreasP
- * Copyright: SanAndreasP, SilverChiren and CliffracerX
+ * Copyright: SanAndreasP
  * License:   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  *                http://creativecommons.org/licenses/by-nc-sa/4.0/
  *******************************************************************************************************************/
@@ -132,20 +132,20 @@ public class ItemRendererBiomeDataCrystal
         Tessellator tess = Tessellator.instance;
         tess.startDrawingQuads();
         tess.setColorOpaque_I(0x0);
-        tess.addVertex(1.0, 13.0, 0.0);
-        tess.addVertex(1.0, 15.0, 0.0);
+        tess.addVertex(2.0, 13.0, 0.0);
+        tess.addVertex(2.0, 15.0, 0.0);
         tess.addVertex(15.0, 15.0, 0.0);
         tess.addVertex(15.0, 13.0, 0.0);
         tess.setColorOpaque_F(color[0] * 0.2F, color[1] * 0.2F, color[2] * 0.2F);
-        tess.addVertex(1.0, 13.0, 0.0);
-        tess.addVertex(1.0, 14.0, 0.0);
+        tess.addVertex(2.0, 13.0, 0.0);
+        tess.addVertex(2.0, 14.0, 0.0);
         tess.addVertex(15.0, 14.0, 0.0);
         tess.addVertex(15.0, 13.0, 0.0);
-        tess.setColorOpaque_F(color[0] / 0.75F, color[1] / 0.75F, color[2] / 0.75F);
-        tess.addVertex(1.0, 13.0, 0.0);
-        tess.addVertex(1.0, 14.0, 0.0);
-        tess.addVertex(1.0 + dataProgress / 10.0F * 14.0F, 14.0, 0.0);
-        tess.addVertex(1.0 + dataProgress / 10.0F * 14.0F, 13.0, 0.0);
+        tess.setColorOpaque_F(color[0] * 1.25F, color[1] * 1.25F, color[2] * 1.25F);
+        tess.addVertex(2.0, 13.0, 0.0);
+        tess.addVertex(2.0, 14.0, 0.0);
+        tess.addVertex(2.0 + dataProgress / 10.0F * 13.0F, 14.0, 0.0);
+        tess.addVertex(2.0 + dataProgress / 10.0F * 13.0F, 13.0, 0.0);
         tess.draw();
 
         GL11.glEnable(GL11.GL_ALPHA_TEST);

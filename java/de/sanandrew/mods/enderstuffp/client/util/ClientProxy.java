@@ -87,6 +87,8 @@ public class ClientProxy
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EspBlocks.biomeDataCrystal), new ItemRendererBiomeDataCrystal());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EspBlocks.oreGenerator), new ItemRendererOreGenerator());
 
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EspBlocks.oreCrocoite), new ItemRendererCrocoiteOre());
+
         MinecraftForgeClient.registerItemRenderer(EspItems.niobBow, new ItemRendererBow());
 
         BlockRendererOreCrocoite.renderId = RenderingRegistry.getNextAvailableRenderId();
